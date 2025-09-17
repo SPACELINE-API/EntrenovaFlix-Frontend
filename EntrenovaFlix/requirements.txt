@@ -1,0 +1,14 @@
+base-template@0.0.0 C:\Users\ll603\Desktop\Fatec\API_3Sem\EntrenovaFlix\frontend\EntrenovaFlix
+Ôö£ÔöÇÔöÇ @eslint/js@9.35.0
+Ôö£ÔöÇÔöÇ @types/react-dom@19.1.9
+Ôö£ÔöÇÔöÇ @types/react@19.1.13
+Ôö£ÔöÇÔöÇ @vitejs/plugin-react@5.0.2
+Ôö£ÔöÇÔöÇ eslint-plugin-react-hooks@5.2.0
+Ôö£ÔöÇÔöÇ eslint-plugin-react-refresh@0.4.20
+Ôö£ÔöÇÔöÇ eslint@9.35.0
+Ôö£ÔöÇÔöÇ globals@16.4.0
+Ôö£ÔöÇÔöÇ react-dom@19.1.1
+Ôö£ÔöÇÔöÇ react-router-dom@7.9.1
+Ôö£ÔöÇÔöÇ react@19.1.1
+ÔööÔöÇÔöÇ vite@7.1.5
+
