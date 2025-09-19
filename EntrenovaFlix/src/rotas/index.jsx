@@ -1,9 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import MainLayout from '../componentes/layout/mainLayout';
-import TelaColab from '../paginas/telaColab';
-import NotFoundPage from '../paginas/NotFoundPage';
-import TelaTrilhas from '../paginas/telaTrilhas';   
+import DevolutivaPlanos from '../paginas/devolutivaPlanos';
+import NotFoundPage from '../paginas/NotFoundPage';  
 
 
 const router = createBrowserRouter([
@@ -14,13 +13,9 @@ const router = createBrowserRouter([
         children:[
             {
                 index: true,
-                element: <TelaColab/>,
+                element: <DevolutivaPlanos/>,
                 
             },
-            {
-                path:"trilhas",
-                element:<TelaTrilhas/>
-            }
                 
         
   
