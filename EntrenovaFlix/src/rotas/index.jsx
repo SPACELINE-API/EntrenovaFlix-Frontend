@@ -3,17 +3,30 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainLayout from '../componentes/layout/mainLayout';
 import TelaColab from '../paginas/telaColab';
 import NotFoundPage from '../paginas/NotFoundPage';
+import LpLayout from '../componentes/layout/LandingPage/lpLayout'
+import LandingPage from '../paginas/landingPage';
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path:'/',
+        element: <LpLayout/>,
+        errorElement: <NotFoundPage/>,
+        children:[
+            {
+                index: true,
+                element: <LandingPage/>
+            }
+        ]
+    },
+    {
+        path: '/colaboradores',
         element: <MainLayout/>,
         errorElement: <NotFoundPage/>,
         children:[
             {
                 index: true,
                 element: <TelaColab/>
-            }
+            }   
         ]
     }
 ]);

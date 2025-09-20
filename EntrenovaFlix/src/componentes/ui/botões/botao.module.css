@@ -1,0 +1,29 @@
+/* Estilo base para todos os botões */
+.button {
+  z-index: 2;
+  display: inline-flex;
+  padding: 1.5rem 2.5rem;
+  border-radius: 12px;
+  color: white;
+  font-family: 'inter';
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  border: none; /* Remove a borda padrão do <button> */
+  transition: all 0.3s ease-in-out;
+}
+
+/* Estilo para a variante 'primary' (a sua com gradiente) */
+.button.primary {
+  z-index: 2;
+  background-image: linear-gradient(90deg, #6D5FED, #8257E5);
+  box-shadow: 0 0 20px rgba(161, 152, 247, 0.5);
+}
+
+.button.primary:hover {
+  z-index: 2;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 30px rgba(161, 152, 247, 0.7);
+}
