@@ -1,13 +1,13 @@
 import { Outlet } from 'react-router-dom';
-import Header from './header';
-import '../../styles/mainLayout.css'
+import Cabeçalho from './lpCabe';
+import '../../../styles/lp.css'
 
 // Este componente serve como um "molde" para as páginas
-function MainLayout() {
+function LpLayout() {
   return (
-    <div className='bodyMain'>
-      <Header />
-      <main style={{ padding: '20px',}}>
+    <div className='bodyLp'>
+      <Cabeçalho />
+      <main>
         {/* O Outlet é onde o React Router vai renderizar a página da rota atual */}
         <Outlet />
       </main>
@@ -15,4 +15,4 @@ function MainLayout() {
     </div>
   );
 }
-export default MainLayout;
+export default LpLayout;

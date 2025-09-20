@@ -1,3 +1,5 @@
+/*Fontes*/
+
 @font-face {
   font-family: 'Kollektif';
   src: url('../assets/fontes/kollektif/Kollektif.ttf');
@@ -6,12 +8,9 @@
   font-family: 'techno_wanker';
   src: url('../assets/fontes/techno_wanker/TechnoWanker.ttf');
 }
-
-body{
-    background-color: #141414;
-    font-family: 'kollektif';
-    color: #FFFFFF;
-    
+@font-face {
+  font-family: 'satoshi';
+  src: url('../assets/fontes/Satoshi-Variable/Satoshi-Variable.ttf');
 }
 
 * {
@@ -26,21 +25,22 @@ body{
     justify-content: space-between; 
     align-items: center; 
     padding: 0rem 2.5rem; 
-    height: 54px;
+    height: 60px;
     background-color: #000000; 
-    color: #E1E1E6; 
-    font-family: 'kollektif';
-    font-weight: bold;
+    color: #E1E1E6;
 }
 .usuario{
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  font-family: 'kollektif';
 }
 .navigation {
   display: flex;
   gap: 5rem;
   height: 100%;
+  font-family: 'kollektif';
+  font-weight: bold;
 }
 .navigation a {
   text-decoration: none;
@@ -61,7 +61,7 @@ body{
 }
 .navigation a.active::after {
   content: '';
-  width: calc(100% + 1.2rem);
+  width: calc(100% + 2rem);
   height: 3px;
   background: #0078D7;
   background: linear-gradient(90deg,rgba(0, 120, 215, 1) 0%, rgba(84, 73, 204, 1) 100%);
@@ -75,4 +75,5 @@ body{
   font-weight: 100;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
+  color: #FFFFFF;
 }
