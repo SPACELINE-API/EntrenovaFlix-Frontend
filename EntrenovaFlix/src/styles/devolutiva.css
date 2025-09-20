@@ -1,0 +1,243 @@
+@font-face {
+  font-family: 'Kollektif';
+  src: url('../assets/fontes/kollektif/Kollektif.ttf');
+}
+@font-face {
+  font-family: 'techno_wanker';
+  src: url('../assets/fontes/techno_wanker/TechnoWanker.ttf');
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
+
+}
+.tituloDevolutiva {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5%;
+    margin-top: 4%;
+}
+.tituloDevolutiva h1 .destaque {
+    background: linear-gradient(90deg, #5449CC, #0078D7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.corpo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+.corpo h2 {
+    max-width: 55%;
+}
+.corpo2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+.corpo h2 .destaque {
+    background: linear-gradient(90deg, #5449CC, #0078D7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.corpo2 h2{
+    max-width: 50%;
+}
+
+.trilha-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+  margin: 60px 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.circle {
+  background-color: #5449CC;
+  color: white;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  z-index: 2;
+}
+
+.step::after {
+  content: "";
+  position: absolute;
+  top: 27px;
+  left: 50%;
+  width: 100%;
+  height: 3px;
+  background-color: #5449CC;
+  z-index: 1;
+}
+
+.step:last-child::after {
+  display: none;
+}
+
+.step span {
+  margin-top: 8px;
+  font-size: 14px;
+  color: white;
+}
+
+
+.planos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 5%;
+}
+
+.botaoTrilha {
+    display: block;
+    margin: 40px auto 0 auto;
+    padding: 5px 20px;
+    border-radius: 6px;
+    border: none;
+    background: linear-gradient(90deg, #5449CC 0%, #5449CC 50%, #0078D7 100%);
+    color: #fff;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 25px;
+    font-weight: 100;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.botaoTrilha:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px 8px #a46af7,
+                0 0 20px 12px #6c3dd9;
+}
+
+.planos-container {
+    display: flex;
+    gap: 30px;               
+    justify-content: center; 
+    flex-wrap: wrap;         
+    margin: 50px 0;
+    align-items: stretch;
+}
+
+.plano-card {
+    background-color: #1f1f1f; 
+    color: white;
+    border-radius: 16px;
+    padding: 25px;
+    width: 270px;
+    min-height: 420px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.plano-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #5449CC, #0078D7);
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.plano-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-top: 10%;
+}
+
+.plano-card h3 .essencial {
+    background: linear-gradient(90deg, #00599F, #0078D7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.plano-card h3 .premium {
+    background: linear-gradient(90deg, #DC8000, #FBBC05);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.plano-card h3 .diamante {
+    background: linear-gradient(90deg,#017F81, #00D8DC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.plano-card .preco {
+  font-weight: bold;
+  margin-bottom: 15px;
+  
+}
+
+.plano-card .preco::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: #ffffff4d;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.plano-card ul {
+    flex: 1;
+    list-style: disc;
+    padding-left: 20px;
+}
+
+.plano-card ul li {
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.botao-assinar {
+    margin-top: auto;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: none;
+    background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.botao-assinar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px 8px #a46af7,
+                0 0 20px 12px #6c3dd9;
+}
