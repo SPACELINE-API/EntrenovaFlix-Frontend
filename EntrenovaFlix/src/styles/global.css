@@ -9,15 +9,12 @@
 @font-face {
   font-family: 'Satoshi';
   src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
-
 }
 
-
-body{
-    background-color: #141414;
-    font-family: 'kollektif';
-    color: #FFFFFF;
-    
+body {
+  background-color: #141414;
+  font-family: 'kollektif';
+  color: #FFFFFF;
 }
 
 * {
@@ -26,28 +23,31 @@ body{
   box-sizing: border-box;
 }
 
-/* Header css */
-.headerContainer{
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 0rem 2.5rem; 
-    height: 54px;
-    background-color: #000000; 
-    color: #E1E1E6; 
-    font-family: 'kollektif';
-    font-weight: bold;
+/* =================== HEADER =================== */
+.headerContainer {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 0rem 2.5rem; 
+  height: 54px;
+  background-color: #000000; 
+  color: #E1E1E6; 
+  font-family: 'kollektif';
+  font-weight: bold;
 }
-.usuario{
+
+.usuario {
   display: flex;
   align-items: center;
   gap: 0.8rem;
 }
+
 .navigation {
   display: flex;
   gap: 5rem;
   height: 100%;
 }
+
 .navigation a {
   text-decoration: none;
   display: flex;
@@ -58,13 +58,16 @@ body{
   position: relative;
   transition: color 0.2s;
 }
+
 .navigation a:hover {
   color: #E1E1E6;
 }
+
 .navigation a.active {
   color: #FFFFFF;
   font-weight: bold;
 }
+
 .navigation a.active::after {
   content: '';
   width: calc(100% + 1.2rem);
@@ -76,6 +79,7 @@ body{
   left: 50%;
   transform: translateX(-50%);
 }
+
 .brandLogo span {
   font-family: 'techno_wanker';
   font-weight: 100;
@@ -83,7 +87,7 @@ body{
   letter-spacing: 0.5px;
 }
 
-.tituloTrilha{
+.tituloTrilha {
   color:#C2C2C2;
   font-family: 'kollektif';
   font-style: bold;
@@ -92,8 +96,8 @@ body{
   margin-top: 60px;
   display: flex;
   justify-content: center;
- 
 }
+
 .dropdown {
   background-color: #0078D7;
   width: 130px;
@@ -184,12 +188,11 @@ body{
   box-shadow: 0 0 10px #5449CC, 0 0 20px #0078D7;
   filter: brightness(1.03);
 }
+
 .telaTrilhas {
   display: flex;
   justify-content:center;
-  
 }
-
 
 .sidebar {
   width: 250px;
@@ -209,7 +212,6 @@ body{
 .sidebar.aberta {
   transform: translateX(0);
 }
-
 
 .sidebar.fechada {
   transform: translateX(-100%);
@@ -248,7 +250,6 @@ body{
   transition: background 0.2s;
   font-family: 'kollektif';
   font-weight: 200;
-  
 }
 
 .sidebar-btn:hover {
@@ -268,5 +269,338 @@ body{
   margin-top: 20px;
 }
 
+/* ===================FORUM=================== */
+.telaForum {
+  padding: 2rem;
+  color: #fff;
+  background-color: #141414;
+  min-height: 100vh;
+}
+
+.forumTitulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.forumTitulo h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #E1E1E6;
+}
+
+.escreverComentario {
+  color: #4fa1ff;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Satoshi', sans-serif;
+}
+
+.forumPosts {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.forumCard {
+  background: #1c1c1c;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.forumUser {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: gray;
+}
+
+.nomeUsuario {
+  color: #4fa1ff;
+  font-weight: bold;
+  font-family: 'Satoshi', sans-serif;
+}
+
+.forumPergunta {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.forumDescricao {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: #E1E1E6;
+  line-height: 1.4;
+}
+
+.forumTempo {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-bottom: 1rem;
+}
+
+.btnResponder {
+  align-self: flex-end;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btnResponder:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #5449CC, 0 0 20px #0078D7;
+}
+
+.telaNovoComentario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: #141414;
+  min-height: 100vh;
+  color: #fff;
+}
+
+.telaNovoComentario h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #E1E1E6;
+}
+
+.telaNovoComentario form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px;
+  gap: 1.5rem;
+}
+
+.telaNovoComentario form > div {
+  background-color: #1c1c1c;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #333;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.telaNovoComentario label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #C4C4CC;
+  font-family: 'Satoshi', sans-serif;
+}
+
+.telaNovoComentario input,
+.telaNovoComentario textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #222;
+  color: #E1E1E6;
+  font-family: 'Satoshi', sans-serif;
+  resize: vertical;
+}
+
+.telaNovoComentario input,
+.telaNovoComentario textarea {
+  outline: none;
+  border-color: #5449CC;
+  box-shadow: 0 0 5px rgba(84, 73, 204, 0.5);
+}
+
+.telaNovoComentario textarea {
+  height: 200px;
+}
+
+.telaNovoComentario button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.telaNovoComentario button[type="submit"] {
+  background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+  align-self: flex-end;
+}
+
+.telaNovoComentario button[type="submit"]:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 10px #5449CC, 0 0 20px #0078D7;
+}
+
+.telaNovoComentario button:last-of-type {
+  background-color: #555;
+  margin-top: 1rem;
+}
+
+.telaNovoComentario button:last-of-type:hover {
+  background-color: #777;
+}
+
+.comment-info {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.comment-info span {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 1rem;
+}
+
+.comment-author-name {
+  color: #4fa1ff;
+  font-weight: bold;
+}
+
+.comment-tip {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#formu {
+  border: solid #5449CC 1px;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.telaDetalhePost {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background-color: #141414;
+  min-height: 100vh;
+  color: #fff;
+}
+
+.btnVoltar {
+  align-self: flex-start;
+  margin-bottom: 2rem;
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Satoshi', sans-serif;
+  transition: background-color 0.2s;
+}
+
+.btnVoltar {
+  background-color: #555;
+}
+
+.postCompleto {
+  background-color: #1c1c1c;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.postCompleto h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.postCompleto .forumUser {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.postCompleto .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: gray;
+}
+
+.postCompleto .nomeUsuario {
+  color: #4fa1ff;
+  font-weight: bold;
+  font-family: 'Satoshi', sans-serif;
+}
+
+.postCompleto .forumDescricao {
+  font-size: 1rem;
+  color: #E1E1E6;
+  line-height: 1.6;
+}
+
+.postCompleto .forumTempo {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-top: 1rem;
+}
+
+.areaComentario {
+  display: flex;
+  flex-direction: column;
+  background-color: #1c1c1c;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.areaComentario h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #E1E1E6;
+}
+
+.areaComentario textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #222;
+  color: #E1E1E6;
+  font-family: 'Satoshi', sans-serif;
+  resize: vertical;
+  min-height: 150px;
+  margin-bottom: 1rem;
+}
+
+.areaComentario textarea {
+  outline: none;
+  border-color: #5449CC;
+  box-shadow: 0 0 5px rgba(84, 73, 204, 0.5);
+}
+
+.areaComentario button[type="submit"] {
+  align-self: flex-end;
+}
 
 
