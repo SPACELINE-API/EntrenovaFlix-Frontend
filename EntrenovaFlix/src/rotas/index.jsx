@@ -3,8 +3,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainLayout from '../componentes/layout/mainLayout';
 import TelaColab from '../paginas/telaColab';
 import NotFoundPage from '../paginas/NotFoundPage';
-import TelaTrilhas from '../paginas/telaTrilhas';   
-
 
 const router = createBrowserRouter([
     {
@@ -14,16 +12,8 @@ const router = createBrowserRouter([
         children:[
             {
                 index: true,
-                element: <TelaColab/>,
-                
-            },
-            {
-                path:"trilhas",
-                element:<TelaTrilhas/>
+                element: <TelaColab/>
             }
-                
-        
-  
         ]
     }
 ]);
