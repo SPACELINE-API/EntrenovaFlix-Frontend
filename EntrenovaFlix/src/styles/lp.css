@@ -175,7 +175,7 @@
 .motivos-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin-left: 2rem;
+    margin-left: 6.5rem;
 }
 .motivos-titulo{
     font-family: 'kollektif';
