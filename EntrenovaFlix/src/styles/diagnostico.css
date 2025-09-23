@@ -1,0 +1,185 @@
+@font-face {
+    font-family: 'Kollektif';
+    src: url('../assets/fontes/kollektif/Kollektif.ttf');
+}
+@font-face {
+    font-family: 'techno_wanker';
+    src: url('../assets/fontes/techno_wanker/TechnoWanker.ttf');
+}
+@font-face {
+    font-family: 'Satoshi';
+    src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
+}
+
+/* Diagnostico - Tela de Diagnostico */
+.diagnostico-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 20px;
+    font-family: 'Kollektif', Arial, sans-serif;
+    color: #FFFFFF;
+    min-height: 100vh;
+}
+
+.diagnostico-head {
+    text-align: left;
+    margin-bottom: 60px;
+}
+
+.diagnostico-titulo {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.diagnostico-subtitulo {
+    font-size: 1.2rem;
+    font-family: 'Satoshi', sans-serif;
+    line-height: 1.6;
+    color: #C4C4CC;
+    margin: 0 auto;
+    font-weight: 300;
+}
+
+.resultados-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.categoria-resultado {
+    background: #2a2a2a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.categoria-resultado:hover {
+    box-shadow: 0 10px 30px rgba(84, 73, 204, 0.3);
+    border-color: #5449CC;
+}
+
+.categoria-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #5449CC 0%, #0078D7 100%);
+    border-radius: 50%;
+    margin: 0 auto 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    box-shadow: 0 4px 15px rgba(84, 73, 204, 0.3);
+}
+
+.categoria-titulo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #FFFFFF;
+}
+
+.ponto-forte,
+.ponto-fraco {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.ponto-forte .bullet {
+    color: #4CAF50;
+    font-size: 1.2rem;
+}
+
+.ponto-fraco .bullet {
+    color: #FF9800;
+    font-size: 1.2rem;
+}
+
+.item-ponto {
+    margin-left: 20px;
+    margin-bottom: 15px;
+    font-family: 'Satoshi', sans-serif;
+    color: #C4C4CC;
+    font-size: 0.95rem;
+}
+
+.importancia-secao,
+.proximos-passos-secao {
+    margin-bottom: 50px;
+}
+
+.secao-titulo {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+}
+
+.importancia-content,
+.proximos-passos-content {
+    background: #2a2a2a;
+    border-left: 4px solid #5449CC;
+    font-family: 'Satoshi', sans-serif;
+    border-radius: 8px;
+    padding: 25px;
+    color: #C4C4CC;
+}
+
+.cta-secao {
+    text-align: center;
+    background: #2a2a2a;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 40px;
+    margin-top: 60px;
+}
+
+.cta-titulo {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+}
+
+.cta-texto {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #C4C4CC;
+    margin-bottom: 30px;
+    font-family: 'Satoshi', sans-serif;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-agendar {
+    background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+    color: #FFFFFF;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Kollektif', Arial, sans-serif;
+}
+
+.btn-agendar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(84, 73, 204, 0.4);
+    filter: brightness(1.1);
+}
+
+.btn-agendar:active {
+    transform: translateY(0);
+}
