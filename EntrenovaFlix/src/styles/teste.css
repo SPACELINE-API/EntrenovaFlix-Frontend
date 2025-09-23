@@ -1,0 +1,1986 @@
+/* Landing page */
+
+position: relative;
+width: 1440px;
+height: 5602px;
+
+background: #141414;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+width: 1636px;
+height: 1425px;
+left: 260px;
+top: 342px;
+
+background: radial-gradient(50% 50% at 50% 50%, rgba(90, 79, 207, 0.6) 0%, rgba(20, 20, 20, 0.6) 82.69%);
+transform: rotate(-19.34deg);
+
+
+/* Ellipse 1 */
+
+position: absolute;
+width: 1545px;
+height: 1662px;
+left: -738px;
+top: -773px;
+
+background: radial-gradient(50% 50% at 50% 50%, rgba(90, 79, 207, 0.6) 0%, rgba(20, 20, 20, 0.6) 82.69%);
+
+
+/* Responda ao formulário para ter acesso as trilhas */
+
+position: absolute;
+width: 902px;
+height: 116px;
+left: calc(50% - 902px/2);
+top: 3285px;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 58px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #C2C2C2;
+
+
+
+/* SOLUÇÕES INTELIGENTES PARA A SUA EMPRESA. TREINAMENTO CORPORATIVO PERSONALIZADO. */
+
+position: absolute;
+width: 783px;
+height: 174px;
+left: 329px;
+top: 346px;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 58px;
+display: flex;
+align-items: center;
+text-align: center;
+
+background: linear-gradient(90deg, #797878 0%, #FFFFFF 46.15%, #797878 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+
+
+
+/* ENTRENOVAFLIX */
+
+position: absolute;
+width: 153px;
+height: 24px;
+left: 58px;
+top: 29px;
+
+font-family: 'Techno Wanker';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* Component 15 */
+
+position: absolute;
+width: 304px;
+height: 81px;
+left: 568px;
+top: 700px;
+
+
+
+/* Rectangle 9 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: linear-gradient(90deg, #9B93F5 0%, #5A4FCF 77.4%);
+border-radius: 10px;
+
+
+/* Quero receber */
+
+position: absolute;
+width: 204px;
+left: calc(50% - 204px/2);
+top: 24.69%;
+bottom: 22.22%;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 32px;
+line-height: 43px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Login */
+
+position: absolute;
+width: 62px;
+height: 32px;
+left: 1204px;
+top: 30px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #5A4FCF;
+
+
+
+/* Sign-up */
+
+position: absolute;
+width: 89px;
+height: 32px;
+left: 1301px;
+top: 30px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #5A4FCF;
+
+
+
+/* Unimos arte, mídia e eficiência para criar conteúdos que auxiliem na gestão da sua empresa. */
+
+position: absolute;
+width: 589px;
+height: 58px;
+left: 425px;
+top: 581px;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 29px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* Home */
+
+position: absolute;
+width: 85px;
+height: 43px;
+left: 464px;
+top: 28px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 32px;
+line-height: 43px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* Sobre */
+
+position: absolute;
+width: 83px;
+height: 43px;
+left: 651px;
+top: 28px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 32px;
+line-height: 43px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* Diagnóstico */
+
+position: absolute;
+width: 166px;
+height: 43px;
+left: 831px;
+top: 28px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 32px;
+line-height: 43px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* SOBRE SUA EMPRESA */
+
+position: absolute;
+width: 293px;
+height: 34px;
+left: 200px;
+top: 3845px;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 28px;
+line-height: 34px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #C2C2C2;
+
+
+
+/* Ellipse 10 */
+
+position: absolute;
+width: 1629px;
+height: 1588px;
+left: 734px;
+top: -105px;
+
+background: radial-gradient(50% 50% at 50% 50%, rgba(155, 147, 245, 0.6) 0%, rgba(20, 20, 20, 0) 83.17%);
+
+
+/* AVALIAÇÃO DETALHADA EM DIMENSÕES */
+
+position: absolute;
+width: 559px;
+height: 34px;
+left: 200px;
+top: 4775px;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 28px;
+line-height: 34px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #C2C2C2;
+
+
+
+/* Component 37 */
+
+position: absolute;
+width: 473px;
+height: 116px;
+left: 200px;
+top: 3966px;
+
+
+
+/* Setor principal da sua empresa: */
+
+position: absolute;
+left: 0%;
+right: 26.22%;
+top: -0.86%;
+bottom: 72.41%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 26px;
+line-height: 33px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Rectangle 50 */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 49.14%;
+bottom: 0%;
+
+background: #222222;
+border: 1px solid #919191;
+border-radius: 10px;
+
+
+/* Component 39 */
+
+position: absolute;
+width: 473px;
+height: 116px;
+left: 726px;
+top: 3966px;
+
+
+
+/* Setor principal da sua empresa: */
+
+position: absolute;
+left: 0%;
+right: 47.78%;
+top: -0.86%;
+bottom: 72.41%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 26px;
+line-height: 33px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Rectangle 50 */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 49.14%;
+bottom: 0%;
+
+background: #222222;
+border: 1px solid #919191;
+border-radius: 10px;
+
+
+/* Component 40 */
+
+position: absolute;
+width: 473px;
+height: 116px;
+left: 200px;
+top: 4171px;
+
+
+
+/* Setor principal da sua empresa: */
+
+position: absolute;
+left: 0%;
+right: 72.3%;
+top: -0.86%;
+bottom: 72.41%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 26px;
+line-height: 33px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Rectangle 50 */
+
+box-sizing: border-box;
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 49.14%;
+bottom: 0%;
+
+background: #222222;
+border: 1px solid #919191;
+border-radius: 10px;
+
+
+/* Component 33 */
+
+position: absolute;
+width: 373px;
+height: 82px;
+left: calc(50% - 373px/2 + 0.5px);
+top: 5365px;
+
+
+
+/* Rectangle 54 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: linear-gradient(90deg, #9B93F5 0%, #5A4FCF 71.63%);
+border-radius: 15px;
+
+
+/* Enviar */
+
+position: absolute;
+left: 35.66%;
+right: 35.39%;
+top: 17.07%;
+bottom: 17.07%;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 54px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+
+/* Rectangle 47 */
+
+box-sizing: border-box; 
+
+position: absolute;
+width: 1440px;
+height: 2042.35px;
+left: 1px;
+top: 1149.65px;
+
+background: #171717;
+border: 2px solid #4A4A4A;
+
+
+/* Polygon 1 */
+
+position: absolute;
+width: 1681px;
+height: 332px;
+left: -116px;
+top: 904px;
+
+background: #171717;
+
+
+/* Motivos para assinar a EntreNovaFlix */
+
+position: absolute;
+width: 840px;
+height: 58px;
+left: 143px;
+top: 1362px;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 58px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #C2C2C2;
+
+
+
+/* Component 17 */
+
+position: absolute;
+width: 1242px;
+height: 273px;
+left: calc(50% - 1242px/2);
+top: 1532px;
+
+
+
+/* Cada empresa recebe uma solução exclusiva que atenda as suas demandas. A trilha tem conteúdos personalizados especialmente para você. */
+
+position: absolute;
+left: 7.41%;
+right: 67.55%;
+top: 45.05%;
+bottom: 0%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 30px;
+display: flex;
+align-items: center;
+
+color: #E5D0D0;
+
+
+
+/* Todo conteúdo das trilhas é feito com muita qualidade e sob o olhar de uma curadoria que foca na resolução do seu problema. */
+
+position: absolute;
+left: 40.26%;
+right: 34.38%;
+top: 45.05%;
+bottom: 0%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 30px;
+display: flex;
+align-items: center;
+
+color: #E5D0D0;
+
+
+
+/* Desenvolvemos projetos originais focados nas dores da sua empresa. Uma solução única para o seu problema. */
+
+position: absolute;
+left: 74.8%;
+right: 2.58%;
+top: 45.05%;
+bottom: 0%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 30px;
+display: flex;
+align-items: center;
+
+color: #E5D0D0;
+
+
+
+/* Conteúdo personalizado */
+
+position: absolute;
+left: 7.41%;
+right: 79.95%;
+top: 10.62%;
+bottom: 68.13%;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 29px;
+display: flex;
+align-items: center;
+
+background: linear-gradient(269.8deg, #857DDB 57.68%, #C4BFFF 99.84%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+
+
+
+/* 1 */
+
+position: absolute;
+left: 0%;
+right: 92.59%;
+top: 0%;
+bottom: 57.51%;
+
+font-family: 'Konkhmer Sleokchher';
+font-style: normal;
+font-weight: 400;
+font-size: 64px;
+line-height: 116px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #5449CC;
+
+
+
+/* I */
+
+position: absolute;
+left: 3.06%;
+right: 95.73%;
+top: 47.25%;
+bottom: 34.07%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 100;
+font-size: 64px;
+line-height: 77px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #857DDB;
+
+
+
+/* I */
+
+position: absolute;
+left: 36.39%;
+right: 62.4%;
+top: 47.25%;
+bottom: 34.07%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 100;
+font-size: 64px;
+line-height: 77px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #5A4FCF;
+
+
+
+/* I */
+
+position: absolute;
+left: 70.45%;
+right: 28.34%;
+top: 47.25%;
+bottom: 34.07%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 100;
+font-size: 64px;
+line-height: 77px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #4437C3;
+
+
+
+/* 2 */
+
+position: absolute;
+left: 32.85%;
+right: 59.74%;
+top: 0%;
+bottom: 57.51%;
+
+font-family: 'Konkhmer Sleokchher';
+font-style: normal;
+font-weight: 400;
+font-size: 64px;
+line-height: 116px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #5A4FCF;
+
+
+
+/* 3 */
+
+position: absolute;
+left: 67.39%;
+right: 25.2%;
+top: 0%;
+bottom: 57.51%;
+
+font-family: 'Konkhmer Sleokchher';
+font-style: normal;
+font-weight: 400;
+font-size: 64px;
+line-height: 116px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #4437C3;
+
+
+
+/* Produção audiovisual */
+
+position: absolute;
+left: 40.26%;
+right: 49.6%;
+top: 10.62%;
+bottom: 68.13%;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 29px;
+display: flex;
+align-items: center;
+
+background: linear-gradient(269.8deg, #857DDB 57.68%, #C4BFFF 99.84%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+
+
+
+/* Desenvolvimento criativo */
+
+position: absolute;
+left: 74.8%;
+right: 9.74%;
+top: 10.62%;
+bottom: 68.13%;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 29px;
+display: flex;
+align-items: center;
+
+background: linear-gradient(269.8deg, #857DDB 57.68%, #C4BFFF 99.84%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+
+
+
+/* Rectangle 73 */
+
+position: absolute;
+width: 712.67px;
+height: 758.79px;
+left: -485px;
+top: 2093px;
+
+background: linear-gradient(232.82deg, #5A4FCF 13.61%, #171717 86.39%);
+filter: blur(2px);
+border-radius: 56px;
+transform: rotate(-46.75deg);
+
+
+/* image 1 */
+
+position: absolute;
+width: 572px;
+height: 492px;
+left: 179.7px;
+top: 2359px;
+
+background: url(image.png);
+
+
+/* Passo a passo para assinar nosso serviço */
+
+position: absolute;
+width: 975px;
+height: 58px;
+left: calc(50% - 975px/2 + 0.2px);
+top: 2232px;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 58px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+background: linear-gradient(90deg, #9B93F5 0%, #5449CC 49.52%, #4335E0 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+
+text-shadow: 0px 0px 10px rgba(51, 42, 147, 0.59);
+
+
+/* Component 16 */
+
+position: absolute;
+width: 521px;
+height: 608px;
+left: calc(50% - 521px/2 + 343.5px);
+top: calc(50% - 608px/2 - 138px);
+
+
+
+/* Diagnóstico inicial */
+
+position: absolute;
+left: 20.98%;
+right: 27.58%;
+top: 0%;
+bottom: 93.75%;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 38px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #C2C2C2;
+
+
+
+/* Diagnóstico aprofundado */
+
+position: absolute;
+left: 20.98%;
+right: 7.04%;
+top: 33.88%;
+bottom: 59.87%;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 38px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #C2C2C2;
+
+
+
+/* Trilhas */
+
+position: absolute;
+left: 20.98%;
+right: 60.4%;
+top: 67.76%;
+bottom: 25.99%;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 38px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #C2C2C2;
+
+
+
+/* Rectangle 55 */
+
+position: absolute;
+left: 0%;
+right: 83.88%;
+top: 11.51%;
+bottom: 75.82%;
+
+border-radius: 15px;
+
+
+/* Rectangle 56 */
+
+position: absolute;
+left: 0%;
+right: 83.88%;
+top: 41.28%;
+bottom: 46.05%;
+
+border-radius: 15px;
+
+
+/* Rectangle 57 */
+
+position: absolute;
+left: 0%;
+right: 83.88%;
+top: 71.55%;
+bottom: 15.79%;
+
+border-radius: 15px;
+
+
+/* Responda um formulário para receber um diagnóstico simples sobre as principais dores da sua empresa. */
+
+position: absolute;
+left: 20.98%;
+right: -4.47%;
+top: 11.51%;
+bottom: 74.34%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 30px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+display: flex;
+align-items: center;
+text-align: justify;
+
+color: #FFFFFF;
+
+
+
+/* Entre em contato com um consultor para receber um diagnóstico aprofundado, que aponte as soluções para o seu problema. */
+
+position: absolute;
+left: 20.98%;
+right: -5.24%;
+top: 46.55%;
+bottom: 43.59%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 30px;
+display: flex;
+align-items: center;
+text-align: justify;
+
+color: #FFFFFF;
+
+
+
+/* Receba trilhas educativas personalizadas com conteúdos relevantes para a sua empresa. */
+
+position: absolute;
+left: 20.98%;
+right: -9.46%;
+top: 76.81%;
+bottom: 3.45%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 30px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* camera (1) 1 */
+
+position: absolute;
+width: 77px;
+height: 77px;
+left: 3px;
+top: 403px;
+
+background: url(camera (1).png);
+
+
+/* sign-form 1 */
+
+position: absolute;
+width: 77px;
+height: 77px;
+left: 0px;
+top: 0px;
+
+background: url(sign-form.png);
+
+
+/* document-analysis 1 */
+
+position: absolute;
+width: 77px;
+height: 77px;
+left: 0px;
+top: 206px;
+
+background: url(document-analysis.png);
+
+
+/* Rectangle 58 */
+
+position: absolute;
+width: 1180px;
+height: 73px;
+left: 143.7px;
+top: 3010px;
+
+background: linear-gradient(90deg, #6C62D8 11.06%, #5449CC 51.44%, #4335E0 89.9%);
+border-radius: 10px;
+
+
+/* As trilhas são compostas de 7 a 10 materiais que incluem vídeos, filmes, podcasts, quizzes e outros conteúdos audiovisuais. */
+
+position: absolute;
+width: 1045px;
+height: 25px;
+left: 198px;
+top: 3033px;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 25px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Rectangle 74 */
+
+position: absolute;
+width: 1279px;
+height: 133px;
+left: calc(50% - 1279px/2 + 0.5px);
+top: 3512px;
+
+background: #373737;
+box-shadow: 0px 3px 15px rgba(161, 161, 161, 0.37);
+border-radius: 30px;
+
+
+/* Component 34 */
+
+position: absolute;
+width: 235px;
+height: 44px;
+left: 200px;
+top: 3548px;
+
+
+
+/* Perfil da Empresa */
+
+position: absolute;
+left: 17.02%;
+right: 25.11%;
+top: 29.55%;
+bottom: 18.18%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 23px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #5449CC;
+
+
+
+/* Rectangle 116 */
+
+position: absolute;
+height: 25px;
+left: -1.7%;
+right: 91.06%;
+top: 11px;
+
+background: #5449CC;
+border-radius: 16px;
+
+
+/* I */
+
+position: absolute;
+left: 1.28%;
+right: 93.62%;
+top: 34.09%;
+bottom: 25%;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 20px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #373737;
+
+
+
+/* Group 1 */
+
+position: absolute;
+width: 1040px;
+height: 37px;
+left: calc(50% - 1040px/2 + 0px);
+top: 3566px;
+
+
+
+/* Rectangle 117 */
+
+position: absolute;
+height: 25px;
+left: 36.25%;
+right: 62.01%;
+top: 3566px;
+
+background: #141414;
+border-radius: 16px;
+
+
+/* Line 2 */
+
+position: absolute;
+width: 211px;
+height: 0px;
+left: 200px;
+top: 3602.5px;
+
+border: 2px solid #5449CC;
+box-shadow: 0px 0px 4px rgba(255, 255, 255, 0.5);
+
+
+/* Line 4 */
+
+position: absolute;
+width: 247px;
+height: 0px;
+left: 507px;
+top: 3603px;
+
+border: 3px solid #141414;
+
+
+/* Line 6 */
+
+position: absolute;
+width: 179px;
+height: 0px;
+left: 854px;
+top: 3603px;
+
+border: 3px solid #141414;
+
+
+/* Line 3 */
+
+position: absolute;
+width: 96px;
+height: 0px;
+left: 411px;
+top: 3580px;
+
+
+
+/* Line 7 */
+
+position: absolute;
+width: 96px;
+height: 0px;
+left: 758px;
+top: 3578.5px;
+
+
+
+/* Line 8 */
+
+position: absolute;
+width: 96px;
+height: 0px;
+left: 1033px;
+top: 3580px;
+
+
+
+/* Desafios e Objetivos */
+
+position: absolute;
+width: 161px;
+height: 23px;
+left: 565px;
+top: 3568px;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 23px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #141414;
+
+
+
+/* II */
+
+position: absolute;
+left: 36.6%;
+right: 62.29%;
+top: 63.71%;
+bottom: 35.93%;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 20px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #373737;
+
+
+
+/* Rectangle 118 */
+
+position: absolute;
+height: 25px;
+left: 60.35%;
+right: 37.92%;
+top: 3567px;
+
+background: #141414;
+border-radius: 16px;
+
+
+/* Diagnóstico */
+
+position: absolute;
+width: 95px;
+height: 23px;
+left: 907px;
+top: 3568px;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 23px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #141414;
+
+
+
+/* III */
+
+position: absolute;
+left: 60.42%;
+right: 37.92%;
+top: 63.73%;
+bottom: 35.92%;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #373737;
+
+
+
+/* Line 9 */
+
+position: absolute;
+width: 111px;
+height: 0px;
+left: 1129px;
+top: 3603px;
+
+border: 3px solid #141414;
+
+
+/* Rectangle 119 */
+
+position: absolute;
+height: 25px;
+left: 79.65%;
+right: 18.61%;
+top: 3567px;
+
+background: #141414;
+border-radius: 16px;
+
+
+/* II&U */
+
+position: absolute;
+width: 33px;
+height: 23px;
+left: 1180px;
+top: 3568px;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 23px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #141414;
+
+
+
+/* IV */
+
+position: absolute;
+left: 79.72%;
+right: 18.61%;
+top: 63.73%;
+bottom: 35.92%;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #373737;
+
+
+
+/* Component 38 */
+
+position: absolute;
+width: 333px;
+height: 248px;
+left: 200px;
+top: 4376px;
+
+
+
+/* Número de colaboradores: */
+
+position: absolute;
+left: 0%;
+right: 9.31%;
+top: -0.4%;
+bottom: 87.1%;
+
+font-family: 'Techna Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 26px;
+line-height: 33px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 2 */
+
+position: absolute;
+left: 0%;
+right: 64.56%;
+top: 21.37%;
+bottom: 66.13%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 59px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Até 10 */
+
+position: absolute;
+left: 11.41%;
+right: 64.56%;
+top: 21.37%;
+bottom: 66.13%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 4 */
+
+position: absolute;
+left: 0%;
+right: 33.63%;
+top: 54.44%;
+bottom: 33.06%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 141px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Entre 30 e 100 */
+
+position: absolute;
+left: 11.41%;
+right: 33.63%;
+top: 54.44%;
+bottom: 33.06%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 5 */
+
+position: absolute;
+left: 0%;
+right: 37.24%;
+top: 70.97%;
+bottom: 16.53%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 182px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Acima de 100 */
+
+position: absolute;
+left: 11.41%;
+right: 37.24%;
+top: 70.97%;
+bottom: 16.53%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 6 */
+
+position: absolute;
+left: 0%;
+right: 36.04%;
+top: 87.5%;
+bottom: 0%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 223px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Acima de 500 */
+
+position: absolute;
+left: 11.41%;
+right: 36.04%;
+top: 87.5%;
+bottom: 0%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 3 */
+
+position: absolute;
+left: 0%;
+right: 40.24%;
+top: 37.9%;
+bottom: 49.6%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 100px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Entre 11 e 30 */
+
+position: absolute;
+left: 11.41%;
+right: 40.24%;
+top: 37.9%;
+bottom: 49.6%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Component 41 */
+
+position: absolute;
+width: 333px;
+height: 250px;
+left: 200px;
+top: 4887px;
+
+
+
+/* Número de colaboradores: */
+
+position: absolute;
+left: 0%;
+right: 100%;
+top: -0.4%;
+bottom: 87.2%;
+
+
+
+
+/* Group 2 */
+
+position: absolute;
+left: 0%;
+right: 21.62%;
+top: 21.37%;
+bottom: 66.23%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 59px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Até 10 */
+
+position: absolute;
+left: 11.41%;
+right: 21.62%;
+top: 21.37%;
+bottom: 66.23%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 4 */
+
+position: absolute;
+left: 0%;
+right: 23.42%;
+top: 54.44%;
+bottom: 33.16%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 141px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Entre 30 e 100 */
+
+position: absolute;
+left: 11.41%;
+right: 23.42%;
+top: 54.44%;
+bottom: 33.16%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 5 */
+
+position: absolute;
+visibility: hidden;
+left: 0%;
+right: 37.24%;
+top: 70.97%;
+bottom: 16.63%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 182px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Acima de 100 */
+
+position: absolute;
+left: 11.41%;
+right: 37.24%;
+top: 70.97%;
+bottom: 16.63%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 6 */
+
+position: absolute;
+visibility: hidden;
+left: 0%;
+right: 36.04%;
+top: 87.5%;
+bottom: 0.1%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 223px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Acima de 500 */
+
+position: absolute;
+left: 11.41%;
+right: 36.04%;
+top: 87.5%;
+bottom: 0.1%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 3 */
+
+position: absolute;
+left: 0%;
+right: 0.6%;
+top: 37.9%;
+bottom: 49.7%;
+
+
+
+/* Ellipse 19 */
+
+box-sizing: border-box;
+
+position: absolute;
+height: 20px;
+left: 0%;
+right: 93.99%;
+top: 100px;
+
+background: #222222;
+border: 1px solid #919191;
+
+
+/* Entre 11 e 30 */
+
+position: absolute;
+left: 11.41%;
+right: 0.6%;
+top: 37.9%;
+bottom: 49.7%;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: 31px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Rectangle 121 */
+
+position: absolute;
+width: 999px;
+height: 3px;
+left: 200px;
+top: 3897px;
+
+background: #D9D9D9;
+
+
+/* Rectangle 122 */
+
+position: absolute;
+width: 999px;
+height: 3px;
+left: 200px;
+top: 4827px;
+
+background: #D9D9D9;
+
+
+/* Escolha até 3 para avaliar */
+
+position: absolute;
+width: 342px;
+height: 34px;
+left: 200px;
+top: 4870px;
+
+font-family: 'Kollektif';
+font-style: normal;
+font-weight: 700;
+font-size: 28px;
+line-height: 34px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+/* Rectangle 73 */
+
+position: absolute;
+width: 712.67px;
+height: 758.79px;
+left: -485px;
+top: 2093px;
+
+background: linear-gradient(232.82deg, #5A4FCF 13.61%, #171717 86.39%);
+filter: blur(2px);
+border-radius: 56px;
+transform: rotate(-46.75deg);
+
+
