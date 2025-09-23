@@ -30,7 +30,7 @@
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 20px;
-    background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+    background: #5449CC;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -67,7 +67,7 @@
 .categoria-icon {
     width: 70px;
     height: 70px;
-    background: linear-gradient(135deg, #5449CC 0%, #0078D7 100%);
+    background: #5449CC;
     border-radius: 50%;
     margin: 0 auto 20px auto;
     display: flex;
@@ -162,7 +162,7 @@
 }
 
 .btn-agendar {
-    background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+    background: #5449CC;
     color: #FFFFFF;
     border: none;
     padding: 15px 40px;
