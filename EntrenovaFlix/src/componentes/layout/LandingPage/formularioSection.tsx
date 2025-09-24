@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
+import DiagnosticService from '../../../services/diagnosticService';
+import { useQuestionnaire } from '../../../contexts/QuestionnaireContext';
 
 import { step1Schema, step2Schema, step3Schema, step4Schema, FormData } from './formsZoc';
 
@@ -22,6 +24,7 @@ const steps = [
 export default function Formulario() {
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const { setQuestionnaireCompleted } = useQuestionnaire();
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -91,8 +94,7 @@ export default function Formulario() {
     }
   };
 
-  const processForm = (data: FormData) => {
-    console.log('Dados Finais do Formulário:', data);
+  const processForm = async (data: FormData) => {
     toast.success('Formulário enviado com sucesso!');
 
     if (!completedSteps.includes(currentStep)) setCompletedSteps(prev => [...prev, currentStep]);
@@ -100,10 +102,22 @@ export default function Formulario() {
 
     setCurrentStep(prev => prev + 1);
     scrollToTop();
+
+    // Mark questionnaire as completed and save diagnostic results to localStorage
+    setQuestionnaireCompleted(true);
+
+    try {
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY || 'your-api-key-here';
+      const service = new DiagnosticService(apiKey);
+      const result = await service.runFullDiagnostic();
+      localStorage.setItem('lastDiagnosticResult', JSON.stringify(result));
+      service.printDiagnosisToTerminal(result);
+    } catch (error) {
+      toast.error('Erro ao gerar diagnóstico. Verifique sua chave da API OpenAI.');
+    }
   };
 
   const onInvalid = (errors: any) => {
-    console.error('Erros de validação:', errors);
     toast.error('Verifique os campos obrigatórios.');
   };
 

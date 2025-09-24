@@ -1,7 +1,12 @@
 import AppRoutes from './rotas';
+import { QuestionnaireProvider } from './contexts/QuestionnaireContext';
 
 function App() {
-  return <AppRoutes />;
+  return (
+    <QuestionnaireProvider>
+      <AppRoutes />
+    </QuestionnaireProvider>
+  );
 }
 
-export default App; 
+export default App;
