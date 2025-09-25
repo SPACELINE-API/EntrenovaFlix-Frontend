@@ -4,7 +4,7 @@ import { TiArrowSortedDown } from "react-icons/ti";
 
 
 
-function TelaColab() {
+export default function TelaColab() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [filtro, setFiltro] = useState('todas');
   const navigate = useNavigate();
@@ -59,3 +59,4 @@ function TelaColab() {
     </div>
   );
 }
+

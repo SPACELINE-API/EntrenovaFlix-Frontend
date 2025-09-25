@@ -37,9 +37,9 @@
     display: flex;
     flex-direction: column;
     background-color: #222222;
-    height: 80px;
+    height: 85px;
     width: 300px;
-    padding: 20px;
+    padding: 10px 10px 0 20px;
     border-left: 8px solid #5A4FCF;
 }
 
