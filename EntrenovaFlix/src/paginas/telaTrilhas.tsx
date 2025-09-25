@@ -13,7 +13,7 @@ export default function TelaTrilhas() {
 
 
   return (
-    <div className="telaTrilhas">
+    <div className="telaTrilhas" id="trilhas">
        <div className={sidebar ? "sidebar aberta" : "sidebar fechada"}>
         <button className="closeSidebarBtn" onClick={() => setSidebar(false)}>
         <MdKeyboardDoubleArrowRight size={24}/></button>
