@@ -124,7 +124,6 @@ html {
   font-weight: 700;
   font-size: 20px;
   background: linear-gradient(90deg, #5449CC, #0078D7);
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: absolute;  
   top: 25px;           

@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-import MainLayout from '../componentes/layout/mainLayout';
+import MainLayout from '../componentes/layout/mainLayout'
 import TelaColab from '../paginas/telaColab';
 import NotFoundPage from '../paginas/NotFoundPage';
 import LpLayout from '../componentes/layout/LandingPage/lpLayout'
