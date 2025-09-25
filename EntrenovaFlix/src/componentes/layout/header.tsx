@@ -1,18 +1,16 @@
-import {Link} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import '../../styles/global.css';
 
 function Header() {
   return (
     <header className='headerContainer'>
-
         <div className='usuario'>
             <span>Nome do Usuario</span>             
         </div>
-
       <nav className='navigation'>
-        <Link to="/trilhas" className='active'>Trilhas</Link>
-        <Link to="/forum">Fórum</Link>
-        <Link to="/dashboard">Dashboard</Link>
+        <NavLink to="/colaboradores" end>Trilhas</NavLink>
+        <NavLink to="/colaboradores/forum" end>Fórum</NavLink>
+        <NavLink to="/colaboradores/dashboard" end>Dashboard</NavLink>
       </nav>
 
       <div className='brandLogo'>
