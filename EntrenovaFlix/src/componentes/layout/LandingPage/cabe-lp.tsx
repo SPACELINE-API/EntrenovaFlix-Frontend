@@ -1,4 +1,4 @@
-import {Link, link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function cabecalho() {
   return (
