@@ -16,7 +16,6 @@ export default function Login(){
             to='/' >
                 <IoArrowBackOutline className= 'butaoSaida' style={{ width: '70%', height: '70%' }} />
             </ActionIcon>
-
             <LgSection/>
 
         </div>

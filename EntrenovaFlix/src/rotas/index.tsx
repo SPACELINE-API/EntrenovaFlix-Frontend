@@ -58,7 +58,6 @@ const router = createBrowserRouter([
             }
     ],
   },
-
 ]);
 
 function AppRoutes() {

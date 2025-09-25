@@ -18,7 +18,6 @@ function Cabeçalho() {
       <nav className='userIn'>
         <Link to='/login'>Login</Link>  
       </nav>
-
     </header>
   );
 }
