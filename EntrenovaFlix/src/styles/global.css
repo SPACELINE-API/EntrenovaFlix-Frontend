@@ -1,3 +1,5 @@
+/*Fontes*/
+
 @font-face {
   font-family: 'Kollektif';
   src: url('../assets/fontes/kollektif/Kollektif.ttf');
@@ -7,19 +9,17 @@
   src: url('../assets/fontes/techno_wanker/TechnoWanker.ttf');
 }
 @font-face {
-  font-family: 'Satoshi';
-  src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
-
+  font-family: 'satoshi';
+  src: url('../assets/fontes/Satoshi-Variable/Satoshi-Variable.ttf');
 }
 
-
-body{
-    background-color: #141414;
-    font-family: 'kollektif';
-    color: #FFFFFF;
-    
+:root{
+  color-scheme: dark;
 }
-
+html {
+  scrollbar-color: #6e6e6ec5 #202020;
+  scrollbar-width: thin;
+}
 * {
   margin: 0;
   padding: 0;
@@ -32,21 +32,22 @@ body{
     justify-content: space-between; 
     align-items: center; 
     padding: 0rem 2.5rem; 
-    height: 54px;
+    height: 60px;
     background-color: #000000; 
-    color: #E1E1E6; 
-    font-family: 'kollektif';
-    font-weight: bold;
+    color: #E1E1E6;
 }
 .usuario{
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  font-family: 'kollektif';
 }
 .navigation {
   display: flex;
   gap: 5rem;
   height: 100%;
+  font-family: 'kollektif';
+  font-weight: bold;
 }
 .navigation a {
   text-decoration: none;
@@ -67,7 +68,7 @@ body{
 }
 .navigation a.active::after {
   content: '';
-  width: calc(100% + 1.2rem);
+  width: calc(100% + 2rem);
   height: 3px;
   background: #0078D7;
   background: linear-gradient(90deg,rgba(0, 120, 215, 1) 0%, rgba(84, 73, 204, 1) 100%);
@@ -81,35 +82,6 @@ body{
   font-weight: 100;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
-}
-
-.tituloTrilha{
-  color:#C2C2C2;
-  font-family: 'kollektif';
-  font-style: bold;
-  font-weight: 600;
-  font-size: 50px;
-  margin-top: 60px;
-  display: flex;
-  justify-content: center;
- 
-}
-.dropdown {
-  background-color: #0078D7;
-  width: 130px;
-  border-radius: 4px;
-  align-items: center;
-  margin: 30px auto 45px auto;
-  cursor: pointer;
-  text-align: center; 
-}
-
-.dropdown button {
-  background-color: #0078D7;
-  border: none;
-  width: 130px;
-  font-family: 'Satoshi', sans-serif;
-  font-size: 20px;
   color: #FFFFFF;
   padding: 8px 12px;
   display: flex;
@@ -152,7 +124,6 @@ body{
   font-weight: 700;
   font-size: 20px;
   background: linear-gradient(90deg, #5449CC, #0078D7);
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: absolute;  
   top: 25px;           
