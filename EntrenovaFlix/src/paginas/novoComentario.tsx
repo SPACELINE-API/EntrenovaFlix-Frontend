@@ -18,7 +18,7 @@ export default function NovoComentario() {
             <input type="text" id="pergunta" placeholder='Título do seu comentário' required />
           </div>
           <div>
-            <textarea id="descricao" name="descricao" rows="5" placeholder='Escreva sua dúvida, comentário ou observação' required />
+            <textarea id="descricao" name="descricao" rows={5} placeholder='Escreva sua dúvida, comentário ou observação' required />
           </div>
           <button type="submit">Publicar</button>
         </form>

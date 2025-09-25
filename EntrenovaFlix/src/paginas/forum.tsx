@@ -8,7 +8,7 @@ export default function TelaForum() {
       usuario: "Luana Souza",
       pergunta: "Como posso melhorar meu trabalho em equipe?",
       descricao:
-        "Estou desenvolvendo um projeto no Jira. Queria saber como posso usá-lo para melhorar minha comunicação com o time. Alguém pode me ajudar?",
+        "Estou a desenvolver um projeto no Jira. Queria saber como posso usá-lo para melhorar a minha comunicação com a equipa. Alguém pode ajudar-me?",
       tempo: "há 3 dias",
     },
     {
@@ -16,12 +16,12 @@ export default function TelaForum() {
       usuario: "Outra Luana",
       pergunta: "Como posso melhorar meu trabalho em equipe?",
       descricao:
-        "Estou desenvolvendo um projeto no Jira. Queria saber como posso usá-lo para melhorar minha comunicação com o time. Alguém pode me ajudar?",
+        "Estou a desenvolver um projeto no Jira. Queria saber como posso usá-lo para melhorar a minha comunicação com a equipa. Alguém pode ajudar-me?",
       tempo: "há 7 dias",
     },
-  ])
+  ]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="telaForum">
@@ -29,7 +29,7 @@ export default function TelaForum() {
         <h1>Publicações</h1>
         <button
           className="btnResponder"
-          onClick={() => navigate("/novo-comentario")} 
+          onClick={() => navigate("/colaboradores/novo-comentario")} 
         >
           Escrever comentário +
         </button>
@@ -51,7 +51,7 @@ export default function TelaForum() {
 
             <button
               className="btnResponder"
-              onClick={() => navigate(`/forum/post/${post.id}`)}
+              onClick={() => navigate(`/colaboradores/forum/post/${post.id}`)}
             >
               Responder
             </button>
@@ -59,5 +59,5 @@ export default function TelaForum() {
         ))}
       </div>
     </div>
-  )
+  );
 }

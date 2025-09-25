@@ -1,6 +1,6 @@
-import '../../styles/dashboard.css'
+import '../../../styles/dashboard.css'
 
-const Card = ({ titulo, valor, icone }) => {
+const Card = ({ titulo, valor, icone }: any) => {
   return (
     <div className='card'>
       <div className='card-topo'>

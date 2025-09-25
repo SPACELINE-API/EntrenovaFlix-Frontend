@@ -92,11 +92,18 @@ body {
   font-weight: 100;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
+  color: #fff;
 }
 
 .telaTrilhas {
   display: flex;
   justify-content:center;
+  padding-left: 250px; 
+  transition: padding-left 0.3s ease;
+}
+
+.telaTrilhas.sidebar-fechada {
+  padding-left: 0; 
 }
 
 .sidebar {
@@ -112,6 +119,7 @@ body {
   left: 0;        
   height: calc(100vh - 60px); 
   transition: transform 0.3s ease; 
+  z-index: 100;
 }
 
 .sidebar.aberta {
@@ -157,7 +165,8 @@ body {
 }
 
 .sidebar-btn:hover {
-  background-color: #5449CC; 
+  background-color: #6259c180; 
+  border-radius: 6px;
 }
 
 .sidebar-icon {
@@ -191,15 +200,19 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s; 
 }
+.dropdown button:hover{
+  background-color: #0065b7;
+}
 
-.retangulo {
+.retangulo {  
   position: relative;
   width:900px;
+  max-width: 90%; 
   height: 200px;
   padding: 1px; 
   border-radius: 7px; 
@@ -235,40 +248,42 @@ body {
   font-weight: 700;
   font-size: 20px;
   background: linear-gradient(90deg, #5449CC, #0078D7);
+  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: absolute;  
   top: 25px;       
   left: 25px;        
   z-index: 1;
-  text-shadow: 0 0 4px rgba(84, 73, 204, 0.3),
-               0 0 6px rgba(0, 120, 215, 0.2);
 }
 
 .botao {
   position: absolute; 
   bottom: 20px;      
   right: 40px;      
-  padding: 5px 20px;
+  padding: 8px 30px;
   border-radius: 6px;
   border: none;
-  background: linear-gradient(90deg, #5449CC 0%, #5449CC 50%, #0078D7 100%);
+  background: linear-gradient(90deg, #695de6 10%, #5449CC 70%, #0078D7 100%);
   color: #fff;
   cursor: pointer;
   font-family: 'Satoshi', sans-serif;
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: 100;
   z-index: 1;   
+  transition: 0.1s;
 }
 
 .botao:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 10px #5449CC, 0 0 20px #0078D7;
+  box-shadow: 0 0 10px #5449cc5f, 0 0 20px #0076d753;
   filter: brightness(1.03);
 }
 
+/* posts e coments */
+
 .telaForum {
   padding: 2rem;
-  min-height: 100vh;
+  min-height: calc(100vh - 60px); 
 }
 
 .forumTitulo {
@@ -330,6 +345,7 @@ body {
   font-size: 1rem;
   font-weight: bold;
   margin-bottom: 0.3rem;
+  letter-spacing: 1.2px;
 }
 
 .forumDescricao {
@@ -348,28 +364,29 @@ body {
 .btnResponder {
   align-self: flex-end;
   padding: 0.5rem 1rem;
-  background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+  background: linear-gradient(90deg, #5449cc 0%, #0078D7 100%);
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   color: white;
   cursor: pointer;
   font-family: 'Satoshi', sans-serif;
   font-size: 14px;
   font-weight: 500;
+  transition: 0.1s;
 }
 
 .btnResponder:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 10px #5449CC, 0 0 20px #0078D7;
+  box-shadow: 0 0 10px #5449cc60, 0 0 20px #0076d758;
 }
 
-/*posts e coments*/
 
 .telaNovoComentario, .telaDetalhePost {
   display: flex;
   flex-direction: column;
+  align-items: center; 
   padding: 2rem;
-  min-height: 100vh;
+  min-height: calc(100vh - 60px);
 }
 
 .telaNovoComentario h1 {
@@ -380,11 +397,10 @@ body {
 
 #formu {
   border: solid #5449CC 1px;
-  width: 75%;
-  height: 100%;
+  width: 100%;
+  max-width: 800px; 
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 2rem;
   border-radius: 10px;
   gap: 1.5rem;
@@ -401,6 +417,7 @@ body {
 .telaNovoComentario textarea,
 .areaComentario textarea {
   width: 100%;
+  margin: 12px 0px;
   padding: 0.75rem;
   border-radius: 8px;
   border: 1px solid #333;
@@ -440,8 +457,8 @@ body {
 }
 
 .telaNovoComentario button[type="submit"]:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 10px #5449CC, 0 0 20px #0078D7;
+  transform: scale(1.02);
+  box-shadow: 0 0 10px #5449cc60, 0 0 20px #0076d758;
 }
 
 .btnVoltar {
@@ -466,6 +483,8 @@ body {
   padding: 2rem;
   border-radius: 10px;
   margin-bottom: 2rem;
+  width: 100%;
+  max-width: 900px;
 }
 
 .postCompleto h1 {
@@ -479,6 +498,8 @@ body {
   background-color: #1c1c1c;
   padding: 2rem;
   border-radius: 10px;
+  width: 100%;
+  max-width: 900px;
 }
 
 .areaComentario h2 {
@@ -491,3 +512,4 @@ body {
   min-height: 150px;
   margin-bottom: 1rem;
 }
+

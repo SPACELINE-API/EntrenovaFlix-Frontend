@@ -7,7 +7,9 @@ import TelaColab from '../paginas/telaColab';
 import TelaTrilhas from '../paginas/telaTrilhas';
 import NotFoundPage from '../paginas/NotFoundPage';
 import Dashboard from '../paginas/Dashboard';
-
+import TelaForum from '../paginas/forum';
+import NovoComentario from '../paginas/novoComentario';
+import DetalhePost from '../paginas/DetalhePost';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -42,19 +44,21 @@ const router = createBrowserRouter([
         path: 'dashboard',
         element: <Dashboard />,
       },
+                  {
+                path:"forum",
+                element:<TelaForum/>
+            },
+            {
+                path:"novo-comentario",
+                element:<NovoComentario/>
+            },
+            {
+                path:"forum/post/:postId", 
+                element:<DetalhePost/>
+            }
     ],
   },
-  {
-        path: '/dashboard',
-        element: <MainLayout/>,
-        errorElement: <NotFoundPage/>,
-        children:[
-            {
-                index: true,
-                element: <Dashboard/>
-            }
-        ]
-    }
+
 ]);
 
 function AppRoutes() {
