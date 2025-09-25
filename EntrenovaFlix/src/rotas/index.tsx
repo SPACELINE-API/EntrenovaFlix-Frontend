@@ -1,18 +1,17 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-import MainLayout from '../componentes/layout/mainLayout';
 import DevolutivaPlanos from '../paginas/devolutivaPlanos';
 import NotFoundPage from '../paginas/NotFoundPage';  
+import LpLayout from '../componentes/layout/LandingPage/lpLayout';
 
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <MainLayout/>,
+        element: <LpLayout/>,
         errorElement: <NotFoundPage/>,
         children:[
             {
-                index: true,
+                path:'devolutiva',
                 element: <DevolutivaPlanos/>,
                 
             },
