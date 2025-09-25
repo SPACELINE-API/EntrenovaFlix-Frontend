@@ -9,7 +9,7 @@ function TelaColab() {
   const [filtro, setFiltro] = useState('todas');
   const navigate = useNavigate();
    function Trilhas() {
-    navigate('/trilhas')
+    navigate('/colaboradores/trilhas')
   }
 
   return (
