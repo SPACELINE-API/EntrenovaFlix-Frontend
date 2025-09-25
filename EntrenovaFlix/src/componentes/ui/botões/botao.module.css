@@ -1,0 +1,26 @@
+/* Estilo base */
+.button {
+  z-index: 2;
+  display: inline-flex;
+  padding: 1.5rem 2.5rem;
+  border-radius: 12px;
+  color: white;
+  font-family: 'inter';
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.primary {
+  background-image: linear-gradient(90deg, #6D5FED, #8257E5);
+  box-shadow: 0 0 20px rgba(161, 152, 247, 0.5);
+}
+
+.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 30px rgba(161, 152, 247, 0.7);
+}

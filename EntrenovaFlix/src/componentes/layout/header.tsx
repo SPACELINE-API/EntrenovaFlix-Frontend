@@ -4,15 +4,13 @@ import '../../styles/global.css';
 function Header() {
   return (
     <header className='headerContainer'>
-
-      <div className='usuario'>
-        <span>Nome do Usuario</span>
-      </div>
-
+        <div className='usuario'>
+            <span>Nome do Usuario</span>             
+        </div>
       <nav className='navigation'>
-        <NavLink to="/trilhas">Trilhas</NavLink>
-        <NavLink to="/forum">Fórum</NavLink>
-        <NavLink to="/dashboard">Dashboard</NavLink>
+        <NavLink to="/colaboradores" end>Trilhas</NavLink>
+        <NavLink to="/forum" end>Fórum</NavLink>
+        <NavLink to="/colaboradores/dashboard" end>Dashboard</NavLink>
       </nav>
 
       <div className='brandLogo'>

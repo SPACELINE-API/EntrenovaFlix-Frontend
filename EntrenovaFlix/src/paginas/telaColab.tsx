@@ -2,14 +2,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TiArrowSortedDown } from "react-icons/ti";
 
-
-
-function TelaColab() {
+export default function TelaColab() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [filtro, setFiltro] = useState('todas');
   const navigate = useNavigate();
    function Trilhas() {
-    navigate('/trilhas')
+    navigate('/colaboradores/trilhas')
   }
 
   return (
@@ -59,5 +57,3 @@ function TelaColab() {
     </div>
   );
 }
-
-export default TelaColab;
