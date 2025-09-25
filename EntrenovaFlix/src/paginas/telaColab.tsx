@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TiArrowSortedDown } from "react-icons/ti";
 
-
-
 export default function TelaColab() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [filtro, setFiltro] = useState('todas');
@@ -59,4 +57,3 @@ export default function TelaColab() {
     </div>
   );
 }
-
