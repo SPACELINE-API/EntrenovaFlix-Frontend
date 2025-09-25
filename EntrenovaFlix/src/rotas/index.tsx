@@ -1,4 +1,3 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainLayout from '../componentes/layout/mainLayout';
 import LpLayout from '../componentes/layout/LandingPage/lpLayout';
 import LandingPage from '../paginas/landingPage';

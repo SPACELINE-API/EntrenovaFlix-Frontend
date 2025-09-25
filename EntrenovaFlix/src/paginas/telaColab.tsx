@@ -59,5 +59,3 @@ function TelaColab() {
     </div>
   );
 }
-
-export default TelaColab;
