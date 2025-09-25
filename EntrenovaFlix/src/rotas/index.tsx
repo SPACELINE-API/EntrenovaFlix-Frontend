@@ -45,5 +45,4 @@ const router = createBrowserRouter([
 function AppRoutes() {
   return <RouterProvider router={router} />;
 }
-
 export default AppRoutes;
