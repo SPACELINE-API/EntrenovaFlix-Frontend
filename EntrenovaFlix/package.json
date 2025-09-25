@@ -32,6 +32,8 @@
     "@tiptap/react": "^3.4.4",
     "@tiptap/starter-kit": "^3.4.4",
     "dayjs": "^1.11.18",
+    "echarts": "^5.6.0",
+    "echarts-for-react": "^3.0.2",
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "react": "^19.1.1",
