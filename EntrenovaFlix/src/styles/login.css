@@ -15,20 +15,6 @@
     position: absolute;
     z-index: 0;
 }
-@keyframes aura-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.15);
-    opacity: 0.3;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
 .bodyLg::before {
     top: 350px;
     left: -90px;
@@ -42,13 +28,10 @@
     top: 550px;
     right: 450px;
     width: 500px;
-    height: 150px;
+    height: 200px;
     background: radial-gradient(circle, #9B93F5 0%, rgba(20, 20, 20, 0) 100%);
-    filter: blur(180px);
-    
-    
+    filter: blur(180px);    
 }
-
 /*cores field*/
 .loginBoxWrapper{
     position: relative;
@@ -70,7 +53,7 @@
     font-family: 'inter';
     font-size: 1.2rem;
     color: #717171;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
 }
 .popText.mantine-Text-root{
     font-family: 'inter';
@@ -90,16 +73,24 @@
     font-family: 'inter';
     font-weight: 300;
     font-size: 16px;
-    margin-bottom: 10px;
+    padding-top: 10px;
+    margin-bottom: 15px;
 }
 .loginInputField.mantine-PasswordInput-input,
 .loginInputField.mantine-TextInput-input{
     font-family: 'inter';
+    font-weight: 300;
     background-color: #222222;
     border-color: #919191;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     border-radius: 3px;
-    color: #FFFFFF;
+    color: #c9c9c9;
+}
+.loginInputField::placeholder,
+.placeInp::placeholder {
+    opacity: 0.2 !important;
+    font-size: 1rem;
+    font-weight: 400;
 }
 .loginLink{
     text-decoration: none;
@@ -111,7 +102,7 @@
     color: #3ca5fa;
 }
 .loginButton.mantine-Button-root{
-    margin-top: 2rem;
+    margin-top: 2.2rem;
     background-color: #5449CC;
     font-size: 1.1rem;
     font-family: 'satoshi';
@@ -121,4 +112,12 @@
 .loginButton.mantine-Button-root:hover{
     background-color: #4033d5 !important;
 }
-
+.butaoSaida.mantine-ActionIcon-root{
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 10;
+}
+.butaoSaida.mantine-ActionIcon-root:hover{
+    background: #292929;
+}

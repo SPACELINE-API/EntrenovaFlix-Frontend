@@ -13,6 +13,13 @@
   src: url('../assets/fontes/Satoshi-Variable/Satoshi-Variable.ttf');
 }
 
+:root{
+  color-scheme: dark;
+}
+html {
+  scrollbar-color: #555 #202020;
+  scrollbar-width: thin;
+}
 * {
   margin: 0;
   padding: 0;
