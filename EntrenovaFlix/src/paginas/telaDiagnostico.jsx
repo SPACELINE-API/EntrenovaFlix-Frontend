@@ -6,7 +6,7 @@ import { TbDirectionsFilled } from "react-icons/tb";
 export default function TelaDiagnostico() { return (
     <div className="diagnostico-container">
         <div className="diagnostico-head">
-            <h1 className="diagnostico-titulo">Seus resultados</h1>
+            <h1 className="diagnostico-titulo">Seus <br /> resultados</h1>
             <p className="diagnostico-subtitulo">
                 Com base nas suas respostas, aqui está um retrato inicial com os pontos fortes da sua 
                 empresa e as oportunidades de crescimento.
