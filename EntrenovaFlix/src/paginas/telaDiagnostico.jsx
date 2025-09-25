@@ -2,6 +2,7 @@ import '../styles/diagnostico.css'
 import { FaUsers } from "react-icons/fa";
 import { PiTreeStructureFill } from "react-icons/pi";
 import { TbDirectionsFilled } from "react-icons/tb";
+import Button from '../componentes/ui/botões/botao';
 
 export default function TelaDiagnostico() { return (
     <div className="diagnostico-container">
@@ -91,9 +92,9 @@ export default function TelaDiagnostico() { return (
                 Para receber um relatório completo e um diagnóstico aprofundado, entre em contato 
                 conosco!
             </p>
-            <button className="btn-agendar">
-                Agendar consultoria
-            </button>
+            <Button className="btn-agendar">
+                Acesse nossos planos
+            </Button>
         </div>
     </div>
 );}

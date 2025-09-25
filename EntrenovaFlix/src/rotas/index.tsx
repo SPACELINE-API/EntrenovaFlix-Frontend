@@ -10,6 +10,7 @@ import Dashboard from '../paginas/Dashboard';
 import TelaForum from '../paginas/forum';
 import NovoComentario from '../paginas/novoComentario';
 import DetalhePost from '../paginas/DetalhePost';
+import TelaDiagnostico from '../paginas/telaDiagnostico';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
         index: true,
         element: <LandingPage />,
       },
+      {
+        path:'diagnostico',
+        element: <TelaDiagnostico/>
+      }
     ],
   },
   {

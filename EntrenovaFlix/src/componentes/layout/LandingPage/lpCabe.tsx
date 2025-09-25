@@ -12,7 +12,7 @@ function Cabeçalho() {
       <nav className='navigation-lp'>
         <Link to="/">Home</Link>
         <a onClick={() => document.getElementById("passos")?.scrollIntoView({ behavior: "smooth" })} style={{cursor:'pointer'}}>Sobre</a>
-        <Link to="/diagnóstico">Diagnóstico</Link>
+        <Link to="/diagnostico">Diagnóstico</Link>
         
       </nav>
       <nav className='userIn'>
