@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import DiagnosticService, { FullDiagnosis } from '../services/diagnosticService';
 
+let exportedResult: FullDiagnosis | null = null;
+
+export function salvarVariavel(result: FullDiagnosis): void {
+  exportedResult = result;
+}
+
+export { exportedResult };
+
 const DiagnosticComponent: React.FC = () => {
   const [diagnosis, setDiagnosis] = useState<FullDiagnosis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -11,17 +19,13 @@ const DiagnosticComponent: React.FC = () => {
     setError(null);
 
     try {
-      // Note: In production, get the API key from environment variables or a backend
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 'your-api-key-here';
       const service = new DiagnosticService(apiKey);
-    const result = await service.runFullDiagnostic({});
-    setDiagnosis(result);
-
-    // Automatically save the diagnosis to a file
-    saveDiagnosisToFile();
-
-    // Print to terminal (console)
-    service.printDiagnosisToTerminal(result);
+      const result = await service.runFullDiagnostic({});
+      setDiagnosis(result);
+      salvarVariavel(result);
+      saveDiagnosisToFile();
+      service.printDiagnosisToTerminal(result);
     } catch (err) {
       setError('Erro ao executar diagnóstico: ' + (err as Error).message);
       console.error('Erro:', err);
@@ -49,8 +53,7 @@ const DiagnosticComponent: React.FC = () => {
           console.error('Error saving file:', err);
         }
       } else {
-        // Fallback to download
-        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
         const linkElement = document.createElement('a');
         linkElement.setAttribute('href', dataUri);
         linkElement.setAttribute('download', fileName);

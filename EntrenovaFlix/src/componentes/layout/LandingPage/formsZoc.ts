@@ -1,4 +1,8 @@
 import { z } from "zod";
+import { Supabase } from "./formsSupbase";
+import { exportedResult } from "../../DiagnosticComponent";
+
+const supabase = new Supabase()
 
 // --- Etapa 1 ---
 export const step1Schema = z.object({
@@ -12,7 +16,7 @@ export const step1Schema = z.object({
 
   numeroColaboradores: z.enum(["ate10", "11a30", "30a100", "acima100", "acima500"], {
     message: "Selecione o número de colaboradores.",
-  }),
+  })
 });
 
 // --- Etapa 2 ---
@@ -90,6 +94,13 @@ export const step4Schema = z.object({
   }),
 });
 
+
+ // supabase.enviarFormularioCompleto(exportedResult, porteEmpresa, telefone)
+
+
+
+
+  
 // --- Schema completo ---
 export const fullFormSchema = step1Schema
   .merge(step2Schema)
