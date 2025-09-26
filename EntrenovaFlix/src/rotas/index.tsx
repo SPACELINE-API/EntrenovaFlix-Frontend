@@ -11,6 +11,8 @@ import TelaForum from '../paginas/forum';
 import NovoComentario from '../paginas/novoComentario';
 import DetalhePost from '../paginas/DetalhePost';
 import TelaDiagnostico from '../paginas/telaDiagnostico';
+import DevolutivaPlanos from '../paginas/devolutivaPlanos';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -22,8 +24,12 @@ const router = createBrowserRouter([
         element: <LandingPage />,
       },
       {
-        path:'diagnostico',
-        element: <TelaDiagnostico/>
+        path: 'diagnostico', 
+        element: <TelaDiagnostico />,
+      },
+      {
+        path: 'diagnostico/devolutiva', 
+        element: <DevolutivaPlanos />,
       }
     ],
   },
@@ -37,30 +43,12 @@ const router = createBrowserRouter([
     element: <MainLayout />,   
     errorElement: <NotFoundPage />,
     children: [
-      {
-        index: true, 
-        element: <TelaColab />,
-      },
-      {
-        path: 'trilhas', 
-        element: <TelaTrilhas />,
-      },
-      {
-        path: 'dashboard',
-        element: <Dashboard />,
-      },
-                  {
-                path:"forum",
-                element:<TelaForum/>
-            },
-            {
-                path:"novo-comentario",
-                element:<NovoComentario/>
-            },
-            {
-                path:"forum/post/:postId", 
-                element:<DetalhePost/>
-            }
+      { index: true, element: <TelaColab /> },
+      { path: 'trilhas', element: <TelaTrilhas /> },
+      { path: 'dashboard', element: <Dashboard /> },
+      { path: "forum", element: <TelaForum /> },
+      { path: "novo-comentario", element: <NovoComentario /> },
+      { path: "forum/post/:postId", element: <DetalhePost /> }
     ],
   },
 ]);

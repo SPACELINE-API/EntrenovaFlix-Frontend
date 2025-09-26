@@ -140,6 +140,7 @@ export default function TelaDiagnostico() {
                 conosco!
             </p>
             <Button className="btn-agendar">
+
                 Acesse nossos planos
             </Button>
         </div>
