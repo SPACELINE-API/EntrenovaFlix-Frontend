@@ -1,7 +1,0 @@
-- [x] Update package.json: remove openai, add @google/generative-ai
-- [x] Create .env with VITE_GEMINI_API_KEY=AIzaSyC-M-VgwEsQf8LE8VFr3UkLYVw8r_V_IzU
-- [x] Update diagnosticService.ts to use GoogleGenerativeAI
-- [x] Update formularioSection.tsx to use VITE_GEMINI_API_KEY
-- [x] Update DiagnosticComponent.tsx to use VITE_GEMINI_API_KEY
-- [x] Install dependencies
-- [x] Test the changes

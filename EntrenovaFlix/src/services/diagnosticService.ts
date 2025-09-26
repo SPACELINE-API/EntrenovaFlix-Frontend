@@ -1,5 +1,5 @@
 // Importações necessárias para o serviço de diagnóstico
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import { z } from 'zod';
 
 // Esquemas Zod para validação de dados
@@ -327,6 +327,16 @@ function calculateMaturityStage(average: number): string {
   return "Indefinido";
 }
 
+// Constantes para configuração da IA
+const AI_CONFIG = {
+  MODEL: "gemini-1.5-pro",
+  TEMPERATURE: 0.3,
+  MAX_OUTPUT_TOKENS: 300,
+  MAX_RETRIES: 3,
+  MIN_ANALYSIS_LENGTH: 50,
+  MIN_PHRASE_LENGTH: 10
+} as const;
+
 // Classe principal do serviço de diagnóstico organizacional
 // Gerencia a integração com Gemini e coordena o processo de diagnóstico
 class DiagnosticService {
@@ -395,18 +405,42 @@ class DiagnosticService {
       Responda em formato JSON com as chaves: strengths, weaknesses como arrays de strings.`;
 
       try {
-        const model = this.genAI!.getGenerativeModel({ model: "gemini-1.5-flash" });
-        const result = await model.generateContent(dimensionPrompt);
-        const responseText = result.response.text().trim();
-        if (responseText) {
-          const parsed = JSON.parse(responseText);
-          dimensionSummaries[dim.dimension] = {
-            strengths: parsed.strengths || [],
-            weaknesses: parsed.weaknesses || []
-          };
-        } else {
-          dimensionSummaries[dim.dimension] = { strengths: [], weaknesses: [] };
-        }
+      const model = this.genAI!.getGenerativeModel({
+        model: "gemini-1.5-pro",
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 1200
+        },
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          }
+        ]
+      });
+      const result = await model.generateContent(dimensionPrompt);
+      const responseText = result.response.text().trim();
+      if (responseText) {
+        const parsed = JSON.parse(responseText);
+        dimensionSummaries[dim.dimension] = {
+          strengths: parsed.strengths || [],
+          weaknesses: parsed.weaknesses || []
+        };
+      } else {
+        dimensionSummaries[dim.dimension] = { strengths: [], weaknesses: [] };
+      }
       } catch (error) {
         console.error(`Erro ao gerar resumo para ${dim.dimension}:`, error);
         dimensionSummaries[dim.dimension] = { strengths: [], weaknesses: [] };
@@ -424,7 +458,31 @@ class DiagnosticService {
     Responda apenas com um array JSON de strings com as recomendações.`;
 
     try {
-      const model = this.genAI!.getGenerativeModel({ model: "gemini-1.5-flash" });
+          const model = this.genAI!.getGenerativeModel({
+            model: "gemini-1.5-pro",
+            generationConfig: {
+              temperature: 0.3,
+              maxOutputTokens: 1200
+            },
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          }
+        ]
+          });
       const result = await model.generateContent(recommendationsPrompt);
       const recommendationsText = result.response.text().trim();
       if (recommendationsText) {
@@ -453,8 +511,8 @@ class DiagnosticService {
 
   // Gera diagnóstico segmentado baseado em dados de formulário específicos
   // Processa apenas as dimensões selecionadas e gera análises individuais
-  async generateSegmentedDiagnosis(formData: any): Promise<{ [key: string]: { strengths: string[]; weaknesses: string[] } }> {
-    const segmented: { [key: string]: { strengths: string[]; weaknesses: string[] } } = {};
+  async generateSegmentedDiagnosis(formData: any): Promise<{ [key: string]: { strengths: string[]; weaknesses: string[]; analysis: string } }> {
+    const segmented: { [key: string]: { strengths: string[]; weaknesses: string[]; analysis: string } } = {};
 
     const dimensionMap: { [key: string]: string } = {
       'pessoasCultura': 'Pessoas & Cultura',
@@ -494,6 +552,11 @@ class DiagnosticService {
         }
       }
 
+      // Limita o contexto das perguntas para balancear o uso de tokens entre dimensões
+      if (questionsContext.length > 1000) {
+        questionsContext = questionsContext.substring(0, 1000) + '... (contexto truncado para balancear tokens)\n';
+      }
+
       const averageScore = questionCount > 0 ? totalScore / questionCount : 0;
       console.log(`🔄 Processando dimensão: ${dimName} (Média: ${averageScore.toFixed(1)})`);
       console.log('Perguntas e respostas:', questionsContext);
@@ -506,17 +569,20 @@ Pontuação média: ${averageScore.toFixed(1)}/4
 ${questionsContext}
 
 Baseado nas respostas acima, gere EXATAMENTE:
-- 3 pontos fortes: Frases curtas e concisas (máximo 15 palavras cada) destacando aspectos positivos baseados nas respostas de alta pontuação.
-- 3 pontos a melhorar: Frases curtas e concisas (máximo 15 palavras cada) destacando oportunidades de melhoria baseadas nas respostas de baixa pontuação.
+- 3 pontos fortes: Frases completas e descritivas (8-15 palavras cada), começando com verbo ou sujeito claro, destacando aspectos positivos baseados nas respostas de alta pontuação. Termine cada frase com ponto final.
+- 3 pontos a melhorar: Frases completas e descritivas (8-15 palavras cada), começando com verbo ou sujeito claro, destacando oportunidades de melhoria baseadas nas respostas de baixa pontuação. Termine cada frase com ponto final.
+- analysis: Um parágrafo completo e detalhado (100-150 palavras) analisando a dimensão, integrando os pontos fortes e fracos, o estágio de maturidade e recomendações específicas para melhoria, em linguagem profissional e acessível.
 
 Exemplos:
-- Pontos fortes: ["Comunicação fluida entre equipes.", "Liderança inspiradora e motivadora.", "Colaboração eficaz em times."]
-- Pontos a melhorar: ["Melhorar escuta ativa.", "Definir processos claros.", "Aumentar flexibilidade na rotina."]
+- Pontos fortes: ["A comunicação flui de forma eficaz entre todas as equipes da organização.", "A liderança inspira e motiva os colaboradores diariamente.", "A colaboração entre times é altamente eficaz e produtiva."]
+- Pontos a melhorar: ["É essencial melhorar a escuta ativa para reduzir mal-entendidos.", "Processos claros precisam ser definidos para aumentar a eficiência operacional.", "A flexibilidade na rotina deve ser aumentada para adaptação rápida."]
+- analysis: "A dimensão Pessoas & Cultura apresenta um estágio intermediário de maturidade, com forças notáveis na comunicação fluida e liderança inspiradora que fomentam uma colaboração eficaz. No entanto, oportunidades de melhoria incluem aprimorar a escuta ativa para reduzir mal-entendidos e definir processos mais claros para maior eficiência. Recomenda-se investir em treinamentos de comunicação e workshops de liderança para elevar o nível geral, promovendo uma cultura mais coesa e produtiva."
 
-IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora do JSON. Use exatamente este formato:
+IMPORTANTE: NÃO use frases curtas ou palavras isoladas. Cada item deve ser uma frase completa. Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora do JSON. Use exatamente este formato:
 {
-  "strengths": ["frase1", "frase2", "frase3"],
-  "weaknesses": ["frase1", "frase2", "frase3"]
+  "strengths": ["frase1 completa.", "frase2 completa.", "frase3 completa."],
+  "weaknesses": ["frase1 completa.", "frase2 completa.", "frase3 completa."],
+  "analysis": "parágrafo completo aqui"
 }`;
 
       // Retry logic to ensure we get complete responses
@@ -530,11 +596,29 @@ IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora 
 
         try {
           const model = this.genAI!.getGenerativeModel({
-            model: "gemini-1.5-flash",
+            model: "gemini-1.5-pro",
             generationConfig: {
-              temperature: 0.1,
-              maxOutputTokens: 200
-            }
+              temperature: 0.3,
+              maxOutputTokens: 1200
+            },
+            safetySettings: [
+              {
+                category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                threshold: HarmBlockThreshold.BLOCK_NONE
+              },
+              {
+                category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                threshold: HarmBlockThreshold.BLOCK_NONE
+              },
+              {
+                category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                threshold: HarmBlockThreshold.BLOCK_NONE
+              },
+              {
+                category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                threshold: HarmBlockThreshold.BLOCK_NONE
+              }
+            ]
           });
           const result = await model.generateContent(prompt);
           const responseText = result.response.text().trim();
@@ -549,28 +633,35 @@ IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora 
               try {
                 const parsed = JSON.parse(jsonText);
                 console.log(`✅ JSON parseado para ${dimName}:`, parsed);
-                // Verifica se os arrays têm exatamente 3 itens cada
+                // Verifica se os arrays têm exatamente 3 itens cada e analysis é string, e frases são suficientemente longas
                 if (parsed && Array.isArray(parsed.strengths) && Array.isArray(parsed.weaknesses) &&
                     parsed.strengths.length === 3 && parsed.weaknesses.length === 3 &&
-                    parsed.strengths.every((s: any) => s && typeof s === 'string' && s.trim().length > 0) &&
-                    parsed.weaknesses.every((w: any) => w && typeof w === 'string' && w.trim().length > 0)) {
+                    typeof parsed.analysis === 'string' && parsed.analysis.trim().length > 50 &&
+                    parsed.strengths.every((s: any) => typeof s === 'string' && s.trim().length > 10 && s.endsWith('.')) &&
+                    parsed.weaknesses.every((w: any) => typeof w === 'string' && w.trim().length > 10 && w.endsWith('.'))) {
                   segmented[dim] = {
                     strengths: parsed.strengths,
-                    weaknesses: parsed.weaknesses
+                    weaknesses: parsed.weaknesses,
+                    analysis: parsed.analysis
                   };
                   console.log(`✅ Resposta completa obtida para ${dimName} na tentativa ${attempt}`);
                   success = true;
                 } else {
-                  console.warn(`⚠️ JSON parseado mas incompleto para ${dimName} (tentativa ${attempt}): strengths=${parsed?.strengths?.length || 0}, weaknesses=${parsed?.weaknesses?.length || 0}`);
+                  console.warn(`⚠️ JSON parseado mas incompleto para ${dimName} (tentativa ${attempt}): strengths=${parsed?.strengths?.length || 0}, weaknesses=${parsed?.weaknesses?.length || 0}, analysis=${typeof parsed?.analysis}`);
+                  console.log('Strengths lengths:', parsed?.strengths?.map((s: any) => s ? s.length : 'null'));
+                  console.log('Weaknesses lengths:', parsed?.weaknesses?.map((w: any) => w ? w.length : 'null'));
+                  console.log('Strengths ends with .:', parsed?.strengths?.map((s: any) => s ? s.endsWith('.') : 'null'));
+                  console.log('Weaknesses ends with .:', parsed?.weaknesses?.map((w: any) => w ? w.endsWith('.') : 'null'));
                   if (attempt === maxRetries) {
                     // Try text extraction as final fallback
                     const textFallback = this.extractArraysFromText(responseText);
+                    textFallback.analysis = "Análise detalhada baseada nos pontos fortes e fracos identificados. Recomenda-se ações específicas para melhoria contínua nesta dimensão.";
                     if (textFallback.strengths.length >= 3 && textFallback.weaknesses.length >= 3) {
                       segmented[dim] = textFallback;
                       console.log(`✅ Usando extração de texto como fallback final para ${dimName}`);
                       success = true;
                     } else {
-                      segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+                      segmented[dim] = await this.getDefaultPhrases(dimName, averageScore);
                       console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
                       success = true;
                     }
@@ -581,12 +672,13 @@ IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora 
                 if (attempt === maxRetries) {
                   // Try text extraction as final fallback
                   const textFallback = this.extractArraysFromText(responseText);
+                  textFallback.analysis = "Análise detalhada baseada nos pontos fortes e fracos identificados. Recomenda-se ações específicas para melhoria contínua nesta dimensão.";
                   if (textFallback.strengths.length >= 3 && textFallback.weaknesses.length >= 3) {
                     segmented[dim] = textFallback;
                     console.log(`✅ Usando extração de texto como fallback final para ${dimName}`);
                     success = true;
                   } else {
-                    segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+                    segmented[dim] = await this.getDefaultPhrases(dimName, averageScore);
                     console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
                     success = true;
                   }
@@ -597,12 +689,13 @@ IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora 
               if (attempt === maxRetries) {
                 // Try text extraction as final fallback
                 const textFallback = this.extractArraysFromText(responseText);
+                textFallback.analysis = "Análise detalhada baseada nos pontos fortes e fracos identificados. Recomenda-se ações específicas para melhoria contínua nesta dimensão.";
                 if (textFallback.strengths.length >= 3 && textFallback.weaknesses.length >= 3) {
                   segmented[dim] = textFallback;
                   console.log(`✅ Usando extração de texto como fallback final para ${dimName}`);
                   success = true;
                 } else {
-                  segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+                  segmented[dim] = await this.getDefaultPhrases(dimName, averageScore);
                   console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
                   success = true;
                 }
@@ -611,7 +704,7 @@ IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora 
           } else {
             console.warn(`⚠️ Resposta vazia do Gemini para ${dimName} (tentativa ${attempt})`);
             if (attempt === maxRetries) {
-              segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+              segmented[dim] = await this.getDefaultPhrases(dimName, averageScore);
               console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
               success = true;
             }
@@ -619,7 +712,7 @@ IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora 
         } catch (error) {
           console.error(`❌ Erro ao gerar diagnóstico para ${dim} (tentativa ${attempt}):`, error);
           if (attempt === maxRetries) {
-            segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+            segmented[dim] = await this.getDefaultPhrases(dimName, averageScore);
             console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
             success = true;
           }
@@ -642,9 +735,10 @@ IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora 
   }
 
   // Método auxiliar para extrair arrays de texto quando JSON falha (mantido como backup)
-  private extractArraysFromText(text: string): { strengths: string[]; weaknesses: string[] } {
+  private extractArraysFromText(text: string): { strengths: string[]; weaknesses: string[]; analysis: string } {
     const strengths: string[] = [];
     const weaknesses: string[] = [];
+    let analysis = '';
 
     // Tenta encontrar padrões no texto
     const lines = text.split('\n');
@@ -658,6 +752,10 @@ IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora 
       }
       if (lowerLine.includes('weaknesses') || lowerLine.includes('"weaknesses"') || (lowerLine.includes('pontos') && lowerLine.includes('melhorar'))) {
         currentSection = 'weaknesses';
+        continue;
+      }
+      if (lowerLine.includes('analysis') || lowerLine.includes('"analysis"')) {
+        currentSection = 'analysis';
         continue;
       }
 
@@ -674,50 +772,158 @@ IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora 
         if (item.startsWith('"') && item.endsWith('"')) item = item.slice(1, -1);
         if (item) weaknesses.push(item);
       }
+      if (currentSection === 'analysis' && trimmedLine.length > 0 && !trimmedLine.startsWith('-') && !trimmedLine.startsWith('"')) {
+        analysis += trimmedLine + ' ';
+      }
     }
 
-    return { strengths: strengths.slice(0, 3), weaknesses: weaknesses.slice(0, 3) };
+    analysis = analysis.trim();
+    if (analysis.length < 50) {
+      analysis = "Análise detalhada baseada nos pontos fortes e fracos identificados. Recomenda-se ações específicas para melhoria contínua nesta dimensão.";
+    }
+
+    return { strengths: strengths.slice(0, 3), weaknesses: weaknesses.slice(0, 3), analysis };
   }
 
-  // Frases padrão para pontos fortes por dimensão
-  private getDefaultStrengths(dimName: string): string[] {
-    const defaults: { [key: string]: string[] } = {
-      'Pessoas & Cultura': ['Comunicação fluida entre equipes.', 'Liderança inspiradora e motivadora.', 'Colaboração eficaz em times.'],
-      'Estrutura & Operações': ['Processos bem definidos e eficientes.', 'Delegação clara de responsabilidades.', 'Alta autonomia operacional.'],
-      'Mercado & Clientes': ['Escuta ativa dos clientes.', 'Sinergia entre vendas e atendimento.', 'Adaptação rápida ao mercado.']
-    };
-    return defaults[dimName] || ['Forte presença de valores organizacionais.', 'Equipe engajada e colaborativa.', 'Cultura inovadora.'];
+  // Frases padrão para pontos fortes por dimensão (geradas pela IA)
+  private async getDefaultStrengths(dimName: string): Promise<string[]> {
+    const prompt = `Você é um consultor especialista em diagnóstico organizacional.
+    Para a dimensão "${dimName}", gere exatamente 3 pontos fortes genéricos e positivos.
+    Cada item deve ser uma frase curta e completa (3-6 palavras), começando com verbo ou sujeito, destacando aspectos positivos, e terminando com ponto final. NÃO use frases nominais ou palavras isoladas - sempre frases completas com verbo.
+    Exemplos: ["Comunicação flui eficazmente.", "Liderança inspira colaboradores.", "Times colaboram produtivamente."]
+    Responda APENAS com um array JSON de strings válido, SEM texto adicional.`;
+
+    try {
+      const model = this.genAI!.getGenerativeModel({
+        model: "gemini-1.5-pro",
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 1200
+        },
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          }
+        ]
+      });
+      const result = await model.generateContent(prompt);
+      const responseText = result.response.text().trim();
+      console.log(`Default strengths response for ${dimName}:`, responseText);
+      if (responseText) {
+        const parsed = JSON.parse(responseText);
+        if (Array.isArray(parsed) && parsed.length === 3 && 
+            parsed.every(s => typeof s === 'string' && s.trim().length > 10 && s.endsWith('.'))) {
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error(`Erro ao gerar pontos fortes padrão para ${dimName}:`, error);
+    }
+
+    // Fallback hardcoded se AI falhar - full descriptive sentences
+    return [
+      "A comunicação interna é fluida e eficaz, promovendo colaboração entre todas as equipes diariamente.",
+      "A liderança demonstra inspiração e motivação constante, alinhando valores com ações práticas.",
+      "Os valores da empresa estão claramente integrados no dia a dia, fortalecendo a cultura organizacional."
+    ];
   }
 
-  // Frases padrão para pontos a melhorar por dimensão
-  private getDefaultWeaknesses(dimName: string): string[] {
-    const defaults: { [key: string]: string[] } = {
-      'Pessoas & Cultura': ['Melhorar comunicação interna.', 'Fortalecer liderança colaborativa.', 'Aumentar flexibilidade na rotina.'],
-      'Estrutura & Operações': ['Definir processos mais claros.', 'Aprimorar delegação de tarefas.', 'Garantir padrões de qualidade.'],
-      'Mercado & Clientes': ['Intensificar escuta de clientes.', 'Melhorar colaboração comercial.', 'Acompanhar metas com rigor.']
-    };
-    return defaults[dimName] || ['Reduzir falhas na comunicação.', 'Desenvolver habilidades de liderança.', 'Implementar rotinas adaptáveis.'];
+  // Frases padrão para pontos a melhorar por dimensão (geradas pela IA)
+  private async getDefaultWeaknesses(dimName: string): Promise<string[]> {
+    const prompt = `Você é um consultor especialista em diagnóstico organizacional.
+    Para a dimensão "${dimName}", gere exatamente 3 pontos a melhorar genéricos e construtivos.
+    Cada item deve ser uma frase curta e completa (3-6 palavras), começando com verbo ou sujeito, destacando oportunidades de melhoria, e terminando com ponto final. NÃO use frases nominais ou palavras isoladas - sempre frases completas com verbo.
+    Exemplos: ["Melhorar escuta ativa.", "Definir processos claros.", "Aprimorar comunicação interna."]
+    Responda APENAS com um array JSON de strings válido, SEM texto adicional.`;
+
+    try {
+      const model = this.genAI!.getGenerativeModel({
+        model: "gemini-1.5-pro",
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 800
+        },
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          }
+        ]
+      });
+      const result = await model.generateContent(prompt);
+      const responseText = result.response.text().trim();
+      console.log(`Default weaknesses response for ${dimName}:`, responseText);
+      if (responseText) {
+        const parsed = JSON.parse(responseText);
+        if (Array.isArray(parsed) && parsed.length === 3 && 
+            parsed.every(s => typeof s === 'string' && s.trim().length > 10 && s.endsWith('.'))) {
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error(`Erro ao gerar pontos a melhorar padrão para ${dimName}:`, error);
+    }
+
+    // Fallback hardcoded se AI falhar - full descriptive sentences
+    return [
+      "A comunicação interna precisa ser aprimorada para reduzir mal-entendidos e melhorar o fluxo de informações.",
+      "É necessário desenvolver habilidades de liderança mais colaborativas para motivar e alinhar as equipes.",
+      "Processos operacionais devem ser otimizados para aumentar a eficiência e autonomia dos colaboradores."
+    ];
   }
 
   // Fallback para frases baseadas na pontuação média (se disponível)
-  private getDefaultPhrases(dimName: string, averageScore: number): { strengths: string[]; weaknesses: string[] } {
-    const baseStrengths = this.getDefaultStrengths(dimName);
-    const baseWeaknesses = this.getDefaultWeaknesses(dimName);
+  private async getDefaultPhrases(dimName: string, averageScore: number): Promise<{ strengths: string[]; weaknesses: string[]; analysis: string }> {
+    const baseStrengths = await this.getDefaultStrengths(dimName);
+    const baseWeaknesses = await this.getDefaultWeaknesses(dimName);
+
+    let analysis = '';
+    if (averageScore > 2.5) {
+      analysis = `A dimensão ${dimName} demonstra um estágio intermediário a avançado de maturidade, com forças notáveis em aspectos chave que impulsionam o desempenho organizacional. Os pontos fortes identificados indicam uma base sólida, mas oportunidades de melhoria em áreas secundárias podem elevar ainda mais o nível de excelência. Recomenda-se foco em desenvolvimento contínuo para sustentar o crescimento.`;
+    } else {
+      analysis = `A dimensão ${dimName} está em estágio inicial a básico, revelando oportunidades significativas de melhoria nos pontos fracos destacados. Embora haja forças emergentes, ações prioritárias em comunicação, processos e colaboração são essenciais para construir maturidade. Implementar treinamentos e ajustes estruturais acelerará a evolução organizacional.`;
+    }
 
     // Se pontuação alta (>2.5), enfatiza mais strengths; senão, mais weaknesses
     if (averageScore > 2.5) {
       return {
         strengths: baseStrengths,
-        weaknesses: baseWeaknesses.slice(0, 2) // Menos weaknesses
+        weaknesses: baseWeaknesses.slice(0, 2), // Menos weaknesses
+        analysis
       };
     } else {
       return {
         strengths: baseStrengths.slice(0, 2), // Menos strengths
-        weaknesses: baseWeaknesses
+        weaknesses: baseWeaknesses,
+        analysis
       };
     }
   }
-
   // Executa o diagnóstico organizacional completo baseado nos dados do formulário
   // Processa as respostas fornecidas pelo usuário e gera o diagnóstico completo
   async runFullDiagnostic(formData: any): Promise<FullDiagnosis> {

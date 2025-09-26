@@ -11,7 +11,7 @@ import { step1Schema, step2Schema, step3Schema, step4Schema, FormData } from './
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
-import Step4 from './Step4';
+import Step4 from './Step4'
 import Step5 from './Step5';
 
 const steps = [
@@ -113,7 +113,7 @@ export default function Formulario() {
       const service = new DiagnosticService(apiKey);
       const result = await service.generateSegmentedDiagnosis(data);
       localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
-      // Removed automatic navigation to diagnosis page
+      console.log('Diagnóstico segmentado salvo no localStorage para uso futuro (ex: banco de dados)');
     } catch (error) {
       toast.error('Erro ao gerar diagnóstico. Verifique sua chave da API Gemini.');
     }

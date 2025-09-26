@@ -22,8 +22,8 @@ export default function Step5() {
       </p>
 
       <div className="step5-actions">
-        <Link to="/diagnostico-teste" className="btn btn-primary">
-          Ver Diagnóstico Teste
+        <Link to="/diagnostico" className="btn btn-primary">
+          Ver Diagnóstico
         </Link>
       </div>
     </div>
