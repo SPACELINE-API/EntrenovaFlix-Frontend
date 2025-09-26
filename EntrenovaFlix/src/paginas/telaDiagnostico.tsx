@@ -92,7 +92,7 @@ export default function TelaDiagnostico() { return (
                 Para receber um relatório completo e um diagnóstico aprofundado, entre em contato 
                 conosco!
             </p>
-            <Button className="btn-agendar">
+            <Button className="btn-agendar" to='devolutiva'>
                 Acesse nossos planos
             </Button>
         </div>

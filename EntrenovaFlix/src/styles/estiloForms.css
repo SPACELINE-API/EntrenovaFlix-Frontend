@@ -24,7 +24,7 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: #f9fafb;
+  background-color: #141414;
   color: var(--cor-texto-principal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -32,7 +32,7 @@ body {
 
 /* --- LAYOUT PRINCIPAL DO FORMULÁRIO --- */
 .diagnostico-form {
-  max-width: auto;
+  max-width: 900px;
   margin: 3rem auto;
   padding: 4.5rem;
   background-color: var(--cor-fundo-claro);
@@ -147,7 +147,6 @@ body {
   color: var(--cor-texto-principal);
 }
 
-
 /* --- CONTEÚDO DAS ETAPAS DO FORMULÁRIO --- */
 .form-content {
   margin-top: 2rem;
@@ -172,14 +171,10 @@ body {
 
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
-@media (min-width: 768px) {
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+
 .form-field.full {
   grid-column: 1 / -1;
 }
@@ -427,12 +422,12 @@ body {
 }
 
 .btn-secondary {
-  background-color: var(--cor-fundo-claro);
+  background-color: transparent;
   color: var(--cor-texto-principal);
   border-color: var(--cor-borda);
 }
 .btn-secondary:hover {
-  background-color: #3c2ecf;
+  background-color: #3a3a3a;
 }
 
 .error, .error-message {
@@ -443,11 +438,35 @@ body {
 
 /* responsividade */
 
+@media (max-width: 1024px) {
+  .diagnostico-form {
+    padding: 3rem 2rem;
+  }
+
+  .form-main-title {
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .stepper-container {
+    gap: 1rem;
+  }
+
+  .step-title {
+    font-size: 0.9rem;
+  }
+  
+  .btn {
+    padding: 0.65rem 1.25rem;
+  }
+}
+
 @media (max-width: 767px) {
   .diagnostico-form {
     padding: 2rem 1.25rem;
     margin: 1rem auto;
-    border-radius: var(--radius-md);
+    border: none;
+    box-shadow: none;
   }
 
   .form-main-title {
@@ -485,6 +504,10 @@ body {
     grid-template-columns: 1fr; 
     gap: 1rem;
   }
+  
+  .form-title {
+    font-size: 1.5rem;
+  }
 
   .btn {
     width: 100%; 
@@ -498,48 +521,5 @@ body {
     border-top: none;
     margin-top: 2rem;
     padding-top: 0;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .diagnostico-form {
-    padding: 3rem 2rem;
-  }
-
-  .form-main-title {
-    font-size: 2.25rem;
-    margin-bottom: 2rem;
-  }
-
-  .stepper-container {
-    gap: 1rem;
-  }
-
-  .step-title {
-    font-size: 0.9rem;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr 1fr; 
-    gap: 1.25rem;
-  }
-
-  .btn {
-    padding: 0.65rem 1.25rem;
-  }
-}
-
-@media (min-width: 1025px) {
-  .diagnostico-form {
-    max-width: 900px; 
-  }
-
-  .form-main-title {
-    font-size: 3rem;
-  }
-
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
   }
 }

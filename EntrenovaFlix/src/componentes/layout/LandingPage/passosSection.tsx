@@ -60,7 +60,7 @@ function PassoSection() {
                     </div>
                     
                     <div className="passo-a-passo-imagem">
-                        <img src="https://i.imgur.com/sUkdeco.jpeg" alt="Produção de vídeo profissional" />
+                        <img src="https://i.imgur.com/ALO3MaG.png" alt="Produção de vídeo profissional" />
                     </div>
                     <div className="passo-a-passo-lista">
                         <div className="passo-item">
