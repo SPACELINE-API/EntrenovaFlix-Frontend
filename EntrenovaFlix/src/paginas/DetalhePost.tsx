@@ -1,14 +1,22 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+interface Post {
+  id: number;
+  usuario: string;
+  pergunta: string;
+  descricao: string;
+  tempo: string;
+}
+
 export default function DetalhePost() {
   const { postId } = useParams();
   const navigate = useNavigate();
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState<Post | null>(null);
 
-  const postsMock = [
+  const postsMock: Post[] = [
     {
-      id: 1, 
+      id: 1,
       usuario: "Luana Souza",
       pergunta: "Como posso melhorar meu trabalho em equipe?",
       descricao:
@@ -16,8 +24,8 @@ export default function DetalhePost() {
       tempo: "há 3 dias",
     },
     {
-      id: 2, 
-      usuario: "Outra Luana", 
+      id: 2,
+      usuario: "Outra Luana",
       pergunta: "Qual a melhor forma de organizar as tarefas no Trello?",
       descricao:
         "Minha equipe está começando a usar o Trello, mas estamos um pouco perdidos sobre como criar os quadros e as listas de forma eficiente. Alguma dica?",
@@ -56,7 +64,7 @@ export default function DetalhePost() {
       <div className="areaComentario">
         <h2>Responder</h2>
         <form>
-          <textarea placeholder="Escreva sua resposta..." rows="4"></textarea>
+          <textarea placeholder="Escreva sua resposta..." rows={4}></textarea>
           <button type="submit" className="btnResponder">
             Enviar Resposta
           </button>
