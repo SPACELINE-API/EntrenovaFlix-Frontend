@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import DiagnosticService from '../../../services/diagnosticService';
 import { useQuestionnaire } from '../../../contexts/QuestionnaireContext';
@@ -25,6 +26,7 @@ export default function Formulario() {
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const { setQuestionnaireCompleted } = useQuestionnaire();
+  const navigate = useNavigate();
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -109,9 +111,9 @@ export default function Formulario() {
     try {
       const apiKey = import.meta.env.VITE_OPENAI_API_KEY || 'your-api-key-here';
       const service = new DiagnosticService(apiKey);
-      const result = await service.runFullDiagnostic();
-      localStorage.setItem('lastDiagnosticResult', JSON.stringify(result));
-      service.printDiagnosisToTerminal(result);
+      const result = await service.generateSegmentedDiagnosis(data);
+      localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
+      navigate('/diagnostico');
     } catch (error) {
       toast.error('Erro ao gerar diagnóstico. Verifique sua chave da API OpenAI.');
     }
