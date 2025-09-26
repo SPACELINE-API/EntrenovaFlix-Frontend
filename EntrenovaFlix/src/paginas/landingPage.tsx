@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-function landingPage(){
-    return <h1>Bem vindo ao landing page</h1>;
-}
-export default landingPage;
-=======
 import '../styles/global.css';
 import '../styles/lp.css';
 import '../styles/estiloForms.css'
@@ -48,4 +42,3 @@ function LandingPage() {
 }
 
 export default LandingPage;
->>>>>>> b475a84f7e517d130c3a35ba93a3d0f08fb8513b

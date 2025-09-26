@@ -53,7 +53,7 @@ function DevolutivaPlanos(){
             <button className='botaoTrilha'>Receber minha trilha</button>
             
             <div className='planos'>
-                <h1>Escolha o melhor plano para você</h1>
+                <h1 style={{fontSize:'3.2rem'}}>Escolha o melhor plano para você</h1>
                 <br/><br/><br/>
                 <h2>Para liberar o acesso as trilhas, falta só mais um passo!</h2>
             </div>
