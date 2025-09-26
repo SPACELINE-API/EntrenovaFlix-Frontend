@@ -35,16 +35,24 @@ export default function TelaDiagnostico() {
                         <span className="bullet">●</span>
                         <span>Pontos fortes</span>
                     </div>
-                    {diagnosis?.pessoasCultura?.strengths?.map((strength, index) => (
-                        <div key={index} className="item-ponto">{strength}</div>
-                    )) || <div className="item-ponto">Clareza sobre valores</div>}
+                    {diagnosis?.pessoasCultura?.strengths && diagnosis.pessoasCultura.strengths.length > 0 ? (
+                        diagnosis.pessoasCultura.strengths.map((strength, index) => (
+                            <div key={index} className="item-ponto">{strength}</div>
+                        ))
+                    ) : (
+                        <div className="item-ponto">Clareza sobre valores</div>
+                    )}
                     <div className="ponto-fraco">
                         <span className="bullet">●</span>
                         <span>Pontos a melhorar</span>
                     </div>
-                    {diagnosis?.pessoasCultura?.weaknesses?.map((weakness, index) => (
-                        <div key={index} className="item-ponto">{weakness}</div>
-                    )) || <div className="item-ponto">Comunicação interna</div>}
+                    {diagnosis?.pessoasCultura?.weaknesses && diagnosis.pessoasCultura.weaknesses.length > 0 ? (
+                        diagnosis.pessoasCultura.weaknesses.map((weakness, index) => (
+                            <div key={index} className="item-ponto">{weakness}</div>
+                        ))
+                    ) : (
+                        <div className="item-ponto">Comunicação interna</div>
+                    )}
                 </div>
             </div>
 
@@ -58,17 +66,25 @@ export default function TelaDiagnostico() {
                         <span className="bullet">●</span>
                         <span>Pontos fortes</span>
                     </div>
-                    {diagnosis?.estruturaOperacoes?.strengths?.map((strength, index) => (
-                        <div key={index} className="item-ponto">{strength}</div>
-                    )) || <div className="item-ponto">Clareza sobre valores</div>}
+                    {diagnosis?.estruturaOperacoes?.strengths && diagnosis.estruturaOperacoes.strengths.length > 0 ? (
+                        diagnosis.estruturaOperacoes.strengths.map((strength, index) => (
+                            <div key={index} className="item-ponto">{strength}</div>
+                        ))
+                    ) : (
+                        <div className="item-ponto">Clareza sobre valores</div>
+                    )}
 
                     <div className="ponto-fraco">
                         <span className="bullet">●</span>
                         <span>Pontos a melhorar</span>
                     </div>
-                    {diagnosis?.estruturaOperacoes?.weaknesses?.map((weakness, index) => (
-                        <div key={index} className="item-ponto">{weakness}</div>
-                    )) || <div className="item-ponto">Comunicação interna</div>}
+                    {diagnosis?.estruturaOperacoes?.weaknesses && diagnosis.estruturaOperacoes.weaknesses.length > 0 ? (
+                        diagnosis.estruturaOperacoes.weaknesses.map((weakness, index) => (
+                            <div key={index} className="item-ponto">{weakness}</div>
+                        ))
+                    ) : (
+                        <div className="item-ponto">Comunicação interna</div>
+                    )}
                 </div>
             </div>
 
@@ -82,16 +98,24 @@ export default function TelaDiagnostico() {
                         <span className="bullet">●</span>
                         <span>Pontos fortes</span>
                     </div>
-                    {diagnosis?.mercadoClientes?.strengths?.map((strength, index) => (
-                        <div key={index} className="item-ponto">{strength}</div>
-                    )) || <div className="item-ponto">Clareza sobre valores</div>}
+                    {diagnosis?.mercadoClientes?.strengths && diagnosis.mercadoClientes.strengths.length > 0 ? (
+                        diagnosis.mercadoClientes.strengths.map((strength, index) => (
+                            <div key={index} className="item-ponto">{strength}</div>
+                        ))
+                    ) : (
+                        <div className="item-ponto">Clareza sobre valores</div>
+                    )}
                     <div className="ponto-fraco">
                         <span className="bullet">●</span>
                         <span>Pontos a melhorar</span>
                     </div>
-                    {diagnosis?.mercadoClientes?.weaknesses?.map((weakness, index) => (
-                        <div key={index} className="item-ponto">{weakness}</div>
-                    )) || <div className="item-ponto">Comunicação interna</div>}
+                    {diagnosis?.mercadoClientes?.weaknesses && diagnosis.mercadoClientes.weaknesses.length > 0 ? (
+                        diagnosis.mercadoClientes.weaknesses.map((weakness, index) => (
+                            <div key={index} className="item-ponto">{weakness}</div>
+                        ))
+                    ) : (
+                        <div className="item-ponto">Comunicação interna</div>
+                    )}
                 </div>
             </div>
         </div>

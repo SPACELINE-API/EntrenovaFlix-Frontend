@@ -1,5 +1,5 @@
 // Importações necessárias para o serviço de diagnóstico
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { z } from 'zod';
 
 // Esquemas Zod para validação de dados
@@ -328,28 +328,25 @@ function calculateMaturityStage(average: number): string {
 }
 
 // Classe principal do serviço de diagnóstico organizacional
-// Gerencia a integração com OpenAI e coordena o processo de diagnóstico
+// Gerencia a integração com Gemini e coordena o processo de diagnóstico
 class DiagnosticService {
-  private openai: OpenAI | null = null;
+  private genAI: GoogleGenerativeAI | null = null;
   private apiKey: string = '';
 
-  // Construtor da classe - inicializa o cliente OpenAI com validação da chave API
+  // Construtor da classe - inicializa o cliente Gemini com validação da chave API
   constructor(apiKey: string) {
     this.apiKey = apiKey;
 
-    if (apiKey && apiKey !== 'your-api-key-here' && apiKey.startsWith('sk-')) {
-      // Ambiente do navegador - inicializa cliente OpenAI
+    if (apiKey && apiKey !== 'your-api-key-here' && apiKey.startsWith('AIzaSy')) {
+      // Ambiente do navegador - inicializa cliente Gemini
       if (typeof window !== 'undefined') {
-        this.openai = new OpenAI({
-          apiKey: apiKey,
-          dangerouslyAllowBrowser: true // Nota: Em produção, use uma API backend
-        });
-        console.log('🔑 OpenAI API inicializada com sucesso');
+        this.genAI = new GoogleGenerativeAI(apiKey);
+        console.log('🔑 Gemini API inicializada com sucesso');
       } else {
-        throw new Error('Não está em ambiente de navegador. Este serviço requer um navegador para uso cliente-side do OpenAI.');
+        throw new Error('Não está em ambiente de navegador. Este serviço requer um navegador para uso cliente-side do Gemini.');
       }
     } else {
-      throw new Error('Nenhuma chave API válida fornecida. Forneça uma chave API válida do OpenAI começando com "sk-".');
+      throw new Error('Nenhuma chave API válida fornecida. Forneça uma chave API válida do Gemini começando com "AIzaSy".');
     }
   }
 
@@ -398,14 +395,9 @@ class DiagnosticService {
       Responda em formato JSON com as chaves: strengths, weaknesses como arrays de strings.`;
 
       try {
-        const completion = await this.openai!.chat.completions.create({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: dimensionPrompt }],
-          max_tokens: 20,
-          temperature: 0.4
-        });
-
-        const responseText = completion.choices[0]?.message?.content?.trim();
+        const model = this.genAI!.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const result = await model.generateContent(dimensionPrompt);
+        const responseText = result.response.text().trim();
         if (responseText) {
           const parsed = JSON.parse(responseText);
           dimensionSummaries[dim.dimension] = {
@@ -432,14 +424,9 @@ class DiagnosticService {
     Responda apenas com um array JSON de strings com as recomendações.`;
 
     try {
-      const completion = await this.openai!.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: recommendationsPrompt }],
-        max_tokens: 20,
-        temperature: 0.3
-      });
-
-      const recommendationsText = completion.choices[0]?.message?.content?.trim();
+      const model = this.genAI!.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const result = await model.generateContent(recommendationsPrompt);
+      const recommendationsText = result.response.text().trim();
       if (recommendationsText) {
         recommendations = JSON.parse(recommendationsText);
       }
@@ -472,8 +459,8 @@ class DiagnosticService {
     const dimensionMap: { [key: string]: string } = {
       'pessoasCultura': 'Pessoas & Cultura',
       'estruturaOperacoes': 'Estrutura & Operações',
-      'mercadoClientes': 'Mercado & Clientes',
-      'direcaoFuturo': 'Direção & Futuro'
+      'mercadoClientes': 'Mercado & Clientes'
+      // 'direcaoFuturo': 'Direção & Futuro' // Commented out as per user focus on three dimensions
     };
 
     const selectedDimensions = formData.dimensoesAvaliar || [];
@@ -518,53 +505,125 @@ Pontuação média: ${averageScore.toFixed(1)}/4
 
 ${questionsContext}
 
-Baseado nas respostas acima, gere exatamente:
-- 2-3 pontos fortes: Frases descritivas curtas (10-20 palavras) destacando aspectos positivos baseados nas respostas de alta pontuação.
-- 2-3 pontos a melhorar: Frases descritivas curtas (10-20 palavras) destacando oportunidades de melhoria baseadas nas respostas de baixa pontuação.
+Baseado nas respostas acima, gere EXATAMENTE:
+- 3 pontos fortes: Frases curtas e concisas (máximo 15 palavras cada) destacando aspectos positivos baseados nas respostas de alta pontuação.
+- 3 pontos a melhorar: Frases curtas e concisas (máximo 15 palavras cada) destacando oportunidades de melhoria baseadas nas respostas de baixa pontuação.
 
-Exemplos de frases:
-- Pontos fortes: "Comunicação fluida entre equipes que facilita a colaboração diária.", "Liderança inspiradora que motiva e engaja os colaboradores."
-- Pontos a melhorar: "Necessidade de melhorar a escuta ativa para reduzir mal-entendidos.", "Falta de processos claros para agilizar decisões operacionais."
+Exemplos:
+- Pontos fortes: ["Comunicação fluida entre equipes.", "Liderança inspiradora e motivadora.", "Colaboração eficaz em times."]
+- Pontos a melhorar: ["Melhorar escuta ativa.", "Definir processos claros.", "Aumentar flexibilidade na rotina."]
 
-IMPORTANTE: Responda APENAS com JSON válido, sem texto adicional:
+IMPORTANTE: Responda APENAS com JSON válido, SEM QUALQUER texto adicional fora do JSON. Use exatamente este formato:
 {
   "strengths": ["frase1", "frase2", "frase3"],
   "weaknesses": ["frase1", "frase2", "frase3"]
 }`;
 
-      try {
-        console.log(`🤖 Fazendo chamada para OpenAI para ${dimName}...`);
-        const completion = await this.openai!.chat.completions.create({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: prompt }],
-          max_tokens: 20,
-          temperature: 0.3
-        });
+      // Retry logic to ensure we get complete responses
+      const maxRetries = 3;
+      let attempt = 0;
+      let success = false;
 
-        const responseText = completion.choices[0]?.message?.content?.trim();
-        console.log(`📄 Resposta bruta do OpenAI para ${dimName}:`, responseText);
+      while (attempt < maxRetries && !success) {
+        attempt++;
+        console.log(`🤖 Tentativa ${attempt}/${maxRetries} para ${dimName}...`);
 
-        if (responseText) {
-          try {
-            const parsed = JSON.parse(responseText);
-            console.log(`✅ JSON parseado para ${dimName}:`, parsed);
-            segmented[dim] = {
-              strengths: Array.isArray(parsed.strengths) ? parsed.strengths.slice(0, 3) : [],
-              weaknesses: Array.isArray(parsed.weaknesses) ? parsed.weaknesses.slice(0, 3) : []
-            };
-          } catch (parseError) {
-            console.error(`❌ Erro ao fazer parse do JSON para ${dimName}:`, parseError);
-            console.error('Texto que falhou:', responseText);
-            // Fallback: tenta extrair arrays do texto
-            segmented[dim] = this.extractArraysFromText(responseText);
+        try {
+          const model = this.genAI!.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            generationConfig: {
+              temperature: 0.1,
+              maxOutputTokens: 200
+            }
+          });
+          const result = await model.generateContent(prompt);
+          const responseText = result.response.text().trim();
+          console.log(`📄 Resposta bruta do Gemini para ${dimName} (tentativa ${attempt}):`, responseText);
+
+          if (responseText) {
+            console.log(`📄 Resposta completa do Gemini para ${dimName}:`, responseText); // Log full response for debugging
+            // Tenta extrair JSON da resposta
+            const jsonText = this.extractJSON(responseText);
+            console.log(`🔍 JSON extraído para ${dimName}:`, jsonText || 'Nenhum JSON encontrado');
+            if (jsonText) {
+              try {
+                const parsed = JSON.parse(jsonText);
+                console.log(`✅ JSON parseado para ${dimName}:`, parsed);
+                // Verifica se os arrays têm exatamente 3 itens cada
+                if (parsed && Array.isArray(parsed.strengths) && Array.isArray(parsed.weaknesses) &&
+                    parsed.strengths.length === 3 && parsed.weaknesses.length === 3 &&
+                    parsed.strengths.every((s: any) => s && typeof s === 'string' && s.trim().length > 0) &&
+                    parsed.weaknesses.every((w: any) => w && typeof w === 'string' && w.trim().length > 0)) {
+                  segmented[dim] = {
+                    strengths: parsed.strengths,
+                    weaknesses: parsed.weaknesses
+                  };
+                  console.log(`✅ Resposta completa obtida para ${dimName} na tentativa ${attempt}`);
+                  success = true;
+                } else {
+                  console.warn(`⚠️ JSON parseado mas incompleto para ${dimName} (tentativa ${attempt}): strengths=${parsed?.strengths?.length || 0}, weaknesses=${parsed?.weaknesses?.length || 0}`);
+                  if (attempt === maxRetries) {
+                    // Try text extraction as final fallback
+                    const textFallback = this.extractArraysFromText(responseText);
+                    if (textFallback.strengths.length >= 3 && textFallback.weaknesses.length >= 3) {
+                      segmented[dim] = textFallback;
+                      console.log(`✅ Usando extração de texto como fallback final para ${dimName}`);
+                      success = true;
+                    } else {
+                      segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+                      console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
+                      success = true;
+                    }
+                  }
+                }
+              } catch (parseError) {
+                console.error(`❌ Erro ao fazer parse do JSON extraído para ${dimName} (tentativa ${attempt}):`, parseError);
+                if (attempt === maxRetries) {
+                  // Try text extraction as final fallback
+                  const textFallback = this.extractArraysFromText(responseText);
+                  if (textFallback.strengths.length >= 3 && textFallback.weaknesses.length >= 3) {
+                    segmented[dim] = textFallback;
+                    console.log(`✅ Usando extração de texto como fallback final para ${dimName}`);
+                    success = true;
+                  } else {
+                    segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+                    console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
+                    success = true;
+                  }
+                }
+              }
+            } else {
+              console.error(`❌ Não foi possível extrair JSON da resposta para ${dimName} (tentativa ${attempt})`);
+              if (attempt === maxRetries) {
+                // Try text extraction as final fallback
+                const textFallback = this.extractArraysFromText(responseText);
+                if (textFallback.strengths.length >= 3 && textFallback.weaknesses.length >= 3) {
+                  segmented[dim] = textFallback;
+                  console.log(`✅ Usando extração de texto como fallback final para ${dimName}`);
+                  success = true;
+                } else {
+                  segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+                  console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
+                  success = true;
+                }
+              }
+            }
+          } else {
+            console.warn(`⚠️ Resposta vazia do Gemini para ${dimName} (tentativa ${attempt})`);
+            if (attempt === maxRetries) {
+              segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+              console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
+              success = true;
+            }
           }
-        } else {
-          console.warn(`⚠️ Resposta vazia do OpenAI para ${dimName}`);
-          segmented[dim] = { strengths: [], weaknesses: [] };
+        } catch (error) {
+          console.error(`❌ Erro ao gerar diagnóstico para ${dim} (tentativa ${attempt}):`, error);
+          if (attempt === maxRetries) {
+            segmented[dim] = this.getDefaultPhrases(dimName, averageScore);
+            console.log(`⚠️ Fallback para defaults em ${dimName} após ${maxRetries} tentativas`);
+            success = true;
+          }
         }
-      } catch (error) {
-        console.error(`❌ Erro ao gerar diagnóstico para ${dim}:`, error);
-        segmented[dim] = { strengths: [], weaknesses: [] };
       }
     }
 
@@ -572,7 +631,17 @@ IMPORTANTE: Responda APENAS com JSON válido, sem texto adicional:
     return segmented;
   }
 
-  // Método auxiliar para extrair arrays de texto quando JSON falha
+  // Método auxiliar para extrair JSON da resposta do Gemini
+  private extractJSON(text: string): string | null {
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start !== -1 && end !== -1 && end > start) {
+      return text.substring(start, end + 1);
+    }
+    return null;
+  }
+
+  // Método auxiliar para extrair arrays de texto quando JSON falha (mantido como backup)
   private extractArraysFromText(text: string): { strengths: string[]; weaknesses: string[] } {
     const strengths: string[] = [];
     const weaknesses: string[] = [];
@@ -607,7 +676,46 @@ IMPORTANTE: Responda APENAS com JSON válido, sem texto adicional:
       }
     }
 
-    return { strengths, weaknesses };
+    return { strengths: strengths.slice(0, 3), weaknesses: weaknesses.slice(0, 3) };
+  }
+
+  // Frases padrão para pontos fortes por dimensão
+  private getDefaultStrengths(dimName: string): string[] {
+    const defaults: { [key: string]: string[] } = {
+      'Pessoas & Cultura': ['Comunicação fluida entre equipes.', 'Liderança inspiradora e motivadora.', 'Colaboração eficaz em times.'],
+      'Estrutura & Operações': ['Processos bem definidos e eficientes.', 'Delegação clara de responsabilidades.', 'Alta autonomia operacional.'],
+      'Mercado & Clientes': ['Escuta ativa dos clientes.', 'Sinergia entre vendas e atendimento.', 'Adaptação rápida ao mercado.']
+    };
+    return defaults[dimName] || ['Forte presença de valores organizacionais.', 'Equipe engajada e colaborativa.', 'Cultura inovadora.'];
+  }
+
+  // Frases padrão para pontos a melhorar por dimensão
+  private getDefaultWeaknesses(dimName: string): string[] {
+    const defaults: { [key: string]: string[] } = {
+      'Pessoas & Cultura': ['Melhorar comunicação interna.', 'Fortalecer liderança colaborativa.', 'Aumentar flexibilidade na rotina.'],
+      'Estrutura & Operações': ['Definir processos mais claros.', 'Aprimorar delegação de tarefas.', 'Garantir padrões de qualidade.'],
+      'Mercado & Clientes': ['Intensificar escuta de clientes.', 'Melhorar colaboração comercial.', 'Acompanhar metas com rigor.']
+    };
+    return defaults[dimName] || ['Reduzir falhas na comunicação.', 'Desenvolver habilidades de liderança.', 'Implementar rotinas adaptáveis.'];
+  }
+
+  // Fallback para frases baseadas na pontuação média (se disponível)
+  private getDefaultPhrases(dimName: string, averageScore: number): { strengths: string[]; weaknesses: string[] } {
+    const baseStrengths = this.getDefaultStrengths(dimName);
+    const baseWeaknesses = this.getDefaultWeaknesses(dimName);
+
+    // Se pontuação alta (>2.5), enfatiza mais strengths; senão, mais weaknesses
+    if (averageScore > 2.5) {
+      return {
+        strengths: baseStrengths,
+        weaknesses: baseWeaknesses.slice(0, 2) // Menos weaknesses
+      };
+    } else {
+      return {
+        strengths: baseStrengths.slice(0, 2), // Menos strengths
+        weaknesses: baseWeaknesses
+      };
+    }
   }
 
   // Executa o diagnóstico organizacional completo baseado nos dados do formulário

@@ -36,7 +36,6 @@
     "echarts-for-react": "^3.0.2",
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
-    "openai": "^5.23.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.62.0",
@@ -45,7 +44,8 @@
     "react-router-dom": "^7.9.1",
     "react-scroll": "^1.9.3",
     "recharts": "^3.2.1",
-    "zod": "^4.1.9"
+    "zod": "^4.1.9",
+    "@google/generative-ai": "^0.21.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

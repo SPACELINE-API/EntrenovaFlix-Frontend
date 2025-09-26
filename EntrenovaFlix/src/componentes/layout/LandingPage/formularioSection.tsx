@@ -109,13 +109,13 @@ export default function Formulario() {
     setQuestionnaireCompleted(true);
 
     try {
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY || 'your-api-key-here';
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 'your-api-key-here';
       const service = new DiagnosticService(apiKey);
       const result = await service.generateSegmentedDiagnosis(data);
       localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
-      navigate('/diagnostico');
+      // Removed automatic navigation to diagnosis page
     } catch (error) {
-      toast.error('Erro ao gerar diagnóstico. Verifique sua chave da API OpenAI.');
+      toast.error('Erro ao gerar diagnóstico. Verifique sua chave da API Gemini.');
     }
   };
 

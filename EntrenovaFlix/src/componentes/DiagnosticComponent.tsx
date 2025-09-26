@@ -12,9 +12,9 @@ const DiagnosticComponent: React.FC = () => {
 
     try {
       // Note: In production, get the API key from environment variables or a backend
-      const apiKey = process.env.REACT_APP_OPENAI_API_KEY || 'your-api-key-here';
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 'your-api-key-here';
       const service = new DiagnosticService(apiKey);
-    const result = await service.runFullDiagnostic();
+    const result = await service.runFullDiagnostic({});
     setDiagnosis(result);
 
     // Automatically save the diagnosis to a file
