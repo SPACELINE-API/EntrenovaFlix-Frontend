@@ -1,4 +1,6 @@
 
+import { Link } from 'react-router-dom';
+
 export default function Step5() {
   return (
     <div className="secao-final">
@@ -18,6 +20,12 @@ export default function Step5() {
       <p className="form-desc">
         Você receberá o resultado em breve.
       </p>
+
+      <div className="step5-actions">
+        <Link to="/diagnostico-teste" className="btn btn-primary">
+          Ver Diagnóstico Teste
+        </Link>
+      </div>
     </div>
   );
 }

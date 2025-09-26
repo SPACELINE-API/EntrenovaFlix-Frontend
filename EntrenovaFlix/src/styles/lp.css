@@ -2,7 +2,6 @@ html {
   scrollbar-color: #6e6e6ec5 #202020;
   scrollbar-width: thin;
 }
-
 .bodyLp {
     background-color: #141414;
     width: 100%;
@@ -106,9 +105,9 @@ html {
 }
 .userIn a {
     text-decoration: none;
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'satoshi', sans-serif;
     font-size: 0.95rem;
-    font-weight: 700;
+    font-weight: 900;
     color: #5A4FCF;
     transition: color 0.3s ease;
 }
