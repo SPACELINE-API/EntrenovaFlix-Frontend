@@ -48,19 +48,21 @@
 
 .resultados-grid {
   display: flex;
-  justify-content: center; /* A propriedade mágica para centralizar horizontalmente */
-  flex-wrap: wrap;         /* Permite que os cards quebrem para a linha de baixo em telas menores */
-  gap: 2rem;               /* Um espaçamento consistente entre os cards */
-  width: 100%;             /* Garante que o container ocupe a largura disponível */
-  margin-top: 2rem;        /* Apenas um exemplo de espaçamento superior */
+  justify-content: center; 
+  flex-wrap: wrap;         
+  gap: 2rem;              
+  width: 100%;             
+  margin-top: 2rem;        
 }
 
 .categoria-resultado {
     background: transparent; 
     border-radius: 12px;
-    padding: 30px;
+    padding: 40px;
+    border: 2px solid transparent;
     display: flex;
     flex-direction: column;
+    width: 500px;
     align-items: center; 
     transition: all 0.3s ease; 
 }

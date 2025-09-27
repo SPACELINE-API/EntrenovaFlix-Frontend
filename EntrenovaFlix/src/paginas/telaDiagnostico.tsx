@@ -114,7 +114,6 @@ export default function TelaDiagnostico() {
 
       <div className="resultados-grid">
         {categoriesConfig.map(({ key, title, Icon }) => {
-          // Com a tipagem correta em 'categoriesConfig', esta linha agora é segura e não dará erro.
           const categoryData = diagnosis[key];
           if (!categoryData) return null;
 
