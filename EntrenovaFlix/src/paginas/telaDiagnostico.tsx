@@ -1,15 +1,26 @@
+import { useState, useEffect } from 'react';
 import '../styles/diagnostico.css'
 import { FaUsers } from "react-icons/fa";
 import { PiTreeStructureFill } from "react-icons/pi";
-import { TbDirectionsFilled } from "react-icons/tb";
+import { MdBusiness } from "react-icons/md";
 import Button from '../componentes/ui/botões/botao';
 
-export default function TelaDiagnostico() { return (
+export default function TelaDiagnostico() {
+  const [diagnosis, setDiagnosis] = useState<{ [key: string]: { strengths: string[]; weaknesses: string[] } } | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('segmentedDiagnosis');
+    if (stored) {
+      setDiagnosis(JSON.parse(stored));
+    }
+  }, []);
+
+  return (
     <div className="diagnostico-container">
         <div className="diagnostico-head">
             <h1 className="diagnostico-titulo">Seus <br /> resultados</h1>
             <p className="diagnostico-subtitulo">
-                Com base nas suas respostas, aqui está um retrato inicial com os pontos fortes da sua 
+                Com base nas suas respostas, aqui está um retrato inicial com os pontos fortes da sua
                 empresa e as oportunidades de crescimento.
             </p>
         </div>
@@ -24,12 +35,16 @@ export default function TelaDiagnostico() { return (
                         <span className="bullet">●</span>
                         <span>Pontos fortes</span>
                     </div>
-                    <div className="item-ponto">Clareza sobre valores</div>
+                    {diagnosis?.pessoasCultura?.strengths?.map((strength, index) => (
+                        <div key={index} className="item-ponto">{strength}</div>
+                    )) || <div className="item-ponto">Clareza sobre valores</div>}
                     <div className="ponto-fraco">
                         <span className="bullet">●</span>
                         <span>Pontos a melhorar</span>
                     </div>
-                    <div className="item-ponto">Comunicação interna</div>
+                    {diagnosis?.pessoasCultura?.weaknesses?.map((weakness, index) => (
+                        <div key={index} className="item-ponto">{weakness}</div>
+                    )) || <div className="item-ponto">Comunicação interna</div>}
                 </div>
             </div>
 
@@ -43,32 +58,40 @@ export default function TelaDiagnostico() { return (
                         <span className="bullet">●</span>
                         <span>Pontos fortes</span>
                     </div>
-                    <div className="item-ponto">Clareza sobre valores</div>
-            
+                    {diagnosis?.estruturaOperacoes?.strengths?.map((strength, index) => (
+                        <div key={index} className="item-ponto">{strength}</div>
+                    )) || <div className="item-ponto">Clareza sobre valores</div>}
+
                     <div className="ponto-fraco">
                         <span className="bullet">●</span>
                         <span>Pontos a melhorar</span>
                     </div>
-                    <div className="item-ponto">Comunicação interna</div>
+                    {diagnosis?.estruturaOperacoes?.weaknesses?.map((weakness, index) => (
+                        <div key={index} className="item-ponto">{weakness}</div>
+                    )) || <div className="item-ponto">Comunicação interna</div>}
                 </div>
             </div>
 
             <div className="categoria-resultado">
                 <div className="categoria-icon">
-                    <TbDirectionsFilled size={30} />
+                    <MdBusiness size={30} />
                 </div>
-                <h3 className="categoria-titulo">Direção & futuro</h3>
+                <h3 className="categoria-titulo">Mercado & Clientes</h3>
                 <div className="pontos-categoria">
                     <div className="ponto-forte">
                         <span className="bullet">●</span>
                         <span>Pontos fortes</span>
                     </div>
-                    <div className="item-ponto">Clareza sobre valores</div>
+                    {diagnosis?.mercadoClientes?.strengths?.map((strength, index) => (
+                        <div key={index} className="item-ponto">{strength}</div>
+                    )) || <div className="item-ponto">Clareza sobre valores</div>}
                     <div className="ponto-fraco">
                         <span className="bullet">●</span>
                         <span>Pontos a melhorar</span>
                     </div>
-                    <div className="item-ponto">Comunicação interna</div>
+                    {diagnosis?.mercadoClientes?.weaknesses?.map((weakness, index) => (
+                        <div key={index} className="item-ponto">{weakness}</div>
+                    )) || <div className="item-ponto">Comunicação interna</div>}
                 </div>
             </div>
         </div>
@@ -89,7 +112,7 @@ export default function TelaDiagnostico() { return (
         <div className="cta-secao">
             <h2 className="cta-titulo">E agora?</h2>
             <p className="cta-texto">
-                Para receber um relatório completo e um diagnóstico aprofundado, entre em contato 
+                Para receber um relatório completo e um diagnóstico aprofundado, entre em contato
                 conosco!
             </p>
             <Button className="btn-agendar" to='devolutiva'>

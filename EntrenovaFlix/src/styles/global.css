@@ -75,6 +75,23 @@ body {
   left: 50%;
   transform: translateX(-50%);
 }
+
+.diagnostic-test-link {
+  background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #FFFFFF !important;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(84, 73, 204, 0.3);
+}
+
+.diagnostic-test-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(84, 73, 204, 0.4);
+  color: #FFFFFF !important;
+}
+
 .usuario {
   display: flex;
   align-items: center;
