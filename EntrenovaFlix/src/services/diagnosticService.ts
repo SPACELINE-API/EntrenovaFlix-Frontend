@@ -330,22 +330,31 @@ class DiagnosticService {
   try {
     const result = await this.model.generateContent(prompt);
     const response = result.response;
-    let text = response.text();
+    const rawText = response.text();
 
-    // ADICIONE ESTAS DUAS LINHAS PARA DEBUG
-    console.log("--- RESPOSTA BRUTA DA IA (ANTES DE QUALQUER TRATAMENTO) ---");
-    console.log(text);
+    console.log("--- RESPOSTA BRUTA DA IA ---");
+    console.log(rawText);
 
-    if (text.startsWith("```json")) {
-      text = text.substring(7, text.length - 3).trim();
+    const startIndex = rawText.indexOf('{');
+    const endIndex = rawText.lastIndexOf('}');
+
+    if (startIndex > -1 && endIndex > -1) {
+      const jsonString = rawText.substring(startIndex, endIndex + 1);
+      
+      console.log("--- STRING JSON EXTRAÍDA PARA ANÁLISE ---");
+      console.log(jsonString);
+      
+      JSON.parse(jsonString);
+      
+      return jsonString; 
+    } else {
+      console.warn("Nenhum objeto JSON válido foi encontrado na resposta da IA.");
+      return "{}";
     }
     
-    console.log("--- RESPOSTA DA IA (APÓS LIMPEZA INICIAL) ---");
-    return text;
-    
   } catch (error) {
-    console.error("Erro na chamada da API Gemini:", error);
-    return "{}";
+    console.error("Erro na chamada ou no processamento da resposta da API Gemini:", error);
+    return "{}"; 
   }
 }
 
@@ -492,7 +501,6 @@ class DiagnosticService {
 export default DiagnosticService;
 export type { FullDiagnosis, DiagnosisResponse };
 
-// --- LÓGICA DE QUALIFICAÇÃO DE LEAD (LEAD SCORING) ---
 type NumeroColaboradores = "ate-10" | "11-30" | "31-100" | "101-500" | "acima-500";
 type PorteEmpresa = "Startup" | "PME" | "Grande empresa";
 type InvestimentoDisponivel = "ate-10k" | "10k-50k" | "acima-50k";

@@ -1,42 +1,32 @@
-// Arquivo: Step5.tsx
 
-import React from 'react';
+import { Link } from 'react-router-dom';
 
-// 1. A interface de props é definida para que o componente saiba que vai receber 'onNavigate'.
-interface Step5Props {
-  onNavigate: () => void;
-}
-
-const Step5: React.FC<Step5Props> = ({ onNavigate }) => {
+export default function Step5() {
   return (
-    <div className="secao-final" style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto' }}>
+    <div className="secao-final">
 
-      <h2 className="form-title" style={{ fontSize: '2rem', marginBottom: '1rem' }}>Obrigado!</h2>
-      <p className="form-desc" style={{ color: '#C4C4CC', lineHeight: '1.6' }}>
-        Sua análise preliminar foi gerada com sucesso.
+      <h2 className="form-title">Obrigado!</h2>
+      <p className="form-desc">
+        Seu diagnóstico inicial foi enviado com sucesso.
         Com base nas suas respostas, estamos preparando seu relatório personalizado, que incluirá:
       </p>
 
-      <ul className="lista-resultados" style={{ listStyle: 'none', padding: 0, margin: '2rem 0', textAlign: 'left', display: 'inline-block' }}>
-        <li style={{ marginBottom: '0.5rem' }}>✔ Um Radar das Dimensões escolhidas.</li>
-        <li style={{ marginBottom: '0.5rem' }}>✔ O estágio de maturidade atual em cada uma delas.</li>
-        <li>✔ Recomendações de trilhas de melhoria personalizadas para sua equipe.</li>
+      <ul className="lista-resultados">
+        <li>Um Radar das Dimensões escolhidas.</li>
+        <li>O estágio de maturidade atual em cada uma delas.</li>
+        <li>Recomendações de trilhas de melhoria personalizadas para sua equipe.</li>
       </ul>
 
-      <p className="form-desc" style={{ color: '#C4C4CC', lineHeight: '1.6' }}>
-        Clique no botão abaixo para visualizar seu resultado.
+      <p className="form-desc">
+        Você receberá o resultado em breve.
       </p>
 
-      <div className="step5-actions" style={{ marginTop: '2rem' }}>
-        {/* 2. O Link foi substituído por um botão que usa a função onNavigate 
-             recebida do componente pai (Formulario.tsx).
-        */}
-        <button onClick={onNavigate} className="btn btn-primary">
-          Ver Meu Diagnóstico
-        </button>
+      <div className="step5-actions">
+        <Link to="/diagnostico" className="btn btn-primary">
+          Ver Diagnóstico
+        </Link>
       </div>
     </div>
   );
-};
+}
 
-export default Step5;

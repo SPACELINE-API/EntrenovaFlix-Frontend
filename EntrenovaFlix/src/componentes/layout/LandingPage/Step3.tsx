@@ -46,7 +46,12 @@ export default function Step3() {
             <h3 className="dimension-title">Dimensão: Mercado & Clientes</h3>
             <QuestionBlock name="mercadoClientes_escuta" question="Como a empresa ouve seus clientes?" options={["Temos pesquisa estruturada e contínua.", "Fazemos de forma ocasional.", "Reagimos só em reclamações.", "Não há escuta formal."]} />
             <QuestionBlock name="mercadoClientes_colaboracao" question="Como vendas e atendimento trabalham juntos?" options={["Colaboram e compartilham informações.", "Trocam parcialmente, com falhas.", "Atuam isolados, sem integração.", "Há conflitos ou competição entre áreas."]} />
+            <QuestionBlock name="mercadoClientes_reacaoMudanca" question="Quando o mercado muda, como a empresa reage?" options={["Antecipamos tendências e inovamos rápido.", "Ajustamos, mas com atraso.", "Só reagimos a crises.", "Não temos adaptação estruturada."]} />
+            <QuestionBlock name="mercadoClientes_metas" question="Como é o acompanhamento de metas comerciais?" options={["Claro, transparente e frequente.", "Existe, mas pouco revisado.", "Informal, depende do gestor.", "Não temos acompanhamento."]} />
+            <QuestionBlock name="mercadoClientes_diferencial" question="O diferencial competitivo está claro?" options={["Sim, é comunicado e reconhecido.", "Existe, mas pouco divulgado.", "É incerto, varia por área.", "Não está claro."]} />
+            <QuestionBlock name="mercadoClientes_ferramentas" question="Quais ferramentas apoiam mercado & clientes?" options={["CRM, BI e pesquisas estruturadas.", "Algumas planilhas e relatórios.", "Feedbacks informais, dados dispersos.", "Não há recursos específicos."]} />
           </div>
+
         )}
 
         {/* Direção & Futuro */}
@@ -55,7 +60,12 @@ export default function Step3() {
             <h3 className="dimension-title">Dimensão: Direção & Futuro</h3>
             <QuestionBlock name="direcaoFuturo_visao" question="Como a visão de futuro é comunicada?" options={["Todos conhecem e entendem.", "É conhecida, mas só pela gestão.", "Quase não é falada.", "Não é comunicada."]} />
             <QuestionBlock name="direcaoFuturo_estrategia" question="Como os líderes conectam pessoas à estratégia?" options={["Inspiram e alinham metas claramente.", "Tentam alinhar, mas varia muito.", "Há pouca conexão.", "Não há esforço de alinhamento."]} />
+            <QuestionBlock name="direcaoFuturo_inovacao" question="Qual é o papel da inovação no planejamento?" options={["Prioridade central, com projetos claros.", "Importante, mas sem orçamento.", "Acontece de forma isolada.", "Não é prioridade."]} />
+            <QuestionBlock name="direcaoFuturo_conexaoEstrategia" question="Como as atividades diárias se conectam com a estratégia?" options={["Sempre, com clareza.", "Às vezes, depende do gestor.", "Raramente, não chega claro.", "Nunca, cada área segue isolada."]} />
+            <QuestionBlock name="direcaoFuturo_proposito" question="Como a empresa lida com propósito e impacto social?" options={["Está no centro das decisões.", "É importante, mas secundário.", "Fala-se, mas não se aplica.", "Não há preocupação."]} />
+            <QuestionBlock name="direcaoFuturo_ferramentas" question="Quais ferramentas apoiam a estratégia?" options={["Dashboards, OKRs, planejamentos formais.", "Algumas planilhas ou relatórios.", "Discussões informais, sem registro contínuo.", "Não temos instrumentos claros."]} />
           </div>
+
         )}
         
       </div>
