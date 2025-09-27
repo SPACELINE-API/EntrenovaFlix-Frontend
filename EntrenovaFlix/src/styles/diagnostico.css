@@ -42,25 +42,31 @@
     font-family: 'Satoshi', sans-serif;
     line-height: 1.6;
     color: #C4C4CC;
-    margin: 0 auto;
+    margin: 0; 
     font-weight: 300;
 }
 
 .resultados-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     margin-bottom: 60px;
 }
 
 .categoria-resultado {
-    background: #2a2a2a00;
-    border: 1px solid #33333300;
+    background: transparent; 
     border-radius: 12px;
     padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    transition: all 0.3s ease; 
 }
 
+
+
 .categoria-resultado:hover {
+    transform: translateY(-5px); 
     box-shadow: 0 10px 30px rgba(84, 73, 204, 0.3);
     border-color: #5449CC;
 }
@@ -70,12 +76,13 @@
     height: 70px;
     background: #5449CC;
     border-radius: 50%;
-    margin: 0 auto 20px auto;
+    margin-bottom: 20px; 
     display: flex;
     align-items: center;
     justify-content: center;
     color: #FFFFFF;
     box-shadow: 0 4px 15px rgba(84, 73, 204, 0.3);
+    flex-shrink: 0; 
 }
 
 .categoria-titulo {
@@ -86,6 +93,11 @@
     color: #FFFFFF;
 }
 
+.pontos-categoria {
+    width: 100%;
+    text-align: left;
+}
+
 .ponto-forte,
 .ponto-fraco {
     display: flex;
@@ -93,15 +105,16 @@
     gap: 8px;
     margin-bottom: 10px;
     font-weight: 500;
+    font-size: 1.1rem; 
 }
 
 .ponto-forte .bullet {
-    color: #4CAF50;
+    color: #2ecc71; 
     font-size: 1.2rem;
 }
 
 .ponto-fraco .bullet {
-    color: #FF9800;
+    color: #f39c12; 
     font-size: 1.2rem;
 }
 
@@ -111,6 +124,7 @@
     font-family: 'Satoshi', sans-serif;
     color: #C4C4CC;
     font-size: 0.95rem;
+    line-height: 1.5; 
 }
 
 .importancia-secao,
@@ -127,7 +141,7 @@
 
 .importancia-content,
 .proximos-passos-content {
-    background: #2a2a2a;
+    background: #2a2a2a00; 
     border-left: 4px solid #5449CC;
     font-family: 'Satoshi', sans-serif;
     border-radius: 8px;

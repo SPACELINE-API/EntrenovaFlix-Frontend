@@ -1,22 +1,18 @@
-// Importações necessárias para o serviço de diagnóstico
-import OpenAI from 'openai';
 import { z } from 'zod';
+import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 
-// Esquemas Zod para validação de dados
-// Define a estrutura de uma pergunta do questionário
+// #region Zod Schemas and Type Definitions
 const QuestionSchema = z.object({
   id: z.string(),
   text: z.string(),
   options: z.record(z.string(), z.string())
 });
 
-// Define a estrutura de uma dimensão organizacional
 const DimensionSchema = z.object({
   name: z.string(),
   questions: z.array(QuestionSchema)
 });
 
-// Define a estrutura da resposta de diagnóstico para uma dimensão
 const DiagnosisResponseSchema = z.object({
   dimension: z.string(),
   averageScore: z.number(),
@@ -24,7 +20,6 @@ const DiagnosisResponseSchema = z.object({
   improvementPath: z.string()
 });
 
-// Define a estrutura completa do diagnóstico organizacional
 const FullDiagnosisSchema = z.object({
   responses: z.record(z.string(), z.object({
     question: z.string(),
@@ -39,14 +34,13 @@ const FullDiagnosisSchema = z.object({
   })
 });
 
-// Tipos TypeScript inferidos dos esquemas Zod
 type Question = z.infer<typeof QuestionSchema>;
 type Dimension = z.infer<typeof DimensionSchema>;
 type DiagnosisResponse = z.infer<typeof DiagnosisResponseSchema>;
 type FullDiagnosis = z.infer<typeof FullDiagnosisSchema>;
+// #endregion
 
-// Estrutura de dados das dimensões organizacionais
-// Define as quatro dimensões principais do diagnóstico organizacional com suas respectivas perguntas
+// #region Constants
 const dimensions: Dimension[] = [
   {
     name: "Pessoas & Cultura",
@@ -310,57 +304,62 @@ const dimensions: Dimension[] = [
   }
 ];
 
-// Caminhos de melhoria sugeridos para cada dimensão organizacional
 const improvementPaths: { [key: string]: string } = {
   "Pessoas & Cultura": "Fortalecer comunicação, liderança e cultura organizacional",
   "Estrutura & Operações": "Aprimorar processos, delegação e autonomia",
   "Mercado & Clientes": "Melhorar escuta de clientes, sinergia comercial e adaptação ao mercado",
   "Direção & Futuro": "Alinhar estratégia, propósito e inovação"
 };
+// #endregion
 
-// Função auxiliar para calcular o estágio de maturidade baseado na pontuação média
-function calculateMaturityStage(average: number): string {
-  if (average >= 1.0 && average <= 1.9) return "Inicial";
-  if (average >= 2.0 && average <= 2.4) return "Básico";
-  if (average >= 2.5 && average <= 3.4) return "Intermediário";
-  if (average >= 3.5 && average <= 4.0) return "Avançado";
-  return "Indefinido";
-}
-
-// Classe principal do serviço de diagnóstico organizacional
-// Gerencia a integração com OpenAI e coordena o processo de diagnóstico
 class DiagnosticService {
-  private openai: OpenAI | null = null;
-  private apiKey: string = '';
+  private genAI: GoogleGenerativeAI;
+  private model: GenerativeModel;
 
-  // Construtor da classe - inicializa o cliente OpenAI com validação da chave API
   constructor(apiKey: string) {
-    this.apiKey = apiKey;
-
-    if (apiKey && apiKey !== 'your-api-key-here' && apiKey.startsWith('sk-')) {
-      // Ambiente do navegador - inicializa cliente OpenAI
-      if (typeof window !== 'undefined') {
-        this.openai = new OpenAI({
-          apiKey: apiKey,
-          dangerouslyAllowBrowser: true // Nota: Em produção, use uma API backend
-        });
-        console.log('🔑 OpenAI API inicializada com sucesso');
-      } else {
-        throw new Error('Não está em ambiente de navegador. Este serviço requer um navegador para uso cliente-side do OpenAI.');
-      }
-    } else {
-      throw new Error('Nenhuma chave API válida fornecida. Forneça uma chave API válida do OpenAI começando com "sk-".');
+    if (!apiKey) {
+      throw new Error("A chave da API do Gemini não foi fornecida ao serviço.");
     }
+    this.genAI = new GoogleGenerativeAI(apiKey);
+    this.model = this.genAI.getGenerativeModel({ model: "gemini-2.0-flash-001" });
+    console.log("DiagnosticService inicializado no modo cliente (browser).");
   }
 
+  private async callAI(prompt: string): Promise<string> {
+  console.log("--- ENVIANDO PROMPT PARA A API GEMINI (DO NAVEGADOR) ---");
+  try {
+    const result = await this.model.generateContent(prompt);
+    const response = result.response;
+    let text = response.text();
 
-  // Gera o diagnóstico completo baseado nas respostas coletadas
-  // Calcula pontuações por dimensão, gera análises específicas e recomendações gerais
+    // ADICIONE ESTAS DUAS LINHAS PARA DEBUG
+    console.log("--- RESPOSTA BRUTA DA IA (ANTES DE QUALQUER TRATAMENTO) ---");
+    console.log(text);
+
+    if (text.startsWith("```json")) {
+      text = text.substring(7, text.length - 3).trim();
+    }
+    
+    console.log("--- RESPOSTA DA IA (APÓS LIMPEZA INICIAL) ---");
+    return text;
+    
+  } catch (error) {
+    console.error("Erro na chamada da API Gemini:", error);
+    return "{}";
+  }
+}
+
+  private calculateMaturityStage(average: number): string {
+    if (average >= 1.0 && average <= 1.9) return "Inicial";
+    if (average >= 2.0 && average <= 2.4) return "Básico";
+    if (average >= 2.5 && average <= 3.4) return "Intermediário";
+    if (average >= 3.5 && average <= 4.0) return "Avançado";
+    return "Indefinido";
+  }
+
   async generateDiagnosis(responses: { [key: string]: { question: string; answer: string; score: number } }): Promise<FullDiagnosis> {
     const diagnosis: DiagnosisResponse[] = [];
     const dimensionScores: { [key: string]: number[] } = {};
-
-    // Calcula pontuações por dimensão
     for (const dimension of dimensions) {
       const scores: number[] = [];
       for (const question of dimension.questions) {
@@ -368,14 +367,11 @@ class DiagnosticService {
       }
       dimensionScores[dimension.name] = scores;
     }
-
-    // Gera diagnóstico para cada dimensão
     for (const dimension of dimensions) {
       const scores = dimensionScores[dimension.name];
       const average = scores.reduce((sum, score) => sum + score, 0) / scores.length;
-      const maturityStage = calculateMaturityStage(average);
+      const maturityStage = this.calculateMaturityStage(average);
       const improvementPath = improvementPaths[dimension.name];
-
       diagnosis.push({
         dimension: dimension.name,
         averageScore: Math.round(average * 100) / 100,
@@ -383,80 +379,37 @@ class DiagnosticService {
         improvementPath: improvementPath
       });
     }
-
-    // Gera resumos específicos por dimensão
     const dimensionSummaries: { [key: string]: { strengths: string[]; weaknesses: string[] } } = {};
-
     for (const dim of diagnosis) {
-      const dimensionPrompt = `Você é um consultor especialista em diagnóstico organizacional.
-      Analise a dimensão "${dim.dimension}" com pontuação ${dim.averageScore}/4 (${dim.maturityStage}) e gere:
-      1. Pontos fortes específicos desta dimensão (2-3 itens)
-      2. Pontos a melhorar específicos desta dimensão (2-3 itens)
-
-      Foque apenas nesta dimensão e seja específico sobre os aspectos positivos e negativos relacionados a ela.
-
-      Responda em formato JSON com as chaves: strengths, weaknesses como arrays de strings.`;
-
+      const dimensionPrompt = `Você é um consultor especialista em diagnóstico organizacional. Analise a dimensão "${dim.dimension}" com pontuação ${dim.averageScore}/4 (${dim.maturityStage}) e gere: 1. Pontos fortes específicos desta dimensão (2-3 itens) 2. Pontos a melhorar específicos desta dimensão (2-3 itens). Foque apenas nesta dimensão e seja específico sobre os aspectos positivos e negativos relacionados a ela. Responda em formato JSON com as chaves: "pontos fortes" e "pontos fracos" como arrays de strings.`;
       try {
-        const completion = await this.openai!.chat.completions.create({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: dimensionPrompt }],
-          max_tokens: 20,
-          temperature: 0.4
-        });
-
-        const responseText = completion.choices[0]?.message?.content?.trim();
-        if (responseText) {
-          const parsed = JSON.parse(responseText);
-          dimensionSummaries[dim.dimension] = {
-            strengths: parsed.strengths || [],
-            weaknesses: parsed.weaknesses || []
-          };
-        } else {
-          dimensionSummaries[dim.dimension] = { strengths: [], weaknesses: [] };
-        }
+        const aiResponse = await this.callAI(dimensionPrompt);
+        const parsed = JSON.parse(aiResponse);
+        dimensionSummaries[dim.dimension] = {
+          strengths: parsed["pontos fortes"] || [],
+          weaknesses: parsed["pontos fracos"] || []
+        };
       } catch (error) {
-        console.error(`Erro ao gerar resumo para ${dim.dimension}:`, error);
+        console.error(`Erro ao processar resumo da dimensão ${dim.dimension}:`, error);
         dimensionSummaries[dim.dimension] = { strengths: [], weaknesses: [] };
       }
     }
-
-    // Gera recomendações gerais
+    const recommendationsPrompt = `Você é um consultor especialista em diagnóstico organizacional. Com base nos dados de diagnóstico organizacional abaixo, gere 3-5 recomendações gerais de melhoria para a organização: Dados: ${JSON.stringify(diagnosis, null, 2)} Responda apenas com um array JSON de strings com as recomendações.`;
     let recommendations: string[] = [];
-    const recommendationsPrompt = `Você é um consultor especialista em diagnóstico organizacional.
-    Com base nos dados de diagnóstico organizacional abaixo, gere 3-5 recomendações gerais de melhoria para a organização:
-
-    Dados:
-    ${JSON.stringify(diagnosis, null, 2)}
-
-    Responda apenas com um array JSON de strings com as recomendações.`;
-
     try {
-      const completion = await this.openai!.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: recommendationsPrompt }],
-        max_tokens: 20,
-        temperature: 0.3
-      });
-
-      const recommendationsText = completion.choices[0]?.message?.content?.trim();
-      if (recommendationsText) {
-        recommendations = JSON.parse(recommendationsText);
-      }
+      const recommendationsResponse = await this.callAI(recommendationsPrompt);
+      recommendations = JSON.parse(recommendationsResponse);
     } catch (error) {
-      console.error("Erro ao gerar recomendações:", error);
+      console.error("Erro ao gerar recomendações gerais:", error);
+      recommendations = [];
     }
-
-    // Combina todos os pontos fortes e fracos das dimensões para compatibilidade retroativa
     const allStrengths = Object.values(dimensionSummaries).flatMap(ds => ds.strengths);
     const allWeaknesses = Object.values(dimensionSummaries).flatMap(ds => ds.weaknesses);
-
     const summary = {
       strengths: allStrengths,
       weaknesses: allWeaknesses,
       recommendations: recommendations
     };
-
     return {
       responses,
       diagnosis,
@@ -464,196 +417,66 @@ class DiagnosticService {
     };
   }
 
-  // Gera diagnóstico segmentado baseado em dados de formulário específicos
-  // Processa apenas as dimensões selecionadas e gera análises individuais
   async generateSegmentedDiagnosis(formData: any): Promise<{ [key: string]: { strengths: string[]; weaknesses: string[] } }> {
     const segmented: { [key: string]: { strengths: string[]; weaknesses: string[] } } = {};
-
     const dimensionMap: { [key: string]: string } = {
       'pessoasCultura': 'Pessoas & Cultura',
       'estruturaOperacoes': 'Estrutura & Operações',
       'mercadoClientes': 'Mercado & Clientes',
       'direcaoFuturo': 'Direção & Futuro'
     };
-
     const selectedDimensions = formData.dimensoesAvaliar || [];
-    console.log('🔍 Dimensões selecionadas:', selectedDimensions);
-    console.log('📝 Dados do formulário:', formData);
-
-    // Chamadas reais para a API OpenAI para dimensões selecionadas
-    for (const dim of selectedDimensions) {
-      const dimName = dimensionMap[dim];
+    for (const dimKey of selectedDimensions) {
+      const dimName = dimensionMap[dimKey as keyof typeof dimensionMap];
       if (!dimName) continue;
-
-      // Encontra a dimensão correspondente nas dimensões definidas
       const dimension = dimensions.find(d => d.name === dimName);
       if (!dimension) continue;
-
-      // Constrói o contexto das perguntas e respostas
       let questionsContext = 'Perguntas e respostas para esta dimensão:\n';
-      const dimensionAnswers: { [key: string]: any } = {};
       let totalScore = 0;
       let questionCount = 0;
-
       for (const question of dimension.questions) {
         const formValue = formData[question.id];
         if (formValue !== undefined) {
           const score = parseInt(formValue.toString());
-          const answerText = question.options[score.toString()] || "Resposta inválida";
-          dimensionAnswers[question.id] = { score, answer: answerText };
-          questionsContext += `- ${question.text}\n  Resposta: ${answerText} (Pontuação: ${score}/4)\n`;
+          const answerText = question.options[score.toString()] || "N/A";
+          questionsContext += `- ${question.text} (Resposta: ${answerText}, Nota: ${score})\n`;
           totalScore += score;
           questionCount++;
         }
       }
-
       const averageScore = questionCount > 0 ? totalScore / questionCount : 0;
       console.log(`🔄 Processando dimensão: ${dimName} (Média: ${averageScore.toFixed(1)})`);
-      console.log('Perguntas e respostas:', questionsContext);
-
-      const prompt = `Você é um consultor especialista em diagnóstico organizacional.
-
-Dimensão analisada: ${dimName}
-Pontuação média: ${averageScore.toFixed(1)}/4
-
-${questionsContext}
-
-Baseado nas respostas acima, gere exatamente:
-- 2-3 pontos fortes: Frases descritivas curtas (10-20 palavras) destacando aspectos positivos baseados nas respostas de alta pontuação.
-- 2-3 pontos a melhorar: Frases descritivas curtas (10-20 palavras) destacando oportunidades de melhoria baseadas nas respostas de baixa pontuação.
-
-Exemplos de frases:
-- Pontos fortes: "Comunicação fluida entre equipes que facilita a colaboração diária.", "Liderança inspiradora que motiva e engaja os colaboradores."
-- Pontos a melhorar: "Necessidade de melhorar a escuta ativa para reduzir mal-entendidos.", "Falta de processos claros para agilizar decisões operacionais."
-
-IMPORTANTE: Responda APENAS com JSON válido, sem texto adicional:
-{
-  "strengths": ["frase1", "frase2", "frase3"],
-  "weaknesses": ["frase1", "frase2", "frase3"]
-}`;
-
+      const prompt = `Você é um consultor especialista em diagnóstico organizacional. Dimensão analisada: ${dimName} Pontuação média: ${averageScore.toFixed(1)}/4 ${questionsContext} Baseado nas respostas acima, gere exatamente: - 2-3 pontos fortes: Frases descritivas curtas (10-20 palavras) destacando aspectos positivos baseados nas respostas de alta pontuação. - 2-3 pontos a melhorar: Frases descritivas curtas (10-20 palavras) destacando oportunidades de melhoria baseadas nas respostas de baixa pontuação. Exemplos de frases: - Pontos fortes: "Comunicação fluida entre equipes que facilita a colaboração diária.", "Liderança inspiradora que motiva e engaja os colaboradores." - Pontos a melhorar: "Necessidade de melhorar a escuta ativa para reduzir mal-entendidos.", "Falta de processos claros para agilizar decisões operacionais." IMPORTANTE: Responda APENAS com JSON válido, sem texto adicional: { "pontos fortes": ["frase1", "frase2", "frase3"], "pontos fracos": ["frase1", "frase2", "frase3"] }`;
       try {
-        console.log(`🤖 Fazendo chamada para OpenAI para ${dimName}...`);
-        const completion = await this.openai!.chat.completions.create({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: prompt }],
-          max_tokens: 20,
-          temperature: 0.3
-        });
-
-        const responseText = completion.choices[0]?.message?.content?.trim();
-        console.log(`📄 Resposta bruta do OpenAI para ${dimName}:`, responseText);
-
-        if (responseText) {
-          try {
-            const parsed = JSON.parse(responseText);
-            console.log(`✅ JSON parseado para ${dimName}:`, parsed);
-            segmented[dim] = {
-              strengths: Array.isArray(parsed.strengths) ? parsed.strengths.slice(0, 3) : [],
-              weaknesses: Array.isArray(parsed.weaknesses) ? parsed.weaknesses.slice(0, 3) : []
-            };
-          } catch (parseError) {
-            console.error(`❌ Erro ao fazer parse do JSON para ${dimName}:`, parseError);
-            console.error('Texto que falhou:', responseText);
-            // Fallback: tenta extrair arrays do texto
-            segmented[dim] = this.extractArraysFromText(responseText);
-          }
-        } else {
-          console.warn(`⚠️ Resposta vazia do OpenAI para ${dimName}`);
-          segmented[dim] = { strengths: [], weaknesses: [] };
-        }
+        const aiResponse = await this.callAI(prompt);
+        const parsed = JSON.parse(aiResponse);
+        segmented[dimKey] = {
+          strengths: Array.isArray(parsed["pontos fortes"]) ? parsed["pontos fortes"].slice(0, 3) : [],
+          weaknesses: Array.isArray(parsed["pontos fracos"]) ? parsed["pontos fracos"].slice(0, 3) : []
+        };
       } catch (error) {
-        console.error(`❌ Erro ao gerar diagnóstico para ${dim}:`, error);
-        segmented[dim] = { strengths: [], weaknesses: [] };
+        console.error(`Erro ao processar diagnóstico segmentado para ${dimName}:`, error);
+        segmented[dimKey] = { strengths: [], weaknesses: [] };
       }
     }
-
     console.log('🎯 Resultado final do diagnóstico segmentado:', segmented);
     return segmented;
   }
 
-  // Método auxiliar para extrair arrays de texto quando JSON falha
-  private extractArraysFromText(text: string): { strengths: string[]; weaknesses: string[] } {
-    const strengths: string[] = [];
-    const weaknesses: string[] = [];
-
-    // Tenta encontrar padrões no texto
-    const lines = text.split('\n');
-    let currentSection = '';
-
-    for (const line of lines) {
-      const lowerLine = line.toLowerCase().trim();
-      if (lowerLine.includes('strengths') || lowerLine.includes('"strengths"') || lowerLine.includes('pontos fortes')) {
-        currentSection = 'strengths';
-        continue;
-      }
-      if (lowerLine.includes('weaknesses') || lowerLine.includes('"weaknesses"') || (lowerLine.includes('pontos') && lowerLine.includes('melhorar'))) {
-        currentSection = 'weaknesses';
-        continue;
-      }
-
-      const trimmedLine = line.trim();
-      if (currentSection === 'strengths' && (trimmedLine.startsWith('-') || trimmedLine.startsWith('"') || trimmedLine.includes(':'))) {
-        let item = trimmedLine;
-        if (trimmedLine.startsWith('-')) item = item.substring(1).trim();
-        if (item.startsWith('"') && item.endsWith('"')) item = item.slice(1, -1);
-        if (item) strengths.push(item);
-      }
-      if (currentSection === 'weaknesses' && (trimmedLine.startsWith('-') || trimmedLine.startsWith('"') || trimmedLine.includes(':'))) {
-        let item = trimmedLine;
-        if (trimmedLine.startsWith('-')) item = item.substring(1).trim();
-        if (item.startsWith('"') && item.endsWith('"')) item = item.slice(1, -1);
-        if (item) weaknesses.push(item);
-      }
-    }
-
-    return { strengths, weaknesses };
-  }
-
-  // Executa o diagnóstico organizacional completo baseado nos dados do formulário
-  // Processa as respostas fornecidas pelo usuário e gera o diagnóstico completo
-  async runFullDiagnostic(formData: any): Promise<FullDiagnosis> {
-    console.log("🔄 DIAGNÓSTICO ORGANIZACIONAL INICIADO");
-    console.log("⏳ Processando respostas do formulário...");
-
-    // Converte os dados do formulário para o formato esperado
-    const responses = this.processFormResponses(formData);
-
-    console.log("✅ Respostas processadas com sucesso!");
-    console.log("⏳ Gerando diagnóstico e análise...");
-
-    const fullDiagnosis = await this.generateDiagnosis(responses);
-
-    console.log("✅ Diagnóstico concluído com sucesso!");
-    console.log("🎉 DIAGNÓSTICO ORGANIZACIONAL FINALIZADO");
-    console.log("📊 Resultados prontos para visualização");
-
-    // Exibe automaticamente o diagnóstico formatado
-    this.printFormattedDiagnosis(fullDiagnosis);
-
-    return fullDiagnosis;
-  }
-
-  // Processa as respostas do formulário e converte para o formato interno
-  // Mapeia as respostas do formulário para o formato esperado pelo diagnóstico
-  private processFormResponses(formData: any): { [key: string]: { question: string; answer: string; score: number } } {
+  processFormResponses(formData: any): { [key: string]: { question: string; answer: string; score: number } } {
     const responses: { [key: string]: { question: string; answer: string; score: number } } = {};
-
-    // Itera por todas as dimensões e perguntas para mapear as respostas
     for (const dimension of dimensions) {
       for (const question of dimension.questions) {
         const formValue = formData[question.id];
         if (formValue !== undefined) {
-          const score = parseInt(formValue.toString());
+          const score = parseInt(formValue.toString(), 10);
           const answerText = question.options[score.toString()] || "Resposta inválida";
-
           responses[question.id] = {
             question: question.text,
             answer: answerText,
             score: score
           };
         } else {
-          // Se não houver resposta, assume valor padrão
           responses[question.id] = {
             question: question.text,
             answer: "Não respondida",
@@ -662,102 +485,41 @@ IMPORTANTE: Responda APENAS com JSON válido, sem texto adicional:
         }
       }
     }
-
     return responses;
-  }
-
-  // Imprime o diagnóstico completo no terminal
-  // Exibe respostas, diagnóstico por dimensão, pontos fortes, fragilidades e recomendações
-  printDiagnosisToTerminal(diagnosis: FullDiagnosis): void {
-    console.log("\n=== DIAGNÓSTICO ORGANIZACIONAL ===\n");
-
-    console.log("RESPOSTAS:");
-    Object.entries(diagnosis.responses).forEach(([id, response]) => {
-      console.log(`${id}: ${response.question} - ${response.answer} (Pontuação: ${response.score})`);
-    });
-
-    console.log("\nDIAGNÓSTICO POR DIMENSÃO:");
-    diagnosis.diagnosis.forEach(dim => {
-      console.log(`${dim.dimension}:`);
-      console.log(`  Pontuação média: ${dim.averageScore}`);
-      console.log(`  Estágio de maturidade: ${dim.maturityStage}`);
-      console.log(`  Trilha de melhoria: ${dim.improvementPath}`);
-    });
-
-    console.log("\nPONTOS FORTES:");
-    diagnosis.summary.strengths.forEach(strength => console.log(`- ${strength}`));
-
-    console.log("\nFRAGILIDADES:");
-    diagnosis.summary.weaknesses.forEach(weakness => console.log(`- ${weakness}`));
-
-    console.log("\nRECOMENDAÇÕES:");
-    diagnosis.summary.recommendations.forEach(rec => console.log(`- ${rec}`));
-  }
-
-  // Imprime o diagnóstico formatado de forma estruturada
-  // Exibe análise detalhada por dimensão com pontos fortes, fragilidades e sugestões de melhoria
-  printFormattedDiagnosis(diagnosis: FullDiagnosis): void {
-    console.log("\n" + "=".repeat(50));
-    console.log("**Análise das Respostas**");
-    console.log("=".repeat(50));
-
-    // Calcula pontuação geral de maturidade
-    const overallScore = diagnosis.diagnosis.reduce((sum, dim) => sum + dim.averageScore, 0) / diagnosis.diagnosis.length;
-
-    diagnosis.diagnosis.forEach(dim => {
-      console.log(`\n**Dimensão: ${dim.dimension}**`);
-      console.log(`* Estágio de maturidade: ${dim.averageScore}/4 (${this.getMaturityLevel(dim.averageScore)} em uma escala de 1 a 4)`);
-
-      // Obtém pontos fortes e fragilidades para esta dimensão
-      const dimStrengths = diagnosis.summary.strengths.filter(s =>
-        s.toLowerCase().includes(dim.dimension.toLowerCase().split(' ')[0])
-      );
-      const dimWeaknesses = diagnosis.summary.weaknesses.filter(w =>
-        w.toLowerCase().includes(dim.dimension.toLowerCase().split(' ')[0])
-      );
-
-      console.log("* Pontos fortes:");
-      if (dimStrengths.length > 0) {
-        dimStrengths.forEach(strength => console.log(`\t+ ${strength}`));
-      } else {
-        console.log("\t+ Comunicação eficaz");
-        console.log("\t+ Liderança colaborativa e comunicativa");
-        console.log("\t+ Times eficazes em resolver problemas");
-      }
-
-      console.log("* Fragilidades:");
-      if (dimWeaknesses.length > 0) {
-        dimWeaknesses.forEach(weakness => console.log(`\t+ ${weakness}`));
-      } else {
-        console.log("\t+ Ocasiões de comunicação confusa ou não muito eficaz");
-        console.log("\t+ Falhas na liderança quando necessário");
-        console.log("\t+ Rotina de trabalho não flexível ou adaptável");
-      }
-
-      console.log("* Trilhas de melhoria recomendadas:");
-      console.log(`\t1. Melhorar a comunicação em situações críticas e evitar falhas.`);
-      console.log(`\t2. Desenvolver habilidades de liderança mais colaborativas e comunicativas.`);
-      console.log(`\t3. Implementar mudanças na rotina de trabalho para torná-la mais flexível e adaptável.`);
-    });
-
-    console.log("\n" + "=".repeat(50));
-    console.log("**Sugestões Gerais**");
-    console.log("=".repeat(50));
-
-    console.log("* Fomentar a comunicação eficaz em todos os níveis da empresa para evitar erros e melhorar a colaboração entre equipes.");
-    console.log("* Desenvolver habilidades de liderança mais eficazes e delegação para melhorar a coordenação e a resolução de problemas.");
-    console.log("* Implementar mudanças na estrutura operacional e no planejamento de contingência para torná-la mais flexível e adaptável às mudanças no mercado.");
-  }
-
-  // Determina o nível de maturidade organizacional baseado na pontuação
-  // Retorna uma string descrevendo o estágio de maturidade
-  private getMaturityLevel(score: number): string {
-    if (score >= 3.5) return "Avançado";
-    if (score >= 2.5) return "Intermediário";
-    if (score >= 2.0) return "Básico";
-    return "Inicial";
   }
 }
 
 export default DiagnosticService;
 export type { FullDiagnosis, DiagnosisResponse };
+
+// --- LÓGICA DE QUALIFICAÇÃO DE LEAD (LEAD SCORING) ---
+type NumeroColaboradores = "ate-10" | "11-30" | "31-100" | "101-500" | "acima-500";
+type PorteEmpresa = "Startup" | "PME" | "Grande empresa";
+type InvestimentoDisponivel = "ate-10k" | "10k-50k" | "acima-50k";
+type DecisorPrincipal = "CEO / Diretor" | "RH / T&D" | "Marketing / Comunicação" | "Outro";
+
+interface LeadProfile {
+  colaboradores: NumeroColaboradores;
+  porte: PorteEmpresa;
+  investimento: InvestimentoDisponivel;
+  decisor: DecisorPrincipal;
+}
+
+const points = {
+  colaboradores: { "ate-10": 1, "11-30": 2, "31-100": 3, "101-500": 4, "acima-500": 5 },
+  porte: { "Startup": 2, "PME": 3, "Grande empresa": 5 },
+  investimento: { "ate-10k": 1, "10k-50k": 3, "acima-50k": 5 },
+  decisor: { "CEO / Diretor": 3, "RH / T&D": 2, "Marketing / Comunicação": 1, "Outro": 0 }
+};
+
+function calculateLeadScore(profile: LeadProfile): number {
+  let totalScore = 0;
+  totalScore += points.colaboradores[profile.colaboradores];
+  totalScore += points.porte[profile.porte];
+  totalScore += points.investimento[profile.investimento];
+  totalScore += points.decisor[profile.decisor];
+  return totalScore;
+}
+
+export type { LeadProfile, NumeroColaboradores, PorteEmpresa, InvestimentoDisponivel, DecisorPrincipal };
+export { calculateLeadScore };

@@ -12,6 +12,8 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@google/genai": "^1.21.0",
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.2.2",
     "@mantine/carousel": "^8.3.1",
     "@mantine/charts": "^8.3.1",
@@ -36,7 +38,6 @@
     "echarts-for-react": "^3.0.2",
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
-    "openai": "^5.23.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.62.0",
