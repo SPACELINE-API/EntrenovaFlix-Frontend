@@ -517,8 +517,8 @@ class DiagnosticService {
     const dimensionMap: { [key: string]: string } = {
       'pessoasCultura': 'Pessoas & Cultura',
       'estruturaOperacoes': 'Estrutura & Operações',
-      'mercadoClientes': 'Mercado & Clientes'
-      // 'direcaoFuturo': 'Direção & Futuro' // Commented out as per user focus on three dimensions
+      'mercadoClientes': 'Mercado & Clientes',
+      'direcaoFuturo': 'Direção & Futuro' // Commented out as per user focus on three dimensions
     };
 
     const selectedDimensions = formData.dimensoesAvaliar || [];

@@ -47,10 +47,12 @@
 }
 
 .resultados-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(350px, 1fr));
-    gap: 30px;
-    margin-bottom: 60px;
+  display: flex;
+  justify-content: center; /* A propriedade mágica para centralizar horizontalmente */
+  flex-wrap: wrap;         /* Permite que os cards quebrem para a linha de baixo em telas menores */
+  gap: 2rem;               /* Um espaçamento consistente entre os cards */
+  width: 100%;             /* Garante que o container ocupe a largura disponível */
+  margin-top: 2rem;        /* Apenas um exemplo de espaçamento superior */
 }
 
 .categoria-resultado {
@@ -162,6 +164,7 @@
 
 .btn-agendar {
     border: none;
+    margin-left: 2rem;
     padding: 15px 40px;
     font-size: 1.2rem;
     font-weight: 500;
