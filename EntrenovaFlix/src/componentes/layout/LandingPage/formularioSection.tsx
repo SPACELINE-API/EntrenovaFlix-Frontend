@@ -11,7 +11,7 @@ import { step1Schema, step2Schema, step3Schema, step4Schema, FormData } from './
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
-import Step4 from './Step4'
+import Step4 from './Step4';
 import Step5 from './Step5';
 
 const steps = [
@@ -27,6 +27,7 @@ export default function Formulario() {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const { setQuestionnaireCompleted } = useQuestionnaire();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -50,32 +51,34 @@ export default function Formulario() {
 
   const handleNext = async () => {
     let fieldsToValidate = Object.keys(stepSchemas[currentStep - 1]?.shape || {}) as (keyof FormData)[];
-
+    
     if (currentStep === 3) {
       const selectedDimensions = getValues('dimensoesAvaliar') || [];
       const dynamicFields: (keyof FormData)[] = ['dimensoesAvaliar'];
-
       if (selectedDimensions.includes('pessoasCultura')) {
         dynamicFields.push(
-          'pessoasCultura_comunicacao', 'pessoasCultura_lideranca',
-          'pessoasCultura_resolucaoProblemas', 'pessoasCultura_rotina',
-          'pessoasCultura_valores', 'pessoasCultura_ferramentas'
+          'pessoasCultura_comunicacao', 'pessoasCultura_lideranca', 'pessoasCultura_resolucaoProblemas',
+          'pessoasCultura_rotina', 'pessoasCultura_valores', 'pessoasCultura_ferramentas'
         );
       }
       if (selectedDimensions.includes('estruturaOperacoes')) {
         dynamicFields.push(
-          'estruturaOperacoes_trocaInformacoes', 'estruturaOperacoes_delegacao',
-          'estruturaOperacoes_processos', 'estruturaOperacoes_autonomia',
-          'estruturaOperacoes_qualidade', 'estruturaOperacoes_ferramentas'
+          'estruturaOperacoes_trocaInformacoes', 'estruturaOperacoes_delegacao', 'estruturaOperacoes_processos',
+          'estruturaOperacoes_autonomia', 'estruturaOperacoes_qualidade', 'estruturaOperacoes_ferramentas'
         );
       }
       if (selectedDimensions.includes('mercadoClientes')) {
-        dynamicFields.push('mercadoClientes_escuta', 'mercadoClientes_colaboracao');
+        dynamicFields.push(
+          'mercadoClientes_escuta', 'mercadoClientes_colaboracao',
+          // Adicione os outros campos de mercadoClientes aqui se existirem
+        );
       }
       if (selectedDimensions.includes('direcaoFuturo')) {
-        dynamicFields.push('direcaoFuturo_visao', 'direcaoFuturo_estrategia');
+        dynamicFields.push(
+          'direcaoFuturo_visao', 'direcaoFuturo_estrategia',
+          // Adicione os outros campos de direcaoFuturo aqui se existirem
+        );
       }
-
       fieldsToValidate = dynamicFields;
     }
 
@@ -84,8 +87,9 @@ export default function Formulario() {
     if (isValid) {
       if (!completedSteps.includes(currentStep)) setCompletedSteps(prev => [...prev, currentStep]);
       if (currentStep < steps.length) setCurrentStep(prev => prev + 1);
-
       scrollToTop();
+    } else {
+      toast.error('Por favor, preencha todos os campos obrigatórios antes de avançar.');
     }
   };
 
@@ -97,29 +101,62 @@ export default function Formulario() {
   };
 
   const processForm = async (data: FormData) => {
-    toast.success('Formulário enviado com sucesso!');
-
-    if (!completedSteps.includes(currentStep)) setCompletedSteps(prev => [...prev, currentStep]);
-    if (!completedSteps.includes(steps.length)) setCompletedSteps(prev => [...prev, steps.length]);
-
-    setCurrentStep(prev => prev + 1);
-    scrollToTop();
-
-    // Mark questionnaire as completed and save diagnostic results to localStorage
-    setQuestionnaireCompleted(true);
+    setIsSubmitting(true);
+    const loadingToast = toast.loading('Analisando suas respostas...');
 
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 'your-api-key-here';
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+      if (!apiKey) {
+        throw new Error('Chave da API do Gemini não encontrada.');
+      }
+
+      const mappedData = {
+        ...data,
+        pessoasCultura_1: data.pessoasCultura_comunicacao,
+        pessoasCultura_2: data.pessoasCultura_lideranca,
+        pessoasCultura_3: data.pessoasCultura_resolucaoProblemas,
+        pessoasCultura_4: data.pessoasCultura_rotina,
+        pessoasCultura_5: data.pessoasCultura_valores,
+        pessoasCultura_6: data.pessoasCultura_ferramentas,
+        estruturaOperacoes_1: data.estruturaOperacoes_trocaInformacoes,
+        estruturaOperacoes_2: data.estruturaOperacoes_delegacao,
+        estruturaOperacoes_3: data.estruturaOperacoes_processos,
+        estruturaOperacoes_4: data.estruturaOperacoes_autonomia,
+        estruturaOperacoes_5: data.estruturaOperacoes_qualidade,
+        estruturaOperacoes_6: data.estruturaOperacoes_ferramentas,
+        mercadoClientes_1: data.mercadoClientes_escuta,
+        mercadoClientes_2: data.mercadoClientes_colaboracao,
+        // Adicione aqui os outros mapeamentos de mercadoClientes se existirem
+        direcaoFuturo_1: data.direcaoFuturo_visao,
+        direcaoFuturo_2: data.direcaoFuturo_estrategia,
+        // Adicione aqui os outros mapeamentos de direcaoFuturo se existirem
+      };
+
       const service = new DiagnosticService(apiKey);
-      const result = await service.generateSegmentedDiagnosis(data);
+      const result = await service.generateSegmentedDiagnosis(mappedData);
+      
       localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
-      console.log('Diagnóstico segmentado salvo no localStorage para uso futuro (ex: banco de dados)');
+      
+      toast.dismiss(loadingToast);
+      toast.success('Análise concluída com sucesso!');
+
+      if (!completedSteps.includes(currentStep)) setCompletedSteps(prev => [...prev, currentStep]);
+      setCurrentStep(prev => prev + 1);
+      scrollToTop();
+      setQuestionnaireCompleted(true);
+
     } catch (error) {
-      toast.error('Erro ao gerar diagnóstico. Verifique sua chave da API Gemini.');
+      console.error("Erro no processamento do formulário:", error);
+      toast.dismiss(loadingToast);
+      toast.error(error instanceof Error ? error.message : 'Erro ao gerar diagnóstico.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const onInvalid = (errors: any) => {
+    console.log("Erros de validação:", errors);
     toast.error('Verifique os campos obrigatórios.');
   };
 
@@ -137,11 +174,7 @@ export default function Formulario() {
                 <div className="step-icon-wrapper">
                   {isCompleted && step.id !== steps.length ? (
                     <svg className="step-icon-svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   ) : (
                     <div className="step-icon-circle"></div>
@@ -152,20 +185,20 @@ export default function Formulario() {
             );
           })}
         </div>
-
+        
         <div className="form-content">
           <div className="form-step-wrapper">
             {currentStep === 1 && <Step1 />}
             {currentStep === 2 && <Step2 />}
             {currentStep === 3 && <Step3 />}
             {currentStep === 4 && <Step4 />}
-            {currentStep === 5 && <Step5 />}
+            {currentStep === 5 && <Step5 onNavigate={() => navigate('/diagnostico')} />}
           </div>
         </div>
 
         <div className="form-navigation">
           {currentStep > 1 && currentStep < steps.length && (
-            <button type="button" className="btn btn-secondary" onClick={handlePrev}>
+            <button type="button" className="btn btn-secondary" onClick={handlePrev} disabled={isSubmitting}>
               Voltar
             </button>
           )}
@@ -175,8 +208,8 @@ export default function Formulario() {
             </button>
           )}
           {currentStep === steps.length - 1 && (
-            <button type="submit" className="btn btn-primary">
-              Enviar
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+              {isSubmitting ? 'Analisando...' : 'Finalizar e Ver Diagnóstico'}
             </button>
           )}
         </div>
