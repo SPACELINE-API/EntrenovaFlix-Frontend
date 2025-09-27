@@ -1,27 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
+import { supabase } from "../services/supabaseClient";
 
 export default function TelaForum() {
-  const [posts] = useState([
-    {
-      id: 1,
-      usuario: "Luana Souza",
-      pergunta: "Como posso melhorar meu trabalho em equipe?",
-      descricao:
-        "Estou desenvolvendo um projeto no Jira. Queria saber como posso usá-lo para melhorar minha comunicação com o time. Alguém pode me ajudar?",
-      tempo: "há 3 dias",
-    },
-    {
-      id: 2,
-      usuario: "Outra Luana",
-      pergunta: "Como posso melhorar meu trabalho em equipe?",
-      descricao:
-        "Estou desenvolvendo um projeto no Jira. Queria saber como posso usá-lo para melhorar minha comunicação com o time. Alguém pode me ajudar?",
-      tempo: "há 7 dias",
-    },
-  ])
+  const [posts, setPosts] = useState<any[]>([]);
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const {data, error} = await supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", {ascending: false});
+
+      if (error){
+        console.error("Erro ao carregar posts:", error);
+      } else {
+        setPosts(data || []);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   return (
     <div className="telaForum">
@@ -29,7 +28,7 @@ export default function TelaForum() {
         <h1>Publicações</h1>
         <button
           className="btnResponder"
-          onClick={() => navigate("/novo-comentario")} 
+          onClick={() => navigate("novo-comentario")} 
         >
           Escrever comentário +
         </button>
@@ -46,12 +45,12 @@ export default function TelaForum() {
             <div className="forumConteudo">
               <h3 className="forumPergunta">{post.pergunta}</h3>
               <p className="forumDescricao">{post.descricao}</p>
-              <p className="forumTempo">Post feito {post.tempo}</p>
+              <p className="forumTempo">{new Date(post.created_at).toLocaleDateString("pt-BR")}</p>
             </div>
 
             <button
               className="btnResponder"
-              onClick={() => navigate(`/forum/post/${post.id}`)}
+              onClick={() => navigate(`post/${post.id}`)}
             >
               Responder
             </button>

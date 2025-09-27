@@ -2,13 +2,15 @@ import { useDisclosure } from '@mantine/hooks';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Popover, Fieldset, TextInput, Button, Group, PasswordInput, Stack, Box, Text } from '@mantine/core';
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom'; 
 import { loginSchema, type LoginFormData } from './schemaZod';
+import { supabase } from '../../../services/supabaseClient';
 import '../../../styles/login.css'; 
 
 
 export default function LgSection() {
     const [visible, { toggle }] = useDisclosure(false);
+    const navigate = useNavigate();
 
     const { 
         register, 
@@ -18,9 +20,25 @@ export default function LgSection() {
         resolver: zodResolver(loginSchema)
     });
 
-    const handleLogin = (data: LoginFormData) => {
-        console.log("Login válido!", data);
-        alert(`Login com ${data.email} realizado com sucesso!`);
+    const handleLogin = async (data: LoginFormData) => {
+        const { email, senha } = data;
+
+        const { data: sessionData, error } = await supabase.auth.signInWithPassword({
+            email,
+            password: senha,
+        });
+
+        if (error) {
+            alert("Erro ao logar: " + error.message);
+            console.error("Erro no login:", error);
+            return;
+        }
+
+        console.log("Usuário logado:", sessionData.session?.user);
+        alert(`Login com ${email} realizado com sucesso!`);
+
+        
+        navigate("/colaboradores/dashboard");
     };
 
      return (
