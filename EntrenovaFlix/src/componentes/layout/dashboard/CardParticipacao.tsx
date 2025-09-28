@@ -1,6 +1,6 @@
-import '../../styles/dashboard.css';
+import '../../../styles/dashboard.css';
 
-const CardParticipacao = ({ titulo, valor }) => {
+const CardParticipacao = ({ titulo, valor }: any) => {
   return (
     <div className='cardParticipacao'>
       <h3 className='cardParticipacao-titulo'>{titulo}</h3>

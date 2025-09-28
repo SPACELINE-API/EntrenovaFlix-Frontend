@@ -4,7 +4,7 @@ import { TiArrowSortedDown } from "react-icons/ti";
 
 export default function TelaColab() {
   const [menuAberto, setMenuAberto] = useState(false);
-  const [filtro, setFiltro] = useState('todas');
+  const [filtro, setFiltro] = useState('Todas');
   const navigate = useNavigate();
    function Trilhas() {
     navigate('/colaboradores/trilhas')

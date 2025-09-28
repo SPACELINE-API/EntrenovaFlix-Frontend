@@ -1,7 +1,7 @@
-import GraficoFrequencia from '../componentes/dashboard/GraficoFrequencia.jsx';
-import GraficoDesempenho from '../componentes/dashboard/GraficoDesempenho.jsx';
-import Card from '../componentes/dashboard/Card.jsx';
-import CardParticipacao from '../componentes/dashboard/CardParticipacao.jsx';
+import GraficoFrequencia from '../componentes/layout/dashboard/GraficoFrequencia.js';
+import GraficoDesempenho from '../componentes/layout/dashboard/GraficoDesempenho.js';
+import Card from '../componentes/layout/dashboard/Card.js';
+import CardParticipacao from '../componentes/layout/dashboard/CardParticipacao.js';
 import { FaFire } from "react-icons/fa6";
 import { MdTimer } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";

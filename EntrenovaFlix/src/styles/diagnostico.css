@@ -1,0 +1,200 @@
+@font-face {
+    font-family: 'Kollektif';
+    src: url('../assets/fontes/kollektif/Kollektif.ttf');
+}
+@font-face {
+    font-family: 'techno_wanker';
+    src: url('../assets/fontes/techno_wanker/TechnoWanker.ttf');
+}
+@font-face {
+    font-family: 'Satoshi';
+    src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
+}
+
+/* Diagnostico - Tela de Diagnostico */
+.diagnostico-container {
+    max-width: 1200px;
+    margin: 7rem auto;
+    padding: 80px 20px;
+    font-family: 'Kollektif', Arial, sans-serif;
+    color: #FFFFFF;
+    min-height: 100vh;
+}
+
+.diagnostico-head {
+    text-align: left;
+    margin-bottom: 60px;
+}
+
+.diagnostico-titulo {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 45px;
+    background: #C2C2C2;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.diagnostico-subtitulo {
+    font-size: 1.2rem;
+    font-family: 'Satoshi', sans-serif;
+    line-height: 1.6;
+    color: #C4C4CC;
+    margin: 0; 
+    font-weight: 300;
+}
+
+.resultados-grid {
+  display: flex;
+  justify-content: center; 
+  flex-wrap: wrap;         
+  gap: 2rem;              
+  width: 100%;             
+  margin-top: 2rem;        
+}
+
+.categoria-resultado {
+    background: transparent; 
+    border-radius: 12px;
+    padding: 40px;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    align-items: center; 
+    transition: all 0.3s ease; 
+}
+
+
+
+.categoria-resultado:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 30px rgba(84, 73, 204, 0.3);
+    border-color: #5449CC;
+}
+
+.categoria-icon {
+    width: 70px;
+    height: 70px;
+    background: #5449CC;
+    border-radius: 50%;
+    margin-bottom: 20px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    box-shadow: 0 4px 15px rgba(84, 73, 204, 0.3);
+    flex-shrink: 0; 
+}
+
+.categoria-titulo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #FFFFFF;
+}
+
+.pontos-categoria {
+    width: 100%;
+    text-align: left;
+}
+
+.ponto-forte,
+.ponto-fraco {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 1.1rem; 
+}
+
+.ponto-forte .bullet {
+    color: #2ecc71; 
+    font-size: 1.2rem;
+}
+
+.ponto-fraco .bullet {
+    color: #f39c12; 
+    font-size: 1.2rem;
+}
+
+.item-ponto {
+    margin-left: 20px;
+    margin-bottom: 15px;
+    font-family: 'Satoshi', sans-serif;
+    color: #C4C4CC;
+    font-size: 0.95rem;
+    line-height: 1.5; 
+}
+
+.importancia-secao,
+.proximos-passos-secao {
+    margin: 6rem auto;
+}
+
+.secao-titulo {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+}
+
+.importancia-content,
+.proximos-passos-content {
+    background: #2a2a2a00; 
+    border-left: 4px solid #5449CC;
+    font-family: 'Satoshi', sans-serif;
+    border-radius: 8px;
+    padding: 25px;
+    color: #C4C4CC;
+}
+
+.cta-secao {
+    text-align: center;
+    border-radius: 16px;
+    padding: 40px;
+    margin-top: 60px;
+}
+
+.cta-titulo {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+}
+
+.cta-texto {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #C4C4CC;
+    margin-bottom: 30px;
+    font-family: 'Satoshi', sans-serif;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-agendar {
+    border: none;
+    margin-left: 2rem;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Kollektif', Arial, sans-serif;
+}
+
+.btn-agendar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(84, 73, 204, 0.4);
+}
+
+.btn-agendar:active {
+    transform: translateY(0);
+}
