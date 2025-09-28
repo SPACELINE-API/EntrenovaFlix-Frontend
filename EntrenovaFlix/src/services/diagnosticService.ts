@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 
-// #region Zod Schemas and Type Definitions
 const QuestionSchema = z.object({
   id: z.string(),
   text: z.string(),
@@ -38,9 +37,7 @@ type Question = z.infer<typeof QuestionSchema>;
 type Dimension = z.infer<typeof DimensionSchema>;
 type DiagnosisResponse = z.infer<typeof DiagnosisResponseSchema>;
 type FullDiagnosis = z.infer<typeof FullDiagnosisSchema>;
-// #endregion
 
-// #region Constants
 const dimensions: Dimension[] = [
   {
     name: "Pessoas & Cultura",
@@ -310,7 +307,6 @@ const improvementPaths: { [key: string]: string } = {
   "Mercado & Clientes": "Melhorar escuta de clientes, sinergia comercial e adaptação ao mercado",
   "Direção & Futuro": "Alinhar estratégia, propósito e inovação"
 };
-// #endregion
 
 class DiagnosticService {
   private genAI: GoogleGenerativeAI;
@@ -425,9 +421,6 @@ class DiagnosticService {
       summary
     };
   }
-
-  // Gera diagnóstico segmentado baseado em dados de formulário específicos
-  // Processa apenas as dimensões selecionadas e gera análises individuais
   async generateSegmentedDiagnosis(formData: any): Promise<{ [key: string]: { strengths: string[]; weaknesses: string[] } }> {
     const segmented: { [key: string]: { strengths: string[]; weaknesses: string[] } } = {};
 
@@ -435,7 +428,7 @@ class DiagnosticService {
       'pessoasCultura': 'Pessoas & Cultura',
       'estruturaOperacoes': 'Estrutura & Operações',
       'mercadoClientes': 'Mercado & Clientes',
-      'direcaoFuturo': 'Direção & Futuro' // Commented out as per user focus on three dimensions
+      'direcaoFuturo': 'Direção & Futuro' 
     };
     const selectedDimensions = formData.dimensoesAvaliar || [];
     for (const dimKey of selectedDimensions) {

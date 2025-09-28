@@ -4,9 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Popover, Fieldset, TextInput, Button, Group, PasswordInput, Stack, Box, Text } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom'; 
 import { loginSchema, type LoginFormData } from './schemaZod';
-import authService from '../../../services/authService'; 
+import authService from "../../../services/authService";
 import '../../../styles/login.css';
-import toast from 'react-hot-toast';
 
 export default function LgSection() {
   const [visible, { toggle }] = useDisclosure(false);
@@ -16,27 +15,23 @@ export default function LgSection() {
     register, 
     handleSubmit, 
     formState: { errors },
-    setError, // 👈 agora podemos setar erro do backend
+    setError, 
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema)
   });
 
   const handleLogin = async (data: LoginFormData) => {
-    const loadingToast = toast.loading('Analisando suas credenciais...');
+  try {
+    const result = await authService.login(data.email, data.password);
 
-    try {
-      const result = await authService.login(data.email, data.password);
-      localStorage.setItem("token", result.token);
+    navigate("/colaboradores"); 
+  } catch (error: any) {
+    console.error('Erro ao logar', error.response?.data || error.message);
 
-
-      navigate("/colaboradores");
-    } catch (error: any) {
-      console.error('Erro ao logar', error.response?.data || error.message);
-
-      setError("email", { type: "manual", message: "Email ou senha incorretos!" });
-      setError("password", { type: "manual", message: "Email ou senha incorretos!" });
-    }
-  };
+    setError("email", { type: "manual", message: "Email ou senha incorretos!" });
+    setError("password", { type: "manual", message: "Email ou senha incorretos!" });
+  }
+};
 
   return (
     <Box className='loginBoxWrapper'> 

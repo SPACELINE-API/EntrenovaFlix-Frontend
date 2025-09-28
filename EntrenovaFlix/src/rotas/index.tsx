@@ -41,10 +41,10 @@ const router = createBrowserRouter([
   },
   {
     path: '/colaboradores',
-    element: <PrivateRoute />, // protege tudo aqui
+    element: <PrivateRoute />, 
     children: [
       {
-        element: <MainLayout />, // layout comum
+        element: <MainLayout />, 
         errorElement: <NotFoundPage />,
         children: [
           { index: true, element: <TelaColab /> },

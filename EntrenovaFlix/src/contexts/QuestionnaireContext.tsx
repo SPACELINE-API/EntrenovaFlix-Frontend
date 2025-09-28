@@ -25,7 +25,6 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
   const [hasDiagnosticResult, setHasDiagnosticResult] = useState(false);
 
   useEffect(() => {
-    // Check if questionnaire was completed on page load
     const completed = localStorage.getItem('questionnaireCompleted') === 'true';
     const diagnosticResult = localStorage.getItem('lastDiagnosticResult');
 
@@ -36,8 +35,6 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
   const setQuestionnaireCompleted = (completed: boolean) => {
     setIsQuestionnaireCompleted(completed);
     localStorage.setItem('questionnaireCompleted', completed.toString());
-
-    // Also check for diagnostic result when marking as completed
     const diagnosticResult = localStorage.getItem('lastDiagnosticResult');
     setHasDiagnosticResult(!!diagnosticResult);
   };

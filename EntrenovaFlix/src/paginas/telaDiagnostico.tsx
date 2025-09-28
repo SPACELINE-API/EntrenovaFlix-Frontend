@@ -1,11 +1,10 @@
-import { useState, useEffect, ElementType } from 'react'; // AJUSTE: Importado o ElementType para a tipagem do ícone
+import { useState, useEffect, ElementType } from 'react'; 
 import '../styles/diagnostico.css';
 import { FaUsers, FaDirections } from "react-icons/fa";
 import { PiTreeStructureFill } from "react-icons/pi";
 import { MdBusiness } from "react-icons/md";
 import Button from '../componentes/ui/botões/botao';
 
-// Interfaces de tipo para os dados do diagnóstico
 interface DiagnosisData {
   strengths: string[];
   weaknesses: string[];
@@ -19,8 +18,7 @@ interface SegmentedDiagnosis {
   direcaoFuturo?: DiagnosisData;
 }
 
-// AJUSTE 1: Tipagem explícita para o array de configuração.
-// Isso informa ao TypeScript que a 'key' é uma das chaves da interface 'SegmentedDiagnosis'.
+
 const categoriesConfig: {
   key: keyof SegmentedDiagnosis;
   title: string;
@@ -71,7 +69,6 @@ const RenderPoints = ({ title, points, type }: { title: string, points: string[]
 
 export default function TelaDiagnostico() {
   const [diagnosis, setDiagnosis] = useState<SegmentedDiagnosis | null>(null);
-  // AJUSTE 2: Adicionar o estado de 'loading', iniciando como 'true'.
   const [loading, setLoading] = useState(true);
 
   const email = 'contato@entrenova.com.br';
@@ -88,12 +85,11 @@ export default function TelaDiagnostico() {
     } catch (error) {
       console.error("Erro ao ler o diagnóstico do localStorage:", error);
     } finally {
-      // AJUSTE 3: Ao final da tentativa (com ou sem sucesso), definir loading como 'false'.
       setLoading(false);
     }
   }, []);
 
-  // Agora a variável 'loading' existe e este bloco funcionará corretamente.
+
   if (loading) {
     return <div className="diagnostico-container"><p>Carregando resultados...</p></div>;
   }
