@@ -12,6 +12,7 @@ import NovoComentario from '../paginas/novoComentario';
 import DetalhePost from '../paginas/DetalhePost';
 import TelaDiagnostico from '../paginas/telaDiagnostico';
 import DevolutivaPlanos from '../paginas/devolutivaPlanos';
+import PrivateRoute from '../componentes/auth/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -40,17 +41,22 @@ const router = createBrowserRouter([
   },
   {
     path: '/colaboradores',
-    element: <MainLayout />,   
-    errorElement: <NotFoundPage />,
+    element: <PrivateRoute />, 
     children: [
-      { index: true, element: <TelaColab /> },
-      { path: 'trilhas', element: <TelaTrilhas /> },
-      { path: 'dashboard', element: <Dashboard /> },
-      { path: "forum", element: <TelaForum /> },
-      { path: "novo-comentario", element: <NovoComentario /> },
-      { path: "forum/post/:postId", element: <DetalhePost /> }
+      {
+        element: <MainLayout />, 
+        errorElement: <NotFoundPage />,
+        children: [
+          { index: true, element: <TelaColab /> },
+          { path: 'trilhas', element: <TelaTrilhas /> },
+          { path: 'dashboard', element: <Dashboard /> },
+          { path: 'forum', element: <TelaForum /> },
+          { path: 'novo-comentario', element: <NovoComentario /> },
+          { path: 'forum/post/:postId', element: <DetalhePost /> }
+        ],
+      }
     ],
-  },
+  }
 ]);
 
 function AppRoutes() {

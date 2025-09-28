@@ -1,9 +1,5 @@
-// Arquivo: src/components/forms/Step5.tsx
-
 import React from 'react';
 
-// 1. A interface de props é definida para que o componente 
-//    saiba que vai receber uma função chamada 'onNavigate'.
 interface Step5Props {
   onNavigate: () => void;
 }

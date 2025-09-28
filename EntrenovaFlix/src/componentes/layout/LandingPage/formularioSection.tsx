@@ -70,13 +70,11 @@ export default function Formulario() {
       if (selectedDimensions.includes('mercadoClientes')) {
         dynamicFields.push(
           'mercadoClientes_escuta', 'mercadoClientes_colaboracao',
-          // Adicione os outros campos de mercadoClientes aqui se existirem
         );
       }
       if (selectedDimensions.includes('direcaoFuturo')) {
         dynamicFields.push(
           'direcaoFuturo_visao', 'direcaoFuturo_estrategia',
-          // Adicione os outros campos de direcaoFuturo aqui se existirem
         );
       }
       fieldsToValidate = dynamicFields;
@@ -127,10 +125,8 @@ export default function Formulario() {
         estruturaOperacoes_6: data.estruturaOperacoes_ferramentas,
         mercadoClientes_1: data.mercadoClientes_escuta,
         mercadoClientes_2: data.mercadoClientes_colaboracao,
-        // Adicione aqui os outros mapeamentos de mercadoClientes se existirem
         direcaoFuturo_1: data.direcaoFuturo_visao,
         direcaoFuturo_2: data.direcaoFuturo_estrategia,
-        // Adicione aqui os outros mapeamentos de direcaoFuturo se existirem
       };
 
       const service = new DiagnosticService(apiKey);

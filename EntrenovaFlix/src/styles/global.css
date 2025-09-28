@@ -388,10 +388,10 @@ body {
 
 .btnResponder {
   align-self: flex-end;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.7rem;
   background: linear-gradient(90deg, #5449cc 0%, #0078D7 100%);
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   color: white;
   cursor: pointer;
   font-family: 'Satoshi', sans-serif;
