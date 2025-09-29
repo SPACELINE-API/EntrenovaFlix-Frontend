@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
+// #region Zod Schemas and Type Definitions
 const QuestionSchema = z.object({
   id: z.string(),
   text: z.string(),
@@ -37,7 +39,9 @@ type Question = z.infer<typeof QuestionSchema>;
 type Dimension = z.infer<typeof DimensionSchema>;
 type DiagnosisResponse = z.infer<typeof DiagnosisResponseSchema>;
 type FullDiagnosis = z.infer<typeof FullDiagnosisSchema>;
+// #endregion
 
+// #region Constants
 const dimensions: Dimension[] = [
   {
     name: "Pessoas & Cultura",
@@ -301,16 +305,20 @@ const dimensions: Dimension[] = [
   }
 ];
 
+
+
 const improvementPaths: { [key: string]: string } = {
   "Pessoas & Cultura": "Fortalecer comunicação, liderança e cultura organizacional",
   "Estrutura & Operações": "Aprimorar processos, delegação e autonomia",
   "Mercado & Clientes": "Melhorar escuta de clientes, sinergia comercial e adaptação ao mercado",
   "Direção & Futuro": "Alinhar estratégia, propósito e inovação"
 };
+// #endregion
 
 class DiagnosticService {
   private genAI: GoogleGenerativeAI;
   private model: GenerativeModel;
+  private supabase: SupabaseClient;
 
   constructor(apiKey: string) {
     if (!apiKey) {
@@ -318,41 +326,61 @@ class DiagnosticService {
     }
     this.genAI = new GoogleGenerativeAI(apiKey);
     this.model = this.genAI.getGenerativeModel({ model: "gemini-2.0-flash-001" });
-    console.log("DiagnosticService inicializado no modo cliente (browser).");
-  }
+    console.log("🔑 DiagnosticService inicializado no modo cliente (browser).");
 
-  private async callAI(prompt: string): Promise<string> {
-  console.log("--- ENVIANDO PROMPT PARA A API GEMINI (DO NAVEGADOR) ---");
-  try {
-    const result = await this.model.generateContent(prompt);
-    const response = result.response;
-    const rawText = response.text();
-
-    console.log("--- RESPOSTA BRUTA DA IA ---");
-    console.log(rawText);
-
-    const startIndex = rawText.indexOf('{');
-    const endIndex = rawText.lastIndexOf('}');
-
-    if (startIndex > -1 && endIndex > -1) {
-      const jsonString = rawText.substring(startIndex, endIndex + 1);
-      
-      console.log("--- STRING JSON EXTRAÍDA PARA ANÁLISE ---");
-      console.log(jsonString);
-      
-      JSON.parse(jsonString);
-      
-      return jsonString; 
-    } else {
-      console.warn("Nenhum objeto JSON válido foi encontrado na resposta da IA.");
-      return "{}";
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error("As variáveis de ambiente do Supabase não foram definidas.");
     }
-    
-  } catch (error) {
-    console.error("Erro na chamada ou no processamento da resposta da API Gemini:", error);
-    return "{}"; 
+    this.supabase = createClient(supabaseUrl, supabaseAnonKey);
+    console.log("🔗 Cliente Supabase inicializado.");
   }
-}
+  
+  private async callAI(prompt: string): Promise<string> {
+    console.log("--- ENVIANDO PROMPT PARA A API GEMINI (DO NAVEGADOR) ---");
+    try {
+      const result = await this.model.generateContent(prompt);
+      const response = result.response;
+      const rawText = response.text();
+      console.log("--- RESPOSTA BRUTA DA IA ---", rawText);
+      const startIndex = rawText.indexOf('{');
+      const endIndex = rawText.lastIndexOf('}');
+      if (startIndex > -1 && endIndex > -1) {
+        const jsonString = rawText.substring(startIndex, endIndex + 1);
+        JSON.parse(jsonString);
+        return jsonString;
+      }
+      return "{}";
+    } catch (error) {
+      console.error("Erro na chamada ou no processamento da resposta da API Gemini:", error);
+      throw error;
+    }
+  }
+
+  async saveDiagnosisToSupabase(formData: any, diagnosisResult: object) {
+    console.log("--- [Supabase] Tentando enviar diagnóstico... ---");
+    
+    const payload = {
+      resposta_ia: diagnosisResult,
+      telefone: formData.telefone,
+      regiao: formData.localizacao,
+    };
+    
+    console.log("Payload a ser enviado:", payload);
+
+    const { data, error } = await this.supabase
+      .from('formulario1')
+      .insert([payload]);
+
+    if (error) {
+      console.error("--- [Supabase] Erro ao inserir dados: ---", error.message);
+      throw new Error(`Falha ao salvar diagnóstico no Supabase: ${error.message}`);
+    }
+
+    console.log("✅ [Supabase] Dados inseridos com sucesso.", data);
+    return data;
+  }
 
   private calculateMaturityStage(average: number): string {
     if (average >= 1.0 && average <= 1.9) return "Inicial";
@@ -421,14 +449,14 @@ class DiagnosticService {
       summary
     };
   }
+
   async generateSegmentedDiagnosis(formData: any): Promise<{ [key: string]: { strengths: string[]; weaknesses: string[] } }> {
     const segmented: { [key: string]: { strengths: string[]; weaknesses: string[] } } = {};
-
     const dimensionMap: { [key: string]: string } = {
       'pessoasCultura': 'Pessoas & Cultura',
       'estruturaOperacoes': 'Estrutura & Operações',
       'mercadoClientes': 'Mercado & Clientes',
-      'direcaoFuturo': 'Direção & Futuro' 
+      'direcaoFuturo': 'Direção & Futuro'
     };
     const selectedDimensions = formData.dimensoesAvaliar || [];
     for (const dimKey of selectedDimensions) {
@@ -497,6 +525,7 @@ class DiagnosticService {
 export default DiagnosticService;
 export type { FullDiagnosis, DiagnosisResponse };
 
+// --- LÓGICA DE QUALIFICAÇÃO DE LEAD (LEAD SCORING) ---
 type NumeroColaboradores = "ate-10" | "11-30" | "31-100" | "101-500" | "acima-500";
 type PorteEmpresa = "Startup" | "PME" | "Grande empresa";
 type InvestimentoDisponivel = "ate-10k" | "10k-50k" | "acima-50k";

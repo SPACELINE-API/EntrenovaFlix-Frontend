@@ -134,6 +134,8 @@ export default function Formulario() {
       
       localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
       
+      await service.saveDiagnosisToSupabase(data, result);
+      
       toast.dismiss(loadingToast);
       toast.success('Análise concluída com sucesso!');
 
