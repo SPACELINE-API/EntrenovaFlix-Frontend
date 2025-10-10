@@ -1,8 +1,8 @@
-import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 export default function Step1() {
-  const { register, formState: { errors } } = useFormContext();
+  const { register, formState: { errors }, watch } = useFormContext();
+  const setorPrincipalValue = watch('setorPrincipal');
 
   return (
     <div className="form-section">
@@ -10,20 +10,65 @@ export default function Step1() {
       <p className="form-desc">Informações básicas para entendermos seu contexto.</p>
       
       <div className="form-grid">
-        {/* Setor principal */}
+        {/* Nome da Empresa */}
         <div className="form-field">
-          <label htmlFor="setorPrincipal" className="label">Setor principal:</label>
+          <label htmlFor="nomeEmpresa" className="label">Nome da Empresa:</label>
           <input 
-            id="setorPrincipal" 
+            id="nomeEmpresa" 
             type="text" 
-            {...register('setorPrincipal')} 
+            {...register('nomeEmpresa')} 
             className="input" 
           />
+          {errors.nomeEmpresa?.message && (
+            <p className="error">{errors.nomeEmpresa.message as string}</p>
+          )}
+        </div>
+
+        {/* Telefone */}
+        <div className="form-field">
+          <label htmlFor="telefone" className="label">Telefone:</label>
+          <input 
+            id="telefone" 
+            type="tel" 
+            {...register('telefone')} 
+            className="input" 
+          />
+          {errors.telefone?.message && (
+            <p className="error">{errors.telefone.message as string}</p>
+          )}
+        </div>
+
+        {/* Setor principal */}
+        <div className="form-field full">
+          <label className="label">Setor principal da sua empresa:</label>
+          <div className="radio-group">
+            <label><input type="radio" value="Indústria" {...register('setorPrincipal')} /> Indústria</label>
+            <label><input type="radio" value="Serviços" {...register('setorPrincipal')} /> Serviços</label>
+            <label><input type="radio" value="Comércio / Varejo" {...register('setorPrincipal')} /> Comércio / Varejo</label>
+            <label><input type="radio" value="Tecnologia / Startups" {...register('setorPrincipal')} /> Tecnologia / Startups</label>
+            <label><input type="radio" value="Educação / Cultura" {...register('setorPrincipal')} /> Educação / Cultura</label>
+            <label><input type="radio" value="Outro" {...register('setorPrincipal')} /> Outro:</label>
+          </div>
+          {/* Input condicional para "Outro" */}
+          {setorPrincipalValue === 'Outro' && (
+            <div style={{ marginTop: '10px' }}>
+              <input 
+                id="setorPrincipalOutro" 
+                type="text" 
+                placeholder="Por favor, especifique"
+                {...register('setorPrincipalOutro')} 
+                className="input" 
+              />
+              {errors.setorPrincipalOutro?.message && (
+                <p className="error">{errors.setorPrincipalOutro.message as string}</p>
+              )}
+            </div>
+          )}
           {errors.setorPrincipal?.message && (
             <p className="error">{errors.setorPrincipal.message as string}</p>
           )}
         </div>
-
+        
         {/* Porte */}
         <div className="form-field">
           <label htmlFor="porteEmpresa" className="label">Porte:</label>
@@ -39,7 +84,7 @@ export default function Step1() {
         </div>
         
         {/* Localização */}
-        <div className="form-field full">
+        <div className="form-field">
           <label htmlFor="localizacao" className="label">Localização:</label>
           <select id="localizacao" {...register('localizacao')} className="select">
             <option value="">Selecione...</option>

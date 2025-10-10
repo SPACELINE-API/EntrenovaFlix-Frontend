@@ -51,7 +51,14 @@ body {
   margin-bottom: 2.5rem;
   color: var(--cor-texto-principal);
 }
+.rating-item p{
+  color: #C2C2C2;
+  margin-left: -0.5rem;
+}
+.rating-item{
+  margin-left: 0.9rem;
 
+}
 /* --- COMPONENTE STEPPER --- */
 .stepper-container {
   display: flex;
