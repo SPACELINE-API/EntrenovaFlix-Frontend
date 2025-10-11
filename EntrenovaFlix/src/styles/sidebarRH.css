@@ -66,15 +66,11 @@
 }
 
 .sidebar-RH-item.active {
-    background-color: #5449CC;
+    background: linear-gradient(135deg, #5449CC 25%, #0078D7 100%);
     font-weight: 700;
 }
 
 .sidebar-RH-item:hover {
-  background-color: #2a2a2a;
-  color: #fff;
-}
-
-.sidebar-RH-item.active:hover {
-  background-color: #6B5EE0;
+    background-color: #2a2a2a;
+    color: #fafafa;
 }
