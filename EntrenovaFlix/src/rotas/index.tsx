@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainLayout from '../componentes/layout/mainLayout';
 import LpLayout from '../componentes/layout/LandingPage/lpLayout';
+import DashboardRHLayout from '../componentes/layout/dashboardRH/dashboardRHLayout';
 import LandingPage from '../paginas/landingPage';
 import Login from '../paginas/login';
 import TelaColab from '../paginas/telaColab';
@@ -13,6 +14,11 @@ import DetalhePost from '../paginas/DetalhePost';
 import TelaDiagnostico from '../paginas/telaDiagnostico';
 import DevolutivaPlanos from '../paginas/devolutivaPlanos';
 import PrivateRoute from '../componentes/auth/ProtectedRoute';
+import TesteDashboard from '../paginas/TesteDashboard';
+import DashboardRH from '../paginas/RH/DashboardRH';
+import TrilhasRH from '../paginas/RH/TrilhasRH';
+import DiagnosticoRH from '../paginas/RH/DiagnosticoRH';
+import PlanosRH from '../paginas/RH/PlanosRH';
 
 const router = createBrowserRouter([
   {
@@ -56,7 +62,18 @@ const router = createBrowserRouter([
         ],
       }
     ],
-  }
+  },
+  {
+    path: '/dashboardRH',
+    element: <DashboardRHLayout />, 
+    children: [
+      { index: true, element: <DashboardRH /> },
+      { path: 'trilhas', element: <TrilhasRH /> },
+      { path: 'diagnosticos', element: <DiagnosticoRH /> },
+      { path: 'planos', element: <PlanosRH /> }
+    ],
+  },
+
 ]);
 
 function AppRoutes() {
