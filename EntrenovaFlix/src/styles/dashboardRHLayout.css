@@ -19,13 +19,15 @@
     overflow-x: hidden;
 }
 
-.dashboard-rh-main h1 {
+.titulo {
     font-family: kollektif, sans-serif;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #fafafa 0%, #545454 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: linear-gradient(to right, #ffffff, #747474);
     background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
     color: transparent;
 }
+

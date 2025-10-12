@@ -14,7 +14,6 @@ import DetalhePost from '../paginas/DetalhePost';
 import TelaDiagnostico from '../paginas/telaDiagnostico';
 import DevolutivaPlanos from '../paginas/devolutivaPlanos';
 import PrivateRoute from '../componentes/auth/ProtectedRoute';
-import TesteDashboard from '../paginas/TesteDashboard';
 import DashboardRH from '../paginas/RH/DashboardRH';
 import TrilhasRH from '../paginas/RH/TrilhasRH';
 import DiagnosticoRH from '../paginas/RH/DiagnosticoRH';
