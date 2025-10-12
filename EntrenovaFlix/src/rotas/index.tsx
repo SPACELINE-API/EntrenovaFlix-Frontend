@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider,  Navigate } from 'react-router-dom';
 import MainLayout from '../componentes/layout/mainLayout';
 import LpLayout from '../componentes/layout/LandingPage/lpLayout';
 import LandingPage from '../paginas/landingPage';
@@ -12,6 +12,8 @@ import NovoComentario from '../paginas/novoComentario';
 import DetalhePost from '../paginas/DetalhePost';
 import TelaDiagnostico from '../paginas/telaDiagnostico';
 import DevolutivaPlanos from '../paginas/devolutivaPlanos';
+import ChatBot from '../paginas/ChatBot';
+import ChatBotInicio from '../paginas/ChatBotInicio';
 
 const router = createBrowserRouter([
   {
@@ -48,9 +50,20 @@ const router = createBrowserRouter([
       { path: 'dashboard', element: <Dashboard /> },
       { path: "forum", element: <TelaForum /> },
       { path: "novo-comentario", element: <NovoComentario /> },
-      { path: "forum/post/:postId", element: <DetalhePost /> }
+      { path: "forum/post/:postId", element: <DetalhePost /> },
+      
     ],
   },
+  {
+  path: '/pagchatbot',
+  element: <ChatBotInicio />,
+  errorElement: <NotFoundPage />,
+},
+{
+  path: '/chatbot',
+  element: <ChatBot />,
+  errorElement: <NotFoundPage />,
+},
 ]);
 
 function AppRoutes() {
