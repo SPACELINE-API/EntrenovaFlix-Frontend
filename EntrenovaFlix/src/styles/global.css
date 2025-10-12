@@ -95,42 +95,72 @@ body {
   transition: padding-left 0.3s ease;
 }
 
-.telaTrilhas.sidebar-fechada {
-  padding-left: 0; 
-}
-
 .sidebar {
-  width: 250px;
-  background-color: #000000;
+  background-color: #000;
   color: white;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  position: fixed;   
-  top: 60px; 
-  left: 0;        
-  height: calc(100vh - 60px); 
-  transition: transform 0.3s ease; 
+  position: fixed;
+  top: 60px;
+  left: 0;
+  height: calc(100vh - 60px);
+  width: 250px; 
+  padding: 20px;
+  transition: width 0.4s ease, padding 0.4s ease;
   z-index: 100;
 }
 
-.sidebar.aberta {
-  transform: translateX(0);
+
+.sidebar.minimizada {
+  width: 90px;      
+  padding: 15px;    
 }
 
-.sidebar.fechada {
-  transform: translateX(-100%);
-} 
+.sidebar.aberta .sidebar-icon {
+  font-size: 20px;
+  transition: font-size 0.3s ease;
+}
+.sidebar.minimizada .sidebar-btn {
+  width: 50px;           
+  height: 50px;           
+  justify-content: center; 
+  align-items: center;     
+  padding: 0;             
+  margin-bottom: 10px;    
+  border-radius: 8px;      
+  transition: width 0.3s ease, height 0.3s ease;
+}
 
-.closeSidebarBtn {
-  background: transparent;
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
   border: none;
+  color: white;
   cursor: pointer;
-  align-self: flex-end;
-  margin-bottom: 20px;
-  color:white;
+  transition: justify-content 0.3s ease;
 }
+.toggleSidebarBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  position: absolute;    
+  top: 10px;            
+  right: 10px;
+}
+.sidebar.minimizada .toggleSidebarBtn{
+  margin: 0;                 
+  position: relative;
+  margin-bottom: 20px;
+}
+.toggleSidebarBtn:hover {
+  color: #5449CC; 
+  transform: scale(1.1);                    
+}
+
   
 .sidebarTitulo {
   margin-bottom: 20px;
