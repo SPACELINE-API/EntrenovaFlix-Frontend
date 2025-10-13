@@ -4,6 +4,7 @@ import { FaCreditCard } from "react-icons/fa6";
 import { FaLightbulb } from "react-icons/fa";
 import { PiMonitorPlayFill } from "react-icons/pi";
 import { TbReportSearch } from "react-icons/tb";
+import { FaUserFriends } from "react-icons/fa";
 
 function SidebarRH() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function SidebarRH() {
     if (path.includes('/dashboardRH/trilhas')) return 'trilhas';
     if (path.includes('/dashboardRH/diagnosticos')) return 'diagnosticos';
     if (path.includes('/dashboardRH/planos')) return 'planos';
+    if (path.includes('/dashboardRH/funcionarios')) return 'funcionarios';
     return 'visao-geral'; // default
   };
 
@@ -57,6 +59,13 @@ function SidebarRH() {
         >
           <FaCreditCard size={24}/>
           Planos
+        </button>
+        <button
+          className={`sidebar-RH-item ${activeItem === 'funcionarios' ? 'active' : ''}`}
+          onClick={() => navigate('/dashboardRH/funcionarios')}
+        >
+          <FaUserFriends size={24}/>
+          Funcionários
         </button>
       </nav>
     </div>
