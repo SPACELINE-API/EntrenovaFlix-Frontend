@@ -3,7 +3,6 @@ import '../styles/diagnostico.css';
 import { FaUsers, FaDirections } from "react-icons/fa";
 import { PiTreeStructureFill } from "react-icons/pi";
 import { MdBusiness } from "react-icons/md";
-import Button from '../componentes/ui/botões/botao';
 
 interface DiagnosisData {
   strengths: string[];
@@ -70,11 +69,6 @@ const RenderPoints = ({ title, points, type }: { title: string, points: string[]
 export default function TelaDiagnostico() {
   const [diagnosis, setDiagnosis] = useState<SegmentedDiagnosis | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const email = 'contato@entrenova.com.br';
-  const subject = 'Contato Pelo Site - Diagnóstico Aprofundado';
-  const body = `Olá!\nGostaria marcar uma consultoria para um diagnóstico mais aprofundado,\n[Seu Nome]`;
-  const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
   useEffect(() => {
     try {
@@ -156,15 +150,12 @@ export default function TelaDiagnostico() {
           Para receber um relatório completo e um diagnóstico aprofundado, entre em contato
           conosco!
         </p>
-        <Button className="btn-agendar" to='devolutiva'>
+        <a className="btn-agendar" href="/diagnostico/devolutiva">
           Acesse nossos planos
-        </Button>
-
-        <a href={mailtoLink} style={{ textDecoration: 'none' }}>
-          <Button className='btn-agendar' >
-            Consultoria
-          </Button>
         </a>
+        <button className='btn-agendar'>
+          Baixar meus resultados
+        </button>
       </div>
     </div>
   );

@@ -1,15 +1,27 @@
 import { z } from "zod";
 
 export const step1Schema = z.object({
+
+  nomePes: z.string().min(1, { message: "Por favor, preencha com seu nome." }),
+
+  cargo:z.string().min(1, { message: "Por favor, preencha com seu cargo." }),
+
   nomeEmpresa: z.string().min(1, { message: "Por favor, preencha o nome." }),
-  telefone: z.string()
-    .min(1, { message: 'O telefone é obrigatório.' })
-    .refine(value => {
-      const numericValue = value.replace(/\D/g, '');
-      return numericValue.length === 10 || numericValue.length === 11;
-    }, {
-      message: 'Número de telefone inválido. Use o formato (XX) XXXXX-XXXX.'
-    }),
+
+  cnpj: z.string()
+    .min(1, { message: 'Por favor, preencha o campo.' })
+    .transform(val => val.replace(/\D/g, ''))
+    .pipe(z.string()
+        .length(14, { message: "O CNPJ deve ter 14 dígitos." })
+        .regex(/^\d+$/, { message: "O CNPJ deve conter apenas números." })
+    ),
+
+  telefone: z.string().min(8, { message: 'O telefone deve ter no mínimo 8 dígitos.' }),
+
+  email: z.string()
+  .min(1, {message: 'Por favor, preencha o campo'})
+  .email({ message: "Por favor, insira um endereço de e-mail válido (ex: nome@dominio.com)." }),
+  
   setorPrincipal: z.enum(["Indústria", "Serviços", "Comércio / Varejo", "Tecnologia / Startups", "Educação / Cultura"], {
     message: "Selecione o setor.",
   }),
@@ -61,9 +73,17 @@ export const step3Schema = z
 
     mercadoClientes_escuta: z.string().optional(),
     mercadoClientes_colaboracao: z.string().optional(),
+    mercadoClientes_reacaoMudanca: z.string().optional(),
+    mercadoClientes_metas: z.string().optional(),
+    mercadoClientes_diferencial: z.string().optional(),
+    mercadoClientes_ferramentas: z.string().optional(),
 
     direcaoFuturo_visao: z.string().optional(),
     direcaoFuturo_estrategia: z.string().optional(),
+    direcaoFuturo_inovacao: z.string().optional(),
+    direcaoFuturo_conexaoEstrategia: z.string().optional(),
+    direcaoFuturo_proposito: z.string().optional(),
+    direcaoFuturo_ferramentas: z.string().optional()
   })
   .superRefine((data, ctx) => {
     const checkFields = (prefix: string, fields: string[]) => {
@@ -83,8 +103,8 @@ export const step3Schema = z
 
     checkFields("pessoasCultura", ["comunicacao", "lideranca", "resolucaoProblemas", "rotina", "valores", "ferramentas"]);
     checkFields("estruturaOperacoes", ["trocaInformacoes","delegacao","processos","autonomia","qualidade","ferramentas"]);
-    checkFields("mercadoClientes", ["escuta","colaboracao"]);
-    checkFields("direcaoFuturo", ["visao","estrategia"]);
+    checkFields("mercadoClientes", ["escuta","colaboracao", "reacaoMudanca", "metas", "diferencial", "ferramentas"]);
+    checkFields("direcaoFuturo", ["visao","estrategia", "inovacao", "conexaoEstrategia", "proposito", "ferramentas"]);
   });
 
 
@@ -98,11 +118,32 @@ export const step4Schema = z.object({
   }),
 });
 
+export const step5Schema = z.object({
+  preferenciaFormato: z.string().min(1, { message: "Selecione o formato preferido de aprendizagem." }),
+  duracaoPreferida: z.string().min(1, { message: "Selecione a duração preferida dos treinamentos." }),
+  contextoTrabalho: z.string().min(1, { message: "Selecione o principal contexto de trabalho da equipe." }),
+  formaAprendizagem: z.string().min(1, { message: "Selecione como a equipe costuma aprender melhor." }),
+  modoAprendizagem: z.string().min(1, { message: "Selecione se a aprendizagem é mais eficaz individualmente ou em grupo." }),
+  tempoDisponivel: z.string().min(1, { message: "Informe o tempo disponível semanal para treinamentos." }),
+});
+
+export const step6Schema = z.object({
+  treinamentosRecentes: z.string().min(1, { message: "Informe se houve treinamentos formais nos últimos 12 meses." }),
+  beneficiosSuficientes: z.string().min(1, { message: "Informe se os benefícios atuais atendem à equipe." }),
+  transparenciaPromocoes: z.enum(["0", "1", "2", "3", "4", "5"], { message: "Classifique a transparência nas promoções." }),
+  acoesSociaisAmbientais: z.string().min(1, { message: "Informe se a empresa apoia ações sociais e ambientais." }),
+  iniciativasCulturais: z.string().min(1, { message: "Informe se a empresa incentiva cultura, arte ou criatividade." }),
+  apoioHobbies: z.string().min(1, { message: "Informe se há espaço para hobbies e talentos pessoais." }),
+  valorizaAprendizadoNaoFormal: z.enum(["0", "1", "2", "3", "4", "5"], { message: "Classifique o quanto a empresa valoriza aprendizado não formal." }),
+});
+
 
 export const fullFormSchema = step1Schema
   .merge(step2Schema)
   .merge(step3Schema)
-  .merge(step4Schema);
+  .merge(step4Schema)
+  .merge(step5Schema)
+  .merge(step6Schema);
 
 
 export type FormData = z.infer<typeof fullFormSchema>;

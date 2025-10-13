@@ -57,8 +57,11 @@
 }
 .popText.mantine-Text-root{
     font-family: 'inter';
-    font-weight: 500;
-    color: whitesmoke;
+    font-size: 0.8rem;
+    font-weight: 300;
+    text-align: center;
+    color: rgb(183, 183, 183);
+    margin-bottom: -1rem;
 }
 .popDrop.mantine-Popover-dropdown{
     background-color: #222222;
@@ -91,6 +94,10 @@
     opacity: 0.2 !important;
     font-size: 1rem;
     font-weight: 400;
+}
+.loginInputField:-webkit-autofill{
+    -webkit-text-fill-color: var(--cor-texto-principal) !important; 
+    -webkit-box-shadow: 0 0 0 30px #222222 inset !important; 
 }
 .loginLink{
     text-decoration: none;

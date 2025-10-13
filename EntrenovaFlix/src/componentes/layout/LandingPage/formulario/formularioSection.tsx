@@ -3,23 +3,27 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import DiagnosticService from '../../../services/diagnosticService';
-import { useQuestionnaire } from '../../../contexts/QuestionnaireContext';
+import DiagnosticService from '../../../../services/diagnosticService';
+import { useQuestionnaire } from '../../../../contexts/QuestionnaireContext';
 
-import { step1Schema, step2Schema, step3Schema, step4Schema, FormData } from './formsZoc';
+import { step1Schema, step2Schema, step3Schema, step4Schema, FormData, step5Schema, step6Schema } from './formsZoc';
 
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import Step4 from './Step4';
 import Step5 from './Step5';
+import Step6 from './step6';
+import Step7 from './step7';
 
 const steps = [
   { id: 1, title: 'Perfil da Empresa' },
   { id: 2, title: 'Desafios e Objetivos' },
   { id: 3, title: 'Diagnóstico' },
   { id: 4, title: 'Investimento' },
-  { id: 5, title: 'FIM' },
+  { id: 5, title: 'Aprendizagem' },
+  { id: 6, title: 'ESG + DHO' },
+  { id: 7, title: 'FIM' },
 ];
 
 export default function Formulario() {
@@ -31,10 +35,10 @@ export default function Formulario() {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const stepSchemas = [step1Schema, step2Schema, step3Schema, step4Schema];
+  const stepSchemas = [step1Schema, step2Schema, step3Schema, step4Schema, step5Schema, step6Schema];
 
   const methods = useForm<FormData>({
-    resolver: zodResolver(step1Schema.merge(step2Schema).merge(step3Schema).merge(step4Schema)),
+    resolver: zodResolver(step1Schema.merge(step2Schema).merge(step3Schema).merge(step4Schema).merge(step5Schema).merge(step6Schema)),
     mode: 'onChange',
     defaultValues: {
       desafiosPrioritarios: [],
@@ -69,12 +73,14 @@ export default function Formulario() {
       }
       if (selectedDimensions.includes('mercadoClientes')) {
         dynamicFields.push(
-          'mercadoClientes_escuta', 'mercadoClientes_colaboracao',
+          'mercadoClientes_escuta', 'mercadoClientes_colaboracao', 'mercadoClientes_reacaoMudanca', 
+          'mercadoClientes_metas', 'mercadoClientes_diferencial', 'mercadoClientes_ferramentas'
         );
       }
       if (selectedDimensions.includes('direcaoFuturo')) {
         dynamicFields.push(
-          'direcaoFuturo_visao', 'direcaoFuturo_estrategia',
+          'direcaoFuturo_visao', 'direcaoFuturo_estrategia', 'direcaoFuturo_inovacao',
+          'direcaoFuturo_conexaoEstrategia', 'direcaoFuturo_proposito', 'direcaoFuturo_ferramentas'
         );
       }
       fieldsToValidate = dynamicFields;
@@ -125,8 +131,16 @@ export default function Formulario() {
         estruturaOperacoes_6: data.estruturaOperacoes_ferramentas,
         mercadoClientes_1: data.mercadoClientes_escuta,
         mercadoClientes_2: data.mercadoClientes_colaboracao,
+        mercadoClientes_3: data.mercadoClientes_reacaoMudanca,
+        mercadoClientes_4: data.mercadoClientes_metas,
+        mercadoClientes_5: data.mercadoClientes_diferencial,
+        mercadoClientes_6: data.mercadoClientes_ferramentas,
         direcaoFuturo_1: data.direcaoFuturo_visao,
         direcaoFuturo_2: data.direcaoFuturo_estrategia,
+        direcaoFuturo_3: data.direcaoFuturo_inovacao,
+        direcaoFuturo_4: data.direcaoFuturo_conexaoEstrategia,
+        direcaoFuturo_5: data.direcaoFuturo_proposito,
+        direcaoFuturo_6: data.direcaoFuturo_ferramentas
       };
 
       const service = new DiagnosticService(apiKey);
@@ -159,7 +173,10 @@ export default function Formulario() {
   return (
     <FormProvider {...methods}>
       <form ref={formRef} onSubmit={handleSubmit(processForm, onInvalid)} className="diagnostico-form">
-        <h2 className="form-main-title">Responda ao formulário para ter acesso as trilhas</h2>
+        <h2 className="form-main-title">Monte seu plano personalizado</h2>
+        <p className="form-subtitle">
+          O diagnóstico leva menos de 5 minutos e nos ajuda a entender os principais desafios e objetivos da sua empresa.
+        </p>
 
         <div className="stepper-container">
           {steps.map(step => {
@@ -188,7 +205,9 @@ export default function Formulario() {
             {currentStep === 2 && <Step2 />}
             {currentStep === 3 && <Step3 />}
             {currentStep === 4 && <Step4 />}
-            {currentStep === 5 && <Step5 onNavigate={() => navigate('/diagnostico')} />}
+            {currentStep === 5 && <Step5 />}
+            {currentStep === 6 && <Step6 />}
+            {currentStep === 7 && <Step7 onNavigate={() => navigate('/diagnostico')} />}
           </div>
         </div>
 

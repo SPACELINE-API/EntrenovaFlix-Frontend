@@ -1,7 +1,7 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Popover, Fieldset, TextInput, Button, Group, PasswordInput, Stack, Box, Text } from '@mantine/core';
+import { Popover, Fieldset, TextInput, Button, Group, PasswordInput, Stack, Box, Text, Anchor } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom'; 
 import { loginSchema, type LoginFormData } from './schemaZod';
 import authService from "../../../services/authService";
@@ -81,7 +81,12 @@ export default function LgSection() {
 
                 <Popover.Dropdown className='popDrop'>
                   <Stack>
-                    <Text ta='center' size="xs" className='popText'>Converse com o administrador responsável!</Text>
+                    <Text className='popText'>
+                      Converse com o administrador responsável! <br /> ou
+                    </Text>
+                    <Anchor href="http://localhost:5173/diagnostico/devolutiva" target="_blank" size="sm" ta="center">
+                      Contrate um de nossos planos
+                    </Anchor>
                   </Stack>
                 </Popover.Dropdown>
               </Popover>
