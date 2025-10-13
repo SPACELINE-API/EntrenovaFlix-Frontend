@@ -27,11 +27,23 @@ async function postFuncionarios(dados: {
       body: JSON.stringify(mensagem),
     });
 
+    const responseBody = await response.text();
+
     if (!response.ok) {
-      throw new Error("Falha na resposta do servidor.");
+      console.error("Resposta do servidor (erro):", responseBody);
+      try {
+        const errorJson = JSON.parse(responseBody);
+        throw new Error(errorJson.message || "Falha na resposta do servidor.");
+      } catch (e) {
+        throw new Error("O servidor retornou um erro inesperado (não-JSON). Verifique o console do navegador e do backend.");
+      }
     }
+    
+    return JSON.parse(responseBody);
+
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
+    throw error;
   }
 }
 
@@ -48,6 +60,7 @@ function FuncionariosRH() {
   const [emailError, setEmailError] = useState("");
   const [cpfError, setCpfError] = useState("");
   const [telefoneError, setTelefoneError] = useState("");
+  const [submitStatus, setSubmitStatus] = useState({ message: "", type: "" });
 
   const validaCPF = (cpf: string) => {
     const cpfLimpo = cpf.replace(/[^\d]+/g, "");
@@ -142,8 +155,9 @@ function FuncionariosRH() {
     setConfirmarSenha(senhaPadrao);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitStatus({ message: "", type: "" });
 
     const dadosFuncionario = {
       nome,
@@ -152,10 +166,30 @@ function FuncionariosRH() {
       telefone,
       nascimento,
       senha,
-      confirmarSenha,
     };
 
-    postFuncionarios(dadosFuncionario);
+    try {
+      const responseData = await postFuncionarios(dadosFuncionario);
+      setSubmitStatus({
+        message: responseData.message || "Funcionário cadastrado com sucesso!",
+        type: "success",
+      });
+      setNome("");
+      setEmail("");
+      setCpf("");
+      setTelefone("");
+      setnascimento("");
+      setSenha("");
+      setConfirmarSenha("");
+      setEmailError("");
+      setCpfError("");
+      setTelefoneError("");
+    } catch (error: any) {
+      setSubmitStatus({
+        message: error.message || "Ocorreu um erro ao cadastrar.",
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -259,6 +293,18 @@ function FuncionariosRH() {
             onChange={(e) => setConfirmarSenha(e.target.value)}
           />
         </div>
+
+        {submitStatus.message && (
+          <div
+            className={
+              submitStatus.type === "success"
+                ? "success-message"
+                : "error-message"
+            }
+          >
+            {submitStatus.message}
+          </div>
+        )}
 
         <div className="rh-form-actions">
           <button
