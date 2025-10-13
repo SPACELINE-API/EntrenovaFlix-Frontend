@@ -521,3 +521,34 @@ body {
   margin-bottom: 1rem;
 }
 
+/*respondividade*/
+@media (max-width: 768px) {
+   .headerContainer{
+      padding: 0rem 1rem; 
+      font-size: 1rem; 
+       
+   }
+   .navigation {
+      gap: 2.5rem;
+      font-size: 1rem;
+    
+      
+   }
+   .brandLogo span {
+      font-size: 1rem;
+      letter-spacing: 0.1px;    
+      
+    }
+  .tituloTrilha{
+      font-size: 30px;
+      
+    }
+    .sidebarTitulo {
+      font-size: 18px;
+    
+    }
+    .sidebar {
+      width: 230px;
+  }
+ 
+}
