@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'Kollektif';
+    src: url('../assets/fontes/kollektif/Kollektif.ttf');
+}
+@font-face {
+    font-family: 'techno_wanker';
+    src: url('../assets/fontes/techno_wanker/TechnoWanker.ttf');
+}
+@font-face {
+    font-family: 'Satoshi';
+    src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
+}
+
+.sidebar-RH {
+    width: 250px;
+    height: 100vh;
+    background-color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    border-right: 1px solid #333;
+}
+
+.sidebar-RH-header { 
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 46px;
+}
+
+.sidebar-RH-header h2 {
+    font-family: 'techno_wanker';
+    font-weight: 100;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    color: #fafafa;
+}
+
+.sidebar-RH-header p {
+    font-family: 'Satoshi';
+    color: #0078D7;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+.sidebar-RH-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 43px;
+}
+
+.sidebar-RH-item {
+    display: flex;
+    align-items: center;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #fafafa;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    border-radius: 15px;
+    gap: 1rem;
+}
+
+.sidebar-RH-item.active {
+    background: linear-gradient(135deg, #5449CC 25%, #0078D7 100%);
+    font-weight: 700;
+}
+
+.sidebar-RH-item:hover {
+    background-color: #2a2a2a;
+    color: #fafafa;
+}
