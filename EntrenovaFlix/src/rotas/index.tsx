@@ -18,6 +18,7 @@ import DashboardRH from '../paginas/RH/DashboardRH';
 import TrilhasRH from '../paginas/RH/TrilhasRH';
 import DiagnosticoRH from '../paginas/RH/DiagnosticoRH';
 import PlanosRH from '../paginas/RH/PlanosRH';
+import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 
 const router = createBrowserRouter([
   {
@@ -69,7 +70,8 @@ const router = createBrowserRouter([
       { index: true, element: <DashboardRH /> },
       { path: 'trilhas', element: <TrilhasRH /> },
       { path: 'diagnosticos', element: <DiagnosticoRH /> },
-      { path: 'planos', element: <PlanosRH /> }
+      { path: 'planos', element: <PlanosRH /> },
+      { path: 'funcionarios', element: <FuncionariosRH />}
     ],
   },
 
