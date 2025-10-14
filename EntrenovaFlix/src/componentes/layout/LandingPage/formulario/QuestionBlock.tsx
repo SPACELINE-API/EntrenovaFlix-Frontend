@@ -1,5 +1,4 @@
-    import { useFormContext, FieldError } from 'react-hook-form'; // Importe FieldError
-
+    import { useFormContext, FieldError } from 'react-hook-form';
     type QuestionBlockProps = {
         name: string;
         question: string;

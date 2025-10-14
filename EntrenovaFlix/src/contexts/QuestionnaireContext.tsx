@@ -2,15 +2,16 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 
 interface QuestionnaireContextType {
   isQuestionnaireCompleted: boolean;
-  setQuestionnaireCompleted: (completed: boolean) => void;
+  setQuestionnaireCompleted: (completed: boolean, diagnosticData?: any) => void;
   hasDiagnosticResult: boolean;
+  diagnosticResult: any | null;
 }
 
 const QuestionnaireContext = createContext<QuestionnaireContextType | undefined>(undefined);
 
 export const useQuestionnaire = () => {
   const context = useContext(QuestionnaireContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useQuestionnaire must be used within a QuestionnaireProvider');
   }
   return context;
@@ -21,22 +22,32 @@ interface QuestionnaireProviderProps {
 }
 
 export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ children }) => {
-  const [isQuestionnaireCompleted, setIsQuestionnaireCompleted] = useState(false);
+  const [isQuestionnaireCompleted, setIsQuestionnaireCompletedState] = useState(false);
   const [hasDiagnosticResult, setHasDiagnosticResult] = useState(false);
+  const [diagnosticResult, setDiagnosticResult] = useState<any | null>(null);
 
   useEffect(() => {
     const completed = localStorage.getItem('questionnaireCompleted') === 'true';
-    const diagnosticResult = localStorage.getItem('lastDiagnosticResult');
+    const storedResult = localStorage.getItem('segmentedDiagnosis');
 
-    setIsQuestionnaireCompleted(completed);
-    setHasDiagnosticResult(!!diagnosticResult);
+    setIsQuestionnaireCompletedState(completed);
+    setHasDiagnosticResult(!!storedResult);
+    setDiagnosticResult(storedResult ? JSON.parse(storedResult) : null);
   }, []);
 
-  const setQuestionnaireCompleted = (completed: boolean) => {
-    setIsQuestionnaireCompleted(completed);
-    localStorage.setItem('questionnaireCompleted', completed.toString());
-    const diagnosticResult = localStorage.getItem('lastDiagnosticResult');
-    setHasDiagnosticResult(!!diagnosticResult);
+  const setQuestionnaireCompleted = (completed: boolean, diagnosticData?: any) => {
+    setIsQuestionnaireCompletedState(completed);
+    localStorage.setItem('questionnaireCompleted', String(completed));
+
+    if (diagnosticData) {
+      localStorage.setItem('segmentedDiagnosis', JSON.stringify(diagnosticData));
+      setDiagnosticResult(diagnosticData);
+      setHasDiagnosticResult(true);
+    } else {
+      const storedResult = localStorage.getItem('segmentedDiagnosis');
+      setDiagnosticResult(storedResult ? JSON.parse(storedResult) : null);
+      setHasDiagnosticResult(!!storedResult);
+    }
   };
 
   return (
@@ -45,6 +56,7 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
         isQuestionnaireCompleted,
         setQuestionnaireCompleted,
         hasDiagnosticResult,
+        diagnosticResult,
       }}
     >
       {children}

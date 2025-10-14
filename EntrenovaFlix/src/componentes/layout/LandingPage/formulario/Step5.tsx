@@ -1,7 +1,7 @@
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 
 export default function Step5() {
- const { register, formState: { errors } } = useFormContext();
+ const { register, formState: { errors }, control } = useFormContext();
 
  return (
   <div className="form-section">
@@ -9,14 +9,22 @@ export default function Step5() {
    <p className="form-desc">Essas respostas ajudam a personalizar os formatos de desenvolvimento.</p>
 
    <div className="input-group">
-      <label className="form-label">Qual formato sua equipe aproveitaria melhor?</label>
-      <div className="radio-group">
-        <label><input {...register('preferenciaFormato')} type="radio" value="Vídeo" /> Vídeo</label>
-        <label><input {...register('preferenciaFormato')} type="radio" value="Áudio" /> Áudio</label>
-        <label><input {...register('preferenciaFormato')} type="radio" value="Leitura" /> Leitura</label>
-        <label><input {...register('preferenciaFormato')} type="radio" value="Prática" /> Prática (simulação/jogo)</label>
-      </div>
-      {errors.preferenciaFormato?.message && <p className="error">{errors.preferenciaFormato.message as string}</p>}
+      <div className="input-group">
+          <label className="form-label">Qual a faixa de investimento disponível para treinamentos atualmente? </label>
+          <Controller
+            name="preferenciaFormato"
+            control={control}
+            render={({ field }) => (
+            <div className="radio-group">
+               <label><input {...register('preferenciaFormato')} type="radio" value="Vídeo" /> Vídeo</label>
+               <label><input {...register('preferenciaFormato')} type="radio" value="Áudio" /> Áudio</label>
+               <label><input {...register('preferenciaFormato')} type="radio" value="Leitura" /> Leitura</label>
+               <label><input {...register('preferenciaFormato')} type="radio" value="Prática" /> Prática (simulação/jogo)</label>
+            </div>
+            )}
+          />
+          {errors.preferenciaFormato?.message && <p className="error">{errors.preferenciaFormato.message as string}</p>}
+        </div>
    </div>
 
    <div className="input-group">
@@ -60,10 +68,10 @@ export default function Step5() {
    <div className="input-group">
     <label className="form-label">Quantas horas semanais podem dedicar a treinamentos?</label>
     <div className="radio-group">
-     <label><input {...register('tempoDisponivel')} type="radio" value="Menos de 1h" /> Menos de 1h</label>
-     <label><input {...register('tempoDisponivel')} type="radio" value="1-3h" /> 1-3h</label>
-     <label><input {...register('tempoDisponivel')} type="radio" value="3-5h" /> 3-5h</label>
-     <label><input {...register('tempoDisponivel')} type="radio" value="Mais de 5h" /> Mais de 5h</label>
+     <label><input {...register('tempoDisponivel')} type="radio" value="Menosde1" /> Menos de 1h</label>
+     <label><input {...register('tempoDisponivel')} type="radio" value="1a3h" /> 1-3h</label>
+     <label><input {...register('tempoDisponivel')} type="radio" value="3a5h" /> 3-5h</label>
+     <label><input {...register('tempoDisponivel')} type="radio" value="Maisde5" /> Mais de 5h</label>
     </div>
     {errors.tempoDisponivel?.message && <p className="error">{errors.tempoDisponivel.message as string}</p>}
    </div>

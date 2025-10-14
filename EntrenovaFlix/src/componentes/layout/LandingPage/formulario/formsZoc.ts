@@ -108,32 +108,79 @@ export const step3Schema = z
   });
 
 
-export const step4Schema = z.object({
-  faixaInvestimento: z.enum(["ate10k", "10ka50k", "acima50k"], {
-    message: "Selecione uma faixa de investimento.",
-  }),
+export const step4Schema = z
+  .object({
+    faixaInvestimento: z.enum(["ate10k", "10ka50k", "acima50k"], {
+      message: "Selecione uma faixa de investimento.",
+    }),
+    decisorContratacao: z.enum(["CEO/Diretor", "RH/T&D", "Marketing", "Outro"], {
+      message: "Selecione um decisor.",
+    }),
+    preferenciaTreinamento: z.enum(["Presenciais", "Online", "Hibridos"], {
+      message: "Selecione uma preferência de treinamento.",
+    }),
+    aberturaInovacao: z.enum(["1", "2", "3", "4", "5"], {
+      message: "Classifique a pergunta de acordo.",
+    }),
+    importanciaDesenvolvimento: z.enum(["1", "2", "3", "4", "5"], {
+      message: "Classifique a pergunta de acordo.",
+    }),
+     importanciaSoftSkills: z.enum(["1", "2", "3", "4", "5"], {
+      message: "Classifique a pergunta de acordo.",
+    }),
+     importanciaCultura: z.enum(["1", "2", "3", "4", "5"], {
+      message: "Classifique a pergunta de acordo.",
+    }),
+     importanciaImpacto: z.enum(["1", "2", "3", "4", "5"], {
+      message: "Classifique a pergunta de acordo.",
+    }),
+    implementouProjetosInovadores: z.enum(["Sim", "Nao"], {
+      message: "Selecione uma opção.",
+    }),
+    tempoInicio: z.enum(["Imediatamente", "ate3meses", "6mesesoumais"], {
+      message: "Selecione um tempo para iniciar.",
+    }),
+  });
 
-  aberturaInovacao: z.enum(["1", "2", "3", "4", "5"], {
-    message: "Classifique a abertura para inovação.",
-  }),
-});
 
 export const step5Schema = z.object({
-  preferenciaFormato: z.string().min(1, { message: "Selecione o formato preferido de aprendizagem." }),
-  duracaoPreferida: z.string().min(1, { message: "Selecione a duração preferida dos treinamentos." }),
-  contextoTrabalho: z.string().min(1, { message: "Selecione o principal contexto de trabalho da equipe." }),
-  formaAprendizagem: z.string().min(1, { message: "Selecione como a equipe costuma aprender melhor." }),
-  modoAprendizagem: z.string().min(1, { message: "Selecione se a aprendizagem é mais eficaz individualmente ou em grupo." }),
-  tempoDisponivel: z.string().min(1, { message: "Informe o tempo disponível semanal para treinamentos." }),
+  preferenciaFormato: z.enum(["Vídeo", "Áudio", "Leitura", "Prática"],{ 
+    message: "Selecione o formato preferido de aprendizagem."
+  }),
+  duracaoPreferida: z.enum(["Longos", "Curtos"],{ 
+    message: "Selecione a duração preferida dos treinamentos."
+  }),
+  contextoTrabalho: z.enum(["Computador", "Deslocamento", "Manual"],{ 
+    message: "Selecione o principal contexto de trabalho da equipe."
+  }),
+  formaAprendizagem: z.enum(["Vídeos", "Áudios", "Leitura"],{ 
+    message: "Selecione o formato atual de aprendizagem."
+  }),
+  modoAprendizagem: z.enum(["Individual", "Grupo"],{ 
+    message: "Selecione o formato atual de aprendizagem."
+  }),
+  tempoDisponivel: z.enum(["Menosde1", "1a3h", "3a5h", "Maisde5"],{ 
+    message: "Informe o tempo disponível semanal para treinamentos."
+  }),
 });
 
 export const step6Schema = z.object({
-  treinamentosRecentes: z.string().min(1, { message: "Informe se houve treinamentos formais nos últimos 12 meses." }),
-  beneficiosSuficientes: z.string().min(1, { message: "Informe se os benefícios atuais atendem à equipe." }),
+  treinamentosRecentes: z.enum(["Sim", "Nao"],{ 
+    message: "Informe se houve treinamentos formais nos últimos 12 meses."
+  }),
+  beneficiosSuficientes: z.enum(["Sim", "Parcialmente", "Nao"],{ 
+    message: "Informe se os benefícios atuais atendem à equipe."
+  }),
   transparenciaPromocoes: z.enum(["0", "1", "2", "3", "4", "5"], { message: "Classifique a transparência nas promoções." }),
-  acoesSociaisAmbientais: z.string().min(1, { message: "Informe se a empresa apoia ações sociais e ambientais." }),
-  iniciativasCulturais: z.string().min(1, { message: "Informe se a empresa incentiva cultura, arte ou criatividade." }),
-  apoioHobbies: z.string().min(1, { message: "Informe se há espaço para hobbies e talentos pessoais." }),
+  acoesSociaisAmbientais: z.enum(["Sim", "Parcialmente", "Nao"],{ 
+    message: "Classifique a transparência nas promoções."
+  }),
+  iniciativasCulturais: z.enum(["Sim", "Parcialmente", "Nao"],{ 
+    message: "Informe se a empresa incentiva cultura, arte ou criatividade."
+  }),
+  apoioHobbies: z.enum(["Sim", "Parcialmente", "Nao"],{ 
+    message: "nforme se há espaço para hobbies e talentos pessoais."
+  }),
   valorizaAprendizadoNaoFormal: z.enum(["0", "1", "2", "3", "4", "5"], { message: "Classifique o quanto a empresa valoriza aprendizado não formal." }),
 });
 

@@ -16,7 +16,7 @@ function SidebarRH() {
     if (path.includes('/dashboardRH/diagnosticos')) return 'diagnosticos';
     if (path.includes('/dashboardRH/planos')) return 'planos';
     if (path.includes('/dashboardRH/funcionarios')) return 'funcionarios';
-    return 'visao-geral'; // default
+    return 'visao-geral';
   };
 
   const activeItem = getActiveItem();

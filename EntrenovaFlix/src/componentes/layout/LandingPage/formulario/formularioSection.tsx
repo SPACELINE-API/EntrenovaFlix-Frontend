@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
@@ -27,25 +27,62 @@ const steps = [
 ];
 
 export default function Formulario() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-  const { setQuestionnaireCompleted } = useQuestionnaire();
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setQuestionnaireCompleted } = useQuestionnaire();
+  const savedProgress = localStorage.getItem('formProgress');
+  const questionnaireCompleted = localStorage.getItem('questionnaireCompleted') === 'true';
+  const initialData = savedProgress ? JSON.parse(savedProgress).data : {};
 
+  const [currentStep, setCurrentStep] = useState<number>(() => {
+    if (questionnaireCompleted) return 7; 
+    if (savedProgress) return JSON.parse(savedProgress).step;
+    return 1; 
+  });
+
+  const [completedSteps, setCompletedSteps] = useState<number[]>(() => {
+    if (questionnaireCompleted) return [1,2,3,4,5,6]; 
+    if (savedProgress) {
+      const step = JSON.parse(savedProgress).step;
+      return Array.from({ length: step - 1 }, (_, i) => i + 1);
+    }
+    return [];
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   const stepSchemas = [step1Schema, step2Schema, step3Schema, step4Schema, step5Schema, step6Schema];
 
   const methods = useForm<FormData>({
-    resolver: zodResolver(step1Schema.merge(step2Schema).merge(step3Schema).merge(step4Schema).merge(step5Schema).merge(step6Schema)),
+    resolver: zodResolver(
+      step1Schema
+        .merge(step2Schema)
+        .merge(step3Schema)
+        .merge(step4Schema)
+        .merge(step5Schema)
+        .merge(step6Schema)
+    ),
     mode: 'onChange',
     defaultValues: {
       desafiosPrioritarios: [],
       objetivosPrincipais: [],
       dimensoesAvaliar: [],
+      ...initialData,
     },
   });
+
+  useEffect(() => {
+    const subscription = methods.watch((values) => {
+      localStorage.setItem(
+        'formProgress',
+        JSON.stringify({
+          step: currentStep,
+          data: values,
+        })
+      );
+    });
+    return () => subscription.unsubscribe();
+  }, [methods, currentStep]);
 
   const { trigger, handleSubmit, getValues } = methods;
 
@@ -55,10 +92,10 @@ export default function Formulario() {
 
   const handleNext = async () => {
     let fieldsToValidate = Object.keys(stepSchemas[currentStep - 1]?.shape || {}) as (keyof FormData)[];
-    
     if (currentStep === 3) {
       const selectedDimensions = getValues('dimensoesAvaliar') || [];
       const dynamicFields: (keyof FormData)[] = ['dimensoesAvaliar'];
+
       if (selectedDimensions.includes('pessoasCultura')) {
         dynamicFields.push(
           'pessoasCultura_comunicacao', 'pessoasCultura_lideranca', 'pessoasCultura_resolucaoProblemas',
@@ -73,7 +110,7 @@ export default function Formulario() {
       }
       if (selectedDimensions.includes('mercadoClientes')) {
         dynamicFields.push(
-          'mercadoClientes_escuta', 'mercadoClientes_colaboracao', 'mercadoClientes_reacaoMudanca', 
+          'mercadoClientes_escuta', 'mercadoClientes_colaboracao', 'mercadoClientes_reacaoMudanca',
           'mercadoClientes_metas', 'mercadoClientes_diferencial', 'mercadoClientes_ferramentas'
         );
       }
@@ -83,6 +120,7 @@ export default function Formulario() {
           'direcaoFuturo_conexaoEstrategia', 'direcaoFuturo_proposito', 'direcaoFuturo_ferramentas'
         );
       }
+
       fieldsToValidate = dynamicFields;
     }
 
@@ -110,10 +148,7 @@ export default function Formulario() {
 
     try {
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-
-      if (!apiKey) {
-        throw new Error('Chave da API do Gemini não encontrada.');
-      }
+      if (!apiKey) throw new Error('Chave da API do Gemini não encontrada.');
 
       const mappedData = {
         ...data,
@@ -145,18 +180,17 @@ export default function Formulario() {
 
       const service = new DiagnosticService(apiKey);
       const result = await service.generateSegmentedDiagnosis(mappedData);
-      
+
       localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
-      
-      await service.saveDiagnosisToSupabase(data, result);
-      
+      localStorage.setItem('lastDiagnosticResult', JSON.stringify(result));
+
       toast.dismiss(loadingToast);
       toast.success('Análise concluída com sucesso!');
 
       if (!completedSteps.includes(currentStep)) setCompletedSteps(prev => [...prev, currentStep]);
       setCurrentStep(prev => prev + 1);
       scrollToTop();
-      setQuestionnaireCompleted(true);
+      setQuestionnaireCompleted(true, result);
 
     } catch (error) {
       console.error("Erro no processamento do formulário:", error);
@@ -182,12 +216,12 @@ export default function Formulario() {
 
         <div className="stepper-container">
           {steps.map(step => {
-            const isCompleted = completedSteps.includes(step.id) || currentStep > step.id;
+            const isCompleted = completedSteps.includes(step.id) || currentStep >= step.id;
             const isActive = currentStep === step.id;
             return (
               <div key={step.id} className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}>
                 <div className="step-icon-wrapper">
-                  {isCompleted && step.id !== steps.length ? (
+                  {isCompleted ? ( 
                     <svg className="step-icon-svg" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>

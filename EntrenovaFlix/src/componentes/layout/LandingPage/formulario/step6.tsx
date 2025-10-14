@@ -23,7 +23,7 @@ export default function Step6() {
         <label className="form-label">Nos últimos 12 meses, colaboradores tiveram treinamentos formais?</label>
         <div className="radio-group">
           <label><input {...register('treinamentosRecentes')} type="radio" value="Sim" /> Sim</label>
-          <label><input {...register('treinamentosRecentes')} type="radio" value="Não" /> Não</label>
+          <label><input {...register('treinamentosRecentes')} type="radio" value="Nao" /> Não</label>
         </div>
         {errors.treinamentosRecentes?.message && <p className="error">{errors.treinamentosRecentes.message as string}</p>}
       </div>
@@ -33,7 +33,7 @@ export default function Step6() {
         <div className="radio-group">
           <label><input {...register('beneficiosSuficientes')} type="radio" value="Sim" /> Sim</label>
           <label><input {...register('beneficiosSuficientes')} type="radio" value="Parcialmente" /> Parcialmente</label>
-          <label><input {...register('beneficiosSuficientes')} type="radio" value="Não" /> Não</label>
+          <label><input {...register('beneficiosSuficientes')} type="radio" value="Nao" /> Não</label>
         </div>
         {errors.beneficiosSuficientes?.message && <p className="error">{errors.beneficiosSuficientes.message as string}</p>}
       </div>
@@ -49,7 +49,7 @@ export default function Step6() {
         <div className="radio-group">
           <label><input {...register('acoesSociaisAmbientais')} type="radio" value="Sim" /> Sim</label>
           <label><input {...register('acoesSociaisAmbientais')} type="radio" value="Parcialmente" /> Parcialmente</label>
-          <label><input {...register('acoesSociaisAmbientais')} type="radio" value="Não" /> Não</label>
+          <label><input {...register('acoesSociaisAmbientais')} type="radio" value="Nao" /> Não</label>
         </div>
         {errors.acoesSociaisAmbientais?.message && <p className="error">{errors.acoesSociaisAmbientais.message as string}</p>}
       </div>
@@ -59,7 +59,7 @@ export default function Step6() {
         <div className="radio-group">
           <label><input {...register('iniciativasCulturais')} type="radio" value="Sim" /> Sim</label>
           <label><input {...register('iniciativasCulturais')} type="radio" value="Parcialmente" /> Parcialmente</label>
-          <label><input {...register('iniciativasCulturais')} type="radio" value="Não" /> Não</label>
+          <label><input {...register('iniciativasCulturais')} type="radio" value="Nao" /> Não</label>
         </div>
         {errors.iniciativasCulturais?.message && <p className="error">{errors.iniciativasCulturais.message as string}</p>}
       </div>
@@ -69,7 +69,7 @@ export default function Step6() {
         <div className="radio-group">
           <label><input {...register('apoioHobbies')} type="radio" value="Sim" /> Sim</label>
           <label><input {...register('apoioHobbies')} type="radio" value="Parcialmente" /> Parcialmente</label>
-          <label><input {...register('apoioHobbies')} type="radio" value="Não" /> Não</label>
+          <label><input {...register('apoioHobbies')} type="radio" value="Nao" /> Não</label>
         </div>
         {errors.apoioHobbies?.message && <p className="error">{errors.apoioHobbies.message as string}</p>}
       </div>
