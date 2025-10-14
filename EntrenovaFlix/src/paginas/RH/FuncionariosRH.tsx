@@ -3,6 +3,7 @@ import "../../styles/funcionariosRH.css";
 
 async function postFuncionarios(dados: {
   nome: string;
+  sobrenome: string;
   email: string;
   cpf: string;
   telefone: string;
@@ -11,6 +12,7 @@ async function postFuncionarios(dados: {
 }) {
   const mensagem = {
     nome: dados.nome,
+    sobrenome: dados.sobrenome,
     email: dados.email,
     cpf: dados.cpf,
     telefone: dados.telefone,
@@ -35,12 +37,13 @@ async function postFuncionarios(dados: {
         const errorJson = JSON.parse(responseBody);
         throw new Error(errorJson.message || "Falha na resposta do servidor.");
       } catch (e) {
-        throw new Error("O servidor retornou um erro inesperado (não-JSON). Verifique o console do navegador e do backend.");
+        throw new Error(
+          "O servidor retornou um erro inesperado (não-JSON). Verifique o console do navegador e do backend."
+        );
       }
     }
-    
-    return JSON.parse(responseBody);
 
+    return JSON.parse(responseBody);
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
     throw error;
@@ -49,6 +52,7 @@ async function postFuncionarios(dados: {
 
 function FuncionariosRH() {
   const [nome, setNome] = useState("");
+  const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -161,6 +165,7 @@ function FuncionariosRH() {
 
     const dadosFuncionario = {
       nome,
+      sobrenome,
       email,
       cpf,
       telefone,
@@ -175,6 +180,7 @@ function FuncionariosRH() {
         type: "success",
       });
       setNome("");
+      setSobrenome("");
       setEmail("");
       setCpf("");
       setTelefone("");
@@ -184,6 +190,14 @@ function FuncionariosRH() {
       setEmailError("");
       setCpfError("");
       setTelefoneError("");
+
+      // Limpa a mensagem após 2 segundos
+      setTimeout(() => {
+        setSubmitStatus({
+          message: "Insira os dados do funcionário que será cadastrado",
+          type: "info",
+        });
+      }, 2000);
     } catch (error: any) {
       setSubmitStatus({
         message: error.message || "Ocorreu um erro ao cadastrar.",
@@ -206,6 +220,17 @@ function FuncionariosRH() {
             name="nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
+          />
+        </div>
+
+        <div className="rh-form-group">
+          <label htmlFor="sobrenome">Sobrenome</label>
+          <input
+            id="sobrenome"
+            type="text"
+            name="sobrenome"
+            value={sobrenome}
+            onChange={(e) => setSobrenome(e.target.value)}
           />
         </div>
 
