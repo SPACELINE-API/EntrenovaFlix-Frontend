@@ -147,6 +147,7 @@ export default function Formulario() {
     const loadingToast = toast.loading('Analisando suas respostas...');
 
     try {
+      localStorage.setItem('userFormAnswers', JSON.stringify(data));
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
       if (!apiKey) throw new Error('Chave da API do Gemini não encontrada.');
 
