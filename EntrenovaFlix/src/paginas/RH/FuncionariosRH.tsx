@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../../styles/funcionariosRH.css";
+import api from "../../services/apiService"; 
 
 async function postFuncionarios(dados: {
   nome: string;
@@ -10,42 +11,16 @@ async function postFuncionarios(dados: {
   nascimento: string;
   senha: string;
 }) {
-  const mensagem = {
-    nome: dados.nome,
-    sobrenome: dados.sobrenome,
-    email: dados.email,
-    cpf: dados.cpf,
-    telefone: dados.telefone,
-    nascimento: dados.nascimento,
-    senha: dados.senha,
-  };
-
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/funcionario", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(mensagem),
-    });
+    const response = await api.post("/funcionario", dados); 
+    return response.data;
 
-    const responseBody = await response.text();
+  } catch (error: any) {
+    console.error("Erro ao enviar mensagem:", error)
 
-    if (!response.ok) {
-      console.error("Resposta do servidor (erro):", responseBody);
-      try {
-        const errorJson = JSON.parse(responseBody);
-        throw new Error(errorJson.message || "Falha na resposta do servidor.");
-      } catch (e) {
-        throw new Error(
-          "O servidor retornou um erro inesperado (não-JSON). Verifique o console do navegador e do backend."
-        );
-      }
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message || "Usuário não autorizado!");
     }
-
-    return JSON.parse(responseBody);
-  } catch (error) {
-    console.error("Erro ao enviar mensagem:", error);
     throw error;
   }
 }
@@ -211,6 +186,7 @@ function FuncionariosRH() {
       <h1>Cadastro de Novo Funcionário</h1>
       <p>Preencha os dados abaixo para dar acesso aos cursos.</p>
       <form className="rh-form" onSubmit={handleSubmit}>
+        {/* O restante do seu formulário JSX continua aqui, sem alterações... */}
         <div className="rh-form-group">
           <label htmlFor="nome">Nome Completo</label>
           <input
