@@ -1,0 +1,33 @@
+.dashboard-rh-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.dashboard-rh-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(25deg, #5449CC 0%, #1F1F1F 20%, #1F1F1F 80%, #5449CC 100%);
+}
+
+.dashboard-rh-main {
+    flex: 1;
+    padding: 40px;
+    color: #fafafa;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.titulo {
+    font-family: kollektif, sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(to right, #ffffff, #747474);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+

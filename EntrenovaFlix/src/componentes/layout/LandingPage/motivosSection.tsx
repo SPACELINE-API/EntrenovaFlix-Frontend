@@ -5,7 +5,7 @@ import { PiLineVertical } from "react-icons/pi";
 function MotivosSection() {
     return (
         <section className="motivos-section">
-            <h2 className='motivos-titulo'>Motivos para assinar a EntreNovaFlix</h2>
+            <h2 className='motivos-titulo'>O que o Diagnóstico Organizacional oferece?</h2>
             <div className="motivos-grid">
                 <div className="motivo-card">
                     <div className="motivo-header">

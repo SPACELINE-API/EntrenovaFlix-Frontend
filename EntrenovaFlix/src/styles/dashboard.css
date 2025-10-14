@@ -11,26 +11,28 @@
 }
 
 .card {
-    background-color: #222222;
-    width: 300px;
-    height: 150px;
+    background-color: #2F333E;
+    width: 250px;
+    height: 155px;
     padding: 20px;
     display: flex;
     align-items: center;
+    text-align: center;
     flex-direction: column;
     border-radius: 8px;
+    border: 1px solid #857DDB;
 }
 
 .card-topo {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
 }
 
 .valor {
     margin-top: 15px;
-    font-size: 40px;
+    font-size: 35px;
 }
 
 .cardParticipacao {
@@ -44,7 +46,7 @@
 }
 
 .card-titulo {
-    font-size: 17px;
+    font-size: 16px;
     font-family: 'Satoshi', sans-serif;
     color: #C2C2C2;
 }

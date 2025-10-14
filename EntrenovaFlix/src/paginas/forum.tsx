@@ -1,63 +1,88 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/apiService";
+
+
+type Post = {
+ id: string; 
+ usuario: { 
+  id: number; 
+  nome: string; 
+  email: string;
+ };
+ pergunta: string;
+ descricao: string;
+ tempo?: string;
+};
 
 export default function TelaForum() {
-  const [posts] = useState([
-    {
-      id: 1,
-      usuario: "Luana Souza",
-      pergunta: "Como posso melhorar meu trabalho em equipe?",
-      descricao:
-        "Estou a desenvolver um projeto no Jira. Queria saber como posso usá-lo para melhorar a minha comunicação com a equipa. Alguém pode ajudar-me?",
-      tempo: "há 3 dias",
-    },
-    {
-      id: 2,
-      usuario: "Outra Luana",
-      pergunta: "Como posso melhorar meu trabalho em equipe?",
-      descricao:
-        "Estou a desenvolver um projeto no Jira. Queria saber como posso usá-lo para melhorar a minha comunicação com a equipa. Alguém pode ajudar-me?",
-      tempo: "há 7 dias",
-    },
-  ]);
+ const [posts, setPosts] = useState<Post[]>([]);
+ const [loading, setLoading] = useState(true);
+ const [error, setError] = useState<string | null>(null);
+ const navigate = useNavigate();
 
-  const navigate = useNavigate();
+ useEffect(() => {
+  let cancelled = false;
 
-  return (
-    <div className="telaForum">
-      <div className="forumTitulo">
-        <h1>Publicações</h1>
-        <button
-          className="btnResponder"
-          onClick={() => navigate("/colaboradores/novo-comentario")} 
-        >
-          Escrever comentário +
-        </button>
+  const fetchPosts = async () => {
+   try {
+    const res = await api.get<Post[]>("posts"); 
+    if (!cancelled) setPosts(res.data);
+   } catch (err: any) {
+    console.error(err);
+    if (!cancelled) setError(err.response?.data?.detail || "Erro ao carregar posts");
+   } finally {
+    if (!cancelled) setLoading(false);
+   }
+  };
+
+  fetchPosts();
+  return () => {
+   cancelled = true;
+  };
+ }, []);
+
+ if (loading) return <div>Carregando posts...</div>;
+ if (error) return <div>Erro: {error}</div>;
+
+ return (
+  <div className="telaForum">
+   <div className="forumTitulo">
+    <h1>Publicações</h1>
+    <button
+     className="btnResponder"
+     onClick={() => navigate("/colaboradores/novo-comentario")}
+    >
+        <span style={{fontSize:'1rem'}}>
+            + Crie um Post
+        </span>
+     
+    </button>
+   </div>
+
+   <div className="forumPosts">
+    {posts.map((post) => (
+     <div key={post.id} className="forumCard">
+      <div className="forumUser">
+       <div className="avatar"></div>
+       <span className="nomeUsuario">{post.usuario.nome}</span>
       </div>
 
-      <div className="forumPosts">
-        {posts.map((post) => (
-          <div key={post.id} className="forumCard">
-            <div className="forumUser">
-              <div className="avatar"></div>
-              <span className="nomeUsuario">{post.usuario}</span>
-            </div>
-
-            <div className="forumConteudo">
-              <h3 className="forumPergunta">{post.pergunta}</h3>
-              <p className="forumDescricao">{post.descricao}</p>
-              <p className="forumTempo">Post feito {post.tempo}</p>
-            </div>
-
-            <button
-              className="btnResponder"
-              onClick={() => navigate(`/colaboradores/forum/post/${post.id}`)}
-            >
-              Responder
-            </button>
-          </div>
-        ))}
+      <div className="forumConteudo">
+       <h3 className="forumPergunta">{post.pergunta}</h3>
+       <p className="forumDescricao">{post.descricao}</p>
+       <p className="forumTempo">Post feito {post.tempo ?? ""}</p>
       </div>
-    </div>
-  );
+
+      <button
+       className="btnResponder"
+       onClick={() => navigate(`/colaboradores/forum/post/${post.id}`)}
+      >
+       Responder
+      </button>
+     </div>
+    ))}
+   </div>
+  </div>
+ );
 }
