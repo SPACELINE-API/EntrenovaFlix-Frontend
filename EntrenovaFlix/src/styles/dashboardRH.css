@@ -3,6 +3,11 @@
     src: url(../assets/fontes/satoshi/Satoshi-Light.otf);
 }
 
+@font-face {
+    font-family: 'Kollektif';
+    src: url('../assets/fontes/kollektif/Kollektif.ttf');
+}
+
 .trilhas-topo {
     display: flex;
     flex-direction: row;
@@ -15,6 +20,8 @@
     border-radius: 0.5rem; 
     border: 1px solid #857DDB;
     padding-top: 1.5625rem;
+    height: '300px';
+    width: '50%'; 
 }
 
 .trilhas-cards {
@@ -44,4 +51,72 @@
 .grafico-linhas {
     max-width: 43.75rem;
     max-height: 18.75rem;
+}
+
+.dropdown-btn button {
+    text-decoration: none;
+    background: none; 
+    background-color: #373737;
+    border-radius: 5px;
+    padding: 8px;
+    border: none;
+    font-family: 'Kollektif';
+    color: #fff;
+    margin-top: 40px;
+    transition: background 0.2s;
+    cursor: pointer; 
+}
+
+.menu-opcao {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    background-color: #2F333E;
+    margin-top: 0px;
+    border: 1px solid #1a1a1a;
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.diagnostico-botoes {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.diagnostico-graficos {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.relatorio {
+    background-color: #2F333E;
+    border-radius: 0.5rem; 
+    border: 1px solid #857DDB;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+.icone-relatorio {
+    color: #34A853;
+    width: 30px;
+    height: 30px;
+}
+
+.relatorio-titulo {
+    color: #5A4FCF;
+    margin-top: 20px;
+    font-size: 1.75rem;
+}
+
+.relatorio-subtitulo {
+    color: #cdcdcd;
+    margin-top: 10px;
+    font-size: 1.3rem;
+}
+
+.relatorio-texto {
+    font-size: 1.2rem;
 }
