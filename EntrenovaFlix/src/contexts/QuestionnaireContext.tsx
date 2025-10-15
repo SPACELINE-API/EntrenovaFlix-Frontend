@@ -38,6 +38,7 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
   const setQuestionnaireCompleted = (completed: boolean, diagnosticData?: any) => {
     setIsQuestionnaireCompletedState(completed);
     localStorage.setItem('questionnaireCompleted', String(completed));
+    console.log(`O questionário completo: ${localStorage.getItem('userFormAnswers')}`)
 
     if (diagnosticData) {
       localStorage.setItem('segmentedDiagnosis', JSON.stringify(diagnosticData));
