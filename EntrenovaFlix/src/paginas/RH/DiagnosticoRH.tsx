@@ -4,7 +4,7 @@ import GraficoBarras from '../../componentes/layout/dashboard/GraficoBarras';
 import { GiProgression } from "react-icons/gi";
 import { FaMedal } from "react-icons/fa";
 import { GiStairsGoal } from "react-icons/gi";
-import { RiTeamFill } from "react-icons/ri";
+import { FaRocket } from "react-icons/fa";
 import { IoMdPerson } from "react-icons/io";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { useState } from 'react';
@@ -95,37 +95,31 @@ const DiagnosticoRH: React.FC = () => {
             <div className='relatorio'>
                 <h1>Relatório para acompanhamento da equipe <GiProgression className="icone-relatorio" /></h1>
 
-                <div className='relatorio-visaoGeral'>
-                    <h2 className='relatorio-titulo'>Visão geral</h2>
-                    <div>
-                        <h3 className='relatorio-subtitulo'> <FaMedal /> Conquistas:</h3>
+                <h2 className='relatorio-titulo'>Análise de desempenho</h2>
+                <div className='relatorio-cards'>
+                    <div className='relatorio-card'>
+                        <h3 className='relatorio-subtitulo'> <FaMedal /> Conquistas</h3>
                         <p className='relatorio-texto'>
-                            Os funcionários acessaram todos os conteúdos mais de duas vezes, demonstrando empenho e engajamento
+                            A equipe alcançou um nível significativo de participação, com 98% de presença nos treinamentos     
                         </p>
                     </div>
-                    <div>
-                        <h3 className='relatorio-subtitulo'> <GiStairsGoal /> Desafios:</h3>
+                    <div className='relatorio-card'>
+                        <h3 className='relatorio-subtitulo'> <GiStairsGoal /> Desafios</h3>
                         <p className='relatorio-texto'>
-                            Os funcionários apresentaram maior dificuldade no quizz "Entendendo seus clientes" da trilha "Vendas online"
+                            Os funcionários apresentaram maior dificuldade no quiz “Entendendo seus clientes” da trilha “Vendas Online”
+                        </p>
+                    </div>
+                    <div className='relatorio-card'>
+                        <h3 className='relatorio-subtitulo'> <FaRocket /> Oportunidades</h3>
+                        <p className='relatorio-texto'>
+                            Manter o alto nível de participação e aprimorar o desempenho no módulo “Entendendo seus clientes”
                         </p>
                     </div>
                 </div>
 
-                <div className='relatorio-desempenho'>
-                    <h2 className='relatorio-titulo'>Desempenho</h2>
-                    <div>
-                        <h3 className='relatorio-subtitulo'> <RiTeamFill /> Desempenho geral:</h3>
-                        <p className='relatorio-texto'>
-                            A equipe apresentou um nível de desempenho elevado, com 80% das atividades concluídas
-                        </p>
-                    </div>
-                    <div>
-                        <h3 className='relatorio-subtitulo'> <IoMdPerson /> Desempenho individual:</h3>
-                        <p className='relatorio-texto'>
-                            75% dos funcionários tiveram um alto nível de engajamento com as atividades
-                        </p>
-                    </div>
-                </div>
+                <p className='conclusao'>A equipe demonstra evolução contínua. Recomenda-se reforçar o módulo "Clientes e vendas" e aplicar um
+                    novo diagnóstico dentro de 30 dias.</p>
+
             </div>
         </div>
     );
