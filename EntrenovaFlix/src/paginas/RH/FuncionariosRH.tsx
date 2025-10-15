@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/funcionariosRH.css";
-import api from "../../services/apiService"; 
+import api from "../../services/apiService";
 
 async function postFuncionarios(dados: {
   nome: string;
@@ -40,6 +40,22 @@ function FuncionariosRH() {
   const [cpfError, setCpfError] = useState("");
   const [telefoneError, setTelefoneError] = useState("");
   const [submitStatus, setSubmitStatus] = useState({ message: "", type: "" });
+  const [countFuncionarios, setCountFuncionarios] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFuncionarios = async () => {
+      try {
+        const response = await api.get("/funcionario");
+        setCountFuncionarios(response.data.length);
+      } catch (error) {
+        console.error("Erro ao buscar funcionários:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFuncionarios();
+  }, []);
 
   const validaCPF = (cpf: string) => {
     const cpfLimpo = cpf.replace(/[^\d]+/g, "");
@@ -138,6 +154,14 @@ function FuncionariosRH() {
     e.preventDefault();
     setSubmitStatus({ message: "", type: "" });
 
+    if (countFuncionarios >= 60) {
+      setSubmitStatus({
+        message: "Limite de 60 funcionários atingido para o plano premium.",
+        type: "error",
+      });
+      return;
+    }
+
     const dadosFuncionario = {
       nome,
       sobrenome,
@@ -165,6 +189,7 @@ function FuncionariosRH() {
       setEmailError("");
       setCpfError("");
       setTelefoneError("");
+      setCountFuncionarios(countFuncionarios + 1); // Atualiza o contador localmente
 
       // Limpa a mensagem após 2 segundos
       setTimeout(() => {
@@ -315,8 +340,12 @@ function FuncionariosRH() {
           >
             Atribuir Senha Padrão
           </button>
-          <button type="submit" className="rh-btn rh-btn-primary">
-            Cadastrar Funcionário
+          <button
+            type="submit"
+            className="rh-btn rh-btn-primary"
+            disabled={countFuncionarios >= 60}
+          >
+            {countFuncionarios >= 60 ? "Limite Atingido" : "Cadastrar Funcionário"}
           </button>
         </div>
       </form>
