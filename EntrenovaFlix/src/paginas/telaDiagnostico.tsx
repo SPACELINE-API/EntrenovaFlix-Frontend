@@ -1,13 +1,14 @@
-import { useState, useEffect, ElementType } from 'react'; 
+import { useState, useEffect, ElementType } from 'react';
 import '../styles/diagnostico.css';
 import { FaUsers, FaDirections } from "react-icons/fa";
 import { PiTreeStructureFill } from "react-icons/pi";
 import { MdBusiness } from "react-icons/md";
+import { useQuestionnaire } from '../contexts/QuestionnaireContext';
 
 interface DiagnosisData {
-  strengths: string[];
-  weaknesses: string[];
-  analysis?: string; 
+  fortes: string[];
+  fracos: string[];
+  recomendacao: string[];
 }
 
 interface SegmentedDiagnosis {
@@ -17,32 +18,15 @@ interface SegmentedDiagnosis {
   direcaoFuturo?: DiagnosisData;
 }
 
-
 const categoriesConfig: {
   key: keyof SegmentedDiagnosis;
   title: string;
   Icon: ElementType;
 }[] = [
-  {
-    key: 'pessoasCultura',
-    title: 'Pessoas & Cultura',
-    Icon: FaUsers,
-  },
-  {
-    key: 'estruturaOperacoes',
-    title: 'Estrutura & Operações',
-    Icon: PiTreeStructureFill,
-  },
-  {
-    key: 'mercadoClientes',
-    title: 'Mercado & Clientes',
-    Icon: MdBusiness,
-  },
-  {
-    key: 'direcaoFuturo',
-    title: 'Direção & Futuro',
-    Icon: FaDirections,
-  },
+  { key: 'pessoasCultura', title: 'Pessoas & Cultura', Icon: FaUsers },
+  { key: 'estruturaOperacoes', title: 'Estrutura & Operações', Icon: PiTreeStructureFill },
+  { key: 'mercadoClientes', title: 'Mercado & Clientes', Icon: MdBusiness },
+  { key: 'direcaoFuturo', title: 'Direção & Futuro', Icon: FaDirections },
 ];
 
 const RenderPoints = ({ title, points, type }: { title: string, points: string[], type: 'forte' | 'fraco' }) => {
@@ -67,29 +51,47 @@ const RenderPoints = ({ title, points, type }: { title: string, points: string[]
 };
 
 export default function TelaDiagnostico() {
-  const [diagnosis, setDiagnosis] = useState<SegmentedDiagnosis | null>(null);
+  const { diagnosticResult, hasDiagnosticResult } = useQuestionnaire();
+  const [structuredDiagnosis, setStructuredDiagnosis] = useState<SegmentedDiagnosis | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('segmentedDiagnosis');
-      if (stored) {
-        setDiagnosis(JSON.parse(stored));
-      }
-    } catch (error) {
-      console.error("Erro ao ler o diagnóstico do localStorage:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    if (hasDiagnosticResult && diagnosticResult?.summary) {
+      try {
+        const formAnswersStored = localStorage.getItem('userFormAnswers');
+        if (!formAnswersStored) {
+          throw new Error("Respostas do formulário não encontradas.");
+        }
+        
+        const formAnswers = JSON.parse(formAnswersStored);
+        // Agora lemos TODAS as dimensões selecionadas, não apenas a primeira.
+        const evaluatedDimensions: (keyof SegmentedDiagnosis)[] = formAnswers.dimensoesAvaliar || [];
 
+        if (evaluatedDimensions.length > 0) {
+          const newDiagnosis: SegmentedDiagnosis = {};
+          
+          // Itera sobre cada dimensão que o usuário selecionou
+          evaluatedDimensions.forEach(dimension => {
+            // Atribui o mesmo summary da IA para cada uma das dimensões
+            newDiagnosis[dimension] = diagnosticResult.summary;
+          });
+          
+          setStructuredDiagnosis(newDiagnosis);
+        }
+
+      } catch (error) {
+        console.error("Erro ao estruturar os dados do diagnóstico:", error);
+      }
+    }
+    setLoading(false);
+  }, [hasDiagnosticResult, diagnosticResult]);
 
   if (loading) {
     return <div className="diagnostico-container"><p>Carregando resultados...</p></div>;
   }
 
-  if (!diagnosis) {
-    return <div className="diagnostico-container"><p>Nenhum diagnóstico encontrado. Por favor, complete o formulário primeiro.</p></div>;
+  if (!structuredDiagnosis) {
+    return <div className="diagnostico-container"><p>Nenhum diagnóstico encontrado ou os dados estão em um formato inesperado. Por favor, complete o formulário primeiro.</p></div>;
   }
 
   return (
@@ -104,26 +106,17 @@ export default function TelaDiagnostico() {
 
       <div className="resultados-grid">
         {categoriesConfig.map(({ key, title, Icon }) => {
-          const categoryData = diagnosis[key];
+          const categoryData = structuredDiagnosis[key];
+          // Esta lógica agora renderizará um card para cada dimensão selecionada.
           if (!categoryData) return null;
 
           return (
             <div className="categoria-resultado" key={key}>
-              <div className="categoria-icon">
-                <Icon size={30} />
-              </div>
+              <div className="categoria-icon"><Icon size={30} /></div>
               <h3 className="categoria-titulo">{title}</h3>
               <div className="pontos-categoria">
-                <RenderPoints
-                  title="Pontos fortes"
-                  points={categoryData.strengths}
-                  type="forte"
-                />
-                <RenderPoints
-                  title="Pontos a melhorar"
-                  points={categoryData.weaknesses}
-                  type="fraco"
-                />
+                <RenderPoints title="Pontos fortes" points={categoryData.fortes} type="forte" />
+                <RenderPoints title="Pontos a melhorar" points={categoryData.fracos} type="fraco" />
               </div>
             </div>
           );
@@ -143,19 +136,15 @@ export default function TelaDiagnostico() {
           <p>Este diagnóstico rápido é uma fotografia do momento atual. O próximo passo é aprofundar a análise, criando um plano de ação claro e prático para transformar as oportunidades em resultados concretos e fortalecer ainda mais seus pontos positivos.</p>
         </div>
       </div>
-
+      
       <div className="cta-secao">
         <h2 className="cta-titulo">E agora?</h2>
         <p className="cta-texto">
           Para receber um relatório completo e um diagnóstico aprofundado, entre em contato
           conosco!
         </p>
-        <a className="btn-agendar" href="/diagnostico/devolutiva">
-          Acesse nossos planos
-        </a>
-        <button className='btn-agendar'>
-          Baixar meus resultados
-        </button>
+        <a className="btn-agendar" href="/diagnostico/devolutiva">Acesse nossos planos</a>
+        <button className='btn-agendar'>Baixar meus resultados</button>
       </div>
     </div>
   );
