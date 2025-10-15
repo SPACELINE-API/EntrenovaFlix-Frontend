@@ -1,5 +1,39 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+async function postAI(form:string | null){
+  if (!form) {
+    console.error("Erro: A string do formulário está vazia e não pode ser convertida.");
+    return;
+  }
+
+  try{
+    const formJSON = JSON.parse(form)
+    const response = await fetch("http://127.0.0.1:8000/api/diagnostico/avaliar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ responses: formJSON }),
+    })
+
+    if (!response.ok) {
+      throw new Error("Falha na resposta do servidor.");
+    }else{
+      const result = await response.json()
+      if (result && result.summary) {
+        localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
+        window.location.reload(); 
+      }
+    }
+
+
+  }catch(error){
+    console.log(error)
+
+  }
+
+}
+
 interface QuestionnaireContextType {
   isQuestionnaireCompleted: boolean;
   setQuestionnaireCompleted: (completed: boolean, diagnosticData?: any) => void;
@@ -38,7 +72,8 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
   const setQuestionnaireCompleted = (completed: boolean, diagnosticData?: any) => {
     setIsQuestionnaireCompletedState(completed);
     localStorage.setItem('questionnaireCompleted', String(completed));
-    console.log(`O questionário completo: ${localStorage.getItem('userFormAnswers')}`)
+    console.log(`O questionário completo: ${typeof(localStorage.getItem('userFormAnswers'))}`)
+    postAI(localStorage.getItem('userFormAnswers'))
 
     if (diagnosticData) {
       localStorage.setItem('segmentedDiagnosis', JSON.stringify(diagnosticData));
