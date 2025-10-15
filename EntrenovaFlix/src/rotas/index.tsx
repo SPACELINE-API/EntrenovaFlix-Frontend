@@ -47,7 +47,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/colaboradores',
-    element: <PrivateRoute />, 
+   element: <PrivateRoute />, 
     children: [
       {
         element: <MainLayout />, 
