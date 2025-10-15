@@ -1,33 +1,45 @@
 import { useState } from "react";
 import "../../styles/funcionariosRH.css";
-import api from "../../services/apiService"; 
 
 async function postFuncionarios(dados: {
   nome: string;
-  sobrenome: string;
   email: string;
   cpf: string;
   telefone: string;
-  nascimento: string;
-  senha: string;
+  data_nascimento: string;
+  password: string;
 }) {
+  const mensagem = {
+    nome: dados.nome,
+    email: dados.email,
+    cpf: dados.cpf,
+    telefone: dados.telefone,
+    data_nascimento: dados.data_nascimento,
+    password: dados.password,
+  };
+
   try {
-    const response = await api.post("/funcionario", dados); 
-    return response.data;
+    const response = await fetch("http://127.0.0.1:8000/api/accounts/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(mensagem),
+    });
 
-  } catch (error: any) {
-    console.error("Erro ao enviar mensagem:", error)
-
-    if (error.response && error.response.data) {
-      throw new Error(error.response.data.message || "Usuário não autorizado!");
+    if (!response.ok) {
+      throw new Error("Falha na resposta do servidor.");
     }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao enviar mensagem:", error);
     throw error;
   }
 }
 
 function FuncionariosRH() {
   const [nome, setNome] = useState("");
-  const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -48,17 +60,13 @@ function FuncionariosRH() {
     }
     let soma = 0;
     let resto;
-    for (let i = 1; i <= 9; i++) {
-      soma += parseInt(cpfLimpo.substring(i - 1, i)) * (11 - i);
-    }
+    for (let i = 1; i <= 9; i++) soma += parseInt(cpfLimpo.substring(i - 1, i)) * (11 - i);
     resto = (soma * 10) % 11;
     if (resto === 10 || resto === 11) resto = 0;
     if (resto !== parseInt(cpfLimpo.substring(9, 10))) return false;
 
     soma = 0;
-    for (let i = 1; i <= 10; i++) {
-      soma += parseInt(cpfLimpo.substring(i - 1, i)) * (12 - i);
-    }
+    for (let i = 1; i <= 10; i++) soma += parseInt(cpfLimpo.substring(i - 1, i)) * (12 - i);
     resto = (soma * 10) % 11;
     if (resto === 10 || resto === 11) resto = 0;
     return resto === parseInt(cpfLimpo.substring(10, 11));
@@ -85,9 +93,7 @@ function FuncionariosRH() {
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
 
-    if (valorFormatado.length > 14) {
-      valorFormatado = valorFormatado.substring(0, 14);
-    }
+    if (valorFormatado.length > 14) valorFormatado = valorFormatado.substring(0, 14);
 
     setCpf(valorFormatado);
 
@@ -110,9 +116,7 @@ function FuncionariosRH() {
       .replace(/(\d{2})(\d)/, "($1) $2")
       .replace(/(\d{5})(\d)/, "$1-$2");
 
-    if (valorFormatado.length > 15) {
-      valorFormatado = valorFormatado.substring(0, 15);
-    }
+    if (valorFormatado.length > 15) valorFormatado = valorFormatado.substring(0, 15);
 
     setTelefone(valorFormatado);
 
@@ -140,12 +144,11 @@ function FuncionariosRH() {
 
     const dadosFuncionario = {
       nome,
-      sobrenome,
       email,
       cpf,
       telefone,
-      nascimento,
-      senha,
+      data_nascimento: nascimento,
+      password: senha,
     };
 
     try {
@@ -154,8 +157,8 @@ function FuncionariosRH() {
         message: responseData.message || "Funcionário cadastrado com sucesso!",
         type: "success",
       });
+
       setNome("");
-      setSobrenome("");
       setEmail("");
       setCpf("");
       setTelefone("");
@@ -165,17 +168,9 @@ function FuncionariosRH() {
       setEmailError("");
       setCpfError("");
       setTelefoneError("");
-
-      // Limpa a mensagem após 2 segundos
-      setTimeout(() => {
-        setSubmitStatus({
-          message: "Insira os dados do funcionário que será cadastrado",
-          type: "info",
-        });
-      }, 2000);
     } catch (error: any) {
       setSubmitStatus({
-        message: error.message || "Ocorreu um erro ao cadastrar.",
+        message: error.message || "Erro ao cadastrar funcionário.",
         type: "error",
       });
     }
@@ -186,7 +181,6 @@ function FuncionariosRH() {
       <h1>Cadastro de Novo Funcionário</h1>
       <p>Preencha os dados abaixo para dar acesso aos cursos.</p>
       <form className="rh-form" onSubmit={handleSubmit}>
-        {/* O restante do seu formulário JSX continua aqui, sem alterações... */}
         <div className="rh-form-group">
           <label htmlFor="nome">Nome Completo</label>
           <input
@@ -196,17 +190,6 @@ function FuncionariosRH() {
             name="nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-          />
-        </div>
-
-        <div className="rh-form-group">
-          <label htmlFor="sobrenome">Sobrenome</label>
-          <input
-            id="sobrenome"
-            type="text"
-            name="sobrenome"
-            value={sobrenome}
-            onChange={(e) => setSobrenome(e.target.value)}
           />
         </div>
 
@@ -246,9 +229,7 @@ function FuncionariosRH() {
             value={telefone}
             onChange={handleTelefoneChange}
           />
-          {telefoneError && (
-            <span className="error-message">{telefoneError}</span>
-          )}
+          {telefoneError && <span className="error-message">{telefoneError}</span>}
         </div>
 
         <div className="rh-form-group">
