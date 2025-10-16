@@ -42,9 +42,10 @@ function ChatBot() {
         {chatState.mensagens.map((msg, index) => (
           <div
             key={index}
-            className={`mensagem ${msg.role === 'user' ? 'user' : ''}`}
+            className={`mensagem ${msg.role === 'user' ? 'user' : 'bot'}`}
+            
           >
-            <strong>{msg.role === 'user' ? "Você" : "Bot"}:</strong> {msg.content}
+            {msg.content}
           </div>
         ))}
       </div>
