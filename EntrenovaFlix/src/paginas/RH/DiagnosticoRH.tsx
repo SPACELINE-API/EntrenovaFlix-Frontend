@@ -98,19 +98,19 @@ const DiagnosticoRH: React.FC = () => {
                 <h2 className='relatorio-titulo'>Análise de desempenho</h2>
                 <div className='relatorio-cards'>
                     <div className='relatorio-card'>
-                        <h3 className='relatorio-subtitulo'> <FaMedal /> Conquistas</h3>
+                        <h4 className='relatorio-subtitulo'> <FaMedal className='icone-indicador'/> Conquistas</h4>
                         <p className='relatorio-texto'>
                             A equipe alcançou um nível significativo de participação, com 98% de presença nos treinamentos     
                         </p>
                     </div>
                     <div className='relatorio-card'>
-                        <h3 className='relatorio-subtitulo'> <GiStairsGoal /> Desafios</h3>
+                        <h4 className='relatorio-subtitulo'> <GiStairsGoal className='icone-indicador'/> Desafios</h4>
                         <p className='relatorio-texto'>
                             Os funcionários apresentaram maior dificuldade no quiz “Entendendo seus clientes” da trilha “Vendas Online”
                         </p>
                     </div>
                     <div className='relatorio-card'>
-                        <h3 className='relatorio-subtitulo'> <FaRocket /> Oportunidades</h3>
+                        <h4 className='relatorio-subtitulo'> <FaRocket className='icone-indicador'/> Oportunidades</h4>
                         <p className='relatorio-texto'>
                             Manter o alto nível de participação e aprimorar o desempenho no módulo “Entendendo seus clientes”
                         </p>

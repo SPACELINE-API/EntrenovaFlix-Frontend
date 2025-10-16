@@ -125,12 +125,13 @@
 .relatorio-card {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
+    align-items: center;    
+    text-align: center; 
+    padding: 1.25rem;
     background-color: #3A3F4D;
     width: 18.75rem;
-    border-radius: 10px;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .relatorio-cards {
@@ -138,6 +139,19 @@
     flex-direction: row;
     gap: 2rem;
     margin-top: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.relatorio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); 
+}
+
+.icone-indicador {
+    font-size: 1.8rem;
+    color: #5449CC;
+    margin-bottom: -0.2rem;
 }
 
 .conclusao {
