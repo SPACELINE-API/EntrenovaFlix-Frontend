@@ -22,9 +22,13 @@ function ChatBot() {
       setMensagem("");
 
       try {
+        // --- INÍCIO DA CORREÇÃO ---
+        // O payload agora inclui tanto a mensagem atual quanto o histórico
         const payload = {
-          history: updatedMessages,
+          message: userMessageContent,
+          history: mensagens, // Enviamos o histórico *antes* da nova mensagem
         };
+        // --- FIM DA CORREÇÃO ---
 
         const response = await fetch('http://127.0.0.1:8000/api/chatbot/', { 
           method: 'POST',
