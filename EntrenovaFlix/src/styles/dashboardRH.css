@@ -139,8 +139,6 @@
     flex-direction: row;
     gap: 2rem;
     margin-top: 30px;
-    justify-content: center;
-    flex-wrap: wrap;
 }
 
 .relatorio-card:hover {
