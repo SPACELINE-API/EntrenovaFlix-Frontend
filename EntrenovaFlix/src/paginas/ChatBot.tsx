@@ -10,6 +10,7 @@ type Message = {
 function ChatBot() {
   const [mensagens, setMensagens] = useState<Message[]>([]);
   const [mensagem, setMensagem] = useState("");
+  const [form, setForm] = useState("")
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSendMessage = async () => {
@@ -22,13 +23,11 @@ function ChatBot() {
       setMensagem("");
 
       try {
-        // --- INÍCIO DA CORREÇÃO ---
-        // O payload agora inclui tanto a mensagem atual quanto o histórico
         const payload = {
           message: userMessageContent,
-          history: mensagens, // Enviamos o histórico *antes* da nova mensagem
+          history: mensagens, 
+          formu: form
         };
-        // --- FIM DA CORREÇÃO ---
 
         const response = await fetch('http://127.0.0.1:8000/api/chatbot/', { 
           method: 'POST',
