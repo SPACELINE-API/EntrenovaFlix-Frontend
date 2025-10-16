@@ -139,8 +139,61 @@ export default function TelaDiagnostico() {
 
       <div className="proximos-passos-secao">
         <h2 className="secao-titulo">Próximos passos</h2>
-        <div className="proximos-passos-content">
-          <p>Este diagnóstico rápido é uma fotografia do momento atual. O próximo passo é aprofundar a análise, criando um plano de ação claro e prático para transformar as oportunidades em resultados concretos e fortalecer ainda mais seus pontos positivos.</p>
+        <div className="solucoes-cards">
+          <div className="solucao-card curto-prazo">
+            <div className='card-header'>
+              <h3>Curto Prazo</h3>
+              <span className="prazo">1-2 semanas</span>
+            </div>
+
+            <div className="card-body">
+              <h4>Liderança</h4>
+              <ul>
+                <li>Descobrir quais são os conflitos e desafios de liderança junto aos times.</li>
+                <li>Reunião de alinhamento entre RH e líderes para definir prioridades.</li>
+                <li>Comunicação clara sobre expectativas de conduta e resultados de liderança.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="solucao-card medio-prazo">
+            <div className='card-header'>
+              <h3>Médio Prazo</h3>
+              <span className="prazo">2-4 semanas</span>
+            </div>
+
+            <div className="card-body">
+              <h4>Estrutura & Processos</h4>
+              <ul>
+                <li>Implementar processos padronizados para melhorar a eficiência operacional.</li>
+                <li>Desenvolver programa de treinamento e capacitação das equipes.</li>
+                <li>Definir e implementar métricas e KPIs para acompanhamento de resultados.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="solucao-card longo-prazo">
+            <div className='card-header'>
+              <h3>Longo Prazo</h3>
+              <span className="prazo">+ de 6 semanas</span>
+            </div>
+
+            <div className="card-body">
+              <h4>Transformação Estratégica</h4>
+              <ul>
+                <li>Elaborar planejamento estratégico detalhado com metas de longo prazo.</li>
+                <li>Investir em inovação e transformação digital da empresa.</li>
+                <li>Estruturar plano de expansão e crescimento sustentável no mercado.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="importancia-secao">
+        <h2 className="secao-titulo">Como isto ajuda a empresa?</h2>
+        <div className="importancia-content">
+          <p>Implementar essas ações de forma estruturada e progressiva permite que a empresa construa uma base sólida para o crescimento. Começando com alinhamentos imediatos, evoluindo para processos estruturados e culminando em transformação estratégica, cada etapa fortalece a organização, melhora a eficiência operacional e prepara a empresa para enfrentar desafios futuros com maior confiança e capacidade de adaptação.</p>
         </div>
       </div>
 
