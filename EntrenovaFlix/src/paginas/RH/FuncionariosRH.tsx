@@ -4,7 +4,6 @@ import api from "../../services/apiService";
 
 async function postFuncionarios(dados: {
   nome: string;
-  sobrenome: string;
   email: string;
   cpf: string;
   telefone: string;
@@ -20,13 +19,16 @@ async function postFuncionarios(dados: {
     if (error.response && error.response.data) {
       throw new Error(error.response.data.message || "Erro no cadastro!");
     }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao enviar mensagem:", error);
     throw error;
   }
 }
 
 function FuncionariosRH() {
   const [nome, setNome] = useState("");
-  const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -139,7 +141,6 @@ function FuncionariosRH() {
 
     const dadosFuncionario = {
       nome,
-      sobrenome,
       email,
       cpf,
       telefone,
@@ -153,8 +154,8 @@ function FuncionariosRH() {
         message: responseData.message || "Funcionário cadastrado com sucesso!",
         type: "success",
       });
+
       setNome("");
-      setSobrenome("");
       setEmail("");
       setCpf("");
       setTelefone("");
