@@ -37,7 +37,7 @@ class ChatService {
 
   setForm(newFormValue: string) {
     this.state = { ...this.state, form: newFormValue };
-    this.notify();
+    console.log("Dados do formulário armazenados no chatService.");
   }
 
   async sendMessage(userMessageContent: string) {
@@ -45,7 +45,6 @@ class ChatService {
 
     const newUserMessage: Message = { role: "user", content: userMessageContent };
     const currentMessages = this.state.mensagens;
-    const currentForm = this.state.form;
 
     this.state = {
       ...this.state,
@@ -59,13 +58,28 @@ class ChatService {
         history: currentMessages,
       };
 
-      // Adiciona o formulário ao payload APENAS se for a primeira mensagem
-      // e o formulário tiver algum conteúdo.
-      if (currentMessages.length === 0 && currentForm) {
-        payload.formu = currentForm;
-        // Limpa o formulário do estado para não ser enviado novamente
-        this.state.form = ""; 
+      if (currentMessages.length === 0) {
+        let formToSend = this.state.form;
+
+        if (!formToSend) {
+          console.log("Formulário não encontrado no estado, buscando no localStorage...");
+          const storedForm = localStorage.getItem('segmentedDiagnosis');
+          if (storedForm) {
+            console.log("Formulário encontrado no localStorage!");
+            formToSend = storedForm;
+          }
+        }
+        
+        if (formToSend) {
+          console.log("Anexando dados do formulário ao payload para envio.");
+          payload.form_data = JSON.parse(formToSend);
+          this.state.form = ""; 
+        } else {
+          console.log("Nenhum dado de formulário encontrado para enviar.");
+        }
       }
+
+      console.log("Enviando payload final para o backend:", payload);
 
       const response = await fetch('http://127.0.0.1:8000/api/chatbot/', {
         method: 'POST',
