@@ -42,7 +42,6 @@ function FuncionariosRH() {
   const [countFuncionarios, setCountFuncionarios] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Busca a quantidade de funcionários cadastrados
   useEffect(() => {
     const fetchFuncionarios = async () => {
       try {
@@ -57,7 +56,6 @@ function FuncionariosRH() {
     fetchFuncionarios();
   }, []);
 
-  // Validação CPF
   const validaCPF = (cpf: string) => {
     const cpfLimpo = cpf.replace(/[^\d]+/g, "");
     if (cpfLimpo.length !== 11 || /^(\d)\1+$/.test(cpfLimpo)) return false;
@@ -155,7 +153,6 @@ function FuncionariosRH() {
         message: responseData.message || "Funcionário cadastrado com sucesso!",
         type: "success",
       });
-
       setNome("");
       setSobrenome("");
       setEmail("");
@@ -167,7 +164,6 @@ function FuncionariosRH() {
       setEmailError("");
       setCpfError("");
       setTelefoneError("");
-
       setCountFuncionarios(countFuncionarios + 1);
 
       setTimeout(() => {

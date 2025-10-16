@@ -127,6 +127,12 @@
   margin-top: 0.25rem;
   padding-left: 0.2rem;
 }
+.success-message {
+  color: #28a745;
+  text-align: center;
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
 
 @media (max-width: 767px) {
   .rh-form-container {
