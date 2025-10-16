@@ -58,10 +58,13 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
 
       const result = await response.json();
 
-      if (!response.ok || !result.summary) { // Validação explícita da resposta
+      // --- CORREÇÃO DA VALIDAÇÃO ---
+      // Verificamos se a resposta está OK e se o objeto 'result' tem pelo menos uma chave.
+      if (!response.ok || Object.keys(result).length === 0) {
         throw new Error("A resposta da IA não contém um diagnóstico válido.");
       }
       
+      // Agora o nome 'diagnosticResult' faz mais sentido, pois é o resultado direto.
       localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
       setDiagnosticResult(result);
       setHasDiagnosticResult(true);
@@ -70,7 +73,7 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
       toast.dismiss(loadingToast);
       toast.success('Diagnóstico analisado com sucesso!');
       
-      onSuccess?.(); 
+      onSuccess?.();
 
     } catch (error) {
       console.error(error);

@@ -52,45 +52,16 @@ const RenderPoints = ({ title, points, type }: { title: string, points: string[]
 
 export default function TelaDiagnostico() {
   const { diagnosticResult, hasDiagnosticResult } = useQuestionnaire();
-  const [structuredDiagnosis, setStructuredDiagnosis] = useState<SegmentedDiagnosis | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (hasDiagnosticResult && diagnosticResult?.summary) {
-      try {
-        const formAnswersStored = localStorage.getItem('userFormAnswers');
-        if (!formAnswersStored) {
-          throw new Error("Respostas do formulário não encontradas.");
-        }
-        
-        const formAnswers = JSON.parse(formAnswersStored);
-        // Agora lemos TODAS as dimensões selecionadas, não apenas a primeira.
-        const evaluatedDimensions: (keyof SegmentedDiagnosis)[] = formAnswers.dimensoesAvaliar || [];
-
-        if (evaluatedDimensions.length > 0) {
-          const newDiagnosis: SegmentedDiagnosis = {};
-          
-          // Itera sobre cada dimensão que o usuário selecionou
-          evaluatedDimensions.forEach(dimension => {
-            // Atribui o mesmo summary da IA para cada uma das dimensões
-            newDiagnosis[dimension] = diagnosticResult.summary;
-          });
-          
-          setStructuredDiagnosis(newDiagnosis);
-        }
-
-      } catch (error) {
-        console.error("Erro ao estruturar os dados do diagnóstico:", error);
-      }
-    }
-    setLoading(false);
-  }, [hasDiagnosticResult, diagnosticResult]);
+  
+  // O estado de 'loading' pode ser inferido diretamente pelo hasDiagnosticResult
+  const loading = !hasDiagnosticResult;
 
   if (loading) {
     return <div className="diagnostico-container"><p>Carregando resultados...</p></div>;
   }
 
-  if (!structuredDiagnosis) {
+  // Se não há resultado, ou se o objeto de resultado está vazio, mostramos a mensagem de erro.
+  if (!diagnosticResult || Object.keys(diagnosticResult).length === 0) {
     return <div className="diagnostico-container"><p>Nenhum diagnóstico encontrado ou os dados estão em um formato inesperado. Por favor, complete o formulário primeiro.</p></div>;
   }
 
@@ -106,8 +77,8 @@ export default function TelaDiagnostico() {
 
       <div className="resultados-grid">
         {categoriesConfig.map(({ key, title, Icon }) => {
-          const categoryData = structuredDiagnosis[key];
-          // Esta lógica agora renderizará um card para cada dimensão selecionada.
+          // Usamos o diagnosticResult diretamente, que já tem a estrutura correta.
+          const categoryData = diagnosticResult[key as keyof SegmentedDiagnosis];
           if (!categoryData) return null;
 
           return (
