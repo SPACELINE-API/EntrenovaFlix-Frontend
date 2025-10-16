@@ -75,6 +75,23 @@ body {
   left: 50%;
   transform: translateX(-50%);
 }
+
+.diagnostic-test-link {
+  background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #FFFFFF !important;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(84, 73, 204, 0.3);
+}
+
+.diagnostic-test-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(84, 73, 204, 0.4);
+  color: #FFFFFF !important;
+}
+
 .usuario {
   display: flex;
   align-items: center;
@@ -401,10 +418,10 @@ body {
 
 .btnResponder {
   align-self: flex-end;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.7rem;
   background: linear-gradient(90deg, #5449cc 0%, #0078D7 100%);
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   color: white;
   cursor: pointer;
   font-family: 'Satoshi', sans-serif;

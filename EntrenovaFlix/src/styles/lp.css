@@ -147,17 +147,21 @@ html {
   background: linear-gradient(90deg, #797878 0%, #FFFFFF 46.15%, #797878 100%);
   -webkit-background-clip: text; 
   background-clip: text; 
-  -webkit-text-fill-color: transparent;
-  max-width: 783px; 
+  -webkit-text-fill-color: transparent; 
   margin-bottom: 2rem;
 }
 .texto-normal {
   font-family: 'Inter', sans-serif; 
-  color: #FFFFFF; 
-  font-size: 1.2rem;
-  line-height: 1.5; 
-  font-weight: 400; 
-  max-width: 589px;
+  color: #d2d2d2; 
+  font-size: 1.10rem;
+  line-height: 1.7; 
+  font-weight: 300; 
+  max-width: 600px;
+  text-align: center;
+  text-justify: inter-word;
+  hyphens: auto;            
+  word-break: normal;       
+  overflow-wrap: break-word;
 }
 .lpBotao { 
   margin-top: 7rem; 
@@ -165,14 +169,77 @@ html {
   font-size: 1.5rem; 
   border-radius: 10px; 
 }
+.scroll-down-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+  cursor: pointer;
+}
+
+.scroll-arrow {
+  color: #d6d1ff;
+  margin-bottom: -0.9rem;
+  width: 28px;
+  height: 28px;
+  animation: bounce 1.5s infinite ease-in-out;
+  opacity: 0.7;
+}
+.scroll-arrow-static {
+  color: #d6d1ff;
+  width: 28px;
+  height: 28px;
+  margin-bottom: -0.9rem;
+  animation: glow 1.3s infinite ease-in-out;
+}
+
+.scroll-arrow:hover {
+  opacity: 1;
+}
+
+.scroll-arrow.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.scroll-arrow.delay-2 {
+  animation-delay: 0.5s;
+}
+
+/* Animação das setas */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+    color: #8a7aff;
+    filter: drop-shadow(0 0 6px #8074ff8f);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(2px);
+    color: #ffffff; 
+    filter: drop-shadow(0 0 16px #b8aaff);
+    opacity: 1;
+  }
+}
+@keyframes glow {
+  0%, 100% {
+    color: #8a7aff;
+    filter: drop-shadow(0 0 6px #8074ff8f);
+    opacity: 0.9;
+  }
+  50% {
+    color: #ffffff;
+    filter: drop-shadow(0 0 16px #b8aaff);
+    opacity: 1;
+  }
+}
 
 /* container principal */
 .main-content-block {
-  width: 195vh;
+  width: 210vh;
   margin: 0 auto;
   background-color: #171717;
   position: relative;
-  padding-top: calc(100px + 10rem);
+  padding-top: calc(100px + 6rem);
   padding-bottom: 6rem;
   clip-path: polygon(0 100px, 50% 0, 100% 100px, 100% 100%, 0% 100%);
 }
@@ -188,20 +255,24 @@ html {
 
 /*parte interna das seções*/
 /*motivos section*/
-.motivos-section, .passo-a-passo-section, .diagnostico-section {
+.motivos-section, .diagnostico-section {
   padding-top: 0;
-  padding-bottom: 4rem;
+  padding-bottom: 6rem;
 }
 .motivos-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-left: 6.5rem;
+  gap: 2.5rem;
+  margin: 0 auto;
+  padding: 0 0.5rem; 
+  max-width: 1200px;
 }
+
 .motivos-titulo{
   font-family: 'kollektif';
   font-size: 3rem;
   color: #C2C2C2;
-  margin: 0 0rem 9rem 0rem; 
+  margin: 0 0rem 6rem 0rem; 
   text-align: center;
 }
 .motivo-header {
@@ -250,119 +321,134 @@ html {
   max-width: 19rem;
 }
 
-/*passo a passo section*/
-.passo-a-passo-section .container { 
-  max-width: 1120px; 
-  margin: 0 auto; 
-}
-.passo-a-passo-section h2 {
-  position: relative;
-  z-index: 2;
-  font-family: 'kollektif';
-  font-size: 3rem;
-  text-align: center;
-  margin-top: 10rem;
-  margin-bottom: 7rem;
-  background: linear-gradient(90deg, #9B93F5 30%, #5449CC 50%, #4335E0 100%);
-  -webkit-background-clip: text; 
-  background-clip: text; 
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0px 0px 10px rgba(51, 42, 147, 0.59);
-}
-.passo-a-passo-content { 
-  display: grid; 
-  grid-template-columns: 1fr 1fr; 
-  align-items: center;   
-  gap: 5rem; 
-  margin-top: 5rem;
-}
-.passo-a-passo-imagem{
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-}
-.passo-a-passo-imagem img {
-  position: relative;
-  width: 80%; 
-  z-index: 2;
-  display: block;
-  height: auto; 
-  border-radius: 8px; 
-  object-fit: cover; 
-  margin-left: 5rem;
-}
-.decorative-shape-container {
-  position: absolute;
-  top: 70%;
-  left: 22%;
-  width: 45%;
-  height: 50%;
-  z-index: 1;
-  transform: translate(-50%, -50%);
-}
-.passo-a-passo-lista { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 3.5rem;
-  z-index: 2;
-}
-.passo-item { 
-  display: flex; 
-  align-items: flex-start; 
-  gap: 1.5rem; 
-}
-.passo-icon { 
-  font-size: 3rem; 
-  color: #5A4FCF; 
-  margin-top: 0.25rem; 
-}
-.passo-texto h3 {
-  font-family: 'Kollektif', sans-serif; 
-  font-size: 2rem; 
-  color: #C2C2C2; 
-  margin-bottom: 1rem; 
-}
-.passo-texto p { 
-  font-family: 'Techna Sans', sans-serif; 
-  font-size: 1.25rem; 
-  line-height: 1.6; 
-  color: #FFFFFF; 
-}
-.info-lpBotao{
-  position: relative;
-  z-index: 2;
-  align-items: center;
-  margin-left: 6rem;
-  margin-top: 9rem;
-}
-.info-lpBotao p {
-  font-family: 'inter', sans-serif;
-  font-size: 1rem;
-  color: #FFFFFF;
-  line-height: 1.5;
-  margin: 0 0.5rem;
-}
-
 /*relatorios*/
 .form-section-wrapper {
   width: 100%;
   position: relative;
   background-color: #141414;
   border-top: 2px solid #333;
-  padding: 6rem 2rem;
+  padding: 6rem 0rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/*footer*/
+.footer-container {
+  background-color: #141414; 
+  color: #757575; 
+  padding: 50px 0;
+  width: 100%;
+  font-family: 'Satoshi', sans-serif; 
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.footer-container::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  top: 0;
+  right: 600px;
+  width: 60%;
+  height: 150%;
+  background: linear-gradient(
+    35deg,
+    rgba(90, 79, 207, 0.479) 0%, 
+    rgba(90, 79, 207, 0.188) 30%,
+    transparent 40%             
+  );
+  filter: blur(50px);
+}
+
+.footer-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.footer-intro {
+  margin: 0 0 30px;
+}
+
+.footer-intro a {
+  color: #757575;
+  text-decoration: none;
+}
+
+.footer-intro a:hover {
+  text-decoration: underline;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  width: 100%;
+}
+
+.footer-column {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column li {
+  margin-bottom: 16px;
+}
+
+.footer-column a {
+  color: #757575;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.footer-column a:hover {
+  text-decoration: underline;
+}
+
+/* .language-selector {
+  display: inline-flex;
+  align-items: center;
+  background-color: #000;
+  color: #757575;
+  border: 1px solid #333;
+  padding: 12px 15px;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.globe-icon {
+  margin-right: 10px;
+} */
+
+.footer-brand {
+  margin-top: 30px;
+  font-size: 0.8rem;
+}
+
 /* Responividade*/
+
 @media (max-width: 1024px) {
   .motivos-grid { 
-    grid-template-columns: 1fr 1fr; 
-    margin-left: 0;
+    grid-template-columns: repeat(2,1fr);
+    gap: 1rem;
+    padding: 0 8rem;
   }
-  .passo-a-passo-content { 
-    gap: 3rem; 
+
+  .footer-content {
+    padding: 0 1rem;
+  }
+
+  .footer-container::before{
+    right: 330px;
+    filter: blur(30px);
+    width: 60%;
+    height: 190%;
   }
 }
 
@@ -385,56 +471,31 @@ html {
   .main-content-block {
     width: auto;
     padding-top: calc(50px + 4rem);
-    clip-path: polygon(0 50px, 50% 0, 100% 50px, 100% 100%, 0% 100%);
+    clip-path: polygon(0 100px, 50% 0, 100% 100px, 100% 100%, 0% 100%);
   }
-  .motivos-grid, .passo-a-passo-content { 
-    grid-template-columns: 1fr; 
-  }
-  .passo-a-passo-imagem {
-      margin-left: 0;
-  }
-  .passo-a-passo-imagem img {
-      margin-left: 0;
-      width: 100%;
+  .motivos-grid { 
+    grid-template-columns: repeat(2,1fr);
+    gap: 1rem;
+    padding: 0 1.5rem;
   }
   .motivos-grid {
       gap: 2rem;
   }
-  .passo-a-passo-section h2, .motivos-titulo {
+ .motivos-titulo {
       font-size: 2.5rem;
       margin-top: 5rem;
       margin-bottom: 4rem;
   }
-  .decorative-shape-container {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-section {
-    padding: 8rem 1rem 6rem 1rem;
-  }
-  .h1Lp {
-    font-size: 1.8rem;
-  }
-  .texto-normal {
-    font-size: 0.9rem;
-  }
-  .motivos-titulo, .passo-a-passo-section h2 {
-    font-size: 2rem;
-    margin-top: 4rem;
-    margin-bottom: 3rem;
-  }
-  .motivos-grid {
-    margin-left: 0;
+ 
+  .footer-content {
     padding: 0 1rem;
   }
-  .motivo-header {
-    margin-left: 0;
-  }
-  .passo-a-passo-content {
-    gap: 2.5rem;
-    margin-top: 3rem;
+
+  .footer-container::before{
+    right: 300px;
+    filter: blur(30px);
+    width: 60%;
+    height: 150%;
   }
 }
 

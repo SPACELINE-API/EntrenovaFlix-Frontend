@@ -1,26 +1,30 @@
-import '../../../styles/global.css'
-import '../../../styles/lp.css'
-import Button from '../../ui/botões/botao'
+import '../../../styles/global.css';
+import '../../../styles/lp.css';
+import { IoIosArrowDown } from "react-icons/io";
 
-function HeroSection(){
-    return(
-        <div className="hero-section">
-                <h1 className="h1Lp">
-                    SOLUÇÕES INTELIGENTES PARA A <br />
-                    SUA EMPRESA. TREINAMENTO <br />
-                    CORPORATIVO PERSONALIZADO.
-                </h1>
-                <p className='texto-normal'>
-                    Unimos arte, mídia e eficiência para criar conteúdos <br />
-                    que auxiliem na gestão da sua empresa.
-                </p>
-                <Button
-                    onClick={() => document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" })}
-                    className="lpBotao">
-                    Quero receber
-                </Button>
 
-            </div>
-    )
+function HeroSection() {    
+  return (
+    <section className="hero-section">
+      <h1 className="h1Lp">
+        PARE DE GASTAR COM TREINAMENTOS <br /> GENÉRICOS QUE NÃO FUNCIONAM.
+      </h1>
+
+      <p className="texto-normal">
+        Descubra, em poucos minutos, qual é o plano de desenvolvimento ideal para sua empresa.
+        Responda nosso diagnóstico gratuito e receba um plano de conteúdo 100% personalizado.
+      </p>
+
+      <div
+        className="scroll-down-wrapper"
+        onClick={() => document.getElementById("motivos")?.scrollIntoView({ behavior: "smooth" })}
+      >
+        <IoIosArrowDown className="scroll-arrow-static" />
+        <IoIosArrowDown className="scroll-arrow delay-1" />
+        <IoIosArrowDown className="scroll-arrow delay-2" />
+      </div>
+    </section>
+  );
 }
-export default HeroSection
+
+export default HeroSection;
