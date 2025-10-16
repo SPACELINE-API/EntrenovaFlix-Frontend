@@ -6,20 +6,20 @@ async function postFuncionarios(dados: {
   email: string;
   cpf: string;
   telefone: string;
-  nascimento: string;
-  senha: string;
+  data_nascimento: string;
+  password: string;
 }) {
   const mensagem = {
     nome: dados.nome,
     email: dados.email,
     cpf: dados.cpf,
     telefone: dados.telefone,
-    nascimento: dados.nascimento,
-    senha: dados.senha,
+    data_nascimento: dados.data_nascimento,
+    password: dados.password,
   };
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/funcionario", {
+    const response = await fetch("http://127.0.0.1:8000/api/accounts/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,8 +30,11 @@ async function postFuncionarios(dados: {
     if (!response.ok) {
       throw new Error("Falha na resposta do servidor.");
     }
+
+    return await response.json();
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
+    throw error;
   }
 }
 
@@ -48,6 +51,7 @@ function FuncionariosRH() {
   const [emailError, setEmailError] = useState("");
   const [cpfError, setCpfError] = useState("");
   const [telefoneError, setTelefoneError] = useState("");
+  const [submitStatus, setSubmitStatus] = useState({ message: "", type: "" });
 
   const validaCPF = (cpf: string) => {
     const cpfLimpo = cpf.replace(/[^\d]+/g, "");
@@ -56,17 +60,13 @@ function FuncionariosRH() {
     }
     let soma = 0;
     let resto;
-    for (let i = 1; i <= 9; i++) {
-      soma += parseInt(cpfLimpo.substring(i - 1, i)) * (11 - i);
-    }
+    for (let i = 1; i <= 9; i++) soma += parseInt(cpfLimpo.substring(i - 1, i)) * (11 - i);
     resto = (soma * 10) % 11;
     if (resto === 10 || resto === 11) resto = 0;
     if (resto !== parseInt(cpfLimpo.substring(9, 10))) return false;
 
     soma = 0;
-    for (let i = 1; i <= 10; i++) {
-      soma += parseInt(cpfLimpo.substring(i - 1, i)) * (12 - i);
-    }
+    for (let i = 1; i <= 10; i++) soma += parseInt(cpfLimpo.substring(i - 1, i)) * (12 - i);
     resto = (soma * 10) % 11;
     if (resto === 10 || resto === 11) resto = 0;
     return resto === parseInt(cpfLimpo.substring(10, 11));
@@ -93,9 +93,7 @@ function FuncionariosRH() {
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
 
-    if (valorFormatado.length > 14) {
-      valorFormatado = valorFormatado.substring(0, 14);
-    }
+    if (valorFormatado.length > 14) valorFormatado = valorFormatado.substring(0, 14);
 
     setCpf(valorFormatado);
 
@@ -118,9 +116,7 @@ function FuncionariosRH() {
       .replace(/(\d{2})(\d)/, "($1) $2")
       .replace(/(\d{5})(\d)/, "$1-$2");
 
-    if (valorFormatado.length > 15) {
-      valorFormatado = valorFormatado.substring(0, 15);
-    }
+    if (valorFormatado.length > 15) valorFormatado = valorFormatado.substring(0, 15);
 
     setTelefone(valorFormatado);
 
@@ -142,20 +138,42 @@ function FuncionariosRH() {
     setConfirmarSenha(senhaPadrao);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitStatus({ message: "", type: "" });
 
     const dadosFuncionario = {
       nome,
       email,
       cpf,
       telefone,
-      nascimento,
-      senha,
-      confirmarSenha,
+      data_nascimento: nascimento,
+      password: senha,
     };
 
-    postFuncionarios(dadosFuncionario);
+    try {
+      const responseData = await postFuncionarios(dadosFuncionario);
+      setSubmitStatus({
+        message: responseData.message || "Funcionário cadastrado com sucesso!",
+        type: "success",
+      });
+
+      setNome("");
+      setEmail("");
+      setCpf("");
+      setTelefone("");
+      setnascimento("");
+      setSenha("");
+      setConfirmarSenha("");
+      setEmailError("");
+      setCpfError("");
+      setTelefoneError("");
+    } catch (error: any) {
+      setSubmitStatus({
+        message: error.message || "Erro ao cadastrar funcionário.",
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -211,9 +229,7 @@ function FuncionariosRH() {
             value={telefone}
             onChange={handleTelefoneChange}
           />
-          {telefoneError && (
-            <span className="error-message">{telefoneError}</span>
-          )}
+          {telefoneError && <span className="error-message">{telefoneError}</span>}
         </div>
 
         <div className="rh-form-group">
@@ -259,6 +275,18 @@ function FuncionariosRH() {
             onChange={(e) => setConfirmarSenha(e.target.value)}
           />
         </div>
+
+        {submitStatus.message && (
+          <div
+            className={
+              submitStatus.type === "success"
+                ? "success-message"
+                : "error-message"
+            }
+          >
+            {submitStatus.message}
+          </div>
+        )}
 
         <div className="rh-form-actions">
           <button
