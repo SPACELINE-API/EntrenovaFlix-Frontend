@@ -60,7 +60,7 @@
 .graficos {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 77.25rem;
     height: 100%;
     gap: 25px;
     margin-top: 25px;
@@ -71,4 +71,24 @@
     border-radius: 50%;
     padding: 5px;
     font-size: 32px;
+}
+
+@media (max-width: 768px) {
+    .cards-engajamento {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+
+    .card {
+        width: 18rem;
+        height: 11.0625rem;
+    }
+
+    .graficos {
+        display: flex;
+        flex-direction: column;
+        width: 78rem;
+        margin: 0px;
+    }
 }

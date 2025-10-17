@@ -17,7 +17,6 @@ function Dashboard() {
   return (
     <div className='dashboard'>
       <h1 className='titulo'>Engajamento e performance do usuário</h1>
-      <div className='sessao-graficos'>
         <div className='graficos'>
             <GraficoBarras
               titulo="Dias ativos por mês"
@@ -31,7 +30,6 @@ function Dashboard() {
               categorias={categorias2}
               valores={valores2}
             />
-        </div>
       </div>
       <div className='cards-engajamento'>
         <Card titulo="Acessos semanais" valor="3" icone={<FaCalendarDays className='icone' />} />
