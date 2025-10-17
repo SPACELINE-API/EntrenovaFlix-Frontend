@@ -2,8 +2,22 @@
   font-family: 'Satoshi';
   src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
 }
+html, body {
+  height: 100%;
+  overflow-y: auto; 
+  scrollbar-width: thin;
+  scrollbar-color:  #141414; 
+  background-color: #141414 !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 4px;
+}
+
+
 .chatbot-page {
-  height: 100vh;  
+  min-height: 100vh; 
   width: 100%;
   margin: 0;
   padding: 0;
@@ -16,9 +30,7 @@
 
 .mensagens {
   flex: 1;
-  overflow-y: auto;
   padding: 0.9rem;
-  margin-bottom: 80px; 
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -26,8 +38,11 @@
   max-width: 650px; 
   margin-left: auto;
   margin-right: auto; 
+  scrollbar-width: none;  
 }
-
+.mensagens::-webkit-scrollbar {
+  display: none;                   
+}
 .mensagem {
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -41,23 +56,25 @@
   background-color: #1F1F1F;
   color: white;
   align-self: flex-end; 
+  margin-top: 15px;
 }
 
 .mensagem.bot {
-  background-color: #444444; 
+  background-color:rgba(84, 73, 204, 0.5); 
   color: white;
   align-self: flex-start; 
+  max-width: 400px;
+  margin-bottom: 50px;
+  margin-top: 30px;
 }
 
 
 .chat-container {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   width: 90%;
   max-width: 650px;
   box-shadow: rgba(84, 73, 204, 0.5);
+  margin: 0 auto 30px auto;
 }
 
 .chat-input {
@@ -74,13 +91,14 @@
   resize: none;
   box-sizing: border-box;
   box-shadow: 0 0 15px rgba(92, 87, 146, 0.5);
+  flex: 1;
   
 }
 
 .enviar-btn {
-  position: fixed; 
+  position: absolute; 
   bottom: 18px;    
-  right: calc(50% - 300px + 10px); 
+  right: 10px; 
   background: #5449CC;
   border: none;
   border-radius: 50%;
