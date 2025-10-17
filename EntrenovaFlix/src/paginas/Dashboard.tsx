@@ -1,40 +1,41 @@
-import GraficoFrequencia from '../componentes/layout/dashboard/GraficoFrequencia.js';
-import GraficoDesempenho from '../componentes/layout/dashboard/GraficoDesempenho.js';
+import GraficoBarras from '../componentes/layout/dashboard/GraficoBarras.js';
 import Card from '../componentes/layout/dashboard/Card.js';
-import CardParticipacao from '../componentes/layout/dashboard/CardParticipacao.js';
 import { FaFire } from "react-icons/fa6";
 import { MdTimer } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { FaCalendarDays } from "react-icons/fa6";
-import '../styles/dashboard.css'
+import '../styles/dashboard.css';
 
 function Dashboard() {
+
+  const categorias = ['Mês 1', 'Mês 2', 'Mês 3']
+  const valores = [20, 12, 25]
+
+  const categorias2 = ['Quiz', 'Vídeo', 'Podcast', 'Filme']
+  const valores2 = [12, 20, 5, 2]
+
   return (
     <div className='dashboard'>
-      <h1>Dashboard</h1>
-      <div className='sessao-graficos'>
-        <h2>Performance</h2>
+      <h1 className='titulo'>Engajamento e performance do usuário</h1>
         <div className='graficos'>
-          <div className='conjunto-grafico'>
-            <h3 className='titulo-grafico'>Dias ativos por mês</h3>
-            <GraficoFrequencia />
-          </div>
-          <div className='conjunto-grafico'>
-            <h3 className='titulo-grafico'>Atividades realizadas por tipo</h3>
-            <GraficoDesempenho />
-          </div>
-        </div>
+            <GraficoBarras
+              titulo="Dias ativos por mês"
+              subtitulo="Quantidade de acessos mensais a plataforma"
+              categorias={categorias}
+              valores={valores}
+            />
+            <GraficoBarras 
+              titulo="Atividades realizadas por tipo"
+              subtitulo="Classificação das tarefas executadas por categoria"
+              categorias={categorias2}
+              valores={valores2}
+            />
       </div>
       <div className='cards-engajamento'>
         <Card titulo="Acessos semanais" valor="3" icone={<FaCalendarDays className='icone' />} />
         <Card titulo="Tempo gasto nas atividades" valor="10h" icone={<MdTimer className='icone' />} />
         <Card titulo="Dias consecutivos de acesso" valor="7" icone={<FaFire className='icone' />} />
         <Card titulo="Atividades concluídas" valor="3" icone={<FaCheck className='icone' />} />
-      </div>
-      <div className='cards-participacao'>
-        <CardParticipacao titulo="Interações em fórum" valor="12" />
-        <CardParticipacao titulo="Comentários feitos" valor="5" />
-        <CardParticipacao titulo="Comentários respondidos" valor="7" />
       </div>
     </div>
   );

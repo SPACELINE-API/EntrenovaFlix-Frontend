@@ -1,8 +1,18 @@
 import { z } from "zod";
 
-// --- Etapa 1 ---
 export const step1Schema = z.object({
-  setorPrincipal: z.string().min(1, { message: "Por favor, preencha o setor." }),
+  nomeEmpresa: z.string().min(1, { message: "Por favor, preencha o nome." }),
+  telefone: z.string()
+    .min(1, { message: 'O telefone é obrigatório.' })
+    .refine(value => {
+      const numericValue = value.replace(/\D/g, '');
+      return numericValue.length === 10 || numericValue.length === 11;
+    }, {
+      message: 'Número de telefone inválido. Use o formato (XX) XXXXX-XXXX.'
+    }),
+  setorPrincipal: z.enum(["Indústria", "Serviços", "Comércio / Varejo", "Tecnologia / Startups", "Educação / Cultura"], {
+    message: "Selecione o setor.",
+  }),
 
   porteEmpresa: z.enum(["Startup", "PME", "Grande Empresa"], {
     message: "Selecione o porte.",
@@ -15,7 +25,6 @@ export const step1Schema = z.object({
   }),
 });
 
-// --- Etapa 2 ---
 export const step2Schema = z.object({
   desafiosPrioritarios: z.array(z.string())
     .min(1, { message: "Selecione pelo menos um desafio." })
@@ -30,7 +39,6 @@ export const step2Schema = z.object({
     .max(3, { message: "Selecione no máximo 3 dimensões." }),
 });
 
-// --- Etapa 3 ---
 export const step3Schema = z
   .object({
     dimensoesAvaliar: z.array(z.string())
@@ -79,7 +87,7 @@ export const step3Schema = z
     checkFields("direcaoFuturo", ["visao","estrategia"]);
   });
 
-// --- Etapa 4 ---
+
 export const step4Schema = z.object({
   faixaInvestimento: z.enum(["ate10k", "10ka50k", "acima50k"], {
     message: "Selecione uma faixa de investimento.",
@@ -90,11 +98,11 @@ export const step4Schema = z.object({
   }),
 });
 
-// --- Schema completo ---
+
 export const fullFormSchema = step1Schema
   .merge(step2Schema)
   .merge(step3Schema)
   .merge(step4Schema);
 
-// --- Tipo inferido ---
+
 export type FormData = z.infer<typeof fullFormSchema>;
