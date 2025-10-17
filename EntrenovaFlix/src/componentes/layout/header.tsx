@@ -1,11 +1,14 @@
 import { NavLink } from 'react-router-dom';
+import { useQuestionnaire } from '../../contexts/QuestionnaireContext';
 import '../../styles/global.css';
 
 function Header() {
+  const { isQuestionnaireCompleted, hasDiagnosticResult } = useQuestionnaire();
+
   return (
     <header className='headerContainer'>
         <div className='usuario'>
-            <span>Nome do Usuario</span>             
+            <span>Nome do Usuario</span>
         </div>
       <nav className='navigation'>
         <NavLink to="/colaboradores" end>Trilhas</NavLink>

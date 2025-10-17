@@ -1,46 +1,33 @@
-/* estilos gerais*/
 :root {
-  --cor-primaria: #5449CC; 
-  --cor-primaria-hover: #3c2ecf; 
+  /* Cores */
+  --cor-primaria: #5A4FCF; 
+  --cor-primaria-hover: #4a3ebd;
+  --cor-primaria-glow: #5a4fcf80;
   --cor-sucesso: #ffffff;
-  
-  --cor-fundo-claro: #222222;
-  --cor-fundo-escuro: oklch(13% 0.028 261.692); 
-
+  --cor-fundo-escuro: #141414;
+  --cor-fundo-claro: #1A1A1A; 
   --cor-borda: #333; 
-  --cor-borda-foco: #5449CC; 
-  
-  --cor-texto-principal: #C2C2C2; 
-  --cor-texto-secundario: oklch(55.1% 0.027 264.364); 
-  --cor-texto-placeholder: oklch(70.7% 0.022 261.325); 
+  --cor-borda-foco: var(--cor-primaria);
+  --cor-texto-principal: #E0E0E0; 
+  --cor-texto-secundario: #a0a0a0; 
   --cor-texto-botao: #FFFFFF;
-  --cor-erro: #dc2626;
+  --cor-erro: #e53e3e;
 
-  /* Fontes e Tamanhos */
-  --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', 'Kollektif';
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
+  /* Tipografia */
+  --font-display: 'Kollektif', sans-serif;
+  --font-body: 'Satoshi', sans-serif;
+
+  /* Tamanhos e Raio */
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: #141414;
-  color: var(--cor-texto-principal);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* --- LAYOUT PRINCIPAL DO FORMULÁRIO --- */
+/* parte principal do form*/
 .diagnostico-form {
-  max-width: 900px;
-  margin: 3rem auto;
-  padding: 4.5rem;
-  background-color: var(--cor-fundo-claro);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--cor-borda);
-  box-shadow: 
-  0 4px 6px -1px rgb(0 0 0 / 0.05),
-  0 2px 4px -2px rgb(0 0 0 / 0.05);
+  max-width: 2000px;
+  margin: 1rem;
+  padding: 1.5rem;
+  background-color: #00000000;
 }
 
 .form-main-title {
@@ -48,11 +35,26 @@ body {
   font-size: 3rem;
   font-weight: 600;
   text-align: center;
+  margin-bottom: 1rem;
+  color: var(--cor-texto-principal);
+}
+.form-subtitle{
+  font-family: 'Kollektif';
+  font-size: 1.2rem;
+  font-weight: 300;
+  text-align: center;
   margin-bottom: 2.5rem;
   color: var(--cor-texto-principal);
 }
+.rating-item p{
+  color: #C2C2C2;
+  margin-left: -0.5rem;
+}
+.rating-item{
+  margin-left: 0.9rem;
 
-/* --- COMPONENTE STEPPER --- */
+}
+/*o stepper (as linhas em cima)*/
 .stepper-container {
   display: flex;
   justify-content: space-between;
@@ -147,7 +149,7 @@ body {
   color: var(--cor-texto-principal);
 }
 
-/* --- CONTEÚDO DAS ETAPAS DO FORMULÁRIO --- */
+/*o conteudo */
 .form-content {
   margin-top: 2rem;
 }
@@ -176,7 +178,7 @@ body {
 }
 
 .form-field.full {
-  grid-column: 1 / -1;
+  grid-column: 1 / 3;
 }
 
 .label, .form-label {
@@ -220,7 +222,7 @@ body {
   padding-right: 2.5rem;
 }
 
-/* --- ESTILOS PARA STEP 2, 3 E 4 --- */
+/* estilização */
 .grupo-de-perguntas {
   display: flex;
   flex-direction: column;
@@ -235,6 +237,7 @@ body {
 .checkbox-group {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 1.25rem;
   margin-top: 0.5rem;
@@ -250,7 +253,7 @@ body {
   color: var(--cor-texto-principal);
 }
 
-/* ESTILO CUSTOMIZADO PARA INPUTS */
+
 .radio-group input[type="radio"],
 .checkbox-group input[type="checkbox"] {
   -webkit-appearance: none;
@@ -297,8 +300,14 @@ body {
   border-color: var(--cor-primaria);
 }
 
+.input:-webkit-autofill{
+    -webkit-text-fill-color: var(--cor-texto-principal) !important; 
+    -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important; 
+}
+
 .dimension-group {
   padding: 1.5rem;
+  margin-bottom: 2rem;
   border: 1px solid var(--cor-borda);
   border-radius: var(--radius-lg);
 }
@@ -356,7 +365,6 @@ body {
   border-color: var(--cor-primaria);
 }
 
-/* --- ESTILOS PARA TELA FINAL (Step 5) --- */
 .secao-final {
   text-align: center;
   padding: 3rem 1rem;
@@ -431,7 +439,7 @@ body {
 }
 
 .error, .error-message {
-  color: var(--cor-erro);
+  color: var(--cor-erro) !important;
   font-size: 0.875rem;
   margin-top: 0.5rem;
 }
