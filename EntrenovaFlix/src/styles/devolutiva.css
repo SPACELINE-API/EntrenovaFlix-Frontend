@@ -8,7 +8,11 @@
 }
 @font-face {
   font-family: 'Satoshi';
-  src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
+  src: url('../assets/fontes/Satoshi-Variable/Satoshi-Variable.ttf');
+}
+
+.planos-titulo {
+  font-size: 3.2rem;
 }
 
 
@@ -111,6 +115,10 @@
   text-align: center;
   margin-top: 10rem;
   color: #dfdfdf;
+}
+
+.planos h1, h2 {
+  font-family: 'Kollektif', sans-serif;
 }
 
 .planos-container {
