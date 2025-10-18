@@ -180,7 +180,7 @@ function TelaCadastro() {
             });
 
             // Chamada de API para cadastro aqui (?)
-            // Ou talvez após o pagamento... (Ai teria que corrigir e enviar os dados pra tela de pagamento)
+            // Ou talvez após o pagamento que acho melhor por causa do voltar... (Mas ai teria que corrigir e enviar os dados pra tela de pagamento)
 
             navigate('pagamento');
         }

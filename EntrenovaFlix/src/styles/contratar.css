@@ -87,7 +87,7 @@
     margin-bottom: 2rem;
 }
 
-.step {
+.cadastro-step {
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
@@ -100,7 +100,7 @@
     transition: all 0.2s ease;
 }
 
-.step.active {
+.cadastro-step.active {
     background-color: var(--cor-primaria);
     color: var(--cor-texto-botao);
     box-shadow: 0 0 12px var(--cor-primaria-glow);
