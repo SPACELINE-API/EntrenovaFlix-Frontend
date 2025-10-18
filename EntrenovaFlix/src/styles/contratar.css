@@ -30,6 +30,16 @@
     justify-content: space-between;
 }
 
+.input-disabled {
+    background-color: var(--cor-fundo-escuro);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.form-field.full {
+    grid-column: 1 / -1;
+}
+
 .button-primary {
     background: var(--cor-primaria);
     color: var(--cor-texto-botao);
@@ -69,6 +79,41 @@
     gap: 1.5rem;
 }
 
+/* Estilos para os indicadores de passo */
+.steps-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.step {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--cor-fundo-escuro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cor-texto-secundario);
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.step.active {
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto-botao);
+    box-shadow: 0 0 12px var(--cor-primaria-glow);
+}
+
+/* Mensagens de erro */
+.error-message {
+    color: var(--cor-erro, #FF4D4D);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
     .form-grid {
         grid-template-columns: 1fr;
@@ -77,5 +122,9 @@
     .cadastro-container {
         margin: 1rem;
         padding: 1rem;
+    }
+
+    .steps-container {
+        gap: 1rem;
     }
 }
