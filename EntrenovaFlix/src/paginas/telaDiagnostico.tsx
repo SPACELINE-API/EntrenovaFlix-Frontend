@@ -8,7 +8,7 @@ import { useQuestionnaire } from '../contexts/QuestionnaireContext';
 interface DiagnosisData {
   fortes: string[];
   fracos: string[];
-  recomendacao: string[];
+  recomendacao?: string[];
 }
 
 interface SegmentedDiagnosis {
@@ -52,18 +52,58 @@ const RenderPoints = ({ title, points, type }: { title: string, points: string[]
 
 export default function TelaDiagnostico() {
   const { diagnosticResult, hasDiagnosticResult } = useQuestionnaire();
-  
-  // O estado de 'loading' pode ser inferido diretamente pelo hasDiagnosticResult
+  const [plano, setPlano] = useState<any>(null);
+  const [loadingPlano, setLoadingPlano] = useState(true);
+  const [errorPlano, setErrorPlano] = useState<string | null>(null);
+
   const loading = !hasDiagnosticResult;
+
+  useEffect(() => {
+    if (!diagnosticResult) return;
+
+    const pontosFracos: string[] = Object.values(diagnosticResult)
+      .flatMap((cat: any) => cat?.fracos || [])
+      .filter((ponto) => ponto && ponto.trim().length > 0);
+
+    if (pontosFracos.length === 0) {
+      setErrorPlano("Nenhum ponto fraco encontrado para gerar recomendações.");
+      setLoadingPlano(false);
+      return;
+    }
+
+    const fetchPlano = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/proximos-passos/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pontos_a_melhorar: pontosFracos }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Erro ao gerar recomendações");
+        setPlano(data);
+      } catch (err: any) {
+        console.error("Erro ao buscar plano:", err);
+        setErrorPlano(err.message);
+      } finally {
+        setLoadingPlano(false);
+      }
+    };
+
+    fetchPlano();
+  }, [diagnosticResult]);
 
   if (loading) {
     return <div className="diagnostico-container"><p>Carregando resultados...</p></div>;
   }
 
-  // Se não há resultado, ou se o objeto de resultado está vazio, mostramos a mensagem de erro.
   if (!diagnosticResult || Object.keys(diagnosticResult).length === 0) {
-    return <div className="diagnostico-container"><p>Nenhum diagnóstico encontrado ou os dados estão em um formato inesperado. Por favor, complete o formulário primeiro.</p></div>;
+    return <div className="diagnostico-container"><p>Nenhum diagnóstico encontrado. Complete o formulário primeiro.</p></div>;
   }
+
+  const curto = plano?.curto_prazo || { foco: "", acoes: [] };
+  const medio = plano?.medio_prazo || { foco: "", acoes: [] };
+  const longo = plano?.longo_prazo || { foco: "", acoes: [] };
 
   return (
     <div className="diagnostico-container">
@@ -74,10 +114,8 @@ export default function TelaDiagnostico() {
           empresa e as oportunidades de crescimento.
         </p>
       </div>
-
       <div className="resultados-grid">
         {categoriesConfig.map(({ key, title, Icon }) => {
-          // Usamos o diagnosticResult diretamente, que já tem a estrutura correta.
           const categoryData = diagnosticResult[key as keyof SegmentedDiagnosis];
           if (!categoryData) return null;
 
@@ -103,64 +141,68 @@ export default function TelaDiagnostico() {
 
       <div className="proximos-passos-secao">
         <h2 className="secao-titulo">Próximos passos</h2>
-        <div className="solucoes-cards">
-          <div className="solucao-card curto-prazo">
-            <div className='card-header'>
-              <h3>Curto Prazo</h3>
-              <span className="prazo">1-2 semanas</span>
+
+        {loadingPlano ? (
+          <p>Gerando recomendações com IA...</p>
+        ) : errorPlano ? (
+          <p className="erro">Erro: {errorPlano}</p>
+        ) : (
+          <div className="solucoes-cards">
+            <div className="solucao-card curto-prazo">
+              <div className='card-header'>
+                <h3>Curto Prazo</h3>
+                <span className="prazo">1-2 semanas</span>
+              </div>
+              <div className="card-body">
+                <h4>{curto.foco}</h4>
+                <ul>
+                  {curto.acoes.map((acao: string, index: number) => (
+                    <li key={index}>{acao}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
-            <div className="card-body">
-              <h4>Liderança</h4>
-              <ul>
-                <li>Descobrir quais são os conflitos e desafios de liderança junto aos times.</li>
-                <li>Reunião de alinhamento entre RH e líderes para definir prioridades.</li>
-                <li>Comunicação clara sobre expectativas de conduta e resultados de liderança.</li>
-              </ul>
+            <div className="solucao-card medio-prazo">
+              <div className='card-header'>
+                <h3>Médio Prazo</h3>
+                <span className="prazo">2-4 semanas</span>
+              </div>
+              <div className="card-body">
+                <h4>{medio.foco}</h4>
+                <ul>
+                  {medio.acoes.map((acao: string, index: number) => (
+                    <li key={index}>{acao}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="solucao-card longo-prazo">
+              <div className='card-header'>
+                <h3>Longo Prazo</h3>
+                <span className="prazo">+ de 6 semanas</span>
+              </div>
+              <div className="card-body">
+                <h4>{longo.foco}</h4>
+                <ul>
+                  {longo.acoes.map((acao: string, index: number) => (
+                    <li key={index}>{acao}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
-
-          <div className="solucao-card medio-prazo">
-            <div className='card-header'>
-              <h3>Médio Prazo</h3>
-              <span className="prazo">2-4 semanas</span>
-            </div>
-
-            <div className="card-body">
-              <h4>Estrutura & Processos</h4>
-              <ul>
-                <li>Implementar processos padronizados para melhorar a eficiência operacional.</li>
-                <li>Desenvolver programa de treinamento e capacitação das equipes.</li>
-                <li>Definir e implementar métricas e KPIs para acompanhamento de resultados.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="solucao-card longo-prazo">
-            <div className='card-header'>
-              <h3>Longo Prazo</h3>
-              <span className="prazo">+ de 6 semanas</span>
-            </div>
-
-            <div className="card-body">
-              <h4>Transformação Estratégica</h4>
-              <ul>
-                <li>Elaborar planejamento estratégico detalhado com metas de longo prazo.</li>
-                <li>Investir em inovação e transformação digital da empresa.</li>
-                <li>Estruturar plano de expansão e crescimento sustentável no mercado.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
 
       <div className="importancia-secao">
         <h2 className="secao-titulo">Como isto ajuda a empresa?</h2>
         <div className="importancia-content">
-          <p>Implementar essas ações de forma estruturada e progressiva permite que a empresa construa uma base sólida para o crescimento. Começando com alinhamentos imediatos, evoluindo para processos estruturados e culminando em transformação estratégica, cada etapa fortalece a organização, melhora a eficiência operacional e prepara a empresa para enfrentar desafios futuros com maior confiança e capacidade de adaptação.</p>
+          <p>Implementar essas ações de forma estruturada e progressiva permite que a empresa construa uma base sólida para o crescimento. Começando com alinhamentos imediatos, evoluindo para processos estruturados e culminando em transformação estratégica.</p>
         </div>
       </div>
-      
+
       <div className="cta-secao">
         <h2 className="cta-titulo">E agora?</h2>
         <p className="cta-texto">
