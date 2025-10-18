@@ -1,4 +1,4 @@
-import { z } from 'zod';
+/*import { z } from 'zod';
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
@@ -555,4 +555,4 @@ function calculateLeadScore(profile: LeadProfile): number {
 }
 
 export type { LeadProfile, NumeroColaboradores, PorteEmpresa, InvestimentoDisponivel, DecisorPrincipal };
-export { calculateLeadScore };
+export { calculateLeadScore };*/

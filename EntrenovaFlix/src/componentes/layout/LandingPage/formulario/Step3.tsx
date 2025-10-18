@@ -10,7 +10,6 @@ export default function Step3() {
     <div className="form-section">
       <h2 className="form-title">MINI-DIAGNÓSTICO DAS DIMENSÕES</h2>
       <p className="form-desc">Responda as perguntas para as dimensões que você selecionou na etapa anterior.</p>
-
       <div className="grupo-de-perguntas">
 
         {/* Pessoas & Cultura */}

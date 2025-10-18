@@ -3,7 +3,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import DiagnosticService from '../../../../services/diagnosticService';
 import { useQuestionnaire } from '../../../../contexts/QuestionnaireContext';
 
 import { step1Schema, step2Schema, step3Schema, step4Schema, FormData, step5Schema, step6Schema } from './formsZoc';
@@ -28,19 +27,18 @@ const steps = [
 
 export default function Formulario() {
   const navigate = useNavigate();
-  const { setQuestionnaireCompleted } = useQuestionnaire();
+  const { setQuestionnaireCompleted, isSubmitting } = useQuestionnaire();
   const savedProgress = localStorage.getItem('formProgress');
-  const questionnaireCompleted = localStorage.getItem('questionnaireCompleted') === 'true';
   const initialData = savedProgress ? JSON.parse(savedProgress).data : {};
 
   const [currentStep, setCurrentStep] = useState<number>(() => {
-    if (questionnaireCompleted) return 7; 
+    if (localStorage.getItem('questionnaireCompleted') === 'true') return 7;
     if (savedProgress) return JSON.parse(savedProgress).step;
-    return 1; 
+    return 1;
   });
 
   const [completedSteps, setCompletedSteps] = useState<number[]>(() => {
-    if (questionnaireCompleted) return [1,2,3,4,5,6]; 
+    if (localStorage.getItem('questionnaireCompleted') === 'true') return [1, 2, 3, 4, 5, 6];
     if (savedProgress) {
       const step = JSON.parse(savedProgress).step;
       return Array.from({ length: step - 1 }, (_, i) => i + 1);
@@ -48,9 +46,7 @@ export default function Formulario() {
     return [];
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
-
   const stepSchemas = [step1Schema, step2Schema, step3Schema, step4Schema, step5Schema, step6Schema];
 
   const methods = useForm<FormData>({
@@ -73,13 +69,7 @@ export default function Formulario() {
 
   useEffect(() => {
     const subscription = methods.watch((values) => {
-      localStorage.setItem(
-        'formProgress',
-        JSON.stringify({
-          step: currentStep,
-          data: values,
-        })
-      );
+      localStorage.setItem('formProgress', JSON.stringify({ step: currentStep, data: values }));
     });
     return () => subscription.unsubscribe();
   }, [methods, currentStep]);
@@ -97,30 +87,17 @@ export default function Formulario() {
       const dynamicFields: (keyof FormData)[] = ['dimensoesAvaliar'];
 
       if (selectedDimensions.includes('pessoasCultura')) {
-        dynamicFields.push(
-          'pessoasCultura_comunicacao', 'pessoasCultura_lideranca', 'pessoasCultura_resolucaoProblemas',
-          'pessoasCultura_rotina', 'pessoasCultura_valores', 'pessoasCultura_ferramentas'
-        );
+        dynamicFields.push('pessoasCultura_comunicacao', 'pessoasCultura_lideranca', 'pessoasCultura_resolucaoProblemas', 'pessoasCultura_rotina', 'pessoasCultura_valores', 'pessoasCultura_ferramentas');
       }
       if (selectedDimensions.includes('estruturaOperacoes')) {
-        dynamicFields.push(
-          'estruturaOperacoes_trocaInformacoes', 'estruturaOperacoes_delegacao', 'estruturaOperacoes_processos',
-          'estruturaOperacoes_autonomia', 'estruturaOperacoes_qualidade', 'estruturaOperacoes_ferramentas'
-        );
+        dynamicFields.push('estruturaOperacoes_trocaInformacoes', 'estruturaOperacoes_delegacao', 'estruturaOperacoes_processos', 'estruturaOperacoes_autonomia', 'estruturaOperacoes_qualidade', 'estruturaOperacoes_ferramentas');
       }
       if (selectedDimensions.includes('mercadoClientes')) {
-        dynamicFields.push(
-          'mercadoClientes_escuta', 'mercadoClientes_colaboracao', 'mercadoClientes_reacaoMudanca',
-          'mercadoClientes_metas', 'mercadoClientes_diferencial', 'mercadoClientes_ferramentas'
-        );
+        dynamicFields.push('mercadoClientes_escuta', 'mercadoClientes_colaboracao', 'mercadoClientes_reacaoMudanca', 'mercadoClientes_metas', 'mercadoClientes_diferencial', 'mercadoClientes_ferramentas');
       }
       if (selectedDimensions.includes('direcaoFuturo')) {
-        dynamicFields.push(
-          'direcaoFuturo_visao', 'direcaoFuturo_estrategia', 'direcaoFuturo_inovacao',
-          'direcaoFuturo_conexaoEstrategia', 'direcaoFuturo_proposito', 'direcaoFuturo_ferramentas'
-        );
+        dynamicFields.push('direcaoFuturo_visao', 'direcaoFuturo_estrategia', 'direcaoFuturo_inovacao', 'direcaoFuturo_conexaoEstrategia', 'direcaoFuturo_proposito', 'direcaoFuturo_ferramentas');
       }
-
       fieldsToValidate = dynamicFields;
     }
 
@@ -143,13 +120,7 @@ export default function Formulario() {
   };
 
   const processForm = async (data: FormData) => {
-    setIsSubmitting(true);
-    const loadingToast = toast.loading('Analisando suas respostas...');
-
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey) throw new Error('Chave da API do Gemini não encontrada.');
-
       const mappedData = {
         ...data,
         pessoasCultura_1: data.pessoasCultura_comunicacao,
@@ -178,26 +149,18 @@ export default function Formulario() {
         direcaoFuturo_6: data.direcaoFuturo_ferramentas
       };
 
-      const service = new DiagnosticService(apiKey);
-      const result = await service.generateSegmentedDiagnosis(mappedData);
-
-      localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
-      localStorage.setItem('lastDiagnosticResult', JSON.stringify(result));
-
-      toast.dismiss(loadingToast);
-      toast.success('Análise concluída com sucesso!');
-
-      if (!completedSteps.includes(currentStep)) setCompletedSteps(prev => [...prev, currentStep]);
-      setCurrentStep(prev => prev + 1);
-      scrollToTop();
-      setQuestionnaireCompleted(true, result);
+      localStorage.setItem('userFormAnswers', JSON.stringify(mappedData));
+      
+      const onSuccess = () => {
+        setCurrentStep(7);
+        scrollToTop();
+      };
+      
+      setQuestionnaireCompleted(true, onSuccess);
 
     } catch (error) {
-      console.error("Erro no processamento do formulário:", error);
-      toast.dismiss(loadingToast);
-      toast.error(error instanceof Error ? error.message : 'Erro ao gerar diagnóstico.');
-    } finally {
-      setIsSubmitting(false);
+      console.error("Erro ao processar o formulário:", error);
+      toast.error('Erro ao preparar os dados para análise.');
     }
   };
 
@@ -213,7 +176,6 @@ export default function Formulario() {
         <p className="form-subtitle">
           O diagnóstico leva menos de 5 minutos e nos ajuda a entender os principais desafios e objetivos da sua empresa.
         </p>
-
         <div className="stepper-container">
           {steps.map(step => {
             const isCompleted = completedSteps.includes(step.id) || currentStep >= step.id;
@@ -221,20 +183,13 @@ export default function Formulario() {
             return (
               <div key={step.id} className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}>
                 <div className="step-icon-wrapper">
-                  {isCompleted ? ( 
-                    <svg className="step-icon-svg" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    <div className="step-icon-circle"></div>
-                  )}
+                  {isCompleted ? (<svg className="step-icon-svg" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>) : (<div className="step-icon-circle"></div>)}
                 </div>
                 <span className="step-title">{step.title}</span>
               </div>
             );
           })}
         </div>
-        
         <div className="form-content">
           <div className="form-step-wrapper">
             {currentStep === 1 && <Step1 />}
@@ -246,23 +201,10 @@ export default function Formulario() {
             {currentStep === 7 && <Step7 onNavigate={() => navigate('/diagnostico')} />}
           </div>
         </div>
-
         <div className="form-navigation">
-          {currentStep > 1 && currentStep < steps.length && (
-            <button type="button" className="btn btn-secondary" onClick={handlePrev} disabled={isSubmitting}>
-              Voltar
-            </button>
-          )}
-          {currentStep < steps.length - 1 && (
-            <button type="button" className="btn btn-primary" onClick={handleNext}>
-              Avançar
-            </button>
-          )}
-          {currentStep === steps.length - 1 && (
-            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              {isSubmitting ? 'Analisando...' : 'Finalizar e Ver Diagnóstico'}
-            </button>
-          )}
+          {currentStep > 1 && currentStep < steps.length && (<button type="button" className="btn btn-secondary" onClick={handlePrev} disabled={isSubmitting}>Voltar</button>)}
+          {currentStep < steps.length - 1 && (<button type="button" className="btn btn-primary" onClick={handleNext}>Avançar</button>)}
+          {currentStep === steps.length - 1 && (<button type="submit" className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Analisando...' : 'Finalizar e Ver Diagnóstico'}</button>)}
         </div>
       </form>
     </FormProvider>

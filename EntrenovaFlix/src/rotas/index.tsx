@@ -13,6 +13,8 @@ import NovoComentario from '../paginas/novoComentario';
 import DetalhePost from '../paginas/DetalhePost';
 import TelaDiagnostico from '../paginas/telaDiagnostico';
 import DevolutivaPlanos from '../paginas/devolutivaPlanos';
+import ChatBot from '../paginas/ChatBot';
+import ChatBotInicio from '../paginas/ChatBotInicio';
 import PrivateRoute from '../componentes/auth/ProtectedRoute';
 import DashboardRH from '../paginas/RH/DashboardRH';
 import TrilhasRH from '../paginas/RH/TrilhasRH';
@@ -23,7 +25,7 @@ import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <LpLayout />, 
+    element: <LpLayout />,
     errorElement: <NotFoundPage />,
     children: [
       {
@@ -31,13 +33,13 @@ const router = createBrowserRouter([
         element: <LandingPage />,
       },
       {
-        path: 'diagnostico', 
+        path: 'diagnostico',
         element: <TelaDiagnostico />,
       },
       {
-        path: 'diagnostico/devolutiva', 
+        path: 'diagnostico/devolutiva',
         element: <DevolutivaPlanos />,
-      }
+      },
     ],
   },
   {
@@ -74,7 +76,16 @@ const router = createBrowserRouter([
       { path: 'funcionarios', element: <FuncionariosRH />}
     ],
   },
-
+  {
+    path: '/pagchatbot',
+    element: <ChatBotInicio />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: '/chatbot',
+    element: <ChatBot />,
+    errorElement: <NotFoundPage />,
+  },
 ]);
 
 function AppRoutes() {
