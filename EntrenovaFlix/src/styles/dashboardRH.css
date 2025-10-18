@@ -1,0 +1,47 @@
+@font-face {
+    font-family: 'Satoshi';
+    src: url(../assets/fontes/satoshi/Satoshi-Light.otf);
+}
+
+.trilhas-topo {
+    display: flex;
+    flex-direction: row;
+    gap: 3.125rem;
+    margin-top: 1.875rem;
+}
+
+.trilhas-grafico {
+    background-color: #2F333E;
+    border-radius: 0.5rem; 
+    border: 1px solid #857DDB;
+    padding-top: 1.5625rem;
+}
+
+.trilhas-cards {
+    display: flex;
+    flex-direction: row;
+    gap: 0.9375rem;
+    margin-top: 3.125rem; 
+}
+
+.subtitulo {
+    color: #fff;
+}
+
+.trilhas-ativas {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+    font-family: 'Satoshi';
+    color: #cdcdcd;
+}
+
+.icone-trilhas {
+    color: #34A853;
+}
+
+.grafico-linhas {
+    max-width: 43.75rem;
+    max-height: 18.75rem;
+}
