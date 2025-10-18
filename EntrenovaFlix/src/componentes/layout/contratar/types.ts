@@ -44,3 +44,18 @@ export interface FormSenhaProps {
     emailCorporativo: string;
     errors?: ValidationErrors;
 }
+
+export interface DadosPagamento {
+    numeroCartao: string;
+    dataValidade: string;
+    cvv: string;
+    nomeCartao: string;
+    formaPagamento: 'debito' | 'credito' | '';
+    plano: 'essencial' | 'premium' | 'diamante' | '';
+}
+
+export interface FormPagamentoProps {
+    dadosPagamento: DadosPagamento;
+    onChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    errors?: ValidationErrors;
+}

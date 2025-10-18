@@ -179,8 +179,10 @@ function TelaCadastro() {
                 empresa: dadosEmpresa
             });
 
-            // Chamada de API
-            navigate('./pagamento/');
+            // Chamada de API para cadastro aqui (?)
+            // Ou talvez após o pagamento... (Ai teria que corrigir e enviar os dados pra tela de pagamento)
+
+            navigate('pagamento');
         }
     };
 

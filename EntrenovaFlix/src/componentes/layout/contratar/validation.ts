@@ -41,3 +41,25 @@ export const senhaSchema = z.object({
     message: "As senhas não coincidem",
     path: ["confirmarSenha"]
 });
+
+export const pagamentoSchema = z.object({
+    numeroCartao: z.string()
+        .transform((val) => val.replace(/\s/g, '')) // Remove espaços para validação
+        .refine((val) => val.length === 16, "Número do cartão deve ter 16 dígitos")
+        .refine((val) => /^\d+$/.test(val), "Número do cartão deve conter apenas números"),
+    dataValidade: z.string()
+        .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Data de validade deve estar no formato MM/AA"),
+    cvv: z.string()
+        .min(3, "CVV deve ter pelo menos 3 dígitos")
+        .max(4, "CVV deve ter no máximo 4 dígitos")
+        .regex(/^\d+$/, "CVV deve conter apenas números"),
+    nomeCartao: z.string()
+        .min(3, "Nome do cartão deve ter pelo menos 3 caracteres")
+        .max(50, "Nome do cartão deve ter no máximo 50 caracteres"),
+    formaPagamento: z.enum(['debito', 'credito'], {
+        message: "Selecione uma forma de pagamento"
+    }),
+    plano: z.enum(['essencial', 'premium', 'diamante'], {
+        message: "Selecione um plano"
+    })
+});

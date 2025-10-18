@@ -15,4 +15,10 @@ export interface ValidationErrors {
     estado?: string[];
     senha?: string[];
     confirmarSenha?: string[];
+    numeroCartao?: string[];
+    dataValidade?: string[];
+    cvv?: string[];
+    nomeCartao?: string[];
+    formaPagamento?: string[];
+    plano?: string[];
 }
