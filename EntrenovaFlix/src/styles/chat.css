@@ -163,3 +163,26 @@ body::-webkit-scrollbar {
 .btn-iniciar-chat:active {
   transform: scale(0.98);
 }
+
+.encerrar-btn {
+  width: 100%; 
+  padding: 12px 20px;
+  background: linear-gradient(to right, #4A00E0, #1a1a1a); 
+  color: white;
+  border: none;
+  border-radius: 8px; 
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, background 0.2s ease, transform 0.1s ease;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.encerrar-btn:hover {
+  background: #8B0000; 
+}
+
+.encerrar-btn:active {
+  transform: scale(0.98); 
+}
