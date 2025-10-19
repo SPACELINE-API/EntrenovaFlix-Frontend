@@ -17,7 +17,9 @@ function ChatBot() {
   const [isConversationComplete, setIsConversationComplete] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate(); // 2. Instancie o hook
+  const navigate = useNavigate(); 
+  const [isTyping, setIsTyping] = useState(false);
+
 
   useEffect(() => {
     const unsubscribe = chatService.subscribe(newState => {
@@ -31,16 +33,20 @@ function ChatBot() {
   }, [chatState.mensagens]);
 
 
-  const handleSendMessage = () => {
-    if (inputMessage.trim() && !isConversationComplete) {
-       chatService.sendMessage(inputMessage).then(complete => {
-           if (complete) {
-               setIsConversationComplete(true);
-           }
-       });
-       setInputMessage("");
-    }
-  };
+ const handleSendMessage = () => {
+  if (inputMessage.trim() && !isConversationComplete) {
+    setIsTyping(true); 
+
+    chatService.sendMessage(inputMessage).then(complete => {
+      setIsTyping(false); 
+      if (complete) {
+        setIsConversationComplete(true);
+      }
+    });
+
+    setInputMessage("");
+  }
+};
 
   const handleEndConversation = () => {
     const conversationHistory = chatService.getState().mensagens;
@@ -77,6 +83,13 @@ function ChatBot() {
              ))}
            </div>
         ))}
+        {isTyping && (
+        <div className="balaozinho-pensando">
+          <span className="ponto"></span>
+          <span className="ponto"></span>
+          <span className="ponto"></span>
+        </div>
+      )}
         <div ref={messagesEndRef} />
       </div>
 
@@ -110,5 +123,4 @@ function ChatBot() {
     </div>
   );
 }
-
 export default ChatBot;
