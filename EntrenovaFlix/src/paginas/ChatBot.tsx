@@ -123,3 +123,4 @@ function ChatBot() {
     </div>
   );
 }
+export default ChatBot;
