@@ -1,7 +1,8 @@
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form'; 
+import { IMaskInput } from 'react-imask';
 
 export default function Step1() {
-  const { register, formState: { errors }, watch } = useFormContext();
+  const { register, control, formState: { errors }, watch } = useFormContext();
   const setorPrincipalValue = watch('setorPrincipal');
 
   return (
@@ -10,28 +11,113 @@ export default function Step1() {
       <p className="form-desc">Informações básicas para entendermos seu contexto.</p>
       
       <div className="form-grid">
-        {/* Nome da Empresa */}
+
+        {/* Nome pessoa  */}
+        <div className="form-field">
+          <label htmlFor="nomePes" className="label">Seu nome:</label>
+          <input 
+            id="nomePes" 
+            type="text" 
+            {...register('nomePes')} 
+            className="input"
+            placeholder='Nome'
+          />
+          {errors.nomePes?.message && (
+            <p className="error">{errors.nomePes.message as string}</p>
+          )}
+        </div>
+
+        {/* Cargo  */}
+        <div className="form-field">
+          <label htmlFor="cargo" className="label">Seu cargo:</label>
+          <input 
+            id="cargo" 
+            type="text" 
+            {...register('cargo')} 
+            className="input"
+            placeholder='Cargo'
+          />
+          {errors.cargo?.message && (
+            <p className="error">{errors.cargo.message as string}</p>
+          )}
+        </div>
+        
+        {/* Nome da Empresa  */}
         <div className="form-field">
           <label htmlFor="nomeEmpresa" className="label">Nome da Empresa:</label>
           <input 
             id="nomeEmpresa" 
             type="text" 
             {...register('nomeEmpresa')} 
-            className="input" 
+            className="input"
+            placeholder='Empresa Ltda'
           />
           {errors.nomeEmpresa?.message && (
             <p className="error">{errors.nomeEmpresa.message as string}</p>
           )}
         </div>
 
-        {/* Telefone */}
+        {/* CNPJ  */}
+        <div className='form-field'>
+          <label htmlFor="cnpj" className='label'>CNPJ:</label>
+          <Controller
+            name="cnpj"
+            control={control}
+            render={({ field }) => (
+              <IMaskInput
+                {...field}
+                id="cnpj"
+                mask='00.000.000/0000-00'
+                onAccept={(value, mask) => {
+                  field.onChange(mask.unmaskedValue); 
+                }}
+                onBlur={field.onBlur} 
+                inputRef={field.ref} 
+                placeholder="99.999.999/9999-99"
+                className='input'
+              />
+            )}
+          />
+          {errors.cnpj?.message && (
+            <p className="error">{errors.cnpj.message as string}</p>
+          )}
+        </div>
+
+        {/* Email */}
+        <div className='form-field'>
+          <label htmlFor="email" className='label'>E-mail</label>
+          <input
+            id='email' 
+            type="email"
+            {...register('email')}
+            placeholder='email@email.com'
+            className='input'
+          />
+          {errors.email?.message && (
+            <p className="error">{errors.email.message as string}</p>
+          )}
+        </div>
+
+        {/* Telefone  */}
         <div className="form-field">
           <label htmlFor="telefone" className="label">Telefone:</label>
-          <input 
-            id="telefone" 
-            type="tel" 
-            {...register('telefone')} 
-            className="input" 
+          <Controller
+            name="telefone"
+            control={control}
+            render={({ field }) => (
+              <IMaskInput
+                {...field}
+                id="telefone"
+                mask={[{mask: '(00) 0000-0000',},{mask: '(00) 00000-0000',}]}
+                onAccept={(value, mask) => {
+                  field.onChange(mask.unmaskedValue); 
+                }}
+                onBlur={field.onBlur}
+                inputRef={field.ref} 
+                placeholder="(00) 00000-0000" 
+                className='input'
+              />
+            )}
           />
           {errors.telefone?.message && (
             <p className="error">{errors.telefone.message as string}</p>

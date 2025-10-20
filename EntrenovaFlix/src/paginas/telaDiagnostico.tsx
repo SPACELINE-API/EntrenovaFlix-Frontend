@@ -1,14 +1,14 @@
-import { useState, useEffect, ElementType } from 'react'; 
+import { useState, useEffect, ElementType } from 'react';
 import '../styles/diagnostico.css';
 import { FaUsers, FaDirections } from "react-icons/fa";
 import { PiTreeStructureFill } from "react-icons/pi";
 import { MdBusiness } from "react-icons/md";
-import Button from '../componentes/ui/botões/botao';
+import { useQuestionnaire } from '../contexts/QuestionnaireContext';
 
 interface DiagnosisData {
-  strengths: string[];
-  weaknesses: string[];
-  analysis?: string; 
+  fortes: string[];
+  fracos: string[];
+  recomendacao: string[];
 }
 
 interface SegmentedDiagnosis {
@@ -18,32 +18,15 @@ interface SegmentedDiagnosis {
   direcaoFuturo?: DiagnosisData;
 }
 
-
 const categoriesConfig: {
   key: keyof SegmentedDiagnosis;
   title: string;
   Icon: ElementType;
 }[] = [
-  {
-    key: 'pessoasCultura',
-    title: 'Pessoas & Cultura',
-    Icon: FaUsers,
-  },
-  {
-    key: 'estruturaOperacoes',
-    title: 'Estrutura & Operações',
-    Icon: PiTreeStructureFill,
-  },
-  {
-    key: 'mercadoClientes',
-    title: 'Mercado & Clientes',
-    Icon: MdBusiness,
-  },
-  {
-    key: 'direcaoFuturo',
-    title: 'Direção & Futuro',
-    Icon: FaDirections,
-  },
+  { key: 'pessoasCultura', title: 'Pessoas & Cultura', Icon: FaUsers },
+  { key: 'estruturaOperacoes', title: 'Estrutura & Operações', Icon: PiTreeStructureFill },
+  { key: 'mercadoClientes', title: 'Mercado & Clientes', Icon: MdBusiness },
+  { key: 'direcaoFuturo', title: 'Direção & Futuro', Icon: FaDirections },
 ];
 
 const RenderPoints = ({ title, points, type }: { title: string, points: string[], type: 'forte' | 'fraco' }) => {
@@ -68,34 +51,18 @@ const RenderPoints = ({ title, points, type }: { title: string, points: string[]
 };
 
 export default function TelaDiagnostico() {
-  const [diagnosis, setDiagnosis] = useState<SegmentedDiagnosis | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const email = 'contato@entrenova.com.br';
-  const subject = 'Contato Pelo Site - Diagnóstico Aprofundado';
-  const body = `Olá!\nGostaria marcar uma consultoria para um diagnóstico mais aprofundado,\n[Seu Nome]`;
-  const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('segmentedDiagnosis');
-      if (stored) {
-        setDiagnosis(JSON.parse(stored));
-      }
-    } catch (error) {
-      console.error("Erro ao ler o diagnóstico do localStorage:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
+  const { diagnosticResult, hasDiagnosticResult } = useQuestionnaire();
+  
+  // O estado de 'loading' pode ser inferido diretamente pelo hasDiagnosticResult
+  const loading = !hasDiagnosticResult;
 
   if (loading) {
     return <div className="diagnostico-container"><p>Carregando resultados...</p></div>;
   }
 
-  if (!diagnosis) {
-    return <div className="diagnostico-container"><p>Nenhum diagnóstico encontrado. Por favor, complete o formulário primeiro.</p></div>;
+  // Se não há resultado, ou se o objeto de resultado está vazio, mostramos a mensagem de erro.
+  if (!diagnosticResult || Object.keys(diagnosticResult).length === 0) {
+    return <div className="diagnostico-container"><p>Nenhum diagnóstico encontrado ou os dados estão em um formato inesperado. Por favor, complete o formulário primeiro.</p></div>;
   }
 
   return (
@@ -110,26 +77,17 @@ export default function TelaDiagnostico() {
 
       <div className="resultados-grid">
         {categoriesConfig.map(({ key, title, Icon }) => {
-          const categoryData = diagnosis[key];
+          // Usamos o diagnosticResult diretamente, que já tem a estrutura correta.
+          const categoryData = diagnosticResult[key as keyof SegmentedDiagnosis];
           if (!categoryData) return null;
 
           return (
             <div className="categoria-resultado" key={key}>
-              <div className="categoria-icon">
-                <Icon size={30} />
-              </div>
+              <div className="categoria-icon"><Icon size={30} /></div>
               <h3 className="categoria-titulo">{title}</h3>
               <div className="pontos-categoria">
-                <RenderPoints
-                  title="Pontos fortes"
-                  points={categoryData.strengths}
-                  type="forte"
-                />
-                <RenderPoints
-                  title="Pontos a melhorar"
-                  points={categoryData.weaknesses}
-                  type="fraco"
-                />
+                <RenderPoints title="Pontos fortes" points={categoryData.fortes} type="forte" />
+                <RenderPoints title="Pontos a melhorar" points={categoryData.fracos} type="fraco" />
               </div>
             </div>
           );
@@ -149,22 +107,15 @@ export default function TelaDiagnostico() {
           <p>Este diagnóstico rápido é uma fotografia do momento atual. O próximo passo é aprofundar a análise, criando um plano de ação claro e prático para transformar as oportunidades em resultados concretos e fortalecer ainda mais seus pontos positivos.</p>
         </div>
       </div>
-
+      
       <div className="cta-secao">
         <h2 className="cta-titulo">E agora?</h2>
         <p className="cta-texto">
           Para receber um relatório completo e um diagnóstico aprofundado, entre em contato
           conosco!
         </p>
-        <Button className="btn-agendar" to='devolutiva'>
-          Acesse nossos planos
-        </Button>
-
-        <a href={mailtoLink} style={{ textDecoration: 'none' }}>
-          <Button className='btn-agendar' >
-            Consultoria
-          </Button>
-        </a>
+        <a className="btn-agendar" href="/diagnostico/devolutiva">Acesse nossos planos</a>
+        <button className='btn-agendar'>Baixar meus resultados</button>
       </div>
     </div>
   );
