@@ -76,12 +76,16 @@ function ChatBot() {
   return (
     <div className="chatbot-page">
       <div className="mensagens">
+         <div className='mensagem-inicial'>
+              <h5>Olá, sou a Assistente Virtual da Entrenova! Como posso ajudar?</h5>
+            </div>
         {chatState.mensagens.map((msg, index) => (
            <div key={index} className={`mensagem ${msg.role === 'user' ? 'user' : 'bot'}`}>
              {msg.content.split('\\n').map((line, i) => (
                <span key={i}>{line}<br/></span>
              ))}
            </div>
+           
         ))}
         {isTyping && (
         <div className="balaozinho-pensando">
