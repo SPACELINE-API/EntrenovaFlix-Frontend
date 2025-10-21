@@ -1,4 +1,6 @@
 import { GoShield } from "react-icons/go";
+import React, { useState, useEffect, ElementType } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { FaLightbulb } from "react-icons/fa6";
@@ -8,13 +10,33 @@ import Card from "../../componentes/layout/dashboard/Card";
 import InfoLinha from "../../componentes/layout/dashboard/InfoLinha";
 import GraficoLinha from "../../componentes/layout/dashboard/GraficoLinha";
 
+interface DecodedToken {
+  role: 'admin' | 'rh' | 'user';
+  nome: string;
+  email: string;
+}
+
 function DashboardRH() {
 
+    const [userName, setUserName] = useState<string>("Usuário");
     const acessos = [400, 500, 600, 700, 340, 480]
+
+    useEffect(() => {
+    const token = localStorage.getItem("access_token");
+
+    if (token) {
+      try {
+        const decodedToken: DecodedToken = jwtDecode(token); 
+        setUserName(decodedToken.nome || "Usuário"); 
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+      }
+    }
+  }, []);
 
     return (
         <div>
-            <h1 className="titulo">Bem Vindo, Alisson</h1>
+            <h1 className="titulo">Bem Vindo, {userName}</h1>
             <h2 className="visaoGeral-subtitulo">Todos os indicadores abaixo foram calculados com base nas trilhas ativas</h2>
 
             <div className="paineis">
