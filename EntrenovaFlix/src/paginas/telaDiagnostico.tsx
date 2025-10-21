@@ -114,8 +114,14 @@ export default function TelaDiagnostico() {
           Para receber um relatório completo e um diagnóstico aprofundado, entre em contato
           conosco!
         </p>
-        <a className="btn-agendar" href="/diagnostico/devolutiva">Acesse nossos planos</a>
-        <button className='btn-agendar'>Baixar meus resultados</button>
+        <div className='btn-secao'>
+          <a className="btn-agendar" href="/diagnostico/devolutiva">
+            <span className='btn-texto'>Acesse nossos planos</span>
+          </a>
+          <button className='btn-agendar'>
+            <span className='btn-texto'>Baixar meus resultados</span>
+          </button>
+        </div>
       </div>
     </div>
   );
