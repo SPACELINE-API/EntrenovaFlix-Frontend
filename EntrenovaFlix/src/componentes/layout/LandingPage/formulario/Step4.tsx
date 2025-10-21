@@ -1,8 +1,17 @@
 import { useFormContext, Controller } from 'react-hook-form';
+import { useEffect } from "react";
 
 export default function Step4() {
-  const { control, formState: { errors }, watch } = useFormContext();
-  const decisor = watch('decisorContratacao');
+  const { control, watch, setValue, clearErrors, formState: { errors } } = useFormContext();
+  const decisor = watch("decisorContratacao");
+
+  useEffect(() => {
+    if (decisor !== "Outro") {
+      setValue("decisorContratacaoOutro", "");
+      clearErrors("decisorContratacaoOutro");
+    }
+  }, [decisor, setValue, clearErrors]);
+
 
   return (
     <div className="form-section">
@@ -36,19 +45,11 @@ export default function Step4() {
                 <label><input {...field} type="radio" value="CEO/Diretor" checked={field.value === 'CEO/Diretor'} /> CEO/ Diretor</label>
                 <label><input {...field} type="radio" value="RH/T&D" checked={field.value === 'RH/T&D'} /> RH/Treinamento e Desenvolvimento </label>
                 <label><input {...field} type="radio" value="Marketing" checked={field.value === 'Marketing'} /> Marketing / Comunicação </label>
-                <label><input {...field} type="radio" value="Outro" checked={field.value === 'Outro'} /> Outro: </label>
+                <label><input {...field} type="radio" value="Outro" checked={field.value === 'Outro'} /> Departamento específico </label>
               </div>
             )}
           />
-          {decisor === 'Outro' && (
-            <Controller
-              name="decisorContratacaoOutro"
-              control={control}
-              render={({ field }) => <input {...field} type="text" placeholder="Por favor, especifique" className="input" style={{ marginTop: '10px' }} />}
-            />
-          )}
           {errors.decisorContratacao?.message && <p className="error">{errors.decisorContratacao.message as string}</p>}
-          {errors.decisorContratacaoOutro?.message && <p className="error">{errors.decisorContratacaoOutro.message as string}</p>}
         </div>
 
         <div className="input-group">
@@ -95,7 +96,7 @@ export default function Step4() {
                 {[1, 2, 3, 4, 5].map(v => <label key={v}><input {...field} type="radio" value={String(v)} checked={field.value === String(v)} /><span>{v}</span></label>)}
               </div>
             )} />
-            {errors.importanciaDesenvolvimento?.message && <p className="error">{errors.importanciaDesenvolvimento.message as string}</p>}
+          {errors.importanciaDesenvolvimento?.message && <p className="error">{errors.importanciaDesenvolvimento.message as string}</p>}
           </div>
           <div className="rating-item">
             <p>Desenvolver soft skills (comunicação, liderança, etc.) </p>
