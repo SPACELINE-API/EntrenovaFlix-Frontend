@@ -1,6 +1,6 @@
 import ReactECharts from 'echarts-for-react';
 
-const GraficoDesempenho = () => {
+const GraficoPizza = () => {
   const option = {
     tooltip: {
       show: false
@@ -37,4 +37,4 @@ const GraficoDesempenho = () => {
   return <ReactECharts option={option} style={{ height: '300px', width: '100%' }} />;
 };
 
-export default GraficoDesempenho;
+export default GraficoPizza;
