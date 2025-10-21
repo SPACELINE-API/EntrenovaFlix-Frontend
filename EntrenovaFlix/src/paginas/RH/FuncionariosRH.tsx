@@ -15,12 +15,18 @@ async function postFuncionarios(dados: {
     const response = await api.post("/register", dados);
     return response.data;
   } catch (error: any) {
-    console.error("Erro ao enviar mensagem:", error);
 
     if (error.response && error.response.data) {
-      throw new Error(error.response.data.message || "Erro no cadastro!");
+      const data = error.response.data;
+      const firstErrorKey = Object.keys(data)[0];
+      
+      if (firstErrorKey && Array.isArray(data[firstErrorKey]) && data[firstErrorKey].length > 0) {
+        throw new Error(data[firstErrorKey][0]);
+      } else {
+        throw new Error("Erro de validação. Verifique os dados.");
+      }
     }
-    throw error;
+    throw new Error("Não foi possível conectar ao servidor.");
   }
 }
 
