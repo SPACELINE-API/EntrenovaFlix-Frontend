@@ -22,6 +22,10 @@ import DiagnosticoRH from '../paginas/RH/DiagnosticoRH';
 import PlanosRH from '../paginas/RH/PlanosRH';
 import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 
+import ContratarLayout from '../componentes/layout/contratarLayout';
+import TelaCadastro from '../paginas/pagamento/telaCadastro';
+import TelaPagamento from '../paginas/pagamento/telaPagamento';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -40,6 +44,21 @@ const router = createBrowserRouter([
         path: 'diagnostico/devolutiva',
         element: <DevolutivaPlanos />,
       },
+    ],
+  },
+  {
+    path: '/cadastro',
+    element: <ContratarLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        index: true,
+        element: <TelaCadastro />,
+      },
+      {
+        path: 'pagamento',
+        element: <TelaPagamento />,
+      }
     ],
   },
   {

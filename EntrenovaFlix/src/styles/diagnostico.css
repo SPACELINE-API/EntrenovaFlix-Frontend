@@ -47,12 +47,12 @@
 }
 
 .resultados-grid {
-  display: flex;
-  justify-content: center; 
-  flex-wrap: wrap;         
-  gap: 2rem;              
-  width: 100%;             
-  margin-top: 2rem;        
+    display: flex;
+    justify-content: center; 
+    flex-wrap: wrap;         
+    gap: 2rem;              
+    width: 100%;             
+    margin-top: 2rem;        
 }
 
 .categoria-resultado {
@@ -143,8 +143,7 @@
     color: #FFFFFF;
 }
 
-.importancia-content,
-.proximos-passos-content {
+.importancia-content {
     background: #2a2a2a00; 
     border-left: 4px solid #5449CC;
     font-family: 'Satoshi', sans-serif;
@@ -265,3 +264,119 @@
     font-family: 'Kollektif', Arial, sans-serif;
 }
 
+/* Cards Soluções */
+.solucoes-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 40px 0;
+}
+
+.solucao-card {
+    background: #2a2a2a;
+    border: solid 1px #424242;
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s ease;
+}
+
+.solucao-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(84, 73, 204, 0.3);
+    border-color: #5449CC;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.card-header h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: "satoshi", sans-serif;
+    margin: 0;
+    padding: 4px 12px;
+}
+
+.curto-prazo h3 {
+    background-color:  #15803d;
+    border: 1px solid #4ade80;
+    color: #fafafa;
+    border-radius: 60px; 
+}
+
+.medio-prazo h3 {
+    background-color:  #b45309;
+    border: 1px solid #fbbf24;
+    color: #fafafa;
+    border-radius: 60px; 
+}
+
+.longo-prazo h3 {
+    background-color:  #5449CC;
+    border: 1px solid #796cff;
+    color: #fafafa;
+    border-radius: 60px;
+}
+
+.prazo {
+    font-size: 0.9rem;
+    color: #C4C4CC;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 400;
+}
+
+.card-body h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #FFFFFF;
+    font-family: 'Kollektif', Arial, sans-serif;
+}
+
+.card-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-body li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 10px;
+    font-family: 'Satoshi', sans-serif;
+    color: #C4C4CC;
+    line-height: 1.4;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.card-body li::before {
+    content: '•';
+    font-size: 1.2rem;
+    position: absolute;
+    left: 0;
+    top: 0px;
+}
+
+.curto-prazo .card-body li::before {
+    color: #4ade80;
+}
+
+.medio-prazo .card-body li::before {
+    color: #fbbf24;
+}
+
+.longo-prazo .card-body li::before {
+    color: #796cff;
+}
+
+@media (max-width: 1024px) {
+    .solucoes-cards {
+        grid-template-columns: 1fr;
+        margin: 40px 0;
+    }
+}
