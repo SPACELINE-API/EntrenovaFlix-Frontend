@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import toast from 'react-hot-toast';
+import { chatService } from '../services/chatService';
 
 interface QuestionnaireContextType {
   isQuestionnaireCompleted: boolean;
@@ -48,6 +49,8 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
 
     try {
       const formJSON = JSON.parse(form);
+      console.log(`formulário completo: ${formJSON}`)
+      chatService.setForm(formJSON)
       const payload = { responses: formJSON };
 
       const response = await fetch("http://127.0.0.1:8000/api/diagnostico/avaliar", {
@@ -58,13 +61,10 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
 
       const result = await response.json();
 
-      // --- CORREÇÃO DA VALIDAÇÃO ---
-      // Verificamos se a resposta está OK e se o objeto 'result' tem pelo menos uma chave.
       if (!response.ok || Object.keys(result).length === 0) {
         throw new Error("A resposta da IA não contém um diagnóstico válido.");
       }
       
-      // Agora o nome 'diagnosticResult' faz mais sentido, pois é o resultado direto.
       localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
       setDiagnosticResult(result);
       setHasDiagnosticResult(true);
