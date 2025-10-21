@@ -1,10 +1,10 @@
 // src/paginas/ChatBot.tsx
 
-import '../styles/chat.css';
-import { useState, useRef, useEffect } from 'react';
+import "../styles/chat.css";
+import { useState, useRef, useEffect } from "react";
 import { LuSendHorizontal } from "react-icons/lu";
-import { chatService } from '../services/chatService';
-import { useNavigate } from 'react-router-dom'; 
+import { chatService } from "../services/chatService";
+import { useNavigate } from "react-router-dom";
 
 type Message = {
   role: "user" | "bot";
@@ -17,12 +17,11 @@ function ChatBot() {
   const [isConversationComplete, setIsConversationComplete] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [isTyping, setIsTyping] = useState(false);
 
-
   useEffect(() => {
-    const unsubscribe = chatService.subscribe(newState => {
+    const unsubscribe = chatService.subscribe((newState) => {
       setChatState(newState);
     });
     return () => unsubscribe();
@@ -32,30 +31,63 @@ function ChatBot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatState.mensagens]);
 
+  const handleSendMessage = () => {
+    if (inputMessage.trim() && !isConversationComplete) {
+      setIsTyping(true);
 
- const handleSendMessage = () => {
-  if (inputMessage.trim() && !isConversationComplete) {
-    setIsTyping(true); 
+      chatService.sendMessage(inputMessage).then((complete) => {
+        setIsTyping(false);
+        if (complete) {
+          setIsConversationComplete(true);
+        }
+      });
 
-    chatService.sendMessage(inputMessage).then(complete => {
-      setIsTyping(false); 
-      if (complete) {
-        setIsConversationComplete(true);
+      setInputMessage("");
+    }
+  };
+
+  async function postAI(form: string) {
+    try {
+      const formJSON = JSON.parse(form);
+      console.log(`formulário completo: ${formJSON}`);
+      chatService.setForm(formJSON);
+      const payload = { responses: formJSON };
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/diagnosticoRH",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || Object.keys(result).length === 0) {
+        throw new Error("A resposta da IA não contém um diagnóstico válido.");
       }
-    });
-
-    setInputMessage("");
+    } catch (error) {
+      console.error(error);
+    }
   }
-};
 
   const handleEndConversation = () => {
     const conversationHistory = chatService.getState().mensagens;
+
+    let userAnswers: string | null = localStorage.getItem("segmentedDiagnosis");
+    if (userAnswers !== null) {
+      postAI(userAnswers)
+    } else {
+      console.log("Nenhuma resposta do usuário encontrada no localStorage.")
+    }
+
     console.log("Salvando conversa:", conversationHistory);
     chatService.resetChat();
     setIsConversationComplete(false);
     setInputMessage("");
 
-    navigate('/dashboardRH');
+    navigate("/dashboardRH");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -72,28 +104,34 @@ function ChatBot() {
     }
   }, [inputMessage]);
 
-
   return (
     <div className="chatbot-page">
       <div className="mensagens">
-         <div className='mensagem-inicial'>
-              <h5>Olá, sou a Assistente Virtual da Entrenova! Como posso ajudar?</h5>
-            </div>
+        <div className="mensagem-inicial">
+          <h5>
+            Olá, sou a Assistente Virtual da Entrenova! Como posso ajudar?
+          </h5>
+        </div>
         {chatState.mensagens.map((msg, index) => (
-           <div key={index} className={`mensagem ${msg.role === 'user' ? 'user' : 'bot'}`}>
-             {msg.content.split('\\n').map((line, i) => (
-               <span key={i}>{line}<br/></span>
-             ))}
-           </div>
-           
+          <div
+            key={index}
+            className={`mensagem ${msg.role === "user" ? "user" : "bot"}`}
+          >
+            {msg.content.split("\\n").map((line, i) => (
+              <span key={i}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </div>
         ))}
         {isTyping && (
-        <div className="balaozinho-pensando">
-          <span className="ponto"></span>
-          <span className="ponto"></span>
-          <span className="ponto"></span>
-        </div>
-      )}
+          <div className="balaozinho-pensando">
+            <span className="ponto"></span>
+            <span className="ponto"></span>
+            <span className="ponto"></span>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 
