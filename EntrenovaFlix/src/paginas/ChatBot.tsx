@@ -46,42 +46,8 @@ function ChatBot() {
     }
   };
 
-  async function postAI(form: string) {
-    try {
-      const formJSON = JSON.parse(form);
-      console.log(`formulário completo: ${formJSON}`);
-      chatService.setForm(formJSON);
-      const payload = { responses: formJSON };
-
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/diagnosticoRH",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      const result = await response.json();
-
-      if (!response.ok || Object.keys(result).length === 0) {
-        throw new Error("A resposta da IA não contém um diagnóstico válido.");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   const handleEndConversation = () => {
     const conversationHistory = chatService.getState().mensagens;
-
-    let userAnswers: string | null = localStorage.getItem("segmentedDiagnosis");
-    if (userAnswers !== null) {
-      postAI(userAnswers)
-    } else {
-      console.log("Nenhuma resposta do usuário encontrada no localStorage.")
-    }
-
     console.log("Salvando conversa:", conversationHistory);
     chatService.resetChat();
     setIsConversationComplete(false);
