@@ -31,12 +31,14 @@ const GraficoBarras: React.FC<GraficoBarraProps> = ({
       data: categorias
     },
     yAxis: {
-      type: 'value'
+      type: 'value',
+      max: 24
     },
     series: [
       {
         data: valores,
         type: 'bar',
+        barMaxWidth: 80, 
         showBackground: true,
         backgroundStyle: {
           color: 'rgba(180, 180, 180, 0.2)'
