@@ -86,7 +86,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboardRH',
-    element: <PrivateRoute />, 
+    element: <PrivateRoute allowedRoles={['admin', 'rh']} />, 
     children: [
       {
         element: <DashboardRHLayout />,

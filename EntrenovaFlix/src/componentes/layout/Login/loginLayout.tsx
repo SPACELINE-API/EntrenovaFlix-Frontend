@@ -33,6 +33,7 @@ export default function LgSection() {
     const result = await authService.login(data.email, data.password);
     const decodedToken: DecodedToken = jwtDecode(result.access);
     console.log("Conteúdo do Token Decodificado:", decodedToken); 
+    localStorage.setItem("user_role", decodedToken.role);
 
     if (decodedToken.role === 'rh') {
         navigate("/dashboardRH"); 
