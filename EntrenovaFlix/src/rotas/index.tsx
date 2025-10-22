@@ -56,7 +56,7 @@ const router = createBrowserRouter([
         element: <TelaCadastro />,
       },
       {
-        path: 'pagamento',
+        path: '/pagamento',
         element: <TelaPagamento />,
       }
     ],

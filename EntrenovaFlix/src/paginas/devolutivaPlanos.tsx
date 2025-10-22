@@ -2,6 +2,7 @@ import '../styles/devolutiva.css'
 import { FaPlay, FaFilm, FaMicrophone } from "react-icons/fa";
 import { GiBrain } from "react-icons/gi";
 import { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 
 function DevolutivaPlanos(){
@@ -86,7 +87,7 @@ function DevolutivaPlanos(){
                             <li>Interface básica</li>
                             <li>Acesso às trilhas e mesma experiência para cada usuário</li>
                         </ul>
-                        <button className='botao-assinar'>Assinar</button>
+                        <Link to='/cadastro' className='botao-assinar'>Assinar</Link>
                     </div>
                     <div className='plano-card'>
                         <h3>Plano <span className="premium">premium</span></h3>
@@ -96,7 +97,7 @@ function DevolutivaPlanos(){
                             <li>Personalização parcial da interface com base na identidade da empresa</li>
                             <li>Controle de acesso</li>
                         </ul>
-                        <button className='botao-assinar'>Assinar</button>
+                        <Link to='/cadastro' className='botao-assinar'>Assinar</Link>
                     </div>
                     <div className='plano-card'>
                         <h3>Plano <span className="diamante">diamante</span></h3>
@@ -106,7 +107,7 @@ function DevolutivaPlanos(){
                             <li>Personalização total da interface com base na identidade da empresa</li>
                             <li>Experiência customizada para diferentes tipos de usuários</li>
                         </ul>
-                        <button className='botao-assinar'>Assinar</button>
+                        <Link to='/cadastro' className='botao-assinar' >Assinar</Link>
                     </div>
                 </div>
                 </>

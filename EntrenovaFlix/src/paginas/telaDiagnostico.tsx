@@ -175,7 +175,6 @@ export default function TelaDiagnostico() {
           })}
         </div>
 
-        {/* --- SEÇÃO DE RECOMENDAÇÕES DA IA (MODIFICADA) --- */}
         <div className="recomendacoes-secao">
           <h4>Recomendações da IA por Dimensão</h4>
           <p className="muted">Soft skills e tags de interesse sugeridas pela IA com base nos seus pontos fracos.</p>
