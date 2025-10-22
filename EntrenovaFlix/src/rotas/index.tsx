@@ -56,9 +56,9 @@ const router = createBrowserRouter([
         element: <TelaCadastro />,
       },
       {
-        path: '/pagamento',
+        path: 'pagamento',
         element: <TelaPagamento />,
-      }
+      },
     ],
   },
   {
@@ -68,10 +68,10 @@ const router = createBrowserRouter([
   },
   {
     path: '/colaboradores',
-   element: <PrivateRoute />, 
+    element: <PrivateRoute />,
     children: [
       {
-        element: <MainLayout />, 
+        element: <MainLayout />,
         errorElement: <NotFoundPage />,
         children: [
           { index: true, element: <TelaColab /> },
@@ -79,20 +79,26 @@ const router = createBrowserRouter([
           { path: 'dashboard', element: <Dashboard /> },
           { path: 'forum', element: <TelaForum /> },
           { path: 'novo-comentario', element: <NovoComentario /> },
-          { path: 'forum/post/:postId', element: <DetalhePost /> }
+          { path: 'forum/post/:postId', element: <DetalhePost /> },
         ],
-      }
+      },
     ],
   },
   {
     path: '/dashboardRH',
-    element: <DashboardRHLayout />, 
+    element: <PrivateRoute />, 
     children: [
-      { index: true, element: <DashboardRH /> },
-      { path: 'trilhas', element: <TrilhasRH /> },
-      { path: 'diagnosticos', element: <DiagnosticoRH /> },
-      { path: 'planos', element: <PlanosRH /> },
-      { path: 'funcionarios', element: <FuncionariosRH />}
+      {
+        element: <DashboardRHLayout />,
+        errorElement: <NotFoundPage />,
+        children: [
+          { index: true, element: <DashboardRH /> },
+          { path: 'trilhas', element: <TrilhasRH /> },
+          { path: 'diagnosticos', element: <DiagnosticoRH /> },
+          { path: 'planos', element: <PlanosRH /> },
+          { path: 'funcionarios', element: <FuncionariosRH /> },
+        ],
+      },
     ],
   },
   {
@@ -110,4 +116,5 @@ const router = createBrowserRouter([
 function AppRoutes() {
   return <RouterProvider router={router} />;
 }
+
 export default AppRoutes;
