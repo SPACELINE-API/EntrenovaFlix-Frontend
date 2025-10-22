@@ -258,8 +258,12 @@ html {
 .motivos-section, .diagnostico-section {
   padding-top: 0;
   padding-bottom: 6rem;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
 }
 .motivos-grid {
+  align-items: center;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2.5rem;

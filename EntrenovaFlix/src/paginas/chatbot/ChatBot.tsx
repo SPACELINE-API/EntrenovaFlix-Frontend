@@ -1,9 +1,9 @@
 // src/paginas/ChatBot.tsx
 
-import '../styles/chat.css';
+import '../../styles/chat.css';
 import { useState, useRef, useEffect } from 'react';
 import { LuSendHorizontal } from "react-icons/lu";
-import { chatService } from '../services/chatService';
+import { chatService } from '../../services/chatService';
 import { useNavigate } from 'react-router-dom'; 
 
 type Message = {

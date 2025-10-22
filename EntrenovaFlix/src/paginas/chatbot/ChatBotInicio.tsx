@@ -1,4 +1,4 @@
-import '../styles/chat.css';
+import '../../styles/chat.css';
 import { useNavigate} from "react-router-dom";
 import { useEffect } from "react"; 
 

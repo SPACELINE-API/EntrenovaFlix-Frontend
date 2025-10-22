@@ -1,5 +1,3 @@
-// src/services/chatService.ts
-
 type Message = {
   role: "user" | "bot";
   content: string;

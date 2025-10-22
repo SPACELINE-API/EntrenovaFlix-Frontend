@@ -366,8 +366,12 @@
 }
 
 .secao-final {
+  display: flex;
+  flex-direction: column;
   text-align: center;
   padding: 3rem 1rem;
+  justify-content: center;
+  align-items: center;
 }
 
 .icone-final {
@@ -400,7 +404,6 @@
   font-weight: 600;
 }
 
-/* --- BOTÕES E ERROS --- */
 .form-navigation {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
@@ -410,23 +413,27 @@
   align-items: center;
 }
 
-.btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: var(--radius-md);
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
-  line-height: 1;
+.btn{
+  padding:12px 20px;
+  border-radius:10px;
+  border:2px solid transparent;
+  cursor:pointer;
+  font-weight:700; 
+  font-family: 'Satoshi', sans-serif; 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 8px; 
+  transition: all 0.2s ease;
 }
-
-.btn-primary {
-  background-color: var(--cor-primaria);
-  color: var(--cor-texto-botao);
+          
+.btn-primary{
+  background:linear-gradient(90deg,#5449CC,#7c3aed);
+  border-color:rgba(255,255,255,0.06);
+  color:white
 }
-.btn-primary:hover {
-  background-color: var(--cor-primaria-hover);
+          
+.btn-primary:hover{
+  opacity: 0.9;
 }
 
 .btn-secondary {

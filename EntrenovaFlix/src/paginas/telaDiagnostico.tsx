@@ -1,14 +1,18 @@
-import { useState, useEffect, ElementType } from 'react';
-import '../styles/diagnostico.css';
-import { FaUsers, FaDirections } from "react-icons/fa";
+import React, { useState, useEffect, ElementType } from 'react';
+import { FaUsers, FaDirections, FaDownload } from "react-icons/fa";
 import { PiTreeStructureFill } from "react-icons/pi";
-import { MdBusiness } from "react-icons/md";
+import { MdBusiness, MdCalendarToday } from "react-icons/md";
+import { Link } from 'react-router-dom';
 import { useQuestionnaire } from '../contexts/QuestionnaireContext';
+import '../styles/diagnostico.css'; 
+
+// --- INTERFACES ---
 
 interface DiagnosisData {
   fortes: string[];
   fracos: string[];
-  recomendacao: string[];
+  recomendacao?: string[];
+  score?: number;
 }
 
 interface SegmentedDiagnosis {
@@ -17,6 +21,22 @@ interface SegmentedDiagnosis {
   mercadoClientes?: DiagnosisData;
   direcaoFuturo?: DiagnosisData;
 }
+
+// Interface para o Lead Score (agora vem da API)
+interface LeadScoreInfo {
+  score: number;
+  classification: "Frio" | "Morno" | "Quente";
+  className: "frio" | "morno" | "quente";
+}
+
+// Interface para os Próximos Passos (vem da API)
+interface ProximosPassosData {
+  curto_prazo: { foco: string; acoes: string[] };
+  medio_prazo: { foco: string; acoes: string[] };
+  longo_prazo: { foco: string; acoes: string[] };
+}
+
+// --- CONFIGS (não mudam) ---
 
 const categoriesConfig: {
   key: keyof SegmentedDiagnosis;
@@ -28,6 +48,21 @@ const categoriesConfig: {
   { key: 'mercadoClientes', title: 'Mercado & Clientes', Icon: MdBusiness },
   { key: 'direcaoFuturo', title: 'Direção & Futuro', Icon: FaDirections },
 ];
+
+type CategoryConfigItem = {
+  key: keyof SegmentedDiagnosis;
+  title: string;
+  Icon: ElementType;
+};
+
+const softSkillsMap: Record<keyof SegmentedDiagnosis, string[]> = {
+  pessoasCultura: ["Trabalho em equipe", "Comunicação clara", "Escuta ativa", "Gestão de conflitos", "Accountability", "Pertencimento"],
+  estruturaOperacoes: ["Organização", "Autonomia", "Gestão de tempo", "Adaptabilidade", "Accountability", "Clareza de papéis"],
+  mercadoClientes: ["Inovação", "Orientação ao cliente", "Curiosidade ativa", "Flexibilidade cognitiva", "Cultura digital"],
+  direcaoFuturo: ["Visão estratégica", "Liderança", "Pensamento sistêmico", "Resiliência", "Tomada de decisão"]
+};
+
+// --- COMPONENTE AUXILIAR (não muda) ---
 
 const RenderPoints = ({ title, points, type }: { title: string, points: string[], type: 'forte' | 'fraco' }) => {
   const hasPoints = points && points.length > 0;
@@ -50,130 +85,257 @@ const RenderPoints = ({ title, points, type }: { title: string, points: string[]
   );
 };
 
+// --- COMPONENTE PRINCIPAL (MODIFICADO) ---
+
 export default function TelaDiagnostico() {
+  // 1. Pega o resultado do diagnóstico (Etapa 3) do Contexto
   const { diagnosticResult, hasDiagnosticResult } = useQuestionnaire();
   
-  // O estado de 'loading' pode ser inferido diretamente pelo hasDiagnosticResult
-  const loading = !hasDiagnosticResult;
+  const [loading, setLoading] = useState(!hasDiagnosticResult);
+  
+  // 2. State para os dados brutos (Etapas 1 e 2)
+  const [formData, setFormData] = useState<any | null>(null);
+  
+  // 3. States para os dados que virão da API
+  const [leadScoreInfo, setLeadScoreInfo] = useState<LeadScoreInfo | null>(null);
+  const [proximosPassos, setProximosPassos] = useState<ProximosPassosData | null>(null);
 
-  if (loading) {
-    return <div className="diagnostico-container"><p>Carregando resultados...</p></div>;
-  }
-
-  // Se não há resultado, ou se o objeto de resultado está vazio, mostramos a mensagem de erro.
-  if (!diagnosticResult || Object.keys(diagnosticResult).length === 0) {
-    return <div className="diagnostico-container"><p>Nenhum diagnóstico encontrado ou os dados estão em um formato inesperado. Por favor, complete o formulário primeiro.</p></div>;
-  }
-
-  return (
-    <div className="diagnostico-container">
-      <div className="diagnostico-head">
-        <h1 className="diagnostico-titulo">Seus <br /> resultados</h1>
-        <p className="diagnostico-subtitulo">
-          Com base nas suas respostas, aqui está um retrato inicial com os pontos fortes da sua
-          empresa e as oportunidades de crescimento.
-        </p>
-      </div>
-
-      <div className="resultados-grid">
-        {categoriesConfig.map(({ key, title, Icon }) => {
-          // Usamos o diagnosticResult diretamente, que já tem a estrutura correta.
-          const categoryData = diagnosticResult[key as keyof SegmentedDiagnosis];
-          if (!categoryData) return null;
-
-          return (
-            <div className="categoria-resultado" key={key}>
-              <div className="categoria-icon"><Icon size={30} /></div>
-              <h3 className="categoria-titulo">{title}</h3>
-              <div className="pontos-categoria">
-                <RenderPoints title="Pontos fortes" points={categoryData.fortes} type="forte" />
-                <RenderPoints title="Pontos a melhorar" points={categoryData.fracos} type="fraco" />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="importancia-secao">
-        <h2 className="secao-titulo">Porque tudo isso importa?</h2>
-        <div className="importancia-content">
-          <p>Quando a estratégia não é traduzida para o cotidiano, equipes podem perder o foco, a motivação diminui e os resultados ficam aquém do potencial. Identificar esses pontos é o primeiro passo para construir uma empresa mais forte, coesa e pronta para o futuro.</p>
-        </div>
-      </div>
-
-      <div className="proximos-passos-secao">
-        <h2 className="secao-titulo">Próximos passos</h2>
-        <div className="solucoes-cards">
-          <div className="solucao-card curto-prazo">
-            <div className='card-header'>
-              <h3>Curto Prazo</h3>
-              <span className="prazo">1-2 semanas</span>
-            </div>
-
-            <div className="card-body">
-              <h4>Liderança</h4>
-              <ul>
-                <li>Descobrir quais são os conflitos e desafios de liderança junto aos times.</li>
-                <li>Reunião de alinhamento entre RH e líderes para definir prioridades.</li>
-                <li>Comunicação clara sobre expectativas de conduta e resultados de liderança.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="solucao-card medio-prazo">
-            <div className='card-header'>
-              <h3>Médio Prazo</h3>
-              <span className="prazo">2-4 semanas</span>
-            </div>
-
-            <div className="card-body">
-              <h4>Estrutura & Processos</h4>
-              <ul>
-                <li>Implementar processos padronizados para melhorar a eficiência operacional.</li>
-                <li>Desenvolver programa de treinamento e capacitação das equipes.</li>
-                <li>Definir e implementar métricas e KPIs para acompanhamento de resultados.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="solucao-card longo-prazo">
-            <div className='card-header'>
-              <h3>Longo Prazo</h3>
-              <span className="prazo">+ de 6 semanas</span>
-            </div>
-
-            <div className="card-body">
-              <h4>Transformação Estratégica</h4>
-              <ul>
-                <li>Elaborar planejamento estratégico detalhado com metas de longo prazo.</li>
-                <li>Investir em inovação e transformação digital da empresa.</li>
-                <li>Estruturar plano de expansão e crescimento sustentável no mercado.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="importancia-secao">
-        <h2 className="secao-titulo">Como isto ajuda a empresa?</h2>
-        <div className="importancia-content">
-          <p>Implementar essas ações de forma estruturada e progressiva permite que a empresa construa uma base sólida para o crescimento. Começando com alinhamentos imediatos, evoluindo para processos estruturados e culminando em transformação estratégica, cada etapa fortalece a organização, melhora a eficiência operacional e prepara a empresa para enfrentar desafios futuros com maior confiança e capacidade de adaptação.</p>
-        </div>
-      </div>
+  useEffect(() => {
+    let rawFormData: any = null;
+    
+    // 4. Tenta ler os dados brutos (Etapa 1-2) do localStorage
+    try {
+      const storedAnswers = localStorage.getItem('userFormAnswers');
+      if (storedAnswers) {
+        rawFormData = JSON.parse(storedAnswers);
+        setFormData(rawFormData);
+      }
+    } catch (error) {
+      console.error("Erro ao ler dados brutos do formulário:", error);
+    }
+    
+    // 5. Se o diagnóstico (Etapa 3) já foi processado e existe...
+    if (hasDiagnosticResult && diagnosticResult) {
       
-      <div className="cta-secao">
-        <h2 className="cta-titulo">E agora?</h2>
-        <p className="cta-texto">
-          Para receber um relatório completo e um diagnóstico aprofundado, entre em contato
-          conosco!
-        </p>
-        <div className='btn-secao'>
-          <a className="btn-agendar" href="/diagnostico/devolutiva">
-            <span className='btn-texto'>Acesse nossos planos</span>
-          </a>
-          <button className='btn-agendar'>
-            <span className='btn-texto'>Baixar meus resultados</span>
-          </button>
+      // 5a. ...e se os dados brutos (Etapa 1-2) existem...
+      if (rawFormData) {
+        // ...então BUSCA O LEAD SCORE na API
+        fetch('http://127.0.0.1:8000/api/lead-score/', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(rawFormData) // Envia os dados brutos
+        })
+        .then(res => res.json())
+        .then(data => setLeadScoreInfo(data)) // Guarda no state
+        .catch(e => console.error("Erro ao buscar lead score:", e));
+      }
+
+      // 5b. Pega todos os "pontos fracos" do diagnóstico
+      const allFracos = Object.values(diagnosticResult)
+                              .flatMap((dim: any) => dim.fracos || [])
+                              .filter(Boolean); 
+
+      // 5c. Se existirem pontos fracos...
+      if (allFracos.length > 0) {
+        // ...então BUSCA OS PRÓXIMOS PASSOS na API
+        fetch('http://127.0.0.1:8000/api/proximos-passos/', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ pontos_a_melhorar: allFracos }) // Envia os pontos fracos
+        })
+        .then(res => res.json())
+        .then(data => setProximosPassos(data)) // Guarda no state
+        .catch(e => console.error("Erro ao buscar próximos passos:", e));
+      }
+    }
+    
+    setLoading(false);
+  }, [hasDiagnosticResult, diagnosticResult]); // Roda sempre que o diagnóstico mudar
+
+  const handleDownload = () => {
+    alert('Funcionalidade de download ainda não implementada.');
+    console.log("Dados para Download:", { diagnosis: diagnosticResult, rawAnswers: formData });
+  };
+
+  // --- Renders de Loading e Erro (não mudam) ---
+  if (loading) {
+    return <div className="diagnostic-mockup-root"><p>Carregando resultados...</p></div>;
+  }
+
+  if (!diagnosticResult || Object.keys(diagnosticResult).length === 0) {
+    return <div className="diagnostic-mockup-root"><p>Nenhum diagnóstico encontrado. Por favor, complete o formulário primeiro.</p></div>;
+  }
+
+  // --- Lógica de Cálculo (para recomendação principal) ---
+  const evaluatedCategories = categoriesConfig.filter(cat => diagnosticResult[cat.key]);
+  
+  const { category: recommendedCategory } = evaluatedCategories.reduce(
+    (lowest, cat) => {
+      const score = diagnosticResult[cat.key]?.score ?? 0;
+      if (score < lowest.lowestScore) {
+        return { lowestScore: score, category: cat };
+      }
+      return lowest;
+    },
+    { lowestScore: Infinity, category: null as CategoryConfigItem | null }
+  );
+ 
+  const mainRecommendation = recommendedCategory
+    ? diagnosticResult[recommendedCategory.key]?.recomendacao?.[0]
+    : null;
+
+  // --- RENDER JSX ---
+  return (
+    <div className="diagnostic-mockup-root">
+      <div className="diag-card">
+        
+        {/* 6. Header (Renderiza o Lead Score vindo do state) */}
+        <div className="diag-header">
+          <div className="diag-left">
+            <div className="diag-title">Seu diagnóstico organizacional</div>
+            {recommendedCategory && (
+              <div className="recommended">
+                <div className="rec-title">
+                  Dimensão a ser trabalhada com prioridade: 
+                  <span style={{ color: '#b497ff' }}> {recommendedCategory.title}</span>
+                </div>
+                {mainRecommendation && <div className="muted">{mainRecommendation}</div>}
+                {!mainRecommendation && (
+                  <div className="muted">
+                    Com base nas respostas, recomendamos iniciar por uma intervenção nesta área para gerar impacto rápido.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="diag-right">
+            {leadScoreInfo ? (
+              <div className={`lead-score-pill ${leadScoreInfo.className}`}>
+                <div className="score-number">{leadScoreInfo.score}</div>
+                <div className="score-label">Lead ({leadScoreInfo.classification})</div>
+              </div>
+            ) : (
+              <div className="lead-score-pill">...</div>
+            )}
+          </div>
+        </div>
+
+        {/* Grid de Categorias (Lê do 'diagnosticResult') */}
+        <div className="categories-grid">
+          {evaluatedCategories.map(cat => {
+            const categoryData = diagnosticResult[cat.key];
+            if (!categoryData) return null;
+            const score = categoryData.score || 0;
+            return (
+              <div key={cat.key} className="category-card">
+                <div className="category-head">
+                  <div className="cat-title">{cat.title}</div>
+                  {score > 0 && <div className="cat-score">{score}</div>}
+                </div>
+                {score > 0 && <div className="cat-bar"><div className="cat-progress" style={{ width: `${score}%` }} /></div>}
+                <div className="points">
+                  <div className="points-col">
+                    <RenderPoints title="Pontos fortes" points={categoryData.fortes || []} type="forte" />
+                  </div>
+                  <div className="points-col">
+                    <RenderPoints title="Pontos a melhorar" points={categoryData.fracos || []} type="fraco" />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Seção Soft Skills (Lê do 'diagnosticResult') */}
+        <div className="recomendacoes-secao">
+          <h4>Soft Skills Associadas</h4>
+          <p className="muted">Estas são as soft skills que seu diagnóstico avaliou. As trilhas recomendadas focarão nas áreas com menor pontuação.</p>
+          <div className="recomendacoes-grid">
+            {evaluatedCategories.map(cat => {
+              const skills = softSkillsMap[cat.key];
+              if (!skills || skills.length === 0) {
+                return null;
+              }
+              return (
+                <div key={cat.key} className="recomendacao-card">
+                  <strong>{cat.title}</strong>
+                  <ul className="muted">
+                    {skills.map((skill: string, i: number) => <li key={i}>{skill}</li>)}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="proximos">
+          <h4>Próximos passos sugeridos</h4>
+          <div className="proximos-grid">
+            {proximosPassos ? (
+              <>
+                <div className="proximos-card curto-prazo">
+                  <div className="proximos-card-header">
+                    <strong>{proximosPassos.curto_prazo.foco || "Curto Prazo"}</strong>
+                    <span className="prazo-label">1-2 sem</span>
+                  </div>
+                  <ul className="muted">
+                    {proximosPassos.curto_prazo.acoes.length > 0 ? (
+                      proximosPassos.curto_prazo.acoes.map((acao, i) => <li key={i}>{acao}</li>)
+                    ) : (
+                      <li>Nenhuma ação definida.</li>
+                    )}
+                  </ul>
+                </div>
+
+                <div className="proximos-card medio-prazo">
+                  <div className="proximos-card-header">
+                    <strong>{proximosPassos.medio_prazo.foco || "Médio Prazo"}</strong>
+                    <span className="prazo-label">2-4 sem</span>
+                  </div>
+                  <ul className="muted">
+                     {proximosPassos.medio_prazo.acoes.length > 0 ? (
+                      proximosPassos.medio_prazo.acoes.map((acao, i) => <li key={i}>{acao}</li>)
+                    ) : (
+                      <li>Nenhuma ação definida.</li>
+                    )}
+                  </ul>
+                </div>
+
+                <div className="proximos-card longo-prazo">
+                  <div className="proximos-card-header">
+                    <strong>{proximosPassos.longo_prazo.foco || "Longo Prazo"}</strong>
+                    <span className="prazo-label">+6 sem</span>
+                  </div>
+                  <ul className="muted">
+                     {proximosPassos.longo_prazo.acoes.length > 0 ? (
+                      proximosPassos.longo_prazo.acoes.map((acao, i) => <li key={i}>{acao}</li>)
+                    ) : (
+                      <li>Nenhuma ação definida.</li>
+                    )}
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <p className="muted" style={{ gridColumn: "1 / -1" }}>Carregando plano de ação...</p>
+            )}
+          </div>
+        </div>
+
+        {/* Área de CTA (não muda) */}
+        <div className="cta-area">
+          <div className="cta-left">
+            <div style={{ fontWeight: 700, fontSize: 15 }}>Deseja o relatório completo?</div>
+            <div className="muted" style={{ marginTop: 6 }}>Baixe o PDF com o diagnóstico detalhado ou fale com nosso time para uma consultoria personalizada.</div>
+          </div>
+          <div className="cta-buttons">
+            <button className="btn btn-ghost" onClick={handleDownload}>
+               <FaDownload /> Baixar relatório (PDF)
+            </button>
+            <Link to="/diagnostico/devolutiva" className="btn btn-primary">
+               <MdCalendarToday /> Acessar Planos
+            </Link>
+          </div>
         </div>
       </div>
     </div>

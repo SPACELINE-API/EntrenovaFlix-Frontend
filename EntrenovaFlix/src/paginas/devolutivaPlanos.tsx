@@ -10,7 +10,7 @@ function DevolutivaPlanos(){
 
     return (
         <>
-        <div className='telaDevolutiva'>
+        <div className='telaDevolutiva' id='devol'>
                 <div className="tituloDevolutiva">
                     <h1>Sua trilha <span className='destaque' >personalizada</span> </h1>
                 </div>
