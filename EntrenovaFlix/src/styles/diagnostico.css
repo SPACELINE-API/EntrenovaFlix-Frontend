@@ -208,7 +208,7 @@
 
 .category-card:nth-child(3) {
   grid-column: 1 / -1;
-  max-width: 600px;   
+  max-width: 1050px;   
   margin: 0 auto;
 }
 
@@ -231,15 +231,21 @@
 
 .cat-bar {
   height: 8px;
-  background: rgba(255, 255, 255, 0.04);
+  background: #ffffff0a;
   border-radius: 999px;
   margin-top: var(--space-sm);
-  overflow: hidden;
 }
 
 .cat-progress {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light)); 
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4b1cb8, #6b63e0, #a387ff);
+  box-shadow:
+  0 0 8px #3c31d7a8,
+  0 0 16px #522bd077,
+  0 0 24px #4b1cb864;
+
+
 }
 
 .points {

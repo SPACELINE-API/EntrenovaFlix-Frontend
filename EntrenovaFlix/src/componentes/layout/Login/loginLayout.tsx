@@ -11,6 +11,7 @@ import '../../../styles/login.css';
 interface DecodedToken {
   role: 'admin' | 'rh' | 'user';
   nome: string;
+  sobrenome: string;
   email: string;
 }
 

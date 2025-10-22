@@ -6,12 +6,16 @@ import { Link } from 'react-router-dom';
 import { useQuestionnaire } from '../contexts/QuestionnaireContext';
 import '../styles/diagnostico.css';
 
+// --- INTERFACE ATUALIZADA ---
 interface DiagnosisData {
   fortes: string[];
   fracos: string[];
-  recomendacao?: string[];
+  recomendacao?: string[]; // A recomendação principal (usada no topo)
   score?: number;
+  soft_skills_sugeridas?: string[]; // <-- NOVO
+  tags_de_interesse?: string[];     // <-- NOVO
 }
+// -----------------------------
 
 interface SegmentedDiagnosis {
   pessoasCultura?: DiagnosisData;
@@ -39,12 +43,9 @@ const categoriesConfig: { key: keyof SegmentedDiagnosis; title: string; Icon: El
   { key: 'direcaoFuturo', title: 'Direção & Futuro', Icon: FaDirections },
 ];
 
-const softSkillsMap: Record<keyof SegmentedDiagnosis, string[]> = {
-  pessoasCultura: ["Trabalho em equipe", "Comunicação clara", "Escuta ativa", "Gestão de conflitos", "Accountability", "Pertencimento"],
-  estruturaOperacoes: ["Organização", "Autonomia", "Gestão de tempo", "Adaptabilidade", "Accountability", "Clareza de papéis"],
-  mercadoClientes: ["Inovação", "Orientação ao cliente", "Curiosidade ativa", "Flexibilidade cognitiva", "Cultura digital"],
-  direcaoFuturo: ["Visão estratégica", "Liderança", "Pensamento sistêmico", "Resiliência", "Tomada de decisão"]
-};
+// --- softSkillsMap FOI REMOVIDA ---
+// const softSkillsMap: Record<keyof SegmentedDiagnosis, string[]> = { ... };
+// ------------------------------------
 
 const RenderPoints = ({ title, points, type }: { title: string; points: string[]; type: 'forte' | 'fraco' }) => {
   return (
@@ -85,7 +86,10 @@ export default function TelaDiagnostico() {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(rawData)
         })
           .then(res => res.json())
-          .then(setLeadScoreInfo)
+          .then(data => {
+            setLeadScoreInfo(data);
+            localStorage.setItem('leadScoreInfo', JSON.stringify(data)); 
+          })
           .catch(e => console.error("Erro Lead Score:", e));
       }
 
@@ -95,7 +99,10 @@ export default function TelaDiagnostico() {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pontos_a_melhorar: allFracos })
         })
           .then(res => res.json())
-          .then(setProximosPassos)
+          .then(data => {
+            setProximosPassos(data);
+            localStorage.setItem('proximosPassos', JSON.stringify(data));
+          })
           .catch(e => console.error("Erro Próximos Passos:", e));
       }
     }
@@ -108,6 +115,8 @@ export default function TelaDiagnostico() {
     return <div className="diagnostic-mockup-root"><p>Nenhum diagnóstico encontrado. Complete o formulário.</p></div>;
 
   const evaluatedCategories = categoriesConfig.filter(cat => diagnosticResult[cat.key]);
+  
+  // Lógica de recomendação principal (não muda, continua funcionando)
   const recommendedCategory = evaluatedCategories.reduce((lowest, cat) => {
     const score = diagnosticResult[cat.key]?.score || 0;
     return score < lowest.lowestScore ? { lowestScore: score, category: cat } : lowest;
@@ -130,6 +139,7 @@ export default function TelaDiagnostico() {
                 <div className="rec-title">
                   Dimensão a ser trabalhada com prioridade: <span style={{ color: '#b497ff' }}>{recommendedCategory.title}</span>
                 </div>
+                {/* Mostra a primeira recomendação da IA para a dimensão prioritária */}
                 <div className="muted">{mainRecommendation || "Inicie por esta área para gerar impacto rápido."}</div>
               </div>
             )}
@@ -165,18 +175,52 @@ export default function TelaDiagnostico() {
           })}
         </div>
 
+        {/* --- SEÇÃO DE RECOMENDAÇÕES DA IA (MODIFICADA) --- */}
         <div className="recomendacoes-secao">
-          <h4>Soft Skills Associadas</h4>
-          <p className="muted">Soft skills avaliadas. Trilha foca nas áreas com menor pontuação.</p>
+          <h4>Recomendações da IA por Dimensão</h4>
+          <p className="muted">Soft skills e tags de interesse sugeridas pela IA com base nos seus pontos fracos.</p>
           <div className="recomendacoes-grid">
-            {evaluatedCategories.map(cat => (
-              <div key={cat.key} className="recomendacao-card">
-                <strong>{cat.title}</strong>
-                <ul className="muted">{softSkillsMap[cat.key].map((s, i) => <li key={i}>{s}</li>)}</ul>
-              </div>
-            ))}
+            {evaluatedCategories.map(cat => {
+              const data = diagnosticResult[cat.key];
+              if (!data) return null;
+              
+              const skills = data.soft_skills_sugeridas || [];
+              const tags = data.tags_de_interesse || [];
+              
+              return (
+                <div key={cat.key} className="recomendacao-card">
+                  <strong>{cat.title}</strong>
+                  
+                  {/* Renderiza as Soft Skills da IA */}
+                  {skills.length > 0 && (
+                    <div className="skills-sub-section">
+                      <span className="sub-title">Soft Skills Sugeridas</span>
+                      <ul className="muted">
+                        {skills.map((s: any, i: any) => <li key={`skill-${i}`}>{s}</li>)}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Renderiza as Tags de Interesse da IA */}
+                  {tags.length > 0 && (
+                     <div className="skills-sub-section">
+                      <span className="sub-title">Tags de Interesse</span>
+                      <ul className="muted">
+                        {tags.map((t: any, i: any) => <li key={`tag-${i}`}>{t}</li>)}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {/* Fallback caso a IA não retorne nada */}
+                  {skills.length === 0 && tags.length === 0 && (
+                    <p className="muted">Nenhuma sugestão de skill ou tag para esta dimensão.</p>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
+        {/* --- FIM DA SEÇÃO MODIFICADA --- */}
 
         <div className="proximos">
           <h4>Próximos passos sugeridos</h4>
