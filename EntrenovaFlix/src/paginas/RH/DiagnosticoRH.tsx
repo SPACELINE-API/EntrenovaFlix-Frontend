@@ -44,10 +44,6 @@ const DiagnosticoRH: React.FC = () => {
     
     const [chartDataList, setChartDataList] = useState<ChartData[]>([]);
 
-    const [conquistas, setConquistas] = useState<string[]>([]);
-    const [desafios, setDesafios] = useState<string[]>([]);
-    const [oportunidades, setOportunidades] = useState<string[]>([]);
-
     const [menuAberto1, setMenuAberto1] = useState<boolean>(false);
     const [menuAberto2, setMenuAberto2] = useState<boolean>(false);
     const [filtro1] = useState<string>('Exportar relatório');
@@ -57,9 +53,6 @@ const DiagnosticoRH: React.FC = () => {
     useEffect(() => {
         const storedFormData = localStorage.getItem('userFormAnswers');
         const formData = storedFormData ? JSON.parse(storedFormData) : null;
-
-        const storedAiData = localStorage.getItem('segmentedDiagnosis');
-        const aiData = storedAiData ? JSON.parse(storedAiData) : null;
         
         const selectedDimensions = formData?.dimensoesAvaliar || [];
 
@@ -86,30 +79,6 @@ const DiagnosticoRH: React.FC = () => {
         }
         
         setChartDataList(newChartDataList);
-
-        if (aiData && selectedDimensions.length > 0) {
-            let allFortes: string[] = [];
-            let allFracos: string[] = [];
-            let allRecomendacoes: string[] = [];
-
-            for (const dimKey of selectedDimensions) {
-                const diag = aiData[dimKey];
-                if (diag) {
-                    allFortes = [...allFortes, ...(diag.fortes || [])];
-                    allFracos = [...allFracos, ...(diag.fracos || [])];
-                    allRecomendacoes = [...allRecomendacoes, ...(diag.recomendacao || [])];
-                }
-            }
-            
-            setConquistas(allFortes.length > 0 ? allFortes : ["Nenhum ponto forte específico identificado."]);
-            setDesafios(allFracos.length > 0 ? allFracos : ["Nenhum ponto fraco específico identificado."]);
-            setOportunidades(allRecomendacoes.length > 0 ? allRecomendacoes : ["Nenhuma recomendação gerada."]);
-            
-        } else {
-            setConquistas(["Não foi possível carregar as conquistas."]);
-            setDesafios(["Não foi possível carregar os desafios."]);
-            setOportunidades(["Não foi possível carregar as oportunidades."]);
-        }
 
     }, []); 
 
@@ -191,27 +160,21 @@ const DiagnosticoRH: React.FC = () => {
                 <div className='relatorio-cards'>
                     <div className='relatorio-card'>
                         <h4 className='relatorio-subtitulo'> <FaMedal className='icone-indicador'/> Conquistas</h4>
-                        <ul className='relatorio-lista'>
-                            {conquistas.map((item, index) => (
-                                <li key={index} className='relatorio-texto'>{item}</li>
-                            ))}
-                        </ul>
+                        <p className='relatorio-texto'>
+                            A equipe alcançou um nível significativo de participação, com 98% de presença nos treinamentos s
+                        </p>
                     </div>
                     <div className='relatorio-card'>
                         <h4 className='relatorio-subtitulo'> <GiStairsGoal className='icone-indicador'/> Desafios</h4>
-                         <ul className='relatorio-lista'>
-                            {desafios.map((item, index) => (
-                                <li key={index} className='relatorio-texto'>{item}</li>
-                            ))}
-                        </ul>
+                        <p className='relatorio-texto'>
+                            Os funcionários apresentaram maior dificuldade no quiz “Entendendo seus clientes” da trilha “Vendas Online”
+s                       </p>
                     </div>
                     <div className='relatorio-card'>
                         <h4 className='relatorio-subtitulo'> <FaRocket className='icone-indicador'/> Oportunidades</h4>
-                         <ul className='relatorio-lista'>
-                            {oportunidades.map((item, index) => (
-                                <li key={index} className='relatorio-texto'>{item}</li>
-                            ))}
-                        </ul>
+                        <p className='relatorio-texto'>
+                            Manter o alto nível de participação e aprimorar o desempenho no módulo “Entendendo seus clientes”
+                        </p>
                     </div>
                 </div>
 

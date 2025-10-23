@@ -1,18 +1,29 @@
 import ReactECharts from 'echarts-for-react';
 
-interface GraficoBarraProps {
+interface RadarIndicator {
+  name: string;
+  max: number;
+}
+
+interface GraficoRadarProps {
   titulo: string;
   subtitulo: string;
-  categorias: string[];
+  labels: string[];
   valores: number[];
 }
 
-const GraficoBarras: React.FC<GraficoBarraProps> = ({
+const GraficoRadar: React.FC<GraficoRadarProps> = ({
   titulo,
   subtitulo,
-  categorias,
+  labels,
   valores
 }) => {
+
+  const indicators: RadarIndicator[] = labels.map(label => ({
+    name: label,
+    max: 4 
+  }));
+
   const option = {
     title: {
       text: titulo,
@@ -23,32 +34,60 @@ const GraficoBarras: React.FC<GraficoBarraProps> = ({
         color: '#fff'
       }
     },
-    grid: {
-      top: 80,
+    tooltip: {
+      trigger: 'item'
     },
-    xAxis: {
-      type: 'category',
-      data: categorias
-    },
-    yAxis: {
-      type: 'value',
-      max: 24
+    radar: {
+      indicator: indicators,
+      radius: '65%',
+      center: ['50%', '55%'],
+      axisName: {
+        color: '#fff',
+        fontSize: 10,
+        overflow: 'truncate',
+        ellipsis: '...'
+      },
+      splitArea: {
+        areaStyle: {
+          color: ['rgba(50, 50, 50, 0.2)', 'rgba(40, 40, 40, 0.2)'],
+          shadowColor: 'rgba(0, 0, 0, 0.2)',
+          shadowBlur: 10
+        }
+      },
+      axisLine: {
+        lineStyle: {
+          color: 'rgba(150, 150, 150, 0.3)'
+        }
+      },
+      splitLine: {
+        lineStyle: {
+          color: 'rgba(150, 150, 150, 0.3)'
+        }
+      }
     },
     series: [
       {
-        data: valores,
-        type: 'bar',
-        barMaxWidth: 80, 
-        showBackground: true,
-        backgroundStyle: {
-          color: 'rgba(180, 180, 180, 0.2)'
-        }
+        name: titulo,
+        type: 'radar',
+        data: [
+          {
+            value: valores,
+            name: 'Pontuação',
+            symbolSize: 6,
+            lineStyle: {
+              color: '#00D1FF',
+              width: 3
+            },
+            areaStyle: {
+              color: 'rgba(0, 209, 255, 0.3)'
+            }
+          }
+        ]
       }
     ]
-  }
+  };
 
   return <ReactECharts option={option} style={{ height: '19rem', width: '50%' }} className="trilhas-grafico" />
-
 };
 
-export default GraficoBarras;
+export default GraficoRadar;
