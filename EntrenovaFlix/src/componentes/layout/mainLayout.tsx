@@ -6,7 +6,7 @@ function MainLayout() {
 
   const { pathname } = useLocation();
   const bgColor =
-    pathname === "/colaboradores/dashboard" 
+    pathname === "/colaboradores/dashboard" || pathname === "/colaboradores/trilhas"
     ? "linear-gradient(25deg, #5449CC 0%, #141414 20%, #141414 80%, #5449CC 100%)" 
     : "#141414";
   return (
