@@ -13,6 +13,8 @@ import NovoComentario from '../paginas/novoComentario';
 import DetalhePost from '../paginas/DetalhePost';
 import TelaDiagnostico from '../paginas/telaDiagnostico';
 import DevolutivaPlanos from '../paginas/devolutivaPlanos';
+import ChatBot from '../paginas/chatbot/ChatBot';
+import ChatBotInicio from '../paginas/chatbot/ChatBotInicio';
 import PrivateRoute from '../componentes/auth/ProtectedRoute';
 import DashboardRH from '../paginas/RH/DashboardRH';
 import TrilhasRH from '../paginas/RH/TrilhasRH';
@@ -20,10 +22,14 @@ import DiagnosticoRH from '../paginas/RH/DiagnosticoRH';
 import PlanosRH from '../paginas/RH/PlanosRH';
 import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 
+import ContratarLayout from '../componentes/layout/contratarLayout';
+import TelaCadastro from '../paginas/pagamento/telaCadastro';
+import TelaPagamento from '../paginas/pagamento/telaPagamento';
+
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <LpLayout />, 
+    element: <LpLayout />,
     errorElement: <NotFoundPage />,
     children: [
       {
@@ -31,13 +37,28 @@ const router = createBrowserRouter([
         element: <LandingPage />,
       },
       {
-        path: 'diagnostico', 
+        path: 'diagnostico',
         element: <TelaDiagnostico />,
       },
       {
-        path: 'diagnostico/devolutiva', 
+        path: 'diagnostico/devolutiva',
         element: <DevolutivaPlanos />,
-      }
+      },
+    ],
+  },
+  {
+    path: '/cadastro',
+    element: <ContratarLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        index: true,
+        element: <TelaCadastro />,
+      },
+      {
+        path: 'pagamento',
+        element: <TelaPagamento />,
+      },
     ],
   },
   {
@@ -47,10 +68,10 @@ const router = createBrowserRouter([
   },
   {
     path: '/colaboradores',
-    element: <PrivateRoute />, 
+    element: <PrivateRoute />,
     children: [
       {
-        element: <MainLayout />, 
+        element: <MainLayout />,
         errorElement: <NotFoundPage />,
         children: [
           { index: true, element: <TelaColab /> },
@@ -58,26 +79,42 @@ const router = createBrowserRouter([
           { path: 'dashboard', element: <Dashboard /> },
           { path: 'forum', element: <TelaForum /> },
           { path: 'novo-comentario', element: <NovoComentario /> },
-          { path: 'forum/post/:postId', element: <DetalhePost /> }
+          { path: 'forum/post/:postId', element: <DetalhePost /> },
         ],
-      }
+      },
     ],
   },
   {
     path: '/dashboardRH',
-    element: <DashboardRHLayout />, 
+    element: <PrivateRoute allowedRoles={['admin', 'rh']} />, 
     children: [
-      { index: true, element: <DashboardRH /> },
-      { path: 'trilhas', element: <TrilhasRH /> },
-      { path: 'diagnosticos', element: <DiagnosticoRH /> },
-      { path: 'planos', element: <PlanosRH /> },
-      { path: 'funcionarios', element: <FuncionariosRH />}
+      {
+        element: <DashboardRHLayout />,
+        errorElement: <NotFoundPage />,
+        children: [
+          { index: true, element: <DashboardRH /> },
+          { path: 'trilhas', element: <TrilhasRH /> },
+          { path: 'diagnosticos', element: <DiagnosticoRH /> },
+          { path: 'planos', element: <PlanosRH /> },
+          { path: 'funcionarios', element: <FuncionariosRH /> },
+        ],
+      },
     ],
   },
-
+  {
+    path: '/pagchatbot',
+    element: <ChatBotInicio />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: '/chatbot',
+    element: <ChatBot />,
+    errorElement: <NotFoundPage />,
+  },
 ]);
 
 function AppRoutes() {
   return <RouterProvider router={router} />;
 }
+
 export default AppRoutes;

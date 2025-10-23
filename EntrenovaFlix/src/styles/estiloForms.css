@@ -366,8 +366,12 @@
 }
 
 .secao-final {
+  display: flex;
+  flex-direction: column;
   text-align: center;
   padding: 3rem 1rem;
+  justify-content: center;
+  align-items: center;
 }
 
 .icone-final {
@@ -400,7 +404,6 @@
   font-weight: 600;
 }
 
-/* --- BOTÕES E ERROS --- */
 .form-navigation {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
@@ -410,23 +413,27 @@
   align-items: center;
 }
 
-.btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: var(--radius-md);
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
-  line-height: 1;
+.btn{
+  padding:12px 20px;
+  border-radius:10px;
+  border:2px solid transparent;
+  cursor:pointer;
+  font-weight:700; 
+  font-family: 'Satoshi', sans-serif; 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 8px; 
+  transition: all 0.2s ease;
 }
-
-.btn-primary {
-  background-color: var(--cor-primaria);
-  color: var(--cor-texto-botao);
+          
+.btn-primary{
+  background:linear-gradient(90deg,#5449CC,#7c3aed);
+  border-color:rgba(255,255,255,0.06);
+  color:white
 }
-.btn-primary:hover {
-  background-color: var(--cor-primaria-hover);
+          
+.btn-primary:hover{
+  opacity: 0.9;
 }
 
 .btn-secondary {
@@ -469,57 +476,89 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .diagnostico-form {
-    padding: 2rem 1.25rem;
-    margin: 1rem auto;
+    padding: 2rem 1.5rem;
+    margin: 0 auto;
     border: none;
     box-shadow: none;
+    max-width: 95vw;
   }
 
   .form-main-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
     line-height: 1.3;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-subtitle {
+    font-size: 1rem;
     margin-bottom: 2rem;
   }
 
   .stepper-container {
-    margin-top: 1.5rem;
-    margin-bottom: 2rem;
-    flex-direction: row;
-    gap: 0.75rem;
+    margin-top: 2rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
   }
 
   .step-item {
     flex: none;
+    width: 5rem;
   }
 
   .step-title {
-    display: none; 
+    display: none;
   }
 
   .step-icon-wrapper {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.75rem;
+    height: 1.75rem;
   }
 
   .step-icon-circle {
-    width: 0.4rem;
-    height: 0.4rem;
+    width: 0.5rem;
+    height: 0.5rem;
   }
 
   .form-grid {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .form-title {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-desc {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .dimension-group {
+    padding: 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .radio-group,
+  .checkbox-group {
     gap: 1rem;
   }
-  
-  .form-title {
-    font-size: 1.5rem;
+
+  .rating-group {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
   }
 
   .btn {
-    width: 100%; 
+    width: 100%;
     text-align: center;
+    padding: 0.9rem 1.25rem;
+    font-size: 1rem;
   }
 
   .form-navigation {
@@ -530,4 +569,5 @@
     margin-top: 2rem;
     padding-top: 0;
   }
+
 }
