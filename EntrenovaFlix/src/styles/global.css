@@ -204,13 +204,53 @@ body {
   margin-right: 8px;
 }
 
+.conteudoTrilha {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
 .tituloTrilha{
-  color:#C2C2C2;
+  color:#fafafa;
   font-family: 'kollektif';
   font-weight: 600;
   font-size: 25px;
   margin-top: 40px;
-  text-align: center;
+}
+
+.subtituloTrilha{
+  color:#C2C2C2;
+  font-family: 'kollektif';
+  font-weight: 400;
+  font-size: 16px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navItems {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  gap: 6px;
+  
+  background: linear-gradient(90deg, #5449CC 0%, #0078D7 100%);
+  color: #fafafa;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.navBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #5449cc60, 0 0 20px #0076d758;
 }
 
 .dropdown {
