@@ -1,0 +1,142 @@
+@font-face {
+    font-family: 'Satoshi';
+    src: url(../assets/fontes/satoshi/Satoshi-Light.otf);
+}
+
+h2{
+    color: #fff;
+    font-family: 'Satoshi';
+    font-weight: 400;
+    font-size: 25px;
+    margin-top: 40px;
+    width: 900px;
+
+}
+.grafico{
+    margin-top:60px;
+}
+
+.icon{
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin-top: 50px;             
+    flex-wrap: wrap; 
+    margin-bottom: 0.5rem;
+    
+    
+}
+.icon svg {
+  width: 60px;
+  height: 60px;
+  fill:#d4cbcb;
+}
+.container-beneficio {
+  display: flex;
+  justify-content: center; 
+  align-items: flex-start;
+  gap: 15rem;
+  flex-wrap: wrap; 
+  
+}
+
+.alinhando-icon{
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+  text-align: center;
+}
+
+.beneficios,
+.detalhe-beneficio {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center; 
+  font-size: 18px;
+  font-family: 'Satoshi';
+  font-weight: 400;
+}
+.botao-plano{
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap:2vw;
+    margin-bottom: 20px;
+    
+}
+.botao-plano button{
+    background: linear-gradient(90deg, #5449CC, #7460FF, #5449CC);
+    color:#fff;
+    border-radius: 13px;
+    padding: 0.5rem 0.9rem;
+    border: none; 
+    font-size: 20px;
+}
+
+.botao-plano button:hover {
+  box-shadow: 0 0 5px #5449CC, 0 0 10px #5449CC;
+  transform: scale(1.05);  
+  cursor: pointer;
+}
+
+.modal-active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+.modal-content {
+  background-color: #1f1f1f;
+  color: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 350px;
+  width: 90%; 
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 2px solid #5449cc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 20px rgba(84, 73, 204, 0.6);
+  
+}
+
+.btn-continuar {
+  margin-top: 20px;
+  background: #5449cc;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-continuar:hover {
+  background-color: #5c54d8;
+  box-shadow: 0 0 15px rgba(84, 73, 204, 0.6);
+  transform: scale(1.05);
+}
+
+.btn-fechar{
+    background: none;
+    position: absolute;
+    top:8px;
+    right:8px;
+    border:none;
+    cursor: pointer;
+    color: #fff; 
+    font-size: 1.5rem; 
+ 
+
+
+}
