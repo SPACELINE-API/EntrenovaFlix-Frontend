@@ -33,17 +33,20 @@ const DIMENSION_MAP: any = {
     }
 };
 
+interface ChartData {
+  title: string;
+  subTitle: string;
+  labels: string[];
+  valores: number[];
+}
+
 const DiagnosticoRH: React.FC = () => {
     
-    const [labelsGrafico1, setLabelsGrafico1] = useState<string[]>([]);
-    const [valoresGrafico1, setValoresGrafico1] = useState<number[]>([]);
-    const [titleGrafico1, setTitleGrafico1] = useState<string>('Diagnóstico 1');
-    const [subTitleGrafico1, setSubTitleGrafico1] = useState<string>('Nenhuma dimensão selecionada');
+    const [chartDataList, setChartDataList] = useState<ChartData[]>([]);
 
-    const [labelsGrafico2, setLabelsGrafico2] = useState<string[]>([]);
-    const [valoresGrafico2, setValoresGrafico2] = useState<number[]>([]);
-    const [titleGrafico2, setTitleGrafico2] = useState<string>('Diagnóstico 2');
-    const [subTitleGrafico2, setSubTitleGrafico2] = useState<string>('');
+    const [conquistas, setConquistas] = useState<string[]>([]);
+    const [desafios, setDesafios] = useState<string[]>([]);
+    const [oportunidades, setOportunidades] = useState<string[]>([]);
 
     const [menuAberto1, setMenuAberto1] = useState<boolean>(false);
     const [menuAberto2, setMenuAberto2] = useState<boolean>(false);
@@ -51,49 +54,63 @@ const DiagnosticoRH: React.FC = () => {
     const [filtro2] = useState<string>('Atualizar diagnóstico');
     const navigate = useNavigate();
 
-    const carregarDadosGrafico = (
-        formData: any,
-        dimensaoKey: string | undefined, 
-        setLabels: (cats: string[]) => void, 
-        setValores: (vals: number[]) => void,
-        setTitle: (title: string) => void,
-        setSubTitle: (sub: string) => void
-    ) => {
-        if (dimensaoKey && DIMENSION_MAP[dimensaoKey] && formData) {
-            const map = DIMENSION_MAP[dimensaoKey];
-            
-            const values = map.keys.map((key: string) => 
-                parseInt(formData[key as keyof typeof formData] || '1', 10)
-            );
-
-            setTitle(map.title);
-            setSubTitle("Pontuação detalhada (1-4)");
-            setLabels(map.labels);
-            setValores(values);
-        } else {
-            setTitle(dimensaoKey ? "Dimensão Inválida" : "Diagnóstico");
-            setSubTitle(dimensaoKey ? "Não foi possível carregar" : "Nenhuma dimensão selecionada");
-            setLabels([]);
-            setValores([]);
-        }
-    };
-
     useEffect(() => {
         const storedFormData = localStorage.getItem('userFormAnswers');
         const formData = storedFormData ? JSON.parse(storedFormData) : null;
 
+        const storedAiData = localStorage.getItem('segmentedDiagnosis');
+        const aiData = storedAiData ? JSON.parse(storedAiData) : null;
+        
         const selectedDimensions = formData?.dimensoesAvaliar || [];
 
-        if (formData && selectedDimensions.length > 0) {
-            const keyDim1 = selectedDimensions[0];
-            carregarDadosGrafico(formData, keyDim1, setLabelsGrafico1, setValoresGrafico1, setTitleGrafico1, setSubTitleGrafico1);
+        const newChartDataList: ChartData[] = [];
 
-            const keyDim2 = selectedDimensions[1]; 
-            carregarDadosGrafico(formData, keyDim2, setLabelsGrafico2, setValoresGrafico2, setTitleGrafico2, setSubTitleGrafico2);
-        } else {
-            carregarDadosGrafico(null, undefined, setLabelsGrafico1, setValoresGrafico1, setTitleGrafico1, setSubTitleGrafico1);
-            carregarDadosGrafico(null, undefined, setLabelsGrafico2, setValoresGrafico2, setTitleGrafico2, setSubTitleGrafico2);
+        if (formData && selectedDimensions.length > 0) {
+            
+            for (const dimKey of selectedDimensions) {
+                if (dimKey && DIMENSION_MAP[dimKey]) {
+                    const map = DIMENSION_MAP[dimKey];
+                    
+                    const values = map.keys.map((key: string) => 
+                        parseInt(formData[key as keyof typeof formData] || '1', 10)
+                    );
+
+                    newChartDataList.push({
+                        title: map.title,
+                        subTitle: "Pontuação detalhada (1-4)",
+                        labels: map.labels,
+                        valores: values
+                    });
+                }
+            }
         }
+        
+        setChartDataList(newChartDataList);
+
+        if (aiData && selectedDimensions.length > 0) {
+            let allFortes: string[] = [];
+            let allFracos: string[] = [];
+            let allRecomendacoes: string[] = [];
+
+            for (const dimKey of selectedDimensions) {
+                const diag = aiData[dimKey];
+                if (diag) {
+                    allFortes = [...allFortes, ...(diag.fortes || [])];
+                    allFracos = [...allFracos, ...(diag.fracos || [])];
+                    allRecomendacoes = [...allRecomendacoes, ...(diag.recomendacao || [])];
+                }
+            }
+            
+            setConquistas(allFortes.length > 0 ? allFortes : ["Nenhum ponto forte específico identificado."]);
+            setDesafios(allFracos.length > 0 ? allFracos : ["Nenhum ponto fraco específico identificado."]);
+            setOportunidades(allRecomendacoes.length > 0 ? allRecomendacoes : ["Nenhuma recomendação gerada."]);
+            
+        } else {
+            setConquistas(["Não foi possível carregar as conquistas."]);
+            setDesafios(["Não foi possível carregar os desafios."]);
+            setOportunidades(["Não foi possível carregar as oportunidades."]);
+        }
+
     }, []); 
 
     const handleOptionClick1 = (opcao: string) => {
@@ -150,29 +167,19 @@ const DiagnosticoRH: React.FC = () => {
             </div>
 
             <div className='diagnostico-graficos'>
-                {labelsGrafico1.length > 0 ? (
-                    <GraficoRadar
-                        titulo={titleGrafico1}
-                        subtitulo={subTitleGrafico1}
-                        labels={labelsGrafico1}
-                        valores={valoresGrafico1}
-                    />
+                {chartDataList.length > 0 ? (
+                    chartDataList.map((chartData, index) => (
+                        <GraficoRadar
+                            key={index}
+                            titulo={chartData.title}
+                            subtitulo={chartData.subTitle}
+                            labels={chartData.labels}
+                            valores={chartData.valores}
+                        />
+                    ))
                 ) : (
                     <div className="trilhas-grafico-vazio">
-                        <p>{subTitleGrafico1}</p>
-                    </div>
-                )}
-                
-                {labelsGrafico2.length > 0 ? (
-                    <GraficoRadar
-                        titulo={titleGrafico2}
-                        subtitulo={subTitleGrafico2}
-                        labels={labelsGrafico2}
-                        valores={valoresGrafico2}
-                    />
-                ) : (
-                     <div className="trilhas-grafico-vazio">
-                        <p>{subTitleGrafico2}</p>
+                        <p>Nenhum diagnóstico para exibir.</p>
                     </div>
                 )}
             </div>
@@ -184,21 +191,27 @@ const DiagnosticoRH: React.FC = () => {
                 <div className='relatorio-cards'>
                     <div className='relatorio-card'>
                         <h4 className='relatorio-subtitulo'> <FaMedal className='icone-indicador'/> Conquistas</h4>
-                        <p className='relatorio-texto'>
-                            A equipe alcançou um nível significativo de participação, com 98% de presença nos treinamentos s
-                        </p>
+                        <ul className='relatorio-lista'>
+                            {conquistas.map((item, index) => (
+                                <li key={index} className='relatorio-texto'>{item}</li>
+                            ))}
+                        </ul>
                     </div>
                     <div className='relatorio-card'>
                         <h4 className='relatorio-subtitulo'> <GiStairsGoal className='icone-indicador'/> Desafios</h4>
-                        <p className='relatorio-texto'>
-                            Os funcionários apresentaram maior dificuldade no quiz “Entendendo seus clientes” da trilha “Vendas Online”
-s                       </p>
+                         <ul className='relatorio-lista'>
+                            {desafios.map((item, index) => (
+                                <li key={index} className='relatorio-texto'>{item}</li>
+                            ))}
+                        </ul>
                     </div>
                     <div className='relatorio-card'>
                         <h4 className='relatorio-subtitulo'> <FaRocket className='icone-indicador'/> Oportunidades</h4>
-                        <p className='relatorio-texto'>
-                            Manter o alto nível de participação e aprimorar o desempenho no módulo “Entendendo seus clientes”
-                        </p>
+                         <ul className='relatorio-lista'>
+                            {oportunidades.map((item, index) => (
+                                <li key={index} className='relatorio-texto'>{item}</li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
 
