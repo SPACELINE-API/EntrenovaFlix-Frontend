@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Header from './header';
-import '../../styles/mainLayout.css'
+import '../../styles/contratacaoPlanos.css'
 function MainLayout() {
   return (
     <div className='bodyMain'>

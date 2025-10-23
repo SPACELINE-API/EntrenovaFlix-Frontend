@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import '../../styles/mainLayout.css'
+import '../../styles/contratacaoPlanos.css'
 
 function contratarLayout() {
   return (
