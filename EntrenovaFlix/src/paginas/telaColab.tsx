@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TiArrowSortedDown } from "react-icons/ti";
+import { Center } from '@mantine/core';
 
 export default function TelaColab() {
   const [menuAberto, setMenuAberto] = useState(false);
@@ -12,8 +13,8 @@ export default function TelaColab() {
 
   return (
     <div>
-      <header>
-        <div className="tituloTrilha">
+      <header className="colab-header">
+        <div className="tituloTrilha" style={{ fontSize: '2rem', marginTop: '0' }}>
           <p>Trilhas em andamento</p>
         </div>
        <div className="dropdown">
@@ -38,20 +39,53 @@ export default function TelaColab() {
 
       </header>
 
-      <main>
+            <main>
         <div className="retangulo">
-          <span className="conteudo">Como ampliar as vendas online?</span>
-          <button className="botao" onClick={Trilhas}>Continuar</button>
+          <div className="card-header">
+            <span className="conteudo">Como ampliar as vendas online?</span>
+            <span className="card-subtitle">0 de 8 atividades concluídas</span>
+          </div>
+          <div className="card-footer">
+            <div className="progress-container">
+              <div className="progress-bar">
+                <div className="progress" style={{ width: '0%' }}></div>
+              </div>
+              <span className="progress-percent">0%</span>
+            </div>
+            <button className="botao" onClick={Trilhas}>Continuar</button>
+          </div>
         </div>
 
         <div className="retangulo">
-          <span className="conteudo">Produtividade dos funcionários</span>
-          <button className="botao">Continuar</button>
+          <div className="card-header">
+            <span className="conteudo">Produtividade dos funcionários</span>
+            <span className="card-subtitle">0 de 5 atividades concluídas</span>
+          </div>
+          <div className="card-footer">
+            <div className="progress-container">
+              <div className="progress-bar">
+                <div className="progress" style={{ width: '0%' }}></div>
+              </div>
+              <span className="progress-percent">0%</span>
+            </div>
+            <button className="botao">Continuar</button>
+          </div>
         </div>
 
         <div className="retangulo">
-          <span className="conteudo">Aumentando a comunicação interna da empresa</span>
-          <button className="botao">Continuar</button>
+          <div className="card-header">
+            <span className="conteudo">Aumentando a comunicação interna da empresa</span>
+            <span className="card-subtitle">0 de 10 atividades concluídas</span>
+          </div>
+          <div className="card-footer">
+            <div className="progress-container">
+              <div className="progress-bar">
+                <div className="progress" style={{ width: '0%' }}></div>
+              </div>
+              <span className="progress-percent">0%</span>
+            </div>
+            <button className="botao">Continuar</button>
+          </div>
         </div>
       </main>
     </div>

@@ -20,6 +20,9 @@ export default function TelaTrilhas() {
         </button>
       )}
       <div className={sidebar ? "sidebar aberta" : "sidebar fechada"}>
+        <div>
+          
+        </div>
         <button className="closeSidebarBtn" onClick={() => setSidebar(false)}>
           <MdKeyboardDoubleArrowLeft size={32} />
         </button>
@@ -57,7 +60,7 @@ export default function TelaTrilhas() {
           </h3>
         </div>
 
-        <iframe width="900" height="500" src="https://www.youtube.com/embed/NpEaa2P7qZI?si=WZTsU1VWrqxcYf_G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width="900" height="500" style={{ borderRadius: "15px" }} src="https://www.youtube.com/embed/NpEaa2P7qZI?si=WZTsU1VWrqxcYf_G" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
         <div className="navItems">
             <button className="navBtn">
