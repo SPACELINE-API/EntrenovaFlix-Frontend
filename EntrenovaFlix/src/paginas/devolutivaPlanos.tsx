@@ -2,12 +2,17 @@ import '../styles/devolutiva.css'
 import { FaPlay, FaFilm, FaMicrophone } from "react-icons/fa";
 import { GiBrain } from "react-icons/gi";
 import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { PlanoEscolhido } from '../componentes/layout/contratacaoPlanos/types';
 
 
 function DevolutivaPlanos(){
     const [mostrarPlanos, setMostrarPlanos] = useState(false);
     const planosRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+    const handleAssinarClick = (planoId: PlanoEscolhido) => {
+        navigate('/cadastro', { state: { planoPreSelecionado: planoId } });
+    };
 
     return (
         <>
@@ -87,7 +92,7 @@ function DevolutivaPlanos(){
                             <li>Interface básica</li>
                             <li>Acesso às trilhas e mesma experiência para cada usuário</li>
                         </ul>
-                        <Link to='/cadastro' className='botao-assinar'>Assinar</Link>
+                        <button className='botao-assinar' onClick={() => handleAssinarClick('essencial')}>Assinar</button>
                     </div>
                     <div className='plano-card'>
                         <h3>Plano <span className="premium">premium</span></h3>
@@ -97,7 +102,7 @@ function DevolutivaPlanos(){
                             <li>Personalização parcial da interface com base na identidade da empresa</li>
                             <li>Controle de acesso</li>
                         </ul>
-                        <Link to='/cadastro' className='botao-assinar'>Assinar</Link>
+                        <button className='botao-assinar' onClick={() => handleAssinarClick('premium')}>Assinar</button>
                     </div>
                     <div className='plano-card'>
                         <h3>Plano <span className="diamante">diamante</span></h3>
@@ -107,7 +112,7 @@ function DevolutivaPlanos(){
                             <li>Personalização total da interface com base na identidade da empresa</li>
                             <li>Experiência customizada para diferentes tipos de usuários</li>
                         </ul>
-                        <Link to='/cadastro' className='botao-assinar' >Assinar</Link>
+                        <button className='botao-assinar' onClick={() => handleAssinarClick('diamante')}>Assinar</button>
                     </div>
                 </div>
                 </>

@@ -1,227 +1,170 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import FormSolicitante from '../../componentes/layout/contratar/FormSolicitante';
-import FormEmpresa from '../../componentes/layout/contratar/FormEmpresa';
-import FormSenha from '../../componentes/layout/contratar/FormSenha';
-import { solicitanteSchema, empresaSchema, senhaSchema } from '../../componentes/layout/contratar/validation';
-import { ValidationErrors } from '../../componentes/layout/contratar/validationErrors';
-import '../../styles/estiloForms.css';
-import '../../styles/contratar.css';
-
+import { useState, useEffect } from 'react'; 
+import { useNavigate, useLocation } from 'react-router-dom';
+import { z } from 'zod';
+import FormSolicitante from '../../componentes/layout/contratacaoPlanos/FormSolicitante';
+import FormEmpresa from '../../componentes/layout/contratacaoPlanos/FormEmpresa';
+import FormSenha from '../../componentes/layout/contratacaoPlanos/FormSenha';
+import { solicitanteSchema, empresaSchema, senhaSchema } from '../../componentes/layout/contratacaoPlanos/validation';
+import { ValidationErrors, DadosSolicitante, DadosEmpresa, DadosSenha, PlanoEscolhido } from '../../componentes/layout/contratacaoPlanos/types';
 
 function TelaCadastro() {
     const [step, setStep] = useState(1);
     const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
     const navigate = useNavigate();
+    const location = useLocation();
+    const [planoPreSelecionado, setPlanoPreSelecionado] = useState<PlanoEscolhido>('');
+    const [isLoadingCep, setIsLoadingCep] = useState(false);
+    const [cepError, setCepError] = useState<string | null>(null);
 
-    // Estados para armazenar os dados dos formulários
-    const [dadosSolicitante, setDadosSolicitante] = useState({
-        nomeCompleto: '',
-        emailCorporativo: '',
-        telefone: '',
-        cpf: '',
-        nomeEmpresa: '',
-        porteEmpresa: ''
+    useEffect(() => {
+        if (location.state?.planoPreSelecionado) {
+            setPlanoPreSelecionado(location.state.planoPreSelecionado as PlanoEscolhido);
+        }
+    }, [location.state]);
+
+    const [dadosSolicitante, setDadosSolicitante] = useState<DadosSolicitante>({
+        nomeCompleto: '', emailCorporativo: '', telefone: '', cpf: '', nomeEmpresa: '', porteEmpresa: ''
     });
-
-    const [dadosEmpresa, setDadosEmpresa] = useState({
-        cnpj: '',
-        razaoSocial: '',
-        cep: '',
-        rua: '',
-        numero: '',
-        bairro: '',
-        cidade: '',
-        estado: ''
+    const [dadosEmpresa, setDadosEmpresa] = useState<DadosEmpresa>({
+        cnpj: '', razaoSocial: '', cep: '', rua: '', numero: '', bairro: '', cidade: '', estado: '', complemento:''
     });
-
-    const [dadosSenha, setDadosSenha] = useState({
-        senha: '',
-        confirmarSenha: ''
+    const [dadosSenha, setDadosSenha] = useState<DadosSenha>({
+        senha: '', confirmarSenha: ''
     });
 
     const handleSolicitanteChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         let processedValue = value;
-        
-        // Se o elemento for um input, aplica as formatações específicas
-        if (e.target instanceof HTMLInputElement) {
-            if (name === 'cpf') {
-                processedValue = value.replace(/\D/g, '');
-            } else if (name === 'telefone') {
-                processedValue = value.replace(/\D/g, '');
-            }
+        if (e.target instanceof HTMLInputElement && (name === 'cpf' || name === 'telefone')) {
+            processedValue = value.replace(/\D/g, '');
         }
-
-        setDadosSolicitante(prev => ({
-            ...prev,
-            [name]: processedValue
-        }));
+        setDadosSolicitante(prev => ({ ...prev, [name]: processedValue }));
     };
 
     const handleEmpresaChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         let processedValue = value;
-
         if (name === 'cnpj' || name === 'cep') {
             processedValue = value.replace(/\D/g, '');
         }
-
+        if (name === 'cep') {
+            setCepError(null);
+        }
         setDadosEmpresa(prev => ({
             ...prev,
             [name]: processedValue
         }));
     };
+    const handleCepBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+        const cep = e.target.value.replace(/\D/g, ''); 
+        setCepError(null); 
 
+        if (cep.length !== 8) {
+            return;
+        }
+        setIsLoadingCep(true); 
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            if (!response.ok) {
+                throw new Error('Erro ao buscar CEP');
+            }
+            const data = await response.json();
+            if (data.erro) {
+                setCepError('CEP não encontrado.');
+                setDadosEmpresa(prev => ({ ...prev, rua: '', bairro: '', cidade: '', estado: '' }));
+            } else {
+                setDadosEmpresa(prev => ({
+                    ...prev,
+                    rua: data.logradouro || '',
+                    bairro: data.bairro || '',
+                    cidade: data.localidade || '',
+                    estado: data.uf || ''
+                }));
+                 setValidationErrors(prev => ({
+                     ...prev,
+                     rua: undefined,
+                     bairro: undefined,
+                     cidade: undefined,
+                     estado: undefined
+                 }));
+            }
+        } catch (error) {
+            setCepError('Não foi possível buscar o CEP. Verifique sua conexão.');
+            setDadosEmpresa(prev => ({ ...prev, rua: '', bairro: '', cidade: '', estado: '' }));
+        } finally {
+            setIsLoadingCep(false); 
+        }
+    };
     const handleSenhaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        // Remove espaços em branco no início e fim da senha
-        const processedValue = value.trim();
-        setDadosSenha(prev => ({
-            ...prev,
-            [name]: processedValue
-        }));
+        setDadosSenha(prev => ({ ...prev, [name]: value }));
     };
-
+    const validaEtapa = async (schema: z.Schema, data: unknown): Promise<boolean> => {
+         const validationResult = await schema.safeParseAsync(data);
+        if (!validationResult.success) {
+            const errors: ValidationErrors = {};
+            validationResult.error.issues.forEach(error => {
+                if (error.path[0]) { errors[error.path[0] as keyof ValidationErrors] = [error.message]; }
+            });
+            setValidationErrors(errors);
+            return false;
+        }
+        setValidationErrors({});
+        return true;
+    };
     const validateCurrentStep = async () => {
-        try {
-            let validationResult;
-            setValidationErrors({});
-
+         try {
             switch (step) {
-                case 1:
-                    validationResult = await solicitanteSchema.safeParseAsync(dadosSolicitante);
-                    if (!validationResult.success) {
-                        console.log('Erro na validação do solicitante:', validationResult.error);
-                        const errors: ValidationErrors = {};
-                        validationResult.error.issues.forEach(error => {
-                            if (error.path[0]) {
-                                errors[error.path[0] as keyof ValidationErrors] = [error.message];
-                            }
-                        });
-                        setValidationErrors(errors);
-                        return false;
-                    }
-                    break;
-                case 2:
-                    validationResult = await empresaSchema.safeParseAsync(dadosEmpresa);
-                    if (!validationResult.success) {
-                        console.log('Erro na validação da empresa:', validationResult.error);
-                        const errors: ValidationErrors = {};
-                        validationResult.error.issues.forEach(error => {
-                            if (error.path[0]) {
-                                errors[error.path[0] as keyof ValidationErrors] = [error.message];
-                            }
-                        });
-                        setValidationErrors(errors);
-                        return false;
-                    }
-                    break;
-                case 3:
-                    validationResult = await senhaSchema.safeParseAsync(dadosSenha);
-                    if (!validationResult.success) {
-                        console.log('Erro na validação da senha:', validationResult.error);
-                        const errors: ValidationErrors = {};
-                        validationResult.error.issues.forEach(error => {
-                            if (error.path[0]) {
-                                errors[error.path[0] as keyof ValidationErrors] = [error.message];
-                            }
-                        });
-                        setValidationErrors(errors);
-                        return false;
-                    }
-                    break;
-                default:
-                    console.log('Step inválido:', step);
-                    return false;
+                case 1: return await validaEtapa(solicitanteSchema, dadosSolicitante);
+                case 2: return await validaEtapa(empresaSchema, dadosEmpresa);
+                case 3: return await validaEtapa(senhaSchema, dadosSenha);
+                default: return false;
             }
-            console.log('Step validado com sucesso:', step);
-            return true;
         } catch (error) {
             console.error('Erro inesperado na validação:', error);
             return false;
         }
     };
-
     const nextStep = async () => {
-        console.log('Tentando avançar do step:', step);
         const isValid = await validateCurrentStep();
-        console.log('Validação retornou:', isValid);
-        if (isValid) {
-            setStep(prevStep => {
-                const newStep = prevStep + 1;
-                console.log('Avançando para o step:', newStep);
-                return newStep;
-            });
-        }
+        if (isValid) setStep(prev => prev + 1);
     };
-
-    const prevStep = () => {
-        console.log('Voltando do step:', step);
-        setStep(prevStep => {
-            const newStep = prevStep - 1;
-            console.log('Voltando para o step:', newStep);
-            return newStep;
-        });
-    };
-
+    const prevStep = () => setStep(prev => prev - 1);
     const handleFinish = async () => {
         const isValid = await validateCurrentStep();
         if (isValid) {
-            // Dados do Solicitante com a senha
-            const solicitanteComSenha = {
-                ...dadosSolicitante,
-                senha: dadosSenha.senha
-            };
-
-            console.log('Dados do cadastro:', {
-                solicitante: dadosSolicitante,
-                empresa: dadosEmpresa
-            });
-
-            // Chamada de API para cadastro aqui (?)
-            // Ou talvez após o pagamento que acho melhor por causa do voltar... (Mas ai teria que corrigir e enviar os dados pra tela de pagamento)
-
-            navigate('pagamento');
+            navigate('/cadastro/pagamento', { state: { plano: planoPreSelecionado || 'essencial' } });
         }
     };
-
     return (
         <div className="cadastro-wrapper">
             <div className="cadastro-container">
                 {step === 1 && (
-                    <FormSolicitante
-                        dadosSolicitante={dadosSolicitante}
-                        onChange={handleSolicitanteChange}
-                        errors={validationErrors}
-                    />
+                    <FormSolicitante dadosSolicitante={dadosSolicitante} onChange={handleSolicitanteChange} errors={validationErrors} />
                 )}
                 {step === 2 && (
                     <FormEmpresa
                         dadosEmpresa={dadosEmpresa}
                         onChange={handleEmpresaChange}
                         errors={validationErrors}
+                        onCepBlur={handleCepBlur}
+                        isLoadingCep={isLoadingCep}
+                        cepError={cepError}
+
                     />
                 )}
                 {step === 3 && (
-                    <FormSenha
-                        dadosSenha={dadosSenha}
-                        onChange={handleSenhaChange}
-                        emailCorporativo={dadosSolicitante.emailCorporativo}
-                        errors={validationErrors}
-                    />
+                    <FormSenha dadosSenha={dadosSenha} onChange={handleSenhaChange} emailCorporativo={dadosSolicitante.emailCorporativo} errors={validationErrors} />
                 )}
                 <div className={`form-buttons ${step > 1 ? 'form-buttons--between' : 'form-buttons--end'}`}>
                     {step > 1 && (
                         <button onClick={prevStep} className='button-primary'>Voltar</button>
                     )}
                     {step < 3 ? (
-                        <button type="button" className="button-primary" onClick={nextStep}>
-                            Próximo
-                        </button>
+                        <button type="button" className="button-primary" onClick={nextStep}>Próximo</button>
                     ) : (
                         <button type="button" className="button-primary" onClick={handleFinish}>
-                            Finalizar
+                            Finalizar e Fazer o pagamento
                         </button>
                     )}
                 </div>
@@ -229,5 +172,4 @@ function TelaCadastro() {
         </div>
     );
 }
-
 export default TelaCadastro;

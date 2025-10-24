@@ -1,10 +1,10 @@
 // src/paginas/ChatBot.tsx
 
-import "../styles/chat.css";
-import { useState, useRef, useEffect } from "react";
+import '../../styles/chat.css';
+import { useState, useRef, useEffect } from 'react';
 import { LuSendHorizontal } from "react-icons/lu";
-import { chatService } from "../../services/chatService";
-import { useNavigate } from "react-router-dom";
+import { chatService } from '../../services/chatService';
+import { useNavigate } from 'react-router-dom'; 
 
 type Message = {
   role: "user" | "bot";
@@ -17,11 +17,12 @@ function ChatBot() {
   const [isConversationComplete, setIsConversationComplete] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const [isTyping, setIsTyping] = useState(false);
 
+
   useEffect(() => {
-    const unsubscribe = chatService.subscribe((newState: any) => {
+    const unsubscribe = chatService.subscribe(newState => {
       setChatState(newState);
     });
     return () => unsubscribe();
@@ -31,20 +32,21 @@ function ChatBot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatState.mensagens]);
 
-  const handleSendMessage = () => {
-    if (inputMessage.trim() && !isConversationComplete) {
-      setIsTyping(true);
 
-      chatService.sendMessage(inputMessage).then((complete) => {
-        setIsTyping(false);
-        if (complete) {
-          setIsConversationComplete(true);
-        }
-      });
+ const handleSendMessage = () => {
+  if (inputMessage.trim() && !isConversationComplete) {
+    setIsTyping(true); 
 
-      setInputMessage("");
-    }
-  };
+    chatService.sendMessage(inputMessage).then(complete => {
+      setIsTyping(false); 
+      if (complete) {
+        setIsConversationComplete(true);
+      }
+    });
+
+    setInputMessage("");
+  }
+};
 
   const handleEndConversation = () => {
     const conversationHistory = chatService.getState().mensagens;
@@ -53,7 +55,7 @@ function ChatBot() {
     setIsConversationComplete(false);
     setInputMessage("");
 
-    navigate("/dashboardRH");
+    navigate('/dashboardRH');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -70,34 +72,28 @@ function ChatBot() {
     }
   }, [inputMessage]);
 
+
   return (
     <div className="chatbot-page">
       <div className="mensagens">
-        <div className="mensagem-inicial">
-          <h5>
-            Olá, sou a Assistente Virtual da Entrenova! Como posso ajudar?
-          </h5>
-        </div>
+         <div className='mensagem-inicial'>
+              <h5>Olá, sou a Assistente Virtual da Entrenova! Como posso ajudar?</h5>
+            </div>
         {chatState.mensagens.map((msg, index) => (
-          <div
-            key={index}
-            className={`mensagem ${msg.role === "user" ? "user" : "bot"}`}
-          >
-            {msg.content.split("\\n").map((line, i) => (
-              <span key={i}>
-                {line}
-                <br />
-              </span>
-            ))}
-          </div>
+           <div key={index} className={`mensagem ${msg.role === 'user' ? 'user' : 'bot'}`}>
+             {msg.content.split('\\n').map((line, i) => (
+               <span key={i}>{line}<br/></span>
+             ))}
+           </div>
+           
         ))}
         {isTyping && (
-          <div className="balaozinho-pensando">
-            <span className="ponto"></span>
-            <span className="ponto"></span>
-            <span className="ponto"></span>
-          </div>
-        )}
+        <div className="balaozinho-pensando">
+          <span className="ponto"></span>
+          <span className="ponto"></span>
+          <span className="ponto"></span>
+        </div>
+      )}
         <div ref={messagesEndRef} />
       </div>
 

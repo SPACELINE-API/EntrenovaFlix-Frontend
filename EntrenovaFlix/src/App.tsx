@@ -1,6 +1,7 @@
 import AppRoutes from './rotas';
 import { QuestionnaireProvider } from './contexts/QuestionnaireContext';
 import { ToastContainer } from "react-toastify";
+import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   return (
