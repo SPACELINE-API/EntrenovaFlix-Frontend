@@ -23,6 +23,7 @@ import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 import ContratarLayout from '../componentes/layout/contratarLayout';
 import TelaCadastro from '../paginas/pagamento/telaCadastro';
 import TelaPagamento from '../paginas/pagamento/telaPagamento';
+import TelaSelecaoPlano from '../paginas/telaSelecaoPlanos';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
         element: <TelaCadastro />,
       },
       {
+        path: 'selecaoPlanos',
+        element: <TelaSelecaoPlano/>
+      },
+      {
         path: 'pagamento',
         element: <TelaPagamento />,
       }
@@ -66,7 +71,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/colaboradores',
-    element: <PrivateRoute />, 
+   element: <PrivateRoute />, 
     children: [
       {
         element: <MainLayout />, 
