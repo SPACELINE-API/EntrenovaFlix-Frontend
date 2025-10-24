@@ -36,6 +36,11 @@ interface ProximosPassosData {
   longo_prazo: { foco: string; acoes: string[] };
 }
 
+interface BotaoGerarPDFProps {
+  diagnosticResult: any;
+  formData: any;
+}
+
 const categoriesConfig: { key: keyof SegmentedDiagnosis; title: string; Icon: ElementType }[] = [
   { key: 'pessoasCultura', title: 'Pessoas & Cultura', Icon: FaUsers },
   { key: 'estruturaOperacoes', title: 'Estrutura & Operações', Icon: PiTreeStructureFill },
@@ -60,6 +65,42 @@ const RenderPoints = ({ title, points, type }: { title: string; points: string[]
         </div>
       }
     </>
+  );
+};
+
+const BotaoGerarPDF: React.FC<BotaoGerarPDFProps> = ({ diagnosticResult, formData }) => {
+  const GerarPdf = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/accounts/gerar-pdf/", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ diagnosticResult, formData })
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao gerar o PDF");
+      }
+
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "Diagnostico_Aprofundado.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+    } catch (error) {
+      console.error("Erro ao gerar o PDF:", error);
+      alert("Ocorreu um erro ao gerar o PDF");
+    }
+  }
+
+  return (
+    <button className="btn btn-ghost" onClick={GerarPdf}>
+      <FaDownload /> Baixar relatório (PDF)
+    </button>
   );
 };
 
@@ -88,7 +129,7 @@ export default function TelaDiagnostico() {
           .then(res => res.json())
           .then(data => {
             setLeadScoreInfo(data);
-            localStorage.setItem('leadScoreInfo', JSON.stringify(data)); 
+            localStorage.setItem('leadScoreInfo', JSON.stringify(data));
           })
           .catch(e => console.error("Erro Lead Score:", e));
       }
@@ -115,7 +156,7 @@ export default function TelaDiagnostico() {
     return <div className="diagnostic-mockup-root"><p>Nenhum diagnóstico encontrado. Complete o formulário.</p></div>;
 
   const evaluatedCategories = categoriesConfig.filter(cat => diagnosticResult[cat.key]);
-  
+
   // Lógica de recomendação principal (não muda, continua funcionando)
   const recommendedCategory = evaluatedCategories.reduce((lowest, cat) => {
     const score = diagnosticResult[cat.key]?.score || 0;
@@ -182,14 +223,14 @@ export default function TelaDiagnostico() {
             {evaluatedCategories.map(cat => {
               const data = diagnosticResult[cat.key];
               if (!data) return null;
-              
+
               const skills = data.soft_skills_sugeridas || [];
               const tags = data.tags_de_interesse || [];
-              
+
               return (
                 <div key={cat.key} className="recomendacao-card">
                   <strong>{cat.title}</strong>
-                  
+
                   {/* Renderiza as Soft Skills da IA */}
                   {skills.length > 0 && (
                     <div className="skills-sub-section">
@@ -202,14 +243,14 @@ export default function TelaDiagnostico() {
 
                   {/* Renderiza as Tags de Interesse da IA */}
                   {tags.length > 0 && (
-                     <div className="skills-sub-section">
+                    <div className="skills-sub-section">
                       <span className="sub-title">Tags de Interesse</span>
                       <ul className="muted">
                         {tags.map((t: any, i: any) => <li key={`tag-${i}`}>{t}</li>)}
                       </ul>
                     </div>
                   )}
-                  
+
                   {/* Fallback caso a IA não retorne nada */}
                   {skills.length === 0 && tags.length === 0 && (
                     <p className="muted">Nenhuma sugestão de skill ou tag para esta dimensão.</p>
@@ -224,7 +265,7 @@ export default function TelaDiagnostico() {
         <div className="proximos">
           <h4>Próximos passos sugeridos</h4>
           <div className="proximos-grid">
-            {proximosPassos ? ['curto_prazo','medio_prazo','longo_prazo'].map((p, i) => {
+            {proximosPassos ? ['curto_prazo', 'medio_prazo', 'longo_prazo'].map((p, i) => {
               const step = proximosPassos[p as keyof ProximosPassosData];
               const label = p === 'curto_prazo' ? '1-2 sem' : p === 'medio_prazo' ? '2-4 sem' : '+6 sem';
               const cls = p === 'curto_prazo' ? 'curto-prazo' : p === 'medio_prazo' ? 'medio-prazo' : 'longo-prazo';
@@ -234,7 +275,7 @@ export default function TelaDiagnostico() {
                     <strong>{step.foco}</strong>
                     <span className="prazo-label">{label}</span>
                   </div>
-                  <ul className="muted">{step.acoes.length > 0 ? step.acoes.map((a,j)=><li key={j}>{a}</li>) : <li>Nenhuma ação definida.</li>}</ul>
+                  <ul className="muted">{step.acoes.length > 0 ? step.acoes.map((a, j) => <li key={j}>{a}</li>) : <li>Nenhuma ação definida.</li>}</ul>
                 </div>
               )
             }) : <p className="muted" style={{ gridColumn: "1 / -1" }}>Carregando plano de ação...</p>}
@@ -247,7 +288,7 @@ export default function TelaDiagnostico() {
             <div className="muted" style={{ marginTop: 6 }}>Baixe o PDF ou fale com nosso time para consultoria personalizada.</div>
           </div>
           <div className="cta-buttons">
-            <button className="btn btn-ghost" onClick={handleDownload}><FaDownload /> Baixar relatório (PDF)</button>
+            <BotaoGerarPDF diagnosticResult={diagnosticResult} formData={formData}/>
             <Link to="/diagnostico/devolutiva" className="btn btn-primary"><MdCalendarToday /> Acessar Planos</Link>
           </div>
         </div>
