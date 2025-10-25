@@ -11,7 +11,7 @@ const planosDisponiveis = [
         preco: 'R$ 590,90 / mês',
         keyFeatures: { 
             contas: 'Até 10 usuários',
-            trilhas: '1 trilha personalizada',
+            trilhas: 'Até 3 trilhas personalizadas',
             interface: 'Básica',
             experiencia: 'Padrão por usuário'
         },
@@ -24,7 +24,7 @@ const planosDisponiveis = [
         preco: 'R$ 990,90 / mês',
         keyFeatures: {
             contas: 'Até 60 usuários',
-            trilhas: 'Até 3 trilhas personalizadas',
+            trilhas: 'Até 10 trilhas personalizadas',
             interface: 'Personalização parcial',
             experiencia: 'Controle de acesso'
         },

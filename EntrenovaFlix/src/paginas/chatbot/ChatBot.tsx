@@ -54,7 +54,7 @@ function ChatBot() {
     console.log("Salvando conversa:", conversationHistory);
 
     try {
-      await api.patch('/primeiro-login'); // 👈 marca o primeiro login como concluído
+      await api.patch('/primeiro-login'); 
       console.log("Primeiro login atualizado com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar primeiro login:", error);
