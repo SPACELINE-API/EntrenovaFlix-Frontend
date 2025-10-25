@@ -111,6 +111,9 @@ body {
   padding-left: 250px; 
   transition: padding-left 0.3s ease;
   position: relative;
+  /* Mantém a área da página fixa e evita scroll do body nesta tela */
+  height: calc(100vh - 60px - 40px); /* header 60px + padding do <main> 20px top/bottom */
+  overflow: hidden; /* impede que o container principal role */
 }
 
 .telaTrilhas.sidebar-fechada {
@@ -209,6 +212,9 @@ body {
   flex-direction: column;
   margin-bottom: 20px;
   gap: 20px;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 12px;
 }
 
 .tituloTrilha{
