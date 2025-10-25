@@ -14,7 +14,7 @@
 .dashboard-rh-main {
     flex: 1;
     padding: 40px;
-    color: white;
+    color: #fafafa;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -30,4 +30,3 @@
     -webkit-text-fill-color: transparent;
     color: transparent;
 }
-

@@ -8,7 +8,7 @@ import { FaCheck } from "react-icons/fa";
 import { MdEmojiPeople } from "react-icons/md";
 import Card from "../../componentes/layout/dashboard/Card";
 import InfoLinha from "../../componentes/layout/dashboard/InfoLinha";
-import GraficoLinha from "../../componentes/layout/dashboard/GraficoFrequencia";
+import GraficoLinha from "../../componentes/layout/dashboard/GraficoLinha";
 
 interface DecodedToken {
   role: 'admin' | 'rh' | 'user';
