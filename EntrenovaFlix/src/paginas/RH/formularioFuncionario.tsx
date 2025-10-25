@@ -140,7 +140,7 @@ const FormularioFuncionario: React.FC<FormularioFuncionarioProps> = ({ initialDa
         await api.put(`/funcionarios/${initialData.id}`, dadosApi);
         setMessage({ text: "Funcionário editado com sucesso!", type: 'success' });
       } else {
-        await api.post("/register", dadosApi);
+        await api.post("/funcionarios", dadosApi);
         setMessage({ text: "Funcionário cadastrado com sucesso!", type: 'success' });
         form.reset();
       }

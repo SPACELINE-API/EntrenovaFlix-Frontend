@@ -25,7 +25,7 @@ html {
   padding: 0;
   box-sizing: border-box;
 }
-body, main {
+.bodyMain {
   background-color: #141414;
   font-family: 'kollektif';
   color: #FFFFFF;

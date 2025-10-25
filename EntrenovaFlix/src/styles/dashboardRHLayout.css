@@ -14,7 +14,7 @@
 .dashboard-rh-main {
     flex: 1;
     padding: 40px;
-    color: #fafafa;
+    color: white;
     overflow-y: auto;
     overflow-x: hidden;
 }
