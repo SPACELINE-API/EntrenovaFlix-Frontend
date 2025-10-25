@@ -3,7 +3,7 @@ import '../../styles/contratacaoPlanos.css'
 
 function contratarLayout() {
   return (
-    <div className='bodyMain'>
+    <div className='bodyMain2'>
       <main>
         <Outlet />
       </main>

@@ -126,16 +126,12 @@
 
 .planos {
   text-align: center;
-  justify-content: center;
-  align-items: center;
   margin-top: 10rem;
   color: #dfdfdf;
 }
 
 .planos h1, h2 {
   font-family: 'Kollektif', sans-serif;
-  text-align: center;
-  margin: 0.5rem 22rem;
 }
 
 .planos-container {
@@ -277,4 +273,24 @@
   box-shadow: 0 0px 25px rgba(84, 73, 204, 0.5);
 }
 
+@media (max-width: 767px) {
+  .trilha-container {
+    gap: 0.5rem; 
+    padding: 0 1rem; 
+  }
+  .step {
+    text-align: center; 
+  }
+  .circle {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  .step::after {
+    top: 25px; 
+  }
 
+  .step span {
+    display: none;
+  }
+}

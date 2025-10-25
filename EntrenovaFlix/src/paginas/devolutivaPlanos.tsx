@@ -106,8 +106,6 @@ function DevolutivaPlanos(){
                 </div>
                 </>
             </div>
-
-            <Footer/>
         </>
         
     )

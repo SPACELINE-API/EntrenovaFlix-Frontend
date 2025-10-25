@@ -3,13 +3,13 @@
   src: url(../assets/fontes/satoshi/Satoshi-Light.otf);
 }
 
-.bodyMain {
+.bodyMain2 {
   background-color: #141414;
   color: #FFFFFF;
   min-height: 100vh;
 }
 
-.bodyMain {
+.bodyMain2 {
   background-color: #141414;
   width: 100%;
   position: relative;
@@ -18,7 +18,7 @@
   flex-direction: column;
   height: 100vh;
 }
-.bodyMain::before, .bodyMain > main::before {
+.bodyMain2::before, .bodyMain2 > main::before {
   content: '';
   position: absolute;
   z-index: 0;
@@ -37,7 +37,7 @@
     opacity: 1;
   }
 }
-.bodyMain::before {
+.bodyMain2::before {
   top: -250px;
   left: -250px;
   width: 800px;
@@ -46,15 +46,15 @@
   filter: blur(150px);
   animation: aura-pulse 8s ease-in-out infinite;
 }
-.bodyMain > * {
+.bodyMain2 > * {
   position: relative;
   z-index: 1;
 }
-.bodyMain > main {
+.bodyMain2 > main {
   position: relative;
   z-index: 1; 
 }
-.bodyMain > main::before {
+.bodyMain2 > main::before {
   top: 80px;
   right: -500px;
   width: 600px;
