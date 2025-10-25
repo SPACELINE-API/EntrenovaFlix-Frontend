@@ -6,7 +6,7 @@ function Header() {
   const { isQuestionnaireCompleted, hasDiagnosticResult } = useQuestionnaire();
 
   return (
-    <header className='headerContainer'>
+    <header className='headerContainer1'>
         <div className='usuario'>
             <span>Nome do Usuario</span>
         </div>

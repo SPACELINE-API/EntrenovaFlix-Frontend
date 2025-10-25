@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/apiService";
+import'../styles/forum.css'
 
 
 type Post = {
@@ -53,33 +54,27 @@ export default function TelaForum() {
      className="btnResponder"
      onClick={() => navigate("/colaboradores/novo-comentario")}
     >
-        <span style={{fontSize:'1rem'}}>
-            + Crie um Post
-        </span>
-     
+     + Crie um Post
     </button>
    </div>
 
    <div className="forumPosts">
-    {posts.map((post) => (
-     <div key={post.id} className="forumCard">
-      <div className="forumUser">
-       <div className="avatar"></div>
-       <span className="nomeUsuario">{post.usuario.nome}</span>
-      </div>
+  {posts.map((post) => (
+  <div 
+   key={post.id} 
+   className="forumCard"
+   onClick={() => navigate(`/colaboradores/forum/post/${post.id}`)}
+   >
+   <div className="forumUser">
+   <div className="avatar"></div>
+   <span className="nomeUsuario">{post.usuario.nome}</span>
+   </div>
 
       <div className="forumConteudo">
        <h3 className="forumPergunta">{post.pergunta}</h3>
        <p className="forumDescricao">{post.descricao}</p>
        <p className="forumTempo">Post feito {post.tempo ?? ""}</p>
       </div>
-
-      <button
-       className="btnResponder"
-       onClick={() => navigate(`/colaboradores/forum/post/${post.id}`)}
-      >
-       Responder
-      </button>
      </div>
     ))}
    </div>
