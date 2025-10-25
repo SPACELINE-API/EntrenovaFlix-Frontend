@@ -1,7 +1,8 @@
 import * as z from 'zod';
 
 export const solicitanteSchema = z.object({
-    nomeCompleto: z.string().min(3, "Nome completo deve ter pelo menos 3 caracteres"),
+    nome: z.string().min(3, "Nome completo deve ter pelo menos 3 caracteres"),
+    sobrenome:z.string().min(3, "Nome completo deve ter pelo menos 3 caracteres"),
     emailCorporativo: z.string().email("Formato de email inválido"),
     telefone: z.string()
         .min(10, "Telefone deve ter pelo menos 10 dígitos")

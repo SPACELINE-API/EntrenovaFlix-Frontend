@@ -9,20 +9,37 @@ export default function FormSolicitante({ dadosSolicitante, onChange, errors }: 
             <p className="form-desc">Preencha com suas informações para continuar.</p>
             <div className="form-grid">
                 <div className="form-field">
-                    <label htmlFor="nomeCompleto" className="label">
-                        Nome completo
+                    <label htmlFor="nome" className="label">
+                        Nome
                     </label>
                     <input
-                        id="nomeCompleto"
-                        name="nomeCompleto"
+                        id="nome"
+                        name="nome"
                         type="text"
-                        className={`input ${errors?.nomeCompleto ? 'input-error' : ''}`}
-                        placeholder="Digite seu nome completo"
-                        value={dadosSolicitante.nomeCompleto}
+                        className={`input ${errors?.nome ? 'input-error' : ''}`}
+                        placeholder="Digite seu nome"
+                        value={dadosSolicitante.nome}
                         onChange={onChange}
                     />
-                    {errors?.nomeCompleto && (
-                        <p className="error">{errors.nomeCompleto[0]}</p>
+                    {errors?.nome && (
+                        <p className="error">{errors.nome[0]}</p>
+                    )}
+                </div>
+                <div className="form-field">
+                    <label htmlFor="sobrenome" className="label">
+                        Sobrenome
+                    </label>
+                    <input
+                        id="sobrenome"
+                        name="sobrenome"
+                        type="text"
+                        className={`input ${errors?.sobrenome ? 'input-error' : ''}`}
+                        placeholder="Digite seu sobrenome"
+                        value={dadosSolicitante.sobrenome}
+                        onChange={onChange}
+                    />
+                    {errors?.sobrenome && (
+                        <p className="error">{errors.sobrenome[0]}</p>
                     )}
                 </div>
                 <div className="form-field">

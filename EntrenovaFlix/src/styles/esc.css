@@ -1,0 +1,226 @@
+.dark-theme { 
+  --bg-primary: #121212;     
+  --bg-secondary: #1e1e1e;   
+  --bg-tertiary: #2a2a2a;    
+  --text-primary: #e0e0e0;   
+  --text-secondary: #a0a0a0; 
+  --text-muted: #666;      
+  --border-color: #333;      
+  --accent-primary: #7a7dff; 
+  --accent-secondary: #5e60ce;
+  --gradient: radial-gradient(circle at bottom right, #935df1 20%, #5e60ce 50%, #4889e3 100%);
+  --color-error: #e57373;     
+  --color-success: #81c784;   
+
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-family: satoshi;
+}
+
+.selecao-plano-container {
+  color: var(--text-primary);
+  max-width: 900px;
+  margin: 2rem auto; 
+  padding: 2rem; 
+  background-color: var(--bg-secondary); 
+  border-radius: 12px; 
+  border: 1px solid var(--border-color);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.selecao-titulo {
+  font-size: 1.8rem; font-weight: 700; color: var(--text-primary);
+  margin-bottom: 2rem; text-align: left; 
+  padding-bottom: 1rem;
+}
+
+.selecao-grid {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  padding: 0 0.5rem;
+}
+
+.selecao-card {
+  background: var(--bg-tertiary); 
+  border: 2px solid var(--bg-tertiary); 
+  border-radius: 8px;
+  padding: 1rem;
+  width: 140px; 
+  height: 120px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  position: relative;
+  text-align: center;
+  color: var(--text-secondary); 
+}
+
+.selecao-card:hover {
+  border-color: var(--accent-secondary); 
+  background-color: #333; 
+}
+
+.selecao-card:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.selecao-card.selected {
+  background: var(--gradient); 
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(94, 96, 206, 0.4); 
+  transform: scale(1.03);
+}
+
+.plano-nome {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  color: var(--text-primary); 
+}
+
+.selecao-card.selected .plano-nome { color: #fff; }
+
+.plano-sub {
+  font-size: 0.8rem;
+  color: var(--text-secondary); 
+}
+
+.selecao-card.selected .plano-sub { color: #eee; } 
+
+.selecao-checkmark {
+  position: absolute; bottom: 4px; right: 5px;
+  width: 18px; height: 18px; background-color: #fff;
+  color: var(--accent-secondary); 
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 0.9rem; font-weight: bold; line-height: 1;
+  padding-bottom: 2px;
+  padding-left: 2px;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-secondary);
+  transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out 0.1s, margin-top 0.5s ease-in-out;
+  overflow: hidden; 
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+.comparison-table.visible {
+  max-height: 1000px;
+  opacity: 1;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+}
+
+.feature-row {
+  display: flex;
+  border-bottom: 1px solid var(--border-color); 
+  padding: 1rem 0;
+  align-items: center;
+}
+
+.comparison-table .feature-row:last-child { border-bottom: none; }
+
+.feature-label {
+  flex-basis: 35%; flex-shrink: 0; padding-right: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-primary); 
+  text-align: left;
+  font-weight: 500;
+}
+
+.plan-values {
+  display: flex; flex-grow: 1; justify-content: flex-end;
+}
+
+.plan-value {
+  width: 150px; flex-shrink: 0; text-align: center; font-size: 0.9rem;
+  padding: 0 0.5rem; color: var(--text-secondary); 
+  font-weight: 400; line-height: 1.4;
+}
+
+.plan-value.selected-plan-value {
+  color: var(--accent-primary); 
+  font-weight: 600;
+}
+
+.price-row { border-top: 1px solid var(--border-color); margin-top: 0.5rem; padding-top: 1rem; }
+.price-row .feature-label { font-weight: 600; }
+.price-value { font-weight: 600; font-size: 0.95rem; }
+
+.form-buttons { display: flex; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);}
+.form-buttons--between { justify-content: space-between; align-items: center; }
+.button-primary, .button-secondary { 
+    padding: 0.8rem 1.5rem; font-size: 0.95rem; font-weight: 600;
+    border-radius: 6px; cursor: pointer; border: none;
+    transition: all 0.2s ease;
+}
+
+.button-secondary { 
+    background-color: #333;
+    color: #ccc; 
+    border: 1px solid #444;
+}
+
+.button-secondary:hover { 
+    background-color: #444; 
+    transform: translateY(-1px); 
+    border-color: #555;
+}
+
+.selecao-erro {
+  color: var(--color-error); 
+  text-align: left; 
+  margin-top: 1.5rem; 
+  margin-bottom: -1rem; 
+  font-weight: 500; font-size: 0.9rem;
+  opacity: 0;
+  max-height: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.selecao-erro:not(:empty) {
+  opacity: 1;
+  max-height: 50px;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media screen and (max-width: 768px) {
+    .selecao-grid { justify-content: space-around; padding: 0;}
+    .selecao-card { width: 140px; height: 90px; } 
+    .plan-values { width: calc(140px * 3 + 0.8rem * 2); } 
+    .plan-value { width: 140px; } 
+    .feature-label { flex-basis: 40%; font-size: 0.85rem; padding-right: 0.8rem; }
+    .plan-value { font-size: 0.85rem; }
+}
+
+@media screen and (max-width: 600px) {
+    .selecao-plano-container { padding: 1rem; }
+    .selecao-titulo { font-size: 1.5rem; text-align: center; margin-bottom: 1.5rem;}
+    .selecao-grid { gap: 0.6rem; }
+    .selecao-card { width: calc(33.33% - 0.5rem); height: 80px; padding: 0.5rem; } 
+    .comparison-table.visible { margin-top: 1.5rem; padding-top: 1rem;}
+    .feature-label { flex-basis: 100px; font-size: 0.75rem; padding-right: 0.3rem;}
+    .plan-values { gap: 0.2rem; width: auto; flex-grow: 1; }
+    .plan-value { font-size: 0.75rem; padding: 0 0.1rem; width: auto; flex: 1; }
+    .form-buttons { flex-direction: column-reverse; gap: 0.8rem; } 
+    .button-primary, .button-secondary { width: 100%; }
+}

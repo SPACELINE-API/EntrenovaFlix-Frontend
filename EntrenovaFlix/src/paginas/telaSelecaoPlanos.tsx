@@ -1,54 +1,69 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { PlanoEscolhido } from '../componentes/layout/contratacaoPlanos/types';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { PlanoEscolhido } from '../componentes/layout/contratacaoPlanos/types'; 
+import "../styles/esc.css"; 
 
-interface CardOpcaoPlanoProps {
-    planoId: PlanoEscolhido;
-    nome: string;
-    preco: string;
-    features: string[];
-    selecionado: boolean;
-    onClick: () => void;
-}
-
-const CardOpcaoPlano: React.FC<CardOpcaoPlanoProps> = ({
-    planoId,
-    nome,
-    preco,
-    features,
-    selecionado,
-    onClick
-}) => {
-
-    const nomeClasse = planoId; 
-    const cardClassName = `plano-card ${selecionado ? 'selecionado' : ''}`;
-
-    return (
-        <div className={cardClassName} onClick={onClick}>
-            <h3>Plano <span className={nomeClasse}>{nome.toLowerCase()}</span></h3>
-            <p className='preco'>{preco}</p>
-            <ul>
-                {features.map((feature, index) => (
-                    <li key={index}>{feature}</li>
-                ))}
-            </ul>
-        </div>
-    );
-};
 const planosDisponiveis = [
-    { id: 'essencial' as PlanoEscolhido, nome: 'Essencial', preco: 'R$590 por mês', features: ['Até 10 usuários', 'Interface básica', 'Acesso às trilhas e mesma experiência para cada usuário'] },
-    { id: 'premium' as PlanoEscolhido, nome: 'Premium', preco: 'R$990 por mês', features: ['Até 60 usuários', 'Personalização parcial da interface com base na identidade da empresa', 'Controle de acesso'] },
-    { id: 'diamante' as PlanoEscolhido, nome: 'Diamante', preco: 'R$1390 por mês', features: ['Usuários ilimitados', 'Personalização total da interface com base na identidade da empresa', 'Experiência customizada para diferentes tipos de usuários'] },
+    { 
+        id: 'essencial' as PlanoEscolhido, 
+        nome: 'Essencial', 
+        sub: 'Básico',
+        preco: 'R$ 590,90 / mês',
+        keyFeatures: { 
+            contas: 'Até 10 usuários',
+            trilhas: '1 trilha personalizada',
+            interface: 'Básica',
+            experiencia: 'Padrão por usuário'
+        },
+        descricao: 'Pequenas empresas que estão começando.' 
+    },
+    { 
+        id: 'premium' as PlanoEscolhido, 
+        nome: 'Premium', 
+        sub: 'Intermediário',
+        preco: 'R$ 990,90 / mês',
+        keyFeatures: {
+            contas: 'Até 60 usuários',
+            trilhas: 'Até 3 trilhas personalizadas',
+            interface: 'Personalização parcial',
+            experiencia: 'Controle de acesso'
+        },
+        descricao: 'Perfeito para equipes médias com maior necessidade de controle.'
+     },
+    { 
+        id: 'diamante' as PlanoEscolhido, 
+        nome: 'Diamante', 
+        sub: 'Avançado',
+        preco: 'R$ 1390,90 / mês',
+        keyFeatures: {
+            contas: 'Usuários ilimitados',
+            trilhas: 'Trilhas personalizadas ilimitadas',
+            interface: 'Personalização total',
+            experiencia: 'Customizada por tipo de usuário'
+        },
+        descricao: 'Voltado para grandes empresas buscando máxima flexibilidade.' 
+    },
+];
+
+const featureLabels: { key: string, label: string, source: 'root' | 'keyFeatures' }[] = [
+    { key: "preco", label: "Preço por Mês", source: 'root' }, 
+    { key: "contas", label: "Limite de Contas (Usuários)", source: 'keyFeatures' }, 
+    { key: "trilhas", label: "Trilhas Personalizadas", source: 'keyFeatures' },
+    { key: "interface", label: "Interface", source: 'keyFeatures' },
+    { key: "experiencia", label: "Experiência do Usuário", source: 'keyFeatures' },
+    { key: "descricao", label: "Ideal Para", source: 'root' }, 
 ];
 
 function TelaSelecaoPlano() {
     const navigate = useNavigate();
-    const [planoSelecionado, setPlanoSelecionado] = useState<PlanoEscolhido>('');
+    const location = useLocation();
+    const planoInicial = (location.state?.plano as PlanoEscolhido) || ""; 
+    const [planoSelecionado, setPlanoSelecionado] = useState<PlanoEscolhido>(planoInicial);
     const [erro, setErro] = useState<string | null>(null);
 
     const handleSelecionarPlano = (planoId: PlanoEscolhido) => {
-        setPlanoSelecionado(planoId);
-        setErro(null);
+        setPlanoSelecionado(prev => prev === planoId ? "" : planoId);
+        setErro(null); 
     };
 
     const handleConfirmar = () => {
@@ -56,42 +71,65 @@ function TelaSelecaoPlano() {
             setErro("Por favor, selecione um plano para continuar.");
             return;
         }
-        navigate('/cadastro/pagamento', { state: { plano: planoSelecionado } });
+        navigate('/cadastro/pagamento', { state: { plano: planoSelecionado } }); 
     };
 
-    const handleVoltar = () => {
-        navigate('/cadastro');
+    const handleVoltar = () => { 
+        navigate('/cadastro'); 
     };
+
+    const planoDetalhes = planosDisponiveis.find(p => p.id === planoSelecionado);
 
     return (
-        <div className="cadastro-wrapper">
-            <div className="cadastro-container" style={{ maxWidth: '1100px'}}>
-                <h2 className="form-title" style={{textAlign: 'center'}}>Selecione o Plano Ideal</h2>
-                <p className="form-desc" style={{textAlign: 'center'}}>Escolha o plano que melhor se adapta às suas necessidades.</p>
-                <div className="planos-container" >
-                    {planosDisponiveis.map((plano) => (
-                        <CardOpcaoPlano
-                            key={plano.id}
-                            planoId={plano.id}
-                            nome={plano.nome}
-                            preco={plano.preco}
-                            features={plano.features}
-                            selecionado={planoSelecionado === plano.id}
-                            onClick={() => handleSelecionarPlano(plano.id)}
-                        />
-                    ))}
+        <div className="selecao-plano-wrapper dark-theme"> 
+            <div className="selecao-plano-container"> 
+                <h2 className="selecao-titulo">Escolha o plano ideal para você</h2>
+
+                <div className="selecao-grid">
+                    {planosDisponiveis.map((plano) => {
+                        const isSelecionado = planoSelecionado === plano.id;
+                        return (
+                            <div
+                                key={plano.id}
+                                className={`selecao-card ${isSelecionado ? "selected" : ""}`}
+                                onClick={() => handleSelecionarPlano(plano.id)}
+                                role="radio" aria-checked={isSelecionado} tabIndex={0}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelecionarPlano(plano.id)}} 
+                            >
+                                <span className="plano-nome">{plano.nome}</span>
+                                <span className="plano-sub">{plano.keyFeatures.contas}</span> 
+                                {isSelecionado && <div className="selecao-checkmark">✓</div>}
+                            </div>
+                        );
+                    })}
                 </div>
-                 {erro && (
-                    <p className="error" style={{ textAlign: 'center', marginTop: '1.5rem', marginBottom: '-1rem' }}>
-                        {erro}
-                    </p>
-                 )}
+
+                {planoDetalhes && (
+                    <div className="comparison-table visible">
+                        {featureLabels.map(feature => {
+                            const value = feature.source === 'root'
+                                ? String(planoDetalhes[feature.key as keyof typeof planoDetalhes])
+                                : String(planoDetalhes.keyFeatures[feature.key as keyof typeof planoDetalhes.keyFeatures]);
+
+                            return (
+                                <div key={feature.key} className={`feature-row ${feature.key === 'preco' ? 'price-row' : ''}`}>
+                                    <div className="feature-label">{feature.label}</div>
+                                    <div className="plan-values">
+                                        <div className={`plan-value selected-plan-value ${feature.key === 'preco' ? 'price-value' : ''}`}>
+                                            {value}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+
+                {erro && <p className="error selecao-erro">{erro}</p>}
 
                 <div className="form-buttons form-buttons--between" style={{ marginTop: '2.5rem' }}>
-                    <button onClick={handleVoltar} className="button-primary">
-                        Voltar
-                    </button>
-                    <button type="button" className="button-primary" onClick={handleConfirmar}>
+                    <button onClick={handleVoltar} className="button-secondary"> Voltar </button>
+                    <button type="button" className="button-primary" onClick={handleConfirmar} disabled={!planoSelecionado}>
                         Confirmar Plano e Pagar
                     </button>
                 </div>
@@ -101,3 +139,4 @@ function TelaSelecaoPlano() {
 }
 
 export default TelaSelecaoPlano;
+    
