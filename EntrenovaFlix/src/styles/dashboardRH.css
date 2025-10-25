@@ -8,6 +8,7 @@
     flex-direction: row;
     gap: 3.125rem;
     margin-top: 1.875rem;
+    width: 100%;
 }
 
 .trilhas-grafico {
@@ -15,6 +16,8 @@
     border-radius: 0.5rem; 
     border: 1px solid #857DDB;
     padding-top: 1.5625rem;
+    flex-basis: 55%;
+    flex-shrink: 0;
 }
 
 .trilhas-cards {
@@ -29,6 +32,7 @@
 }
 
 .trilhas-ativas {
+    flex-basis: 35%;
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
