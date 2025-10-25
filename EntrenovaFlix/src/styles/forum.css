@@ -1,0 +1,121 @@
+.telaForum {
+    padding: 30px; 
+    max-width: 1200px; 
+    margin: 0 auto;
+}
+
+.forumTitulo {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.forumTitulo h1 {
+    font-family: 'Satoshi', sans-serif; 
+    color: #FFFFFF;
+}
+
+.forumPosts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); 
+    gap: 20px; 
+}
+
+
+.forumCard {
+    background-color: #222222;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    cursor: pointer; 
+    transition: background-color 0.2s, transform 0.2s; 
+}
+
+.forumCard:hover {
+    background-color: #2a2a2a; 
+}
+
+.forumUser {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #5A4FCF; 
+}
+
+.nomeUsuario {
+    font-weight: bold;
+    color: #C2C2C2;
+}
+
+.forumConteudo {
+    flex-grow: 1; 
+    margin-bottom: 20px;
+}
+
+.forumPergunta {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    color: #FFFFFF;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.forumDescricao {
+    font-size: 0.95rem;
+    color: #9B93F5; 
+    display: -webkit-box;
+    -webkit-line-clamp: 3; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.forumTempo {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #C2C2C2;
+}
+
+.btnResponder {
+    background-color: #5A4FCF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-start; 
+    transition: background-color 0.3s;
+    font-size: 1rem;
+}
+
+.btnResponder:hover {
+    background-color: #4b42b6;
+}
+
+
+@media (max-width: 768px) {
+    .telaForum {
+        padding: 20px 15px; 
+    }
+
+    .forumPosts {
+        grid-template-columns: 1fr; 
+    }
+
+    .forumTitulo {
+        flex-direction: column; 
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+}
