@@ -111,9 +111,8 @@ body {
   padding-left: 250px; 
   transition: padding-left 0.3s ease;
   position: relative;
-  /* Mantém a área da página fixa e evita scroll do body nesta tela */
-  height: calc(100vh - 60px - 40px); /* header 60px + padding do <main> 20px top/bottom */
-  overflow: hidden; /* impede que o container principal role */
+  height: calc(100vh - 60px - 40px); 
+  overflow: hidden;
 }
 
 .telaTrilhas.sidebar-fechada {
