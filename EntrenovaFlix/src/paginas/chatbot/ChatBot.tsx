@@ -1,5 +1,3 @@
-// src/paginas/ChatBot.tsx
-
 import '../../styles/chat.css';
 import { useState, useRef, useEffect } from 'react';
 import { LuSendHorizontal } from "react-icons/lu";

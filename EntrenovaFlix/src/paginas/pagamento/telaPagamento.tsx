@@ -20,8 +20,6 @@ function TelaPagamento() {
     const [dadosPagamento, setDadosPagamento] = useState<DadosPagamento | null>(null);
     const [formaSelecionada, setFormaSelecionada] = useState<FormaPagamentoOpcoes>('');
     const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
-
-    // Inicializa dadosPagamento assim que a página carrega
     useEffect(() => {
         if (!cadastroData) {
             navigate('/cadastro');

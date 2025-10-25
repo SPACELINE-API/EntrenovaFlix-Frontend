@@ -6,16 +6,14 @@ import { Link } from 'react-router-dom';
 import { useQuestionnaire } from '../contexts/QuestionnaireContext';
 import '../styles/diagnostico.css';
 
-// --- INTERFACE ATUALIZADA ---
 interface DiagnosisData {
   fortes: string[];
   fracos: string[];
-  recomendacao?: string[]; // A recomendação principal (usada no topo)
+  recomendacao?: string[];
   score?: number;
-  soft_skills_sugeridas?: string[]; // <-- NOVO
-  tags_de_interesse?: string[];     // <-- NOVO
+  soft_skills_sugeridas?: string[];
+  tags_de_interesse?: string[];
 }
-// -----------------------------
 
 interface SegmentedDiagnosis {
   pessoasCultura?: DiagnosisData;
@@ -153,7 +151,6 @@ export default function TelaDiagnostico() {
 
   const evaluatedCategories = categoriesConfig.filter(cat => diagnosticResult[cat.key]);
 
-  // Lógica de recomendação principal (não muda, continua funcionando)
   const recommendedCategory = evaluatedCategories.reduce((lowest, cat) => {
     const score = diagnosticResult[cat.key]?.score || 0;
     return score < lowest.lowestScore ? { lowestScore: score, category: cat } : lowest;
@@ -176,7 +173,6 @@ export default function TelaDiagnostico() {
                 <div className="rec-title">
                   Dimensão a ser trabalhada com prioridade: <span style={{ color: '#b497ff' }}>{recommendedCategory.title}</span>
                 </div>
-                {/* Mostra a primeira recomendação da IA para a dimensão prioritária */}
                 <div className="muted">{mainRecommendation || "Inicie por esta área para gerar impacto rápido."}</div>
               </div>
             )}
@@ -227,7 +223,6 @@ export default function TelaDiagnostico() {
                 <div key={cat.key} className="recomendacao-card">
                   <strong>{cat.title}</strong>
 
-                  {/* Renderiza as Soft Skills da IA */}
                   {skills.length > 0 && (
                     <div className="skills-sub-section">
                       <span className="sub-title">Soft Skills Sugeridas</span>
@@ -237,7 +232,6 @@ export default function TelaDiagnostico() {
                     </div>
                   )}
 
-                  {/* Renderiza as Tags de Interesse da IA */}
                   {tags.length > 0 && (
                     <div className="skills-sub-section">
                       <span className="sub-title">Tags de Interesse</span>
@@ -247,7 +241,6 @@ export default function TelaDiagnostico() {
                     </div>
                   )}
 
-                  {/* Fallback caso a IA não retorne nada */}
                   {skills.length === 0 && tags.length === 0 && (
                     <p className="muted">Nenhuma sugestão de skill ou tag para esta dimensão.</p>
                   )}
@@ -256,7 +249,6 @@ export default function TelaDiagnostico() {
             })}
           </div>
         </div>
-        {/* --- FIM DA SEÇÃO MODIFICADA --- */}
 
         <div className="proximos">
           <h4>Próximos passos sugeridos</h4>

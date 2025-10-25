@@ -95,8 +95,6 @@ const FormularioFuncionario: React.FC<FormularioFuncionarioProps> = ({ initialDa
     },
     validate: zodResolver(funcionarioSchema),
   });
-
-  // Limpa mensagem ao alterar qualquer campo
   const handleChangeField = (field: keyof typeof form.values, value: any) => {
     form.setFieldValue(field, value);
     setMessage(null);
