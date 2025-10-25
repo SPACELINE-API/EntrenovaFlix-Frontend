@@ -48,10 +48,6 @@ const categoriesConfig: { key: keyof SegmentedDiagnosis; title: string; Icon: El
   { key: 'direcaoFuturo', title: 'Direção & Futuro', Icon: FaDirections },
 ];
 
-// --- softSkillsMap FOI REMOVIDA ---
-// const softSkillsMap: Record<keyof SegmentedDiagnosis, string[]> = { ... };
-// ------------------------------------
-
 const RenderPoints = ({ title, points, type }: { title: string; points: string[]; type: 'forte' | 'fraco' }) => {
   return (
     <>
@@ -71,7 +67,7 @@ const RenderPoints = ({ title, points, type }: { title: string; points: string[]
 const BotaoGerarPDF: React.FC<BotaoGerarPDFProps> = ({ diagnosticResult, formData }) => {
   const GerarPdf = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/accounts/gerar-pdf/", {
+      const response = await fetch("http://localhost:8000/api/accounts/gerar-pdf", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ diagnosticResult, formData })
