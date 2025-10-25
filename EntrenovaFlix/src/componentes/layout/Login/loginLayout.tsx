@@ -13,6 +13,7 @@ interface DecodedToken {
   nome: string;
   sobrenome: string;
   email: string;
+  primeiro_login: boolean;
 }
 
 export default function LgSection() {
@@ -36,10 +37,14 @@ export default function LgSection() {
     localStorage.setItem("user_role", decodedToken.role);
 
     if (decodedToken.role === 'rh') {
-        navigate("/dashboardRH"); 
+      if (decodedToken.primeiro_login) {
+        navigate("/pagchatbot");
       } else {
-        navigate("/colaboradores");
+        navigate("/dashboardRH");
       }
+    } else {
+      navigate("/colaboradores");
+    }
   } catch (error: any) {
     console.error('Erro ao logar', error.response?.data || error.message);
 

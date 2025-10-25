@@ -10,9 +10,8 @@
   --accent-secondary: #5e60ce;
   --gradient: radial-gradient(circle at bottom right, #935df1 20%, #5e60ce 50%, #4889e3 100%);
   --color-error: #e57373;     
-  --color-success: #81c784;   
+  --color-success: #81c784;  
 
-  background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
   font-family: satoshi;

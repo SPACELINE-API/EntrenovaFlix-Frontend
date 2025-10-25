@@ -4,6 +4,7 @@ import '../../styles/chat.css';
 import { useState, useRef, useEffect } from 'react';
 import { LuSendHorizontal } from "react-icons/lu";
 import { chatService } from '../../services/chatService';
+import api from '../../services/apiService';
 import { useNavigate } from 'react-router-dom'; 
 
 type Message = {
@@ -48,9 +49,17 @@ function ChatBot() {
   }
 };
 
-  const handleEndConversation = () => {
+  const handleEndConversation = async () => {
     const conversationHistory = chatService.getState().mensagens;
     console.log("Salvando conversa:", conversationHistory);
+
+    try {
+      await api.patch('/primeiro-login'); // 👈 marca o primeiro login como concluído
+      console.log("Primeiro login atualizado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao atualizar primeiro login:", error);
+    }
+
     chatService.resetChat();
     setIsConversationComplete(false);
     setInputMessage("");

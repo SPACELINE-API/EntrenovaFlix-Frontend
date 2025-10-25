@@ -4,6 +4,7 @@ import { GiBrain } from "react-icons/gi";
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PlanoEscolhido } from '../componentes/layout/contratacaoPlanos/types';
+import Footer from '../componentes/layout/LandingPage/footer';
 
 
 function DevolutivaPlanos(){
@@ -61,21 +62,9 @@ function DevolutivaPlanos(){
                 <div className='corpo2'>
                     <h2>A trilha é composta por 7 materiais e tem como objetivo auxiliar empresas que apresentem dificuldades em vender em ambientes virtuais. Ideal para a sua empresa!</h2>
                 </div>
-                <button 
-                    className='botaoTrilha' 
-                    onClick={() => {
-                        setMostrarPlanos(true);
-                        setTimeout(() => {
-                            planosRef.current?.scrollIntoView({ behavior: 'smooth' });
-                        }, 100);
-                    }}
-                >
-                    Receber minha trilha
-                </button>
             
         </div>
         <div>
-            {mostrarPlanos && (
                 <>
                     <div className='planos' ref={planosRef}>
                         <h1 className='planos-titulo'>Escolha o melhor plano para você</h1>
@@ -116,9 +105,11 @@ function DevolutivaPlanos(){
                     </div>
                 </div>
                 </>
-                )}
             </div>
+
+            <Footer/>
         </>
+        
     )
 }
 export default DevolutivaPlanos;

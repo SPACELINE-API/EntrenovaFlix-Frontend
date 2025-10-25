@@ -11,8 +11,8 @@ const GraficoLinha: React.FC<GraficoLinhaProps> = ({ acessos }) => {
       text: 'Trilhas ativas',
       subtext: 'Quantidade de acessos por mês em todas as trilhas',
       left: 'center',
-      top: 10,          // posição do título em relação ao topo
-      itemGap: 6,       // espaço entre título e subtítulo
+      top: 10,          
+      itemGap: 6,       
       textStyle: {
         color: '#FFFFFF',
         fontSize: 25
@@ -23,7 +23,7 @@ const GraficoLinha: React.FC<GraficoLinhaProps> = ({ acessos }) => {
       }
     },
     grid: {
-      top: 100,         // 👈 aumenta esse valor pra criar espaço entre subtítulo e gráfico
+      top: 100,         
       left: 10,
       right: 30,
       bottom: 20,
@@ -59,7 +59,7 @@ const GraficoLinha: React.FC<GraficoLinhaProps> = ({ acessos }) => {
     <ReactECharts
       option={option}
       className="visaoGeral-grafico"
-      style={{ height: '350px', width: '100%' }} // garante que o grid.top funcione
+      style={{ height: '350px', width: '100%' }} 
     />
   );
 };
