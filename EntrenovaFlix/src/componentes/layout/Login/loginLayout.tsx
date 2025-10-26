@@ -35,6 +35,17 @@ export default function LgSection() {
     const decodedToken: DecodedToken = jwtDecode(result.access);
     console.log("Conteúdo do Token Decodificado:", decodedToken); 
     localStorage.setItem("user_role", decodedToken.role);
+    localStorage.setItem("access_token", result.access);
+    localStorage.setItem("refresh_token", result.refresh);
+
+    const usuario = {
+      nome: decodedToken.nome,
+      sobrenome: decodedToken.sobrenome,
+      email: decodedToken.email,
+      role: decodedToken.role,
+      primeiro_login: decodedToken.primeiro_login
+    };
+    localStorage.setItem("usuario", JSON.stringify(usuario));
 
     if (decodedToken.role === 'rh') {
       if (decodedToken.primeiro_login) {

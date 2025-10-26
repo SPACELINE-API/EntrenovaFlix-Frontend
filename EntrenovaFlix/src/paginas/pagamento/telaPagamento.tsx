@@ -21,20 +21,20 @@ function TelaPagamento() {
     const [formaSelecionada, setFormaSelecionada] = useState<FormaPagamentoOpcoes>('');
     const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
     useEffect(() => {
-        if (!cadastroData) {
-            navigate('/cadastro');
-            return;
-        }
+  if (!cadastroData && !planoInicial) {
+    console.warn("Nenhum dado de cadastro ou plano foi fornecido.");
+    return;
+  }
 
-        setDadosPagamento({
-            numeroCartao: '',
-            dataValidade: '',
-            cvv: '',
-            nomeCartao: '',
-            formaPagamento: '',
-            plano: planoInicial || ''
-        });
-    }, [cadastroData, navigate, planoInicial]);
+  setDadosPagamento({
+    numeroCartao: '',
+    dataValidade: '',
+    cvv: '',
+    nomeCartao: '',
+    formaPagamento: '',
+    plano: planoInicial || cadastroData?.plano || ''
+  });
+}, [cadastroData, planoInicial]);
 
     useEffect(() => {
         if (dadosPagamento) {
