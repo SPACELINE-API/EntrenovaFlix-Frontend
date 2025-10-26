@@ -9,7 +9,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
     height: 100%;
     padding: 0 40px;
 }
@@ -41,6 +40,9 @@
     font-size: 1rem;
     font-weight: 700;
     color: #fafafa;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
 }
 
 .user-avatar {
