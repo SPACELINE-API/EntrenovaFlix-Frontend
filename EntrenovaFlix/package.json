@@ -28,8 +28,8 @@
     "@mantine/nprogress": "^8.3.1",
     "@mantine/spotlight": "^8.3.1",
     "@mantine/tiptap": "^8.3.1",
-    "@mui/material": "^7.3.2",
     "@supabase/supabase-js": "^2.58.0",
+    "@tabler/icons-react": "^3.35.0",
     "@tiptap/extension-link": "^3.4.4",
     "@tiptap/pm": "^3.4.4",
     "@tiptap/react": "^3.4.4",
@@ -41,7 +41,9 @@
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "imask": "^7.6.1",
+    "jwt-decode": "^4.0.0",
     "react": "^19.1.1",
+    "react-datepicker": "^8.8.0",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.62.0",
     "react-hot-toast": "^2.6.0",
@@ -51,7 +53,7 @@
     "react-scroll": "^1.9.3",
     "react-toastify": "^11.0.5",
     "recharts": "^3.2.1",
-    "zod": "^4.1.9"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

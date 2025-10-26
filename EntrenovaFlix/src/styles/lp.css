@@ -258,8 +258,12 @@ html {
 .motivos-section, .diagnostico-section {
   padding-top: 0;
   padding-bottom: 6rem;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
 }
 .motivos-grid {
+  align-items: center;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2.5rem;
@@ -474,21 +478,72 @@ html {
     clip-path: polygon(0 100px, 50% 0, 100% 100px, 100% 100%, 0% 100%);
   }
   .motivos-grid { 
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: 1fr;
     gap: 1rem;
-    padding: 0 1.5rem;
+    padding: 0 8rem;
   }
-  .motivos-grid {
-      gap: 2rem;
+  
+  .motivos-titulo {
+    font-size: 2rem;
+    margin-top: 4rem;
+    margin-bottom: 3rem;
+    text-align: center;
   }
- .motivos-titulo {
-      font-size: 2.5rem;
-      margin-top: 5rem;
-      margin-bottom: 4rem;
+
+  .motivo-card {
+    padding: 1.5rem;
+    margin: 0 auto;
+    max-width: 90%;
   }
+
+  .motivo-header {
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .motivo-line-icon {
+    font-size: 4rem; 
+    transform: translateY(0);
+  }
+
+  .motivo-card p {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .motivo-numero { 
+    font-size: 3rem;
+  }
+
+  .motivo-card h3 {
+    font-size: 1.3rem;
+  }
+
+  /* Footer ajustes */
+  .footer-content {
+    padding: 0 1rem;
+  }
+
+  .footer-container {
+    padding: 2rem 1.5rem;
+    width: 100%;
+  }
+
+  .footer-container::before {
+    right: 50px;
+    filter: blur(30px);
+    width: 60%;
+    height: 150%;
+  }
+
  
   .footer-content {
     padding: 0 1rem;
+  }
+
+  .footer-container{
+    padding: 2rem 8rem;
+    width: 100%;
   }
 
   .footer-container::before{

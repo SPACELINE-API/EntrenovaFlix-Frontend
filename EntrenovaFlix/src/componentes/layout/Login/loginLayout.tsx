@@ -5,7 +5,16 @@ import { Popover, Fieldset, TextInput, Button, Group, PasswordInput, Stack, Box,
 import { Link, useNavigate } from 'react-router-dom'; 
 import { loginSchema, type LoginFormData } from './schemaZod';
 import authService from "../../../services/authService";
+import { jwtDecode } from 'jwt-decode';
 import '../../../styles/login.css';
+
+interface DecodedToken {
+  role: 'admin' | 'rh' | 'user';
+  nome: string;
+  sobrenome: string;
+  email: string;
+  primeiro_login: boolean;
+}
 
 export default function LgSection() {
   const [visible, { toggle }] = useDisclosure(false);
@@ -23,13 +32,35 @@ export default function LgSection() {
   const handleLogin = async (data: LoginFormData) => {
   try {
     const result = await authService.login(data.email, data.password);
+    const decodedToken: DecodedToken = jwtDecode(result.access);
+    console.log("Conteúdo do Token Decodificado:", decodedToken); 
+    localStorage.setItem("user_role", decodedToken.role);
+    localStorage.setItem("access_token", result.access);
+    localStorage.setItem("refresh_token", result.refresh);
 
-    navigate("/colaboradores"); 
+    const usuario = {
+      nome: decodedToken.nome,
+      sobrenome: decodedToken.sobrenome,
+      email: decodedToken.email,
+      role: decodedToken.role,
+      primeiro_login: decodedToken.primeiro_login
+    };
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+
+    if (decodedToken.role === 'rh') {
+      if (decodedToken.primeiro_login) {
+        navigate("/pagchatbot");
+      } else {
+        navigate("/dashboardRH");
+      }
+    } else {
+      navigate("/colaboradores");
+    }
   } catch (error: any) {
     console.error('Erro ao logar', error.response?.data || error.message);
 
     setError("email", { type: "manual", message: "Email ou senha incorretos!" });
-    setError("password", { type: "manual", message: "Email ou senha incorretos!" });
+    setError("password", { type: "manual", message: " " });
   }
 };
 

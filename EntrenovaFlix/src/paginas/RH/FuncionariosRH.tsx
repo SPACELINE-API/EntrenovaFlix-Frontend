@@ -1,329 +1,211 @@
 import { useState, useEffect } from "react";
-import "../../styles/funcionariosRH.css";
+import { Button, Table, Modal, LoadingOverlay, Badge, ActionIcon, Tooltip, Group, Text, Paper } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconPlus, IconTrash, IconUserCheck, IconUserOff, IconAlertCircle, IconCheck } from '@tabler/icons-react';
+import { showNotification } from '@mantine/notifications';
 import api from "../../services/apiService";
+import FormularioFuncionario from "./formularioFuncionario";
+import '../../styles/funcionariosRH.css';
 
-async function postFuncionarios(dados: {
-  nome: string;
-  sobrenome: string;
-  email: string;
-  cpf: string;
-  telefone: string;
-  data_nascimento: string;
-  password: string;
-}) {
-  try {
-    const response = await api.post("/register", dados);
-    return response.data;
-  } catch (error: any) {
-    console.error("Erro ao enviar mensagem:", error);
-
-    if (error.response && error.response.data) {
-      throw new Error(error.response.data.message || "Erro no cadastro!");
-    }
-    throw error;
-  }
+interface Funcionario {
+    id: number;
+    nome: string;
+    sobrenome: string;
+    email: string;
+    is_active: boolean;
+    role: string;
+    date_joined: string;
+    cpf?: string | null;
+    telefone?: string | null;
+    data_nascimento?: string | Date | null;
 }
 
 function FuncionariosRH() {
-  const [nome, setNome] = useState("");
-  const [sobrenome, setSobrenome] = useState("");
-  const [email, setEmail] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [nascimento, setNascimento] = useState("");
-  const [senha, setSenha] = useState("");
-  const [confirmarSenha, setConfirmarSenha] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+    const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+    const [editingFuncionario, setEditingFuncionario] = useState<Funcionario | null>(null);
 
-  const [emailError, setEmailError] = useState("");
-  const [cpfError, setCpfError] = useState("");
-  const [telefoneError, setTelefoneError] = useState("");
-  const [submitStatus, setSubmitStatus] = useState({ message: "", type: "" });
-  const [countFuncionarios, setCountFuncionarios] = useState(0);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
     const fetchFuncionarios = async () => {
-      try {
-        const response = await api.get("/funcionario");
-        setCountFuncionarios(response.data.length);
-      } catch (error) {
-        console.error("Erro ao buscar funcionários:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFuncionarios();
-  }, []);
-
-  const validaCPF = (cpf: string) => {
-    const cpfLimpo = cpf.replace(/[^\d]+/g, "");
-    if (cpfLimpo.length !== 11 || /^(\d)\1+$/.test(cpfLimpo)) return false;
-    let soma = 0;
-    let resto;
-    for (let i = 1; i <= 9; i++) soma += parseInt(cpfLimpo.substring(i - 1, i)) * (11 - i);
-    resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-    if (resto !== parseInt(cpfLimpo.substring(9, 10))) return false;
-    soma = 0;
-    for (let i = 1; i <= 10; i++) soma += parseInt(cpfLimpo.substring(i - 1, i)) * (12 - i);
-    resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-    return resto === parseInt(cpfLimpo.substring(10, 11));
-  };
-
-  const validateEmail = (value: string) => {
-    if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      setEmailError("Formato de e-mail inválido");
-    } else {
-      setEmailError("");
-    }
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setEmail(value);
-    validateEmail(value);
-  };
-
-  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valorApenasDigitos = e.target.value.replace(/\D/g, "");
-    let valorFormatado = valorApenasDigitos
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-
-    if (valorFormatado.length > 14) valorFormatado = valorFormatado.substring(0, 14);
-    setCpf(valorFormatado);
-
-    if (valorFormatado.length === 14) {
-      if (!validaCPF(valorFormatado)) setCpfError("CPF inválido");
-      else setCpfError("");
-    } else if (valorFormatado) setCpfError("CPF incompleto");
-    else setCpfError("");
-  };
-
-  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valorApenasDigitos = e.target.value.replace(/\D/g, "");
-    let valorFormatado = valorApenasDigitos
-      .replace(/(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{5})(\d)/, "$1-$2");
-
-    if (valorFormatado.length > 15) valorFormatado = valorFormatado.substring(0, 15);
-    setTelefone(valorFormatado);
-    if (valorFormatado && valorFormatado.length < 15) setTelefoneError("Telefone incompleto");
-    else setTelefoneError("");
-  };
-
-  const atribuirSenhaPadrao = () => {
-    if (!nascimento) {
-      alert("Por favor, preencha a data de nascimento primeiro!");
-      return;
-    }
-    const senhaPadrao = nascimento.split("-").reverse().join("");
-    setSenha(senhaPadrao);
-    setConfirmarSenha(senhaPadrao);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitStatus({ message: "", type: "" });
-
-    if (countFuncionarios >= 60) {
-      setSubmitStatus({
-        message: "Limite de 60 funcionários atingido para o plano premium.",
-        type: "error",
-      });
-      return;
-    }
-
-    const dadosFuncionario = {
-      nome,
-      sobrenome,
-      email,
-      cpf,
-      telefone,
-      data_nascimento: nascimento,
-      password: senha,
+        setLoading(true);
+        try {
+            const response = await api.get("funcionarios");
+            setFuncionarios(response.data);
+        } catch (err: any) {
+            console.error("Erro ao buscar funcionários:", err);
+            showNotification({
+                title: 'Erro',
+                message: err.response?.data?.error || 'Não foi possível carregar a lista de funcionários.',
+                color: 'red',
+                icon: <IconAlertCircle />,
+                autoClose: 4000,
+                position: 'top-right',
+            });
+        } finally {
+            setLoading(false);
+        }
     };
 
-    try {
-      const responseData = await postFuncionarios(dadosFuncionario);
-      setSubmitStatus({
-        message: responseData.message || "Funcionário cadastrado com sucesso!",
-        type: "success",
-      });
-      setNome("");
-      setSobrenome("");
-      setEmail("");
-      setCpf("");
-      setTelefone("");
-      setNascimento("");
-      setSenha("");
-      setConfirmarSenha("");
-      setEmailError("");
-      setCpfError("");
-      setTelefoneError("");
-      setCountFuncionarios(countFuncionarios + 1);
+    const handleToggleActive = async (funcionario: Funcionario) => {
+        const novoStatus = !funcionario.is_active;
+        const actionText = novoStatus ? 'ativar' : 'desativar';
+        try {
+            await api.patch('funcionarios', { id: funcionario.id, ativo: novoStatus });
+            setFuncionarios(funcs => funcs.map(f => f.id === funcionario.id ? { ...f, is_active: novoStatus } : f));
+            showNotification({
+                title: 'Sucesso',
+                message: `Funcionário ${actionText} com sucesso.`,
+                color: 'teal',
+                icon: <IconCheck />,
+                autoClose: 3000,
+                position: 'top-right',
+            });
+        } catch (err: any) {
+            console.error("Erro ao alterar status:", err);
+            showNotification({
+                title: 'Erro',
+                message: err.response?.data?.error || `Falha ao ${actionText} funcionário.`,
+                color: 'red',
+                icon: <IconAlertCircle />,
+                autoClose: 4000,
+                position: 'top-right',
+            });
+        }
+    };
 
-      setTimeout(() => {
-        setSubmitStatus({
-          message: "Insira os dados do funcionário que será cadastrado",
-          type: "info",
+    const handleDelete = async (funcionarioId: number) => {
+        if (!window.confirm("Tem certeza que deseja excluir este funcionário? Esta ação não pode ser desfeita.")) return;
+        try {
+            await api.delete('funcionarios', { data: { id: funcionarioId } });
+            fetchFuncionarios();
+            showNotification({
+                title: 'Sucesso',
+                message: 'Funcionário excluído com sucesso.',
+                color: 'teal',
+                icon: <IconCheck />,
+                autoClose: 3000,
+                position: 'top-right',
+            });
+        } catch (err: any) {
+            console.error("Erro ao excluir funcionário:", err);
+            showNotification({
+                title: 'Erro',
+                message: err.response?.data?.error || 'Falha ao excluir funcionário.',
+                color: 'red',
+                icon: <IconAlertCircle />,
+                autoClose: 4000,
+                position: 'top-right',
+            });
+        }
+    };
+
+    const handleFormSuccess = (message: string) => {
+        fetchFuncionarios();
+        setEditingFuncionario(null);
+        showNotification({
+            title: 'Sucesso',
+            message,
+            color: 'teal',
+            icon: <IconCheck />,
+            autoClose: 4000,
+            position: 'top-right',
         });
-      }, 2000);
-    } catch (error: any) {
-      setSubmitStatus({
-        message: error.message || "Erro ao cadastrar funcionário.",
-        type: "error",
-      });
-    }
-  };
+    };
 
-  return (
-    <div className="rh-form-container">
-      <h1>Cadastro de Novo Funcionário</h1>
-      <p>Preencha os dados abaixo para dar acesso aos cursos.</p>
+    const handleEdit = (funcionario: Funcionario) => {
+        setEditingFuncionario(funcionario);
+        openModal();
+    };
 
-      <form className="rh-form" onSubmit={handleSubmit}>
-        <div className="rh-form-group">
-          <label htmlFor="nome">Nome</label>
-          <input
-            id="nome"
-            type="text"
-            placeholder="Ex: João"
-            name="nome"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-        </div>
+    const handleAddNew = () => {
+        setEditingFuncionario(null);
+        openModal();
+    };
 
-        <div className="rh-form-group">
-          <label htmlFor="sobrenome">Sobrenome</label>
-          <input
-            id="sobrenome"
-            type="text"
-            placeholder="Ex: Silva"
-            name="sobrenome"
-            value={sobrenome}
-            onChange={(e) => setSobrenome(e.target.value)}
-          />
-        </div>
+    useEffect(() => {
+        fetchFuncionarios();
+    }, []);
 
-        <div className="rh-form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="Ex: joao.silva@empresa.com"
-            name="email"
-            value={email}
-            onChange={handleEmailChange}
-          />
-          {emailError && <span className="error-message">{emailError}</span>}
-        </div>
+    const rows = funcionarios.map((func) => (
+        <Table.Tr key={func.id}>
+            <Table.Td>{func.nome} {func.sobrenome}</Table.Td>
+            <Table.Td>{func.email}</Table.Td>
+            <Table.Td>
+                <Badge className={func.is_active ? "badge-active" : "badge-inactive"}>
+                    {func.is_active ? 'Ativo' : 'Inativo'}
+                </Badge>
+            </Table.Td>
+            <Table.Td className="actions-cell">
+                <Group gap="xs">
+                    <Tooltip label={func.is_active ? 'Desativar' : 'Ativar'}>
+                        <ActionIcon
+                            className={func.is_active ? "action-toggle-off" : "action-toggle-on"}
+                            onClick={() => handleToggleActive(func)}
+                        >
+                            {func.is_active ? <IconUserOff size={18}/> : <IconUserCheck size={18}/> }
+                        </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label="Excluir">
+                        <ActionIcon className="action-delete" onClick={() => handleDelete(func.id)}>
+                            <IconTrash size={18}/>
+                        </ActionIcon>
+                    </Tooltip>
+                </Group>
+            </Table.Td>
+        </Table.Tr>
+    ));
 
-        <div className="rh-form-group">
-          <label htmlFor="cpf">CPF</label>
-          <input
-            id="cpf"
-            type="text"
-            placeholder="000.000.000-00"
-            name="cpf"
-            value={cpf}
-            onChange={handleCpfChange}
-          />
-          {cpfError && <span className="error-message">{cpfError}</span>}
-        </div>
+    return (
+        <Paper className="funcionarios-container" shadow="xs" radius="md" withBorder>
+            <LoadingOverlay visible={loading} className="loading-overlay"/>
+            
+            <Group justify="space-between" mb="xl" className="header-group">
+                <div>
+                    <Text component="h1" size="xl" fw={700} className="header-title">Gerenciamento de Funcionários</Text>
+                </div>
+                <Button className="btn-add" leftSection={<IconPlus size={16} />} onClick={handleAddNew}>
+                    Cadastrar Funcionário
+                </Button>
+            </Group>
 
-        <div className="rh-form-group">
-          <label htmlFor="telefone">Telefone</label>
-          <input
-            id="telefone"
-            type="tel"
-            placeholder="(XX) XXXXX-XXXX"
-            name="telefone"
-            value={telefone}
-            onChange={handleTelefoneChange}
-          />
-          {telefoneError && <span className="error-message">{telefoneError}</span>}
-        </div>
+            <Table.ScrollContainer minWidth={600}>
+                <Table striped highlightOnHover withTableBorder withColumnBorders className="funcionarios-table">
+                    <Table.Thead>
+                        <Table.Tr>
+                            <Table.Th>Nome Completo</Table.Th>
+                            <Table.Th>Email</Table.Th>
+                            <Table.Th>Status</Table.Th>
+                            <Table.Th className="th-actions">Ações</Table.Th>
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                        {rows.length > 0 ? rows : (
+                            <Table.Tr>
+                                <Table.Td colSpan={4} className="no-data">
+                                    Nenhum funcionário cadastrado.
+                                </Table.Td>
+                            </Table.Tr>
+                        )}
+                    </Table.Tbody>
+                </Table>
+            </Table.ScrollContainer>
 
-        <div className="rh-form-group">
-          <label htmlFor="nascimento">Data de Nascimento</label>
-          <input
-            id="nascimento"
-            type="date"
-            name="nascimento"
-            value={nascimento}
-            onChange={(e) => setNascimento(e.target.value)}
-          />
-        </div>
-
-        <div className="rh-form-group">
-          <label htmlFor="senha">Senha</label>
-          <div className="password-group">
-            <input
-              id="senha"
-              type={showPassword ? "text" : "password"}
-              placeholder="Crie uma senha forte"
-              name="senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-            />
-            <button
-              type="button"
-              className="password-toggle-btn"
-              onClick={() => setShowPassword(!showPassword)}
+            <Modal
+                opened={modalOpened}
+                onClose={() => { closeModal(); setEditingFuncionario(null); }}
+                title={editingFuncionario ? "Editar Funcionário" : "Cadastrar Novo Funcionário"}
+                size="lg"
+                centered
+                className="modal-custom"
             >
-              {showPassword ? "Ocultar" : "Mostrar"}
-            </button>
-          </div>
-        </div>
-
-        <div className="rh-form-group">
-          <label htmlFor="confirmarSenha">Confirmar Senha</label>
-          <input
-            id="confirmarSenha"
-            type={showPassword ? "text" : "password"}
-            placeholder="Digite a senha novamente"
-            name="confirmarSenha"
-            value={confirmarSenha}
-            onChange={(e) => setConfirmarSenha(e.target.value)}
-          />
-        </div>
-
-        {submitStatus.message && (
-          <div
-            className={
-              submitStatus.type === "success"
-                ? "success-message"
-                : "error-message"
-            }
-          >
-            {submitStatus.message}
-          </div>
-        )}
-
-        <div className="rh-form-actions">
-          <button
-            type="button"
-            className="rh-btn rh-btn-secondary"
-            onClick={atribuirSenhaPadrao}
-          >
-            Atribuir Senha Padrão
-          </button>
-          <button
-            type="submit"
-            className="rh-btn rh-btn-primary"
-            disabled={countFuncionarios >= 60}
-          >
-            {countFuncionarios >= 60 ? "Limite Atingido" : "Cadastrar Funcionário"}
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+                <FormularioFuncionario
+                  initialData={editingFuncionario} 
+                  onSubmitSuccess={handleFormSuccess}
+                  onCancel={() => { closeModal(); setEditingFuncionario(null); }}
+                />
+            </Modal>
+        </Paper>
+    );
 }
 
 export default FuncionariosRH;

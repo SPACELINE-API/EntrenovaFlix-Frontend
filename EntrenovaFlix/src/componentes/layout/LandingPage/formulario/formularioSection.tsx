@@ -178,7 +178,7 @@ export default function Formulario() {
         </p>
         <div className="stepper-container">
           {steps.map(step => {
-            const isCompleted = completedSteps.includes(step.id) || currentStep >= step.id;
+            const isCompleted = completedSteps.includes(step.id) || currentStep > step.id || (currentStep === 7 && step.id === 7);
             const isActive = currentStep === step.id;
             return (
               <div key={step.id} className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}>

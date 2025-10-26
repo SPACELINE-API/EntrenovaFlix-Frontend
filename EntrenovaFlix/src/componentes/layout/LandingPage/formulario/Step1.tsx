@@ -135,7 +135,6 @@ export default function Step1() {
             <label><input type="radio" value="Educação / Cultura" {...register('setorPrincipal')} /> Educação / Cultura</label>
             <label><input type="radio" value="Outro" {...register('setorPrincipal')} /> Outro:</label>
           </div>
-          {/* Input condicional para "Outro" */}
           {setorPrincipalValue === 'Outro' && (
             <div style={{ marginTop: '10px' }}>
               <input 
@@ -190,8 +189,8 @@ export default function Step1() {
           <label className="label">Número de colaboradores:</label>
           <div className="radio-group">
             <label><input type="radio" value="ate10" {...register('numeroColaboradores')} /> Até 10</label>
-            <label><input type="radio" value="11a30" {...register('numeroColaboradores')} /> 11–30</label>
-            <label><input type="radio" value="30a100" {...register('numeroColaboradores')} /> 30–100</label>
+            <label><input type="radio" value="11a30" {...register('numeroColaboradores')} /> 11-30</label>
+            <label><input type="radio" value="30a100" {...register('numeroColaboradores')} /> 30-100</label>
             <label><input type="radio" value="acima100" {...register('numeroColaboradores')} /> +100</label>
             <label><input type="radio" value="acima500" {...register('numeroColaboradores')} /> +500</label>
           </div>

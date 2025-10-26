@@ -2,7 +2,7 @@
   font-family: 'Satoshi';
   src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
 }
-html, body {
+html, bodyChat {
   height: 100%;
   overflow-y: auto; 
   scrollbar-width: thin;
@@ -11,8 +11,57 @@ html, body {
 }
 
 html::-webkit-scrollbar,
-body::-webkit-scrollbar {
+bodyChat::-webkit-scrollbar {
   width: 4px;
+}
+
+.inicio-container {
+  background-color: #141414;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+.inicio-container::before, .inicio-container::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+}
+@keyframes aura-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.inicio-container::before {
+  top: -250px;
+  left: -250px;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(177, 100, 208, 0.5) 0%, rgba(20, 20, 20, 0) 70%);
+  filter: blur(150px);
+  animation: aura-pulse 8s ease-in-out infinite;
+}
+.inicio-container::after {
+  top: 50px;
+  right: -250px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(90, 79, 207, 0.5) 0%, rgba(20, 20, 20, 0) 70%);
+  filter: blur(180px);
+  animation: aura-pulse 10s ease-in-out infinite;
+  
 }
 
 
@@ -165,27 +214,31 @@ body::-webkit-scrollbar {
 }
 
 .encerrar-btn {
-  width: 100%; 
+  width: 100%;
   padding: 12px 20px;
-  background: linear-gradient(to right, #4A00E0, #1a1a1a); 
-  color: white;
+  background: linear-gradient(135deg, rgba(84, 73, 204, 0.5), #9368f9);
+  background-size: 200% 200%;
+  color: #fff;
   border: none;
-  border-radius: 8px; 
+  border-radius: 10px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, background 0.2s ease, transform 0.1s ease;
+  transition: all 0.3s ease;
   text-align: center;
   margin-top: 10px;
 }
 
 .encerrar-btn:hover {
-  background: #5449CC; 
+  background-position: right center;
+  transform: translateY(-2px);
 }
 
 .encerrar-btn:active {
-  transform: scale(0.98); 
+  transform: scale(0.98);
+  box-shadow: 0 3px 8px rgba(124, 58, 237, 0.4);
 }
+
 .balaozinho-pensando {
   display: flex;
   align-items: center;

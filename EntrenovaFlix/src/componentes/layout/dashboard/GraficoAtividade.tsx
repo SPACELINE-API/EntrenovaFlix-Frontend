@@ -1,4 +1,5 @@
 import ReactECharts from 'echarts-for-react';
+import '../../../styles/dashboardRH.css'
 
 const GraficoAtividade = () => {
     const option = {
@@ -26,7 +27,7 @@ const GraficoAtividade = () => {
         ]
     };
 
-    return <ReactECharts option={option} style={{ height: '300px', width: '60%' }} className="trilhas-grafico" />
+    return <ReactECharts option={option} style={{ height: '300px', width: '900px' }} className="trilhas-grafico" />
 }
 
 export default GraficoAtividade;

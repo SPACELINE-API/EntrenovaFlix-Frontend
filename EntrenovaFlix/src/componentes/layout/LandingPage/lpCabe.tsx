@@ -23,6 +23,7 @@ export default function Cabeçalho() {
         
       </nav>
       <nav className='userIn'>
+        <NavLink to='/diagnostico/devolutiva'>Contrate-nos</NavLink>
         <NavLink to='/login'>Login</NavLink>  
       </nav>
     </header>

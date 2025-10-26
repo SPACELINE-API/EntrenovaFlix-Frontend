@@ -25,7 +25,7 @@ function SidebarRH() {
     <div className="sidebar-RH">
       <div className="sidebar-RH-header">
         <h2>ENTRENOVAFLIX</h2>
-        <p>Plano Básico</p>
+        <p>Plano Essencial</p>
       </div>
 
       <nav className="sidebar-RH-nav">
