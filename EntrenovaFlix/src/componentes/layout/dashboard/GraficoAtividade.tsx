@@ -27,7 +27,7 @@ const GraficoAtividade = () => {
         ]
     };
 
-    return <ReactECharts option={option} style={{ height: '300px', width: '100%' }} className="trilhas-grafico" />
+    return <ReactECharts option={option} style={{ height: '300px', width: '900px' }} className="trilhas-grafico" />
 }
 
 export default GraficoAtividade;
