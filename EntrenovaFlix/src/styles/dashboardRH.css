@@ -23,8 +23,6 @@
     padding-top: 1.5625rem;
     height: 300px;
     width: 30%;
-    flex-basis: 55%; /* Gráfico ocupa 70% */
-    flex-shrink: 0;
 }
 
 .trilhas-cards {

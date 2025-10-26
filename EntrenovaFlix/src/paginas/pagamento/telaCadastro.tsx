@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { z } from 'zod';
 import FormSolicitante from '../../componentes/layout/contratacaoPlanos/FormSolicitante';
 import FormEmpresa from '../../componentes/layout/contratacaoPlanos/FormEmpresa';
 import FormSenha from '../../componentes/layout/contratacaoPlanos/FormSenha';
+import ConfirmEmail from '../../componentes/layout/contratacaoPlanos/ConfirmEmail';
 import { solicitanteSchema, empresaSchema, senhaSchema } from '../../componentes/layout/contratacaoPlanos/validation';
 import { ValidationErrors, DadosSolicitante, DadosEmpresa, DadosSenha, PlanoEscolhido } from '../../componentes/layout/contratacaoPlanos/types';
 
@@ -12,9 +12,11 @@ function TelaCadastro() {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const navigate = useNavigate();
   const location = useLocation();
+
   const [planoPreSelecionado, setPlanoPreSelecionado] = useState<PlanoEscolhido>('');
   const [isLoadingCep, setIsLoadingCep] = useState(false);
   const [cepError, setCepError] = useState<string | null>(null);
+  const [emailConfirmado, setEmailConfirmado] = useState(false);
 
   const [dadosSolicitante, setDadosSolicitante] = useState<DadosSolicitante>({
     nome: '', sobrenome: '', emailCorporativo: '', telefone: '', cpf: '', nomeEmpresa: '', porteEmpresa: ''
@@ -90,11 +92,11 @@ function TelaCadastro() {
     setDadosSenha(prev => ({ ...prev, [name]: value }));
   };
 
-  const validaEtapa = async (schema: z.Schema, data: unknown): Promise<boolean> => {
+  const validaEtapa = async (schema: any, data: unknown): Promise<boolean> => {
     const validationResult = await schema.safeParseAsync(data);
     if (!validationResult.success) {
       const errors: ValidationErrors = {};
-      validationResult.error.issues.forEach(error => {
+      validationResult.error.issues.forEach((error:any) => {
         if (error.path[0]) errors[error.path[0] as keyof ValidationErrors] = [error.message];
       });
       setValidationErrors(errors);
@@ -104,11 +106,17 @@ function TelaCadastro() {
     return true;
   };
 
-  const validateCurrentStep = async () => {
+  const validateCurrentStep = async (): Promise<boolean> => {
     switch (step) {
       case 1: return await validaEtapa(solicitanteSchema, dadosSolicitante);
       case 2: return await validaEtapa(empresaSchema, dadosEmpresa);
-      case 3: return await validaEtapa(senhaSchema, dadosSenha);
+      case 3: 
+        if (!emailConfirmado) {
+          alert("Por favor, confirme seu email antes de prosseguir.");
+          return false;
+        }
+        return true;
+      case 4: return await validaEtapa(senhaSchema, dadosSenha);
       default: return false;
     }
   };
@@ -148,7 +156,13 @@ function TelaCadastro() {
             cepError={cepError}
           />
         )}
-        {step === 3 && (
+        {step === 3 && dadosSolicitante.emailCorporativo && (
+          <ConfirmEmail
+            email={dadosSolicitante.emailCorporativo}
+            onConfirm={() => setEmailConfirmado(true)}
+          />
+        )}
+        {step === 4 && (
           <FormSenha
             dadosSenha={dadosSenha}
             onChange={handleSenhaChange}
@@ -159,7 +173,7 @@ function TelaCadastro() {
 
         <div className={`form-buttons ${step > 1 ? 'form-buttons--between' : 'form-buttons--end'}`}>
           {step > 1 && <button onClick={prevStep} className='button-primary'>Voltar</button>}
-          {step < 3 ? (
+          {step < 4 ? (
             <button type="button" className="button-primary" onClick={nextStep}>Próximo</button>
           ) : (
             <button type="button" className="button-primary" onClick={handleFinish}>
@@ -171,4 +185,5 @@ function TelaCadastro() {
     </div>
   );
 }
+
 export default TelaCadastro;

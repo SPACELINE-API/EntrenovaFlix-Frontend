@@ -2,6 +2,7 @@
     width: 100%;
     height: 80px;
     background: transparent;
+    position: inherit;
 }
 
 .header-RH-content {
