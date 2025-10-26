@@ -3,9 +3,9 @@ import '../styles/lp.css';
 import '../styles/estiloForms.css'
 import { Toaster } from 'react-hot-toast';
 import HeroSection from '../componentes/layout/LandingPage/heroSection';
+import Formularios from '../componentes/layout/LandingPage/formulario/formularioSection'
 import MotivosSection from '../componentes/layout/LandingPage/motivosSection';
-import PassoSection from '../componentes/layout/LandingPage/passosSection';
-import Formularios from '../componentes/layout/LandingPage/formularioSection'
+import Footer from '../componentes/layout/LandingPage/footer';
 
 function LandingPage() {
     return (
@@ -27,16 +27,24 @@ function LandingPage() {
                     />
                 </svg>
 
-                <MotivosSection/>
-                <div id='passos'>
-                    <PassoSection/>
+                <div id='motivos'>
+                    <MotivosSection/>
                 </div>
+        
             </div>
 
-            <div id='formulario' className="form-section-wrapper">
-                <Toaster position="top-right" /> 
-                <Formularios />
+
+            <div className='form-section-wrapper'>
+                <div id='formulario'>
+                    <Toaster position="top-right" /> 
+                    <Formularios />
+                </div>
+
             </div>
+
+            <Footer/>
+
+            
         </>
     );
 }

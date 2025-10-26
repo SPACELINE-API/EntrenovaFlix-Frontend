@@ -4,6 +4,14 @@
   import { useEffect, useState } from 'react';
   import * as z from 'zod';
   import forumService from '../services/forumService';
+  import { jwtDecode } from 'jwt-decode';
+
+  interface DecodedToken {
+  role: 'admin' | 'rh' | 'user';
+  nome: string;
+  sobrenome: string;
+  email: string;
+}
 
   const newPostSchema = z.object({
     pergunta: z.string().min(3, "O título deve ter pelo menos 10 caracteres."),
@@ -20,8 +28,20 @@
     const [userName, setUserName] = useState("Carregando..."); 
 
     useEffect(() => {
-      setUserName("Usuário Logado"); 
-    }, []);
+        const token = localStorage.getItem("access_token");
+        if (token) {
+          try {
+            const decodedToken: DecodedToken = jwtDecode(token);
+            const fullName = decodedToken.sobrenome
+              ? `${decodedToken.nome} ${decodedToken.sobrenome}`
+              : decodedToken.nome;
+    
+            setUserName(fullName || "Usuário");
+          } catch (error) {
+            console.error("Failed to decode token:", error);
+          }
+        }
+      }, []); 
 
     const handleCreatePost = async (data: NewPostFormData) => {
       try {

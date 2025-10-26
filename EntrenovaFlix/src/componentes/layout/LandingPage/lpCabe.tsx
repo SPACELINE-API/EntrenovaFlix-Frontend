@@ -1,8 +1,11 @@
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import { useQuestionnaire } from '../../../contexts/QuestionnaireContext'
 import '../../../styles/lp.css'
 import '../../../styles/global.css'
 
-function Cabeçalho() {
+export default function Cabeçalho() { 
+  const { isQuestionnaireCompleted } = useQuestionnaire();
+
   return (
     <header className='headerLp'>
 
@@ -10,15 +13,19 @@ function Cabeçalho() {
         <span>ENTRENOVAFLIX</span>
       </nav>
       <nav className='navigation-lp'>
-        <Link to="/">Home</Link>
-        <a onClick={() => document.getElementById("passos")?.scrollIntoView({ behavior: "smooth" })} style={{cursor:'pointer'}}>Sobre</a>
-        <Link to="/diagnostico">Diagnóstico</Link>
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/" onClick={() => document.getElementById("motivos")?.scrollIntoView({ behavior: "smooth" })} style={{cursor:'pointer'}}>Sobre</NavLink>
+        {isQuestionnaireCompleted && (
+          <NavLink to="/diagnostico" className="btn-diagnostico-destaque">
+            Meu Diagnóstico
+          </NavLink>
+        )}
         
       </nav>
       <nav className='userIn'>
-        <Link to='/login'>Login</Link>  
+        <NavLink to='/diagnostico/devolutiva'>Contrate-nos</NavLink>
+        <NavLink to='/login'>Login</NavLink>  
       </nav>
     </header>
   );
 }
-export default Cabeçalho;

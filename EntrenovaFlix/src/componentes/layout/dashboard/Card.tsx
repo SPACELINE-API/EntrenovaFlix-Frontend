@@ -12,4 +12,4 @@ const Card = ({ titulo, valor, icone }: any) => {
   );
 };
 
-export default Card;
+export default Card;  
