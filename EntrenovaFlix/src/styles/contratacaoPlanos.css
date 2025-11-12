@@ -460,6 +460,90 @@
     margin-top: 1rem;
 }
 
+
+.loading-overlay {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-overlay .spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
+   
+}
+
+.modal-content {
+  background-color: #141414;
+  padding: 2rem 2.5rem;
+  border-radius: 8px;
+  text-align: center;
+  width: 60%;
+  max-width: 400px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid #857ddb;
+  
+}
+
+.modal-header {
+  display: flex;
+  align-items: center; 
+  
+}
+
+.modal-content .icon {
+  font-size: 1.8rem; 
+  color: #28a745;
+  margin-top: 0;
+  margin-left: 0;
+
+}
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 0; 
+  color: #d9d4d4;
+}
+
+.modal-content p {
+  margin-bottom: 2rem;
+  color: #656565;
+  font-size: 1rem;
+}
+
+.modal-content .button-primary {
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .cadastro-container {
     margin: 1rem;

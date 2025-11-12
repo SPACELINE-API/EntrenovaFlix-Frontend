@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { z } from 'zod';
 import FormPagamento from '../../componentes/layout/contratacaoPlanos/FormPagamento';
@@ -20,26 +20,52 @@ function TelaPagamento() {
     const [dadosPagamento, setDadosPagamento] = useState<DadosPagamento | null>(null);
     const [formaSelecionada, setFormaSelecionada] = useState<FormaPagamentoOpcoes>('');
     const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
-    useEffect(() => {
-  if (!cadastroData && !planoInicial) {
-    console.warn("Nenhum dado de cadastro ou plano foi fornecido.");
-    return;
-  }
+    const [isLoading, setIsLoading] = useState(false);
+    const [Modal, setModal] = useState(false);
 
-  setDadosPagamento({
-    numeroCartao: '',
-    dataValidade: '',
-    cvv: '',
-    nomeCartao: '',
-    formaPagamento: '',
-    plano: planoInicial || cadastroData?.plano || ''
-  });
-}, [cadastroData, planoInicial]);
+    React.useEffect(() => {
+        if (!cadastroData && !planoInicial) {
+            console.warn("Nenhum dado de cadastro ou plano foi fornecido.");
+            return;
+        }
 
-    useEffect(() => {
+        setDadosPagamento({
+            numeroCartao: '',
+            dataValidade: '',
+            cvv: '',
+            nomeCartao: '',
+            formaPagamento: '',
+            plano: planoInicial || cadastroData?.plano || ''
+        });
+    }, [cadastroData, planoInicial]);
+
+    React.useEffect(() => {
         if (dadosPagamento) {
             setDadosPagamento(prev => prev ? { ...prev, formaPagamento: formaSelecionada } : prev);
         }
+    }, [formaSelecionada]);
+
+    React.useEffect(() => {
+        let loadingTimer: NodeJS.Timeout;
+        let modalTimer: NodeJS.Timeout;
+
+        if (formaSelecionada === 'pix' || formaSelecionada === 'boleto') {
+            
+            loadingTimer = setTimeout(() => {
+                setIsLoading(true);
+
+                modalTimer = setTimeout(() => {
+                    setIsLoading(false);
+                    setModal(true);
+                }, 2000); 
+
+            }, 9000); 
+        }
+
+        return () => {
+            clearTimeout(loadingTimer);
+            clearTimeout(modalTimer);
+        };
     }, [formaSelecionada]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -72,8 +98,12 @@ function TelaPagamento() {
         if (!dadosPagamento) return false;
 
         const baseSchema = z.object({
-            plano: z.enum(['essencial', 'premium', 'diamante'], { required_error: "Plano é obrigatório" }),
-            formaPagamento: z.enum(['credito', 'debito', 'pix', 'boleto'], { required_error: "Forma de pagamento é obrigatória" })
+            plano: z.enum(['essencial', 'premium', 'diamante'] as const, { 
+                invalid_type_error: "Plano é obrigatório" 
+            }),
+            formaPagamento: z.enum(['credito', 'debito', 'pix', 'boleto'] as const, { 
+                invalid_type_error: "Forma de pagamento é obrigatória" 
+            })
         });
 
         const baseData = { plano: dadosPagamento.plano, formaPagamento: formaSelecionada };
@@ -87,6 +117,11 @@ function TelaPagamento() {
         }
 
         return true;
+    };
+
+    const handleCloseModal = () => {
+        setModal(false);
+        navigate('/login');
     };
 
     const handleIniciarAssinatura = async () => {
@@ -104,19 +139,45 @@ function TelaPagamento() {
             return;
         }
 
+        setIsLoading(true);
+
         const payload = { 
             cadastro: cadastroData, 
             pagamento: { ...dadosPagamento, formaPagamento: formaSelecionada } 
         };
 
-        console.log('ENVIANDO PARA O BACKEND:', JSON.stringify(payload, null, 2));
+        console.log('ENVIANDO PARA O BACKEND (ANINHADO):', JSON.stringify(payload, null, 2));
 
         try {
             await api.post('/register-empresa', payload);
-            navigate('/login');
-        } catch (error) {
+            setModal(true);
+            setIsLoading(false);
+        } catch (error: unknown) {
             console.error('Erro ao criar assinatura:', error);
-            alert("Ocorreu um erro ao criar assinatura. Verifique os dados e tente novamente.");
+            
+            let errorMessage = "Ocorreu um erro ao criar assinatura. Verifique os dados e tente novamente.";
+            
+            if (error && typeof error === 'object' && 'response' in error) {
+                const err = error as { response?: { data?: any } }; 
+                
+                if (err.response && err.response.data) {
+                    const errors = err.response.data;
+                    if (errors.error) {
+                        errorMessage = errors.error;
+                    } else {
+                        const firstErrorKey = Object.keys(errors)[0];
+                        if (firstErrorKey && Array.isArray(errors[firstErrorKey])) {
+                            errorMessage = `${firstErrorKey}: ${errors[firstErrorKey][0]}`;
+                        } else if (typeof errors === 'string') {
+                            errorMessage = errors;
+                        } else if (errors.detail) {
+                            errorMessage = errors.detail;
+                        }
+                    }
+                }
+            }
+            alert(errorMessage);
+            setIsLoading(false);
         }
     };
 
@@ -133,16 +194,34 @@ function TelaPagamento() {
 
     return (
         <div className="cadastro-wrapper">
-            <div className="cadastro-container">
-                <h2 className="form-titulo">Pagamento</h2>
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
+            {Modal && (
+                <div className="modal">
+                    <div className="modal-content">
+                       <div className="modal-header">
+                            <h2>Pagamento Confirmado</h2>
+                            <div className="icon">✓</div>
+                        </div>
+                        <p>Sua conta foi criada e sua assinatura está ativa.</p>
+                        <button onClick={handleCloseModal} className="button-primary">
+                            Entrar
+                        </button>
+                    </div>
+                </div>
+            )}
 
+            <div className="cadastro-container">
+                <h2 className="form-titulo">Pagamento</h2> 
                 <div style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--cor-borda)', textAlign: 'center' }}>
                     <p className="form-desc" style={{ marginBottom: '0.3rem', fontWeight: 400 }}>Plano:</p>
                     <h3 style={{ color: 'var(--cor-primaria)', textTransform: 'capitalize' }}>
                         {dadosPagamento.plano || 'Nenhum'}
                     </h3>
                 </div>
-
                 <div className="form-field full">
                     <label className="label">Escolha a Forma de Pagamento</label>
                     <div className="radio-group" style={{ flexDirection: 'row', gap: '1.5rem', flexWrap: 'wrap' }}>
@@ -163,7 +242,6 @@ function TelaPagamento() {
                         <p className="error-message">{validationErrors.formaPagamento[0]}</p>
                     )}
                 </div>
-
                 <div style={{ marginTop: '1.5rem' }}>
                     {['credito','debito'].includes(formaSelecionada) && (
                         <FormPagamento dadosCartao={dadosCartao} onChange={handleInputChange as any} errors={validationErrors} />
@@ -171,11 +249,17 @@ function TelaPagamento() {
                     {formaSelecionada === 'pix' && <PixDisplay />}
                     {formaSelecionada === 'boleto' && <BoletoDisplay />}
                 </div>
-
                 <div className="form-buttons form-buttons--between" style={{ marginTop: '2rem' }}>
-                    <button onClick={handleVoltar} className="button-primary">Voltar</button>
+                    <button onClick={handleVoltar} className="button-primary" disabled={isLoading}>
+                        Voltar
+                    </button>
                     {formaSelecionada && (
-                        <button type="button" className="button-primary" onClick={handleIniciarAssinatura}>
+                        <button 
+                            type="button" 
+                            className="button-primary" 
+                            onClick={handleIniciarAssinatura}
+                            disabled={isLoading}
+                        >
                             {['pix','boleto'].includes(formaSelecionada) ? 'Gerar' : 'Confirmar Pagamento'}
                         </button>
                     )}

@@ -5,6 +5,9 @@ interface FormEmpresaProps extends OriginalFormEmpresaProps {
     onCepBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
     isLoadingCep: boolean;
     cepError: string | null;
+    onCnpjBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+    isLoadingCnpj: boolean;
+
 }
 export default function FormEmpresa({
     dadosEmpresa,
@@ -12,7 +15,8 @@ export default function FormEmpresa({
     errors,
     onCepBlur,
     isLoadingCep,
-    cepError
+    cepError,
+   
 }: FormEmpresaProps) {
     return (
         <div className="form-section">
