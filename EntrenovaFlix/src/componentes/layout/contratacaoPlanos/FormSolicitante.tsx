@@ -125,9 +125,9 @@ export default function FormSolicitante({ dadosSolicitante, onChange, errors }: 
                         value={dadosSolicitante.porteEmpresa}
                         onChange={onChange}>
                         <option value="">Selecione...</option>
-                        <option value="Startup">1-10 funcionários</option>
-                        <option value="PME">11-50 funcionários</option>
-                        <option value="Grande Empresa">+50 funcionários</option>
+                        <option value="Startup">Startup</option>
+                        <option value="PME">PME</option>
+                        <option value="Grande Empresa">Grande Empresa</option>
                     </select>
                     {errors?.porteEmpresa && (
                      <p className="error">{errors.porteEmpresa[0]}</p>
