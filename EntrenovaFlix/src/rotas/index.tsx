@@ -22,6 +22,7 @@ import DiagnosticoRH from '../paginas/RH/DiagnosticoRH';
 import PlanosRH from '../paginas/RH/PlanosRH';
 import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 import HistoricoRH from '../paginas/RH/HistoricoRH';
+import FeedbackRH from '../componentes/layout/dashboardRH/feedbackRH';
 
 import ContratarLayout from '../componentes/layout/contratarLayout';
 import TelaCadastro from '../paginas/pagamento/telaCadastro';
@@ -105,7 +106,8 @@ const router = createBrowserRouter([
           { path: 'planos', element: <PlanosRH /> },
           { path: 'funcionarios', element: <FuncionariosRH /> },
           {path: 'historicoChatbot', element: <HistoricoRH/>},
-          {path: "historicoChatbot/:id", element: <Conversa />}
+          {path: "historicoChatbot/:id", element: <Conversa />},
+          { path: 'feedbackRH', element: <FeedbackRH /> },
         ],
       },
     ],
