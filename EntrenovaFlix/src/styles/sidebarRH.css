@@ -17,7 +17,7 @@
     background-color: #1a1a1a;
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    padding: 10px;
     border-right: 1px solid #333;
 }
 
@@ -26,13 +26,13 @@
     flex-direction: column;
     gap: 8px;
     align-items: center;
-    margin-bottom: 46px;
+    margin-bottom: 30px;
 }
 
 .sidebar-RH-header h2 {
     font-family: 'techno_wanker';
     font-weight: 100;
-    font-size: 1.5rem;
+    font-size: 1rem;
     letter-spacing: 0.5px;
     color: #fafafa;
 }
