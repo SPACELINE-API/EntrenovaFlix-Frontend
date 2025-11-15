@@ -5,6 +5,7 @@ import { FaLightbulb } from "react-icons/fa";
 import { PiMonitorPlayFill } from "react-icons/pi";
 import { TbReportSearch } from "react-icons/tb";
 import { FaUserFriends } from "react-icons/fa";
+import { FaHistory } from "react-icons/fa";
 
 function SidebarRH() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function SidebarRH() {
     if (path.includes('/dashboardRH/diagnosticos')) return 'diagnosticos';
     if (path.includes('/dashboardRH/planos')) return 'planos';
     if (path.includes('/dashboardRH/funcionarios')) return 'funcionarios';
+    if (path.includes('/dashboardRH/historicoChatbot')) return 'historicoChatbot';
     return 'visao-geral';
   };
 
@@ -66,6 +68,13 @@ function SidebarRH() {
         >
           <FaUserFriends size={24}/>
           Funcionários
+        </button>
+        <button
+          className={`sidebar-RH-item ${activeItem === 'historicoChatbot' ? 'active' : ''}`}
+          onClick={() => navigate('/dashboardRH/historicoChatbot')}
+        >
+          <FaHistory size={24}/>
+          Histórico do Chat
         </button>
       </nav>
     </div>
