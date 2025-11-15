@@ -26,7 +26,8 @@
     flex-direction: column;
     gap: 8px;
     align-items: center;
-    margin-bottom: 46px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .sidebar-RH-header h2 {
@@ -69,6 +70,7 @@
 .sidebar-RH-item.active {
     background: linear-gradient(135deg, #5449CC 25%, #0078D7 100%);
     font-weight: 700;
+    padding: 10px;
 }
 
 .sidebar-RH-item:hover {

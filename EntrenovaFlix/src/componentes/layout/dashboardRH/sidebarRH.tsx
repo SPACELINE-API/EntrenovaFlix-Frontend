@@ -24,9 +24,8 @@ function SidebarRH() {
   return (
     <div className="sidebar-RH">
       <div className="sidebar-RH-header">
-        <h2>ENTRENOVAFLIX</h2>
         <p>Plano Essencial</p>
-      </div>
+    </div>
 
       <nav className="sidebar-RH-nav">
         <button
