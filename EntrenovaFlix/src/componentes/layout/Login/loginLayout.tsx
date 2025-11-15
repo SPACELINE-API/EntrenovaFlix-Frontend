@@ -53,6 +53,8 @@ export default function LgSection() {
       } else {
         navigate("/dashboardRH");
       }
+    } else if (decodedToken.role === 'admin') {
+      navigate("/entrenovaAdmin"); 
     } else {
       navigate("/colaboradores");
     }
