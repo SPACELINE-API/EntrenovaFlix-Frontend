@@ -27,6 +27,11 @@ import TelaCadastro from '../paginas/pagamento/telaCadastro';
 import TelaPagamento from '../paginas/pagamento/telaPagamento';
 import TelaSelecaoPlano from '../paginas/telaSelecaoPlanos';
 
+import DashboardAdminLayout from '../componentes/layout/dashboardAdmin/dashboardAdminLayout';
+import DashboardAdmin from '../paginas/Admin/DashboardAdmin';
+import EmpresasAdmin from '../paginas/Admin/EmpresasAdmin';
+import TrilhasAdmin from '../paginas/Admin/TrilhasAdmin';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -104,6 +109,16 @@ const router = createBrowserRouter([
           { path: 'funcionarios', element: <FuncionariosRH /> },
         ],
       },
+    ],
+  },
+  {
+    path: '/entrenovaAdmin',
+    element: <DashboardAdminLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      { index: true, element: <DashboardAdmin /> },
+      { path: 'empresas', element: <EmpresasAdmin />},
+      { path: 'trilhas', element: <TrilhasAdmin />},
     ],
   },
   {
