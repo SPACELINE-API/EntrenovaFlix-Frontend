@@ -19,13 +19,7 @@ function SidebarRH() {
     if (path.includes("/dashboardRH/diagnosticos")) return "diagnosticos";
     if (path.includes("/dashboardRH/planos")) return "planos";
     if (path.includes("/dashboardRH/funcionarios")) return "funcionarios";
-    if (path.includes("/dashboardRH/historicoChatbot"))
-      return "historicoChatbot";
-    return "visao-geral";
-    if (path.includes("/dashboardRH/trilhas")) return "trilhas";
-    if (path.includes("/dashboardRH/diagnosticos")) return "diagnosticos";
-    if (path.includes("/dashboardRH/planos")) return "planos";
-    if (path.includes("/dashboardRH/funcionarios")) return "funcionarios";
+    if (path.includes("/dashboardRH/historicoChatbot"))return "historicoChatbot";
     if (path.includes("/dashboardRH/feedbackRH")) return "feedback";
     return "visao-geral";
   };
@@ -92,18 +86,21 @@ function SidebarRH() {
           className={`sidebar-RH-item ${
             activeItem === "feedback" ? "active" : ""
           }`}
-          onClick={() => navigate("/dashboardRH/feedback")}
+          onClick={() => navigate("/dashboardRH/feedbackRH")}
         >
-          <BiMessageDetail size={24} />
-          Feedback
+          <FaUserFriends size={24} />
+          Funcionários
         </button>
         <button
-          className={`sidebar-RH-item ${activeItem === 'historicoChatbot' ? 'active' : ''}`}
-          onClick={() => navigate('/dashboardRH/historicoChatbot')}
+          className={`sidebar-RH-item ${
+            activeItem === "historicoChatbot" ? "active" : ""
+          }`}
+          onClick={() => navigate("/dashboardRH/historicoChatbot")}
         >
-          <FaHistory size={24}/>
+          <FaHistory size={20} />
           Histórico do Chat
         </button>
+        
       </nav>
     </div>
   );
