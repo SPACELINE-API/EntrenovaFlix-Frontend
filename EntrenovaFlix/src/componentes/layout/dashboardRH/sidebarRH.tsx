@@ -88,8 +88,8 @@ function SidebarRH() {
           }`}
           onClick={() => navigate("/dashboardRH/feedbackRH")}
         >
-          <FaUserFriends size={24} />
-          Funcionários
+          <MdOutlineFeedback size={24} />
+          Feedback
         </button>
         <button
           className={`sidebar-RH-item ${
