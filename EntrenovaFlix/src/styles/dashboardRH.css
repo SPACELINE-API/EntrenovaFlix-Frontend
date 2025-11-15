@@ -12,8 +12,8 @@
 .trilhas-topo {
     display: flex;
     flex-direction: row;
-    gap: 3.125rem;
-    margin-top: 1.875rem;
+    gap: 3rem;
+    margin-top: 1.8rem;
     justify-content: space-between;
 }
 
@@ -24,6 +24,7 @@
     border-radius: 0.5rem; 
     border: 1px solid #857DDB;
     padding-top: 1.5625rem;
+    
 }
 
 .trilhas-cards {
