@@ -24,9 +24,10 @@
 .sidebar-RH-header { 
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 2px;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+   
 }
 
 .sidebar-RH-header h2 {
@@ -54,13 +55,13 @@
     display: flex;
     align-items: center;
     font-family: 'Satoshi', sans-serif;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 400;
     color: #fafafa;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 12px 16px;
+    padding: 5px 16px;
     border-radius: 15px;
     gap: 1rem;
 }
