@@ -17,22 +17,23 @@
     background-color: #1a1a1a;
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    padding: 10px;
     border-right: 1px solid #333;
 }
 
 .sidebar-RH-header { 
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 2px;
     align-items: center;
-    margin-bottom: 46px;
+    margin-bottom: 20px;
+   
 }
 
 .sidebar-RH-header h2 {
     font-family: 'techno_wanker';
     font-weight: 100;
-    font-size: 1.5rem;
+    font-size: 1rem;
     letter-spacing: 0.5px;
     color: #fafafa;
 }
@@ -54,13 +55,13 @@
     display: flex;
     align-items: center;
     font-family: 'Satoshi', sans-serif;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 400;
     color: #fafafa;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 12px 16px;
+    padding: 5px 16px;
     border-radius: 15px;
     gap: 1rem;
 }
