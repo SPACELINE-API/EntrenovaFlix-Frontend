@@ -15,7 +15,7 @@ import {
   Tooltip
 } from '@mantine/core';
 import { IconMessageReply, IconSend, IconArrowForwardUp } from '@tabler/icons-react';
-import "../../../styles/funcionariosRH.css"
+import "../../styles/funcionariosRH.css"
 
 interface Mensagem {
   autor: string;
