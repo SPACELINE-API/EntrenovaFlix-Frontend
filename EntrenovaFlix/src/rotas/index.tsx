@@ -21,11 +21,14 @@ import TrilhasRH from '../paginas/RH/TrilhasRH';
 import DiagnosticoRH from '../paginas/RH/DiagnosticoRH';
 import PlanosRH from '../paginas/RH/PlanosRH';
 import FuncionariosRH from '../paginas/RH/FuncionariosRH';
+import HistoricoRH from '../paginas/RH/HistoricoRH';
+import FeedbackRH from '../componentes/layout/dashboardRH/feedbackRH';
 
 import ContratarLayout from '../componentes/layout/contratarLayout';
 import TelaCadastro from '../paginas/pagamento/telaCadastro';
 import TelaPagamento from '../paginas/pagamento/telaPagamento';
 import TelaSelecaoPlano from '../paginas/telaSelecaoPlanos';
+import Conversa from '../paginas/RH/Conversa';
 
 import DashboardAdminLayout from '../componentes/layout/dashboardAdmin/dashboardAdminLayout';
 import DashboardAdmin from '../paginas/Admin/DashboardAdmin';
@@ -107,6 +110,9 @@ const router = createBrowserRouter([
           { path: 'diagnosticos', element: <DiagnosticoRH /> },
           { path: 'planos', element: <PlanosRH /> },
           { path: 'funcionarios', element: <FuncionariosRH /> },
+          {path: 'historicoChatbot', element: <HistoricoRH/>},
+          {path: "historicoChatbot/:id", element: <Conversa />},
+          { path: 'feedbackRH', element: <FeedbackRH /> },
         ],
       },
     ],
