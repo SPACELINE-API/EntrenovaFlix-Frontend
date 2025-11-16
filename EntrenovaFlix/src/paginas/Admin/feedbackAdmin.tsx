@@ -87,11 +87,9 @@ function FeedbackAdmin() {
 
     setIsSubmitting(true);
     try {
-      await api.post(`tickets/admin/${ticketSelecionado.id}/`, {
+      await api.post(`tickets/admin/${ticketSelecionado.id}/`,{
         texto: formResposta
       });
-
-      await api.patch(`/tickets/admin/${ticketSelecionado.id}/`);
 
       setModalRespostaAberto(false);
       setTicketSelecionado(null);

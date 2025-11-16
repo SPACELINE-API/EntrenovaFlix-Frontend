@@ -43,53 +43,13 @@ interface Ticket {
   mensagens: Mensagem[];
 }
 
-interface MensagemMock {
-  autor: string;
-  msg: string;
-  data: string;
-}
-
-interface TicketMock {
-  id: number;
-  assunto: string;
-  de: string;
-  para?: string;
-  status: 'aberto' | 'fechado';
-  tipo: 'colaborador' | 'admin';
-  ultAtualizacao: string;
-  conversa: MensagemMock[];
-}
-
-const mockRecebidos: TicketMock[] = [
-  {
-    id: 101,
-    assunto: "Problema no VR",
-    de: "Ana Silva",
-    status: "aberto",
-    tipo: "colaborador",
-    ultAtualizacao: "2025-11-13",
-    conversa: [{ autor: "Ana Silva", msg: "Meu VR não caiu este mês.", data: "2025-11-13" }]
-  },
-  {
-    id: 102,
-    assunto: "Dúvida sobre férias",
-    de: "Bruno Costa",
-    status: "aberto",
-    tipo: "colaborador",
-    ultAtualizacao: "2025-11-12",
-    conversa: [{ autor: "Bruno Costa", msg: "Gostaria de saber como agendar minhas férias.", data: "2025-11-12" }]
-  },
-];
-
 function FeedbackRH() {
   const [activeTab, setActiveTab] = useState<string | null>('recebidos');
   const [modalNovoAberto, setModalNovoAberto] = useState(false);
   const [modalRespostaAberto, setModalRespostaAberto] = useState(false);
 
-  const [ticketSelecionadoMock, setTicketSelecionadoMock] = useState<TicketMock | null>(null);
-  const [recebidos, setRecebidos] = useState<TicketMock[]>(mockRecebidos);
-
-  const [ticketSelecionadoApi, setTicketSelecionadoApi] = useState<Ticket | null>(null);
+  const [ticketSelecionado, setTicketSelecionado] = useState<Ticket | null>(null);
+  const [recebidos, setRecebidos] = useState<Ticket[]>([]);
   const [enviados, setEnviados] = useState<Ticket[]>([]);
   const [fechados, setFechados] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
@@ -99,26 +59,40 @@ function FeedbackRH() {
   const [formAssunto, setFormAssunto] = useState("");
   const [formMensagem, setFormMensagem] = useState("");
   const [formResposta, setFormResposta] = useState("");
+  const [isReplying, setIsReplying] = useState(false);
 
-  const carregarTicketsAdmin = async () => {
+  const carregarTickets = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get('/tickets/rh/list/');
-      const data: Ticket[] = response.data;
+      // Carrega tickets enviados pelo RH para o Admin
+      const responseAdmin = await api.get('/tickets/rh/list/');
+      const dataAdmin: Ticket[] = responseAdmin.data;
+      setEnviados(dataAdmin.filter(t => t.status === 'Aberto'));
+      setFechados(dataAdmin.filter(t => t.status === 'Fechado'));
 
-      setEnviados(data.filter(t => t.status === 'Aberto'));
-      setFechados(data.filter(t => t.status === 'Fechado'));
+      // Carrega tickets recebidos dos colaboradores
+      // TODO: Ajustar o endpoint conforme a API real
+      const responseRecebidos = await api.get('/tickets/colaboradores/list/');
+      const dataRecebidos: Ticket[] = responseRecebidos.data;
+      setRecebidos(dataRecebidos.filter(t => t.status === 'Aberto'));
+
+      // Adiciona os tickets fechados dos colaboradores à aba de fechados
+      setFechados(prevFechados => [
+        ...prevFechados,
+        ...dataRecebidos.filter(t => t.status === 'Fechado')
+      ]);
+
     } catch (err) {
-      console.error("Erro ao buscar tickets do RH:", err);
-      setError("Falha ao carregar seus tickets enviados ao Admin.");
+      console.error("Erro ao buscar tickets:", err);
+      setError("Falha ao carregar os tickets. Verifique sua conexão e tente novamente.");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    carregarTicketsAdmin();
+    carregarTickets();
   }, []);
 
   const handleEnviarNovoTicket = async () => {
@@ -144,37 +118,54 @@ function FeedbackRH() {
     }
   };
 
-  const handleAbrirRespostaMock = (ticket: TicketMock) => {
-    setTicketSelecionadoMock(ticket);
-    setTicketSelecionadoApi(null);
+  const handleAbrirModalResposta = (ticket: Ticket) => {
+    setTicketSelecionado(ticket);
     setFormResposta("");
     setModalRespostaAberto(true);
   };
 
-  const handleAbrirHistoricoApi = (ticket: Ticket) => {
-    setTicketSelecionadoApi(ticket);
-    setTicketSelecionadoMock(null);
-    setModalRespostaAberto(true);
+  const handleEnviarResposta = async () => {
+    if (!formResposta || !ticketSelecionado) return;
+
+    setIsReplying(true);
+    try {
+      // TODO: Ajustar o endpoint conforme a API real para responder e fechar
+      await api.post(`/tickets/${ticketSelecionado.id}/responder/`, {
+        texto: formResposta,
+        fechar_ticket: true
+      });
+
+      // Atualiza a UI
+      setRecebidos(recebidos.filter(t => t.id !== ticketSelecionado.id));
+      setFechados([ticketSelecionado, ...fechados]); // Adiciona o ticket à lista de fechados
+
+      setModalRespostaAberto(false);
+      setTicketSelecionado(null);
+    } catch (err) {
+      console.error("Erro ao enviar resposta:", err);
+      alert("Falha ao enviar a resposta. Tente novamente.");
+    } finally {
+      setIsReplying(false);
+    }
   };
 
-  const handleEnviarRespostaMock = () => {
-    console.log("Respondendo ao colaborador (mock)");
-    setModalRespostaAberto(false);
+  const handleEncaminharParaAdmin = async (ticket: Ticket) => {
+    // TODO: Implementar a lógica de encaminhamento via API
+    console.log("Encaminhando para admin (API)", ticket.id);
+    alert("Funcionalidade de encaminhar para o Admin ainda não implementada.");
+    // Exemplo de como poderia ser:
+    // await api.post(`/tickets/${ticket.id}/encaminhar/`);
+    // setRecebidos(recebidos.filter(t => t.id !== ticket.id));
   };
 
-  const handleEncaminharParaAdmin = (ticket: TicketMock) => {
-    console.log("Encaminhando para admin (mock)");
-    setRecebidos(recebidos.filter(t => t.id !== ticket.id));
-  };
-
-  const renderTabelaRecebidos = (data: TicketMock[]) => (
+  const renderTabelaRecebidos = (data: Ticket[]) => (
     <Table className="funcionarios-table" mt="md" highlightOnHover>
       <Table.Thead>
         <Table.Tr>
           <Table.Th>Assunto</Table.Th>
-          <Table.Th>De</Table.Th>
+          <Table.Th>Autor</Table.Th>
           <Table.Th>Status</Table.Th>
-          <Table.Th>Última At.</Table.Th>
+          <Table.Th>Criado em</Table.Th>
           <Table.Th className="th-actions">Ações</Table.Th>
         </Table.Tr>
       </Table.Thead>
@@ -187,16 +178,16 @@ function FeedbackRH() {
           data.map((ticket) => (
             <Table.Tr key={ticket.id}>
               <Table.Td>{ticket.assunto}</Table.Td>
-              <Table.Td>{ticket.de}</Table.Td>
+              <Table.Td>{ticket.autor.nome}</Table.Td>
               <Table.Td>
-                <Badge color={ticket.status === 'aberto' ? 'blue' : 'gray'} variant="filled">
+                <Badge color={ticket.status === 'Aberto' ? 'blue' : 'gray'} variant="filled">
                   {ticket.status}
                 </Badge>
               </Table.Td>
-              <Table.Td>{ticket.ultAtualizacao}</Table.Td>
+              <Table.Td>{new Date(ticket.created_at).toLocaleDateString('pt-BR')}</Table.Td>
               <Table.Td className="actions-cell">
                 <Tooltip label="Responder e Fechar">
-                  <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirRespostaMock(ticket)}>
+                  <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirModalResposta(ticket)}>
                     <IconMessageReply />
                   </ActionIcon>
                 </Tooltip>
@@ -242,7 +233,7 @@ function FeedbackRH() {
               <Table.Td>{new Date(ticket.created_at).toLocaleDateString('pt-BR')}</Table.Td>
               <Table.Td>
                 <Tooltip label="Ver Histórico">
-                  <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirHistoricoApi(ticket)}>
+                  <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirModalResposta(ticket)}>
                     <IconMessageReply />
                   </ActionIcon>
                 </Tooltip>
@@ -350,14 +341,14 @@ function FeedbackRH() {
         opened={modalRespostaAberto}
         onClose={() => {
           setModalRespostaAberto(false);
-          setTicketSelecionadoApi(null);
-          setTicketSelecionadoMock(null);
+          setTicketSelecionado(null);
         }}
-        title={`Histórico: ${ticketSelecionadoMock?.assunto || ticketSelecionadoApi?.assunto}`}
+        title={`Histórico: ${ticketSelecionado?.assunto}`}
         className="modal-custom"
         size="lg"
       >
-        <Box p="md">
+        <Box component="form" p="md" style={{ position: 'relative' }}>
+          <LoadingOverlay visible={isReplying} overlayProps={{ radius: "sm", blur: 2 }} />
           <Text fw={500} mb="xs">Histórico</Text>
 
           <Box
@@ -371,33 +362,14 @@ function FeedbackRH() {
               border: '1px solid #444'
             }}
           >
-            {/* Histórico Mock */}
-            {ticketSelecionadoMock?.conversa.map((msg, index) => (
-              <Box
-                key={index}
-                mb="sm"
-                style={{
-                  borderBottom:
-                    index !== ticketSelecionadoMock.conversa.length - 1 ? '1px dashed #555' : 'none',
-                  paddingBottom: '0.5rem'
-                }}
-              >
-                <Group justify="space-between">
-                  <Text fw={700} size="sm">{msg.autor}</Text>
-                  <Text size="xs" c="dimmed">{msg.data}</Text>
-                </Group>
-                <Text size="sm" c="#e0e0e0">{msg.msg}</Text>
-              </Box>
-            ))}
-
             {/* Histórico API */}
-            {ticketSelecionadoApi?.mensagens.map((msg, index) => (
+            {ticketSelecionado?.mensagens.map((msg, index) => (
               <Box
                 key={msg.id}
                 mb="sm"
                 style={{
                   borderBottom:
-                    index !== ticketSelecionadoApi.mensagens.length - 1 ? '1px dashed #555' : 'none',
+                    index !== ticketSelecionado.mensagens.length - 1 ? '1px dashed #555' : 'none',
                   paddingBottom: '0.5rem'
                 }}
               >
@@ -410,8 +382,8 @@ function FeedbackRH() {
             ))}
           </Box>
 
-          {/* Resposta MOCK */}
-          {ticketSelecionadoMock && (
+          {/* Formulário de Resposta para tickets recebidos */}
+          {ticketSelecionado && activeTab === 'recebidos' && (
             <>
               <Textarea
                 label="Sua Resposta"
@@ -424,27 +396,29 @@ function FeedbackRH() {
               />
 
               <Group justify="flex-end">
-                <Button variant="default" onClick={() => setModalRespostaAberto(false)}>Cancelar</Button>
+                <Button variant="default" onClick={() => setModalRespostaAberto(false)} disabled={isReplying}>
+                  Cancelar
+                </Button>
 
                 <Button
                   className="entreg"
-                  onClick={handleEnviarRespostaMock}
-                  disabled={!formResposta}
+                  onClick={handleEnviarResposta}
+                  disabled={!formResposta || isReplying}
                 >
-                  Responder e Fechar (Mock)
+                  {isReplying ? 'Enviando...' : 'Responder e Fechar'}
                 </Button>
               </Group>
             </>
           )}
 
-          {/* Apenas visualização API */}
-          {ticketSelecionadoApi && (
+          {/* Apenas botão de fechar para tickets enviados/fechados */}
+          {ticketSelecionado && activeTab !== 'recebidos' && (
             <Group justify="flex-end">
               <Button
                 variant="default"
                 onClick={() => {
                   setModalRespostaAberto(false);
-                  setTicketSelecionadoApi(null);
+                  setTicketSelecionado(null);
                 }}
               >
                 Fechar Histórico
