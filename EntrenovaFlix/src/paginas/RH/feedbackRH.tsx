@@ -65,19 +65,15 @@ function FeedbackRH() {
     setLoading(true);
     setError(null);
     try {
-      // Carrega tickets enviados pelo RH para o Admin
       const responseAdmin = await api.get('/tickets/rh/list/');
       const dataAdmin: Ticket[] = responseAdmin.data;
       setEnviados(dataAdmin.filter(t => t.status === 'Aberto'));
       setFechados(dataAdmin.filter(t => t.status === 'Fechado'));
 
-      // Carrega tickets recebidos dos colaboradores
-      // TODO: Ajustar o endpoint conforme a API real
       const responseRecebidos = await api.get('/tickets/colaboradores/list/');
       const dataRecebidos: Ticket[] = responseRecebidos.data;
       setRecebidos(dataRecebidos.filter(t => t.status === 'Aberto'));
 
-      // Adiciona os tickets fechados dos colaboradores à aba de fechados
       setFechados(prevFechados => [
         ...prevFechados,
         ...dataRecebidos.filter(t => t.status === 'Fechado')
@@ -129,13 +125,11 @@ function FeedbackRH() {
 
     setIsReplying(true);
     try {
-      // TODO: Ajustar o endpoint conforme a API real para responder e fechar
       await api.post(`/tickets/${ticketSelecionado.id}/responder/`, {
         texto: formResposta,
         fechar_ticket: true
       });
 
-      // Atualiza a UI
       setRecebidos(recebidos.filter(t => t.id !== ticketSelecionado.id));
       setFechados([ticketSelecionado, ...fechados]); // Adiciona o ticket à lista de fechados
 
@@ -150,12 +144,9 @@ function FeedbackRH() {
   };
 
   const handleEncaminharParaAdmin = async (ticket: Ticket) => {
-    // TODO: Implementar a lógica de encaminhamento via API
     console.log("Encaminhando para admin (API)", ticket.id);
     alert("Funcionalidade de encaminhar para o Admin ainda não implementada.");
-    // Exemplo de como poderia ser:
-    // await api.post(`/tickets/${ticket.id}/encaminhar/`);
-    // setRecebidos(recebidos.filter(t => t.id !== ticket.id));
+    
   };
 
   const renderTabelaRecebidos = (data: Ticket[]) => (
@@ -184,7 +175,7 @@ function FeedbackRH() {
                   {ticket.status}
                 </Badge>
               </Table.Td>
-              <Table.Td>{new Date(ticket.created_at).toLocaleDateString('pt-BR')}</Table.Td>
+              <Table.Td>{new Date(ticket.created_at).toLocaleDateString("pt-br")}</Table.Td>
               <Table.Td className="actions-cell">
                 <Tooltip label="Responder e Fechar">
                   <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirModalResposta(ticket)}>
@@ -290,7 +281,6 @@ function FeedbackRH() {
         </Tabs.Panel>
       </Tabs>
 
-      {/* Modal Novo Ticket */}
       <Modal
         opened={modalNovoAberto}
         onClose={() => setModalNovoAberto(false)}
@@ -336,7 +326,6 @@ function FeedbackRH() {
         </Box>
       </Modal>
 
-      {/* Modal Histórico + Resposta */}
       <Modal
         opened={modalRespostaAberto}
         onClose={() => {
@@ -362,7 +351,6 @@ function FeedbackRH() {
               border: '1px solid #444'
             }}
           >
-            {/* Histórico API */}
             {ticketSelecionado?.mensagens.map((msg, index) => (
               <Box
                 key={msg.id}
@@ -382,7 +370,6 @@ function FeedbackRH() {
             ))}
           </Box>
 
-          {/* Formulário de Resposta para tickets recebidos */}
           {ticketSelecionado && activeTab === 'recebidos' && (
             <>
               <Textarea
@@ -411,7 +398,6 @@ function FeedbackRH() {
             </>
           )}
 
-          {/* Apenas botão de fechar para tickets enviados/fechados */}
           {ticketSelecionado && activeTab !== 'recebidos' && (
             <Group justify="flex-end">
               <Button
