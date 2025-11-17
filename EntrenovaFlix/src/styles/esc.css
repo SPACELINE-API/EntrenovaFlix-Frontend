@@ -20,10 +20,10 @@
 .selecao-plano-container {
   color: var(--text-primary);
   max-width: 900px;
-  margin: 2rem auto; 
-  padding: 2rem; 
-  background-color: var(--bg-secondary); 
-  border-radius: 12px; 
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
   border: 1px solid var(--border-color);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   position: relative;
@@ -32,15 +32,15 @@
 
 .selecao-titulo {
   font-size: 1.8rem; font-weight: 700; color: var(--text-primary);
-  margin-bottom: 2rem; text-align: left; 
+  margin-bottom: 1.5rem; text-align: left;
   padding-bottom: 1rem;
 }
 
 .selecao-grid {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-content: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   padding: 0 0.5rem;
 }
 
@@ -120,7 +120,7 @@
 .comparison-table.visible {
   max-height: 1000px;
   opacity: 1;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   padding-top: 1.5rem;
 }
 
@@ -160,7 +160,7 @@
 .price-row .feature-label { font-weight: 600; }
 .price-value { font-weight: 600; font-size: 0.95rem; }
 
-.form-buttons { display: flex; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);}
+.form-buttons { display: flex; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);}
 .form-buttons--between { justify-content: space-between; align-items: center; }
 .button-primary, .button-secondary { 
     padding: 0.8rem 1.5rem; font-size: 0.95rem; font-weight: 600;
