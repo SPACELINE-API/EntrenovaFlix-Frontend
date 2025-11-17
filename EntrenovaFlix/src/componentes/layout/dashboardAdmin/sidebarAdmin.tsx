@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { FaLightbulb } from "react-icons/fa";
 import { FaBuildingUser } from "react-icons/fa6";
 import { PiMonitorPlayFill } from "react-icons/pi";
+import { IoNewspaperOutline } from "react-icons/io5";
 import '../../../styles/sidebarRH.css';
 
 function SidebarAdmin() { 
@@ -12,6 +13,7 @@ function SidebarAdmin() {
         const path = location.pathname;
         if (path.includes('/entrenovaAdmin/empresas')) return 'empresas';
         if (path.includes('/entrenovaAdmin/trilhas')) return 'trilhas';
+        if (path.includes('/entrenovaAdmin/diagnostico')) return 'diagnostico';
         return 'visao-geral';
     };
 
@@ -45,6 +47,13 @@ function SidebarAdmin() {
                 >
                     <PiMonitorPlayFill size={24}/>
                     Trilhas
+                </button>
+                 <button
+                    className={`sidebar-RH-item ${activeItem === 'diagnostico' ? 'active' : ''}`}
+                    onClick={() => navigate('/entrenovaAdmin/diagnostico')}
+                >
+                    <IoNewspaperOutline size={24}/>
+                    Diagnósticos 
                 </button>
             </nav>
         </div>
