@@ -2,7 +2,7 @@ import "../../styles/planos.css";
 import { MdOutlineTouchApp } from "react-icons/md";
 import { FaRegStar } from "react-icons/fa";
 import { PiUsersThreeBold } from "react-icons/pi";
-import GraficoPlano from "../../componentes/layout/planos";
+import GraficoPlano from "../../componentes/graficos/planos";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
