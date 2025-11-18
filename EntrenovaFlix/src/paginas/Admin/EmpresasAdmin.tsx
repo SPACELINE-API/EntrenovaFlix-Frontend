@@ -24,34 +24,6 @@ function EmpresasAdmin() {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
-    // Dados mockados para facilitar a estilização sem login
-    const MOCK_EMPRESAS: Empresa[] = [
-        {
-            cnpj: '00000000000191',
-            id: '1',
-            nome: 'Empresa X',
-            area: 'Área Y',
-            plano: 'Plano básico',
-            is_active: true,
-            lead: 18,
-            status_pagamento: 'pendente',
-            created_at: new Date().toISOString(),
-            total_usuarios: 10,
-        },
-        {
-            cnpj: '00000000000272',
-            id: '2',
-            nome: 'Empresa Z',
-            area: 'Tecnologia',
-            plano: 'Plano premium',
-            is_active: false,
-            lead: 7,
-            status_pagamento: 'aprovado',
-            created_at: new Date().toISOString(),
-            total_usuarios: 32,
-        },
-    ];
-
     const fetchEmpresas = useCallback(async () => {
         setLoading(true);
         try {
@@ -60,7 +32,6 @@ function EmpresasAdmin() {
         }
         catch (err: any) {
             console.error("Erro ao buscar empresas:", err);
-            setEmpresas(MOCK_EMPRESAS); // Deletar depois de concertar e conseguir carregar da API
             showNotification({
                 title: "Erro",
                 message: "Não foi possível carregar as empresas.",
