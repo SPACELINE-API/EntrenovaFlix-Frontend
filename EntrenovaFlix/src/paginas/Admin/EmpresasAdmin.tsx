@@ -1,27 +1,56 @@
 import { useState, useEffect, useCallback } from "react";
-import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text, TableScrollContainer } from '@mantine/core';
+import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconPencil, IconTrash, IconRefresh, IconAlertCircle } from '@tabler/icons-react';
 import api from '../../services/apiService';
+import '../../styles/funcionariosRH.css';
 import '../../styles/empresasAdmin.css';
 
 interface Empresa {
-    cpnj: string;
+    cnpj: string;
     id: string; // Visivel na tabela
     nome: string; // Visivel na tabela
     area: string; // Visivel na tabela
     plano: string | null; // Visivel na tabela
     is_active: boolean; // Visivel na tabela
     lead: number; // Visibel na tabela
-    status_pagamento: 'pedente' | 'aprovado';
+    status_pagamento: 'pendente' | 'aprovado';
     created_at: string;
-    funcionarios_ativos: number; // Visivel na tabela
+    total_usuarios: number;
 }
 
 function EmpresasAdmin() {
     const [empresas, setEmpresas] = useState<Empresa[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+
+    // Dados mockados para facilitar a estilização sem login
+    const MOCK_EMPRESAS: Empresa[] = [
+        {
+            cnpj: '00000000000191',
+            id: '1',
+            nome: 'Empresa X',
+            area: 'Área Y',
+            plano: 'Plano básico',
+            is_active: true,
+            lead: 18,
+            status_pagamento: 'pendente',
+            created_at: new Date().toISOString(),
+            total_usuarios: 10,
+        },
+        {
+            cnpj: '00000000000272',
+            id: '2',
+            nome: 'Empresa Z',
+            area: 'Tecnologia',
+            plano: 'Plano premium',
+            is_active: false,
+            lead: 7,
+            status_pagamento: 'aprovado',
+            created_at: new Date().toISOString(),
+            total_usuarios: 32,
+        },
+    ];
 
     const fetchEmpresas = useCallback(async () => {
         setLoading(true);
@@ -31,6 +60,7 @@ function EmpresasAdmin() {
         }
         catch (err: any) {
             console.error("Erro ao buscar empresas:", err);
+            setEmpresas(MOCK_EMPRESAS); // Deletar depois de concertar e conseguir carregar da API
             showNotification({
                 title: "Erro",
                 message: "Não foi possível carregar as empresas.",
@@ -69,16 +99,16 @@ function EmpresasAdmin() {
             <Table.Td>{emp.nome}</Table.Td>
             <Table.Td>{emp.area}</Table.Td>
             <Table.Td>{emp.plano || '-'}</Table.Td>
-            <Table.Td>{emp.funcionarios_ativos}</Table.Td>
-            <Table.Td>{emp.lead}</Table.Td>
+            <Table.Td style={{ textAlign: 'center' }}>{emp.total_usuarios}</Table.Td>
+            <Table.Td style={{ textAlign: 'center' }}>{emp.lead}</Table.Td>
             <Table.Td>
-                <Badge color={emp.is_active ? 'badge-active' : 'badge-inactive'}>
+                <Badge className={emp.is_active ? 'badge-active' : 'badge-inactive'}>
                     {emp.is_active ? 'Ativa' : 'Inativa'}
                 </Badge>
             </Table.Td>
             
             {/* Botões de Ações */}
-            <Table.Td>
+            <Table.Td className="th-actions">
                 <Group gap="xs">
                     <Tooltip label="Editar" withArrow position="top">
                         <ActionIcon variant="subtle" color="blue" onClick={() => handleEditar(emp)}>
@@ -96,40 +126,51 @@ function EmpresasAdmin() {
     ));
 
     return (
-        <Paper className="empresas-admin-container" shadow="xs" radius="md" withBorder>
-            <LoadingOverlay visible={loading} className="loading-overlay" />
-            <Group justify="space-between" mb="xl" className="header-group">
-                <div>
-                    <Text className="header-title">Gerenciamento de Empresas Contratantes</Text>
-                </div>
-            </Group>
+        <div>
+            <h1 style={{marginBottom: 32}}>Empresas</h1>
+            <Paper className="empresas-container" shadow="xs" radius="md" withBorder>
+                <LoadingOverlay visible={loading} className="loading-overlay" />
+                <Group justify="space-between" mb="xl" className="header-group">
+                    <div>
+                        <Text className="header-title">Gerenciamento de Empresas Contratantes</Text>
+                    </div>
+                    <Button
+                        variant="light"
+                        leftSection={<IconRefresh size={16} />}
+                        loading={refreshing}
+                        onClick={handleRefresh}
+                    >
+                        Atualizar
+                    </Button>
+                </Group>
 
-            <TableScrollContainer minWidth={600}>
-                <Table striped highlightOnHover withTableBorder withColumnBorders className="empresas-table">
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>ID</Table.Th>
-                            <Table.Th>Nome</Table.Th>
-                            <Table.Th>Área</Table.Th>
-                            <Table.Th>Plano</Table.Th>
-                            <Table.Th style={{textAlign: 'center'}}>Funcionários Ativos</Table.Th>
-                            <Table.Th style={{textAlign: 'center'}}>Lead</Table.Th>
-                            <Table.Th>Status</Table.Th>
-                            <Table.Th className="th-actions">Ações</Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>
-                        {rows.length ? rows : ( 
+                <Table.ScrollContainer minWidth={900}>
+                    <Table striped highlightOnHover withColumnBorders className="empresas-table">
+                        <Table.Thead >
                             <Table.Tr>
-                                <Table.Td colSpan={8} style={{ textAlign: 'center' }}>
-                                    {refreshing ? 'Atualizando empresas...' : 'Nenhuma empresa encontrada.'}
-                                </Table.Td>
+                                <Table.Th>ID</Table.Th>
+                                <Table.Th>Nome</Table.Th>
+                                <Table.Th>Área</Table.Th>
+                                <Table.Th>Plano</Table.Th>
+                                <Table.Th style={{textAlign: 'center'}}>Funcionários Ativos</Table.Th>
+                                <Table.Th style={{textAlign: 'center'}}>Lead</Table.Th>
+                                <Table.Th style={{textAlign: 'center'}}>Status</Table.Th>
+                                <Table.Th className="th-actions">Ações</Table.Th>
                             </Table.Tr>
-                        )}
-                    </Table.Tbody>
-                </Table>
-            </TableScrollContainer>
-        </Paper>
+                        </Table.Thead>
+                        <Table.Tbody>
+                            {rows.length ? rows : ( 
+                                <Table.Tr>
+                                    <Table.Td colSpan={8} style={{ textAlign: 'center' }}>
+                                        {refreshing ? 'Atualizando empresas...' : 'Nenhuma empresa encontrada.'}
+                                    </Table.Td>
+                                </Table.Tr>
+                            )}
+                        </Table.Tbody>
+                    </Table>
+                </Table.ScrollContainer>
+            </Paper>
+        </div>
     );
 }
 
