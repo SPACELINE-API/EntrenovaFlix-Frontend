@@ -1,8 +1,135 @@
+import { useState, useEffect, useCallback } from "react";
+import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text, TableScrollContainer } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
+import { IconPencil, IconTrash, IconRefresh, IconAlertCircle } from '@tabler/icons-react';
+import api from '../../services/apiService';
+import '../../styles/empresasAdmin.css';
+
+interface Empresa {
+    cpnj: string;
+    id: string; // Visivel na tabela
+    nome: string; // Visivel na tabela
+    area: string; // Visivel na tabela
+    plano: string | null; // Visivel na tabela
+    is_active: boolean; // Visivel na tabela
+    lead: number; // Visibel na tabela
+    status_pagamento: 'pedente' | 'aprovado';
+    created_at: string;
+    funcionarios_ativos: number; // Visivel na tabela
+}
+
 function EmpresasAdmin() {
+    const [empresas, setEmpresas] = useState<Empresa[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const fetchEmpresas = useCallback(async () => {
+        setLoading(true);
+        try {
+            const resp = await api.get<Empresa[]>("empresas");
+            setEmpresas(resp.data);
+        }
+        catch (err: any) {
+            console.error("Erro ao buscar empresas:", err);
+            showNotification({
+                title: "Erro",
+                message: "Não foi possível carregar as empresas.",
+                color: "red",
+                icon: <IconAlertCircle />,
+                autoClose: 4000,
+                position: 'top-right',
+            });
+        }
+        finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchEmpresas();
+    }, [fetchEmpresas]);
+
+    const handleEditar = (empresa: Empresa) => {
+        // Em desenvolvimento
+    }
+
+    const handleDeletar = async (empresa: Empresa) => {
+        // Em desenvolvimento
+    }
+
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        await fetchEmpresas();
+        setRefreshing(false);
+    }
+
+    const rows = empresas.map((emp) => (
+        <Table.Tr key={emp.id}>
+            <Table.Td>{emp.id}</Table.Td>
+            <Table.Td>{emp.nome}</Table.Td>
+            <Table.Td>{emp.area}</Table.Td>
+            <Table.Td>{emp.plano || '-'}</Table.Td>
+            <Table.Td>{emp.funcionarios_ativos}</Table.Td>
+            <Table.Td>{emp.lead}</Table.Td>
+            <Table.Td>
+                <Badge color={emp.is_active ? 'badge-active' : 'badge-inactive'}>
+                    {emp.is_active ? 'Ativa' : 'Inativa'}
+                </Badge>
+            </Table.Td>
+            
+            {/* Botões de Ações */}
+            <Table.Td>
+                <Group gap="xs">
+                    <Tooltip label="Editar" withArrow position="top">
+                        <ActionIcon variant="subtle" color="blue" onClick={() => handleEditar(emp)}>
+                            <IconPencil size={18} />
+                        </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label="Deletar" withArrow position="top">
+                        <ActionIcon variant="subtle" color="red" onClick={() => handleDeletar(emp)}>
+                            <IconTrash size={18} />
+                        </ActionIcon>
+                    </Tooltip>
+                </Group>
+            </Table.Td>
+        </Table.Tr>
+    ));
+
     return (
-        <div>
-            <h1>Empresas</h1>
-        </div>
+        <Paper className="empresas-admin-container" shadow="xs" radius="md" withBorder>
+            <LoadingOverlay visible={loading} className="loading-overlay" />
+            <Group justify="space-between" mb="xl" className="header-group">
+                <div>
+                    <Text className="header-title">Gerenciamento de Empresas Contratantes</Text>
+                </div>
+            </Group>
+
+            <TableScrollContainer minWidth={600}>
+                <Table striped highlightOnHover withTableBorder withColumnBorders className="empresas-table">
+                    <Table.Thead>
+                        <Table.Tr>
+                            <Table.Th>ID</Table.Th>
+                            <Table.Th>Nome</Table.Th>
+                            <Table.Th>Área</Table.Th>
+                            <Table.Th>Plano</Table.Th>
+                            <Table.Th style={{textAlign: 'center'}}>Funcionários Ativos</Table.Th>
+                            <Table.Th style={{textAlign: 'center'}}>Lead</Table.Th>
+                            <Table.Th>Status</Table.Th>
+                            <Table.Th className="th-actions">Ações</Table.Th>
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                        {rows.length ? rows : ( 
+                            <Table.Tr>
+                                <Table.Td colSpan={8} style={{ textAlign: 'center' }}>
+                                    {refreshing ? 'Atualizando empresas...' : 'Nenhuma empresa encontrada.'}
+                                </Table.Td>
+                            </Table.Tr>
+                        )}
+                    </Table.Tbody>
+                </Table>
+            </TableScrollContainer>
+        </Paper>
     );
 }
 
