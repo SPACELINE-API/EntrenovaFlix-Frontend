@@ -15,7 +15,7 @@ function TrilhasRH() {
             <div className="trilhas-topo">
                 <GraficoAtividade />
                 <div className="trilhas-ativas">
-                    <h2 className="subtitulo">TRILHAS ATIVAS</h2>
+                    <h2 className="trilhas-ativas-subtitulo">TRILHAS ATIVAS</h2>
                     <h3 className="card-trilhas-ativas"> <FaCircleArrowUp className="icone-trilhas" /> Vendas online</h3>
                     <h3 className="card-trilhas-ativas"> <FaCircleArrowUp className="icone-trilhas" /> Liderança persuasiva</h3>
                 </div>

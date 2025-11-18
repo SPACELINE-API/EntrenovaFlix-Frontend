@@ -12,9 +12,10 @@
 .trilhas-topo {
     display: flex;
     flex-direction: row;
-    gap: 3rem;
+    gap: 2rem;
     margin-top: 1.8rem;
     justify-content: space-between;
+    width: 62.5rem;
 }
 
 .trilhas-grafico {
@@ -24,7 +25,6 @@
     border-radius: 0.5rem; 
     border: 1px solid #857DDB;
     padding-top: 1.5625rem;
-    
 }
 
 .trilhas-cards {
@@ -38,9 +38,13 @@
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
-    margin-top: 0.625rem;
     font-family: 'Satoshi';
     color: #cdcdcd;
+    width: 18.75rem;
+}
+
+.trilhas-ativas-subtitulo {
+    margin-top: 0px;
 }
 
 .icone-trilhas {
@@ -80,11 +84,18 @@
     gap: 1rem;
 }
 
+.container-diagnostico-graficos {
+    display: flex;
+    flex-direction: column;
+    width: 63.125rem;
+}
+
 .diagnostico-graficos {
     display: flex;
     flex-direction: row;
     gap: 2rem;
     margin-top: 3rem;
+    width: 100%;
 }
 
 /* Relatório */
@@ -94,6 +105,7 @@
     border: 1px solid #857DDB;
     padding: 2rem;
     margin-top: 3rem;
+    width: 100%;
 }
 
 .icone-relatorio {
@@ -188,12 +200,14 @@
     border: 1px solid #857DDB;
     border-radius: 10px;
     width: 250px;
-    padding: 16px;
+    padding: 20px;
 }
 
 .painel-titulo {
     font-family: 'Kollektif';
     font-weight: 600;
+    font-size: 22px;
+    margin-top: -1px;
 }
 
 .painel-estatisticas {
@@ -267,8 +281,8 @@
 
 .visaoGeral-subtitulo {
     font-family: 'Satoshi';
-    font-size: 1rem;
-    color: #cdcdcd;
+    font-size: 1.5rem;
+    color: #fff;
 }
 
 /* Subtitulo geral */

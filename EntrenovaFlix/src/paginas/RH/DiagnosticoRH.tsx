@@ -92,9 +92,8 @@ const DiagnosticoRH: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className='container-diagnostico-graficos'>
             <h1 className="titulo">Diagnósticos</h1>
-
             <div className='diagnostico-botoes'>
                 <div className="dropdown-btn">
                     <button onClick={() => setMenuAberto1(!menuAberto1)}>
