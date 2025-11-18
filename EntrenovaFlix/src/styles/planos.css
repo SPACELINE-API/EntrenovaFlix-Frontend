@@ -67,7 +67,7 @@ h2{
     
 }
 .botao-plano button{
-    background: linear-gradient(90deg, #5449CC, #7460FF, #5449CC);
+    background:  #5449CC;
     color:#fff;
     border-radius: 13px;
     padding: 0.8rem 1.0rem;
@@ -76,7 +76,7 @@ h2{
 }
 
 .botao-plano button:hover {
-  box-shadow: 0 0 5px #5449CC, 0 0 8px #5449CC;
+  box-shadow: 0 0 2px #5449CC;
   transform: scale(1.1);  
   cursor: pointer;
 }
