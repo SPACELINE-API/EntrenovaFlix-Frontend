@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { IconPencil, IconTrash, IconRefresh, IconAlertCircle } from '@tabler/icons-react';
+import { IconPencil, IconTrash, IconRefresh, IconAlertCircle, IconChartBar } from '@tabler/icons-react';
 import api from '../../services/apiService';
 import '../../styles/funcionariosRH.css';
 import '../../styles/empresasAdmin.css';
+import { useNavigate } from "react-router-dom";
 
 interface Empresa {
     cnpj: string;
@@ -20,6 +21,7 @@ interface Empresa {
 }
 
 function EmpresasAdmin() {
+    const navigate = useNavigate();
     const [empresas, setEmpresas] = useState<Empresa[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -53,6 +55,9 @@ function EmpresasAdmin() {
     const handleEditar = (empresa: Empresa) => {
         // Em desenvolvimento
     }
+    const handleDiagnostico = (empresa: Empresa) => {
+        navigate(`/entrenovaAdmin/diagnostico/${empresa.cnpj}`);
+    };
 
     const handleDeletar = async (empresa: Empresa) => {
         // Em desenvolvimento
@@ -84,6 +89,11 @@ function EmpresasAdmin() {
                     <Tooltip label="Editar" withArrow position="top">
                         <ActionIcon variant="subtle" color="blue" onClick={() => handleEditar(emp)}>
                             <IconPencil size={18} />
+                        </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label="Ver Diagnóstico" withArrow position="top">
+                        <ActionIcon variant="subtle" color="teal" onClick={() => handleDiagnostico(emp)}>
+                            <IconChartBar size={18} />
                         </ActionIcon>
                     </Tooltip>
                     <Tooltip label="Deletar" withArrow position="top">

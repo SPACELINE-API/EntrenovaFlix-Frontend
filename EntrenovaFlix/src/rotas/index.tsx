@@ -36,6 +36,7 @@ import EmpresasAdmin from '../paginas/Admin/EmpresasAdmin';
 import TrilhasAdmin from '../paginas/Admin/TrilhasAdmin';
 import DiagnosticoAdmin from '../paginas/Admin/DiagnosticoAdmin';
 
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -125,8 +126,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <DashboardAdmin /> },
       { path: 'empresas', element: <EmpresasAdmin />},
-      { path: 'diagnostico', element: <DiagnosticoAdmin/>},
       { path: 'trilhas', element: <TrilhasAdmin />},
+      { path: 'diagnostico/:cnpj?', element: <DiagnosticoAdmin /> },
       
     ],
   },
