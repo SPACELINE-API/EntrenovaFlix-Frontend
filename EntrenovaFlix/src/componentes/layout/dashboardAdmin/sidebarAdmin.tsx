@@ -54,6 +54,16 @@ function SidebarAdmin() {
           <PiMonitorPlayFill size={24} />
           <span>Trilhas</span>
         </button>
+
+        <button
+          className={`sidebar-RH-item ${
+            activeItem === "feedback" ? "active" : ""
+          }`}
+          onClick={() => navigate("/entrenovaAdmin/feedback")}
+        >
+          <MdOutlineFeedback size={24} />
+          Feedback
+        </button>
       </nav>
 
       <button
