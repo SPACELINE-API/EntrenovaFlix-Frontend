@@ -71,7 +71,6 @@ function EmpresasAdmin() {
 
     const rows = empresas.map((emp) => (
         <Table.Tr key={emp.id}>
-            <Table.Td>{emp.id}</Table.Td>
             <Table.Td>{emp.nome}</Table.Td>
             <Table.Td>{emp.area}</Table.Td>
             <Table.Td>{emp.plano || '-'}</Table.Td>
@@ -110,10 +109,9 @@ function EmpresasAdmin() {
         <div>
             <h1 style={{marginBottom: 32}}>Empresas</h1>
             <Paper className="empresas-container" shadow="xs" radius="md" withBorder>
-                <LoadingOverlay visible={loading} className="loading-overlay" />
                 <Group justify="space-between" mb="xl" className="header-group">
                     <div>
-                        <Text className="header-title">Gerenciamento de Empresas Contratantes</Text>
+                        <Text component="h1" size="xl" fw={700} className="header-title">Gerenciamento de Empresas Contratantes</Text>
                     </div>
                     <Button
                         variant="light"
@@ -126,14 +124,14 @@ function EmpresasAdmin() {
                 </Group>
 
                 <Table.ScrollContainer minWidth={900}>
-                    <Table striped highlightOnHover withColumnBorders className="empresas-table">
+                    <LoadingOverlay visible={loading} className="loading-overlay" overlayProps={{color: '#4a4a4a', blur: 2, radius: 8}} />
+                    <Table striped highlightOnHover highlightOnHoverColor="#252525ff" withColumnBorders className="empresas-table">
                         <Table.Thead >
                             <Table.Tr>
-                                <Table.Th>ID</Table.Th>
                                 <Table.Th>Nome</Table.Th>
                                 <Table.Th>Área</Table.Th>
                                 <Table.Th>Plano</Table.Th>
-                                <Table.Th style={{textAlign: 'center'}}>Funcionários Ativos</Table.Th>
+                                <Table.Th style={{textAlign: 'center', width: 80}}>Funcionários Ativos</Table.Th>
                                 <Table.Th style={{textAlign: 'center'}}>Lead</Table.Th>
                                 <Table.Th style={{textAlign: 'center'}}>Status</Table.Th>
                                 <Table.Th className="th-actions">Ações</Table.Th>
