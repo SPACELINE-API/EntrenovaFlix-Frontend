@@ -1,0 +1,183 @@
+.detail-container {
+  padding: 2rem;
+  background-color: #202020;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  color: #e0e0e0;
+}
+
+.detail-error {
+  color: #f2dede;
+  background-color: #3f1a1a;
+  border: 1px solid #d9534f;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.detail-back-button {
+  background: none;
+  border: none;
+  color: #a0a0ff;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.detail-header {
+  background-color: #2c2c2c;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1.5rem;
+}
+
+.detail-header h2 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+.detail-info {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #c0c0c0;
+  align-items: center;
+}
+
+.detail-status {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+}
+
+.status-aberto { 
+  background-color: #43A047;
+}
+.status-fechado { 
+  background-color: #E57373;
+}
+.status-pendente { 
+  background-color: #FFD54F; 
+  color: #333; 
+}
+
+.detail-messages {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.message-bubble {
+  padding: 1rem;
+  border-radius: 12px;
+  max-width: 70%;
+  line-height: 1.4;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.message-sender {
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.rh-msg {
+  background-color: #383838;
+  color: #e0e0e0;
+  align-self: flex-start;
+  border-top-left-radius: 0;
+}
+
+.admin-msg {
+  background-color: #6a1b9a;
+  color: #fff;
+  align-self: flex-end;
+  border-top-right-radius: 0;
+}
+
+.admin-msg .message-sender {
+  color: #f0f0f0;
+}
+
+.message-timestamp {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
+
+
+.detail-reply-area,
+.detail-closed-notice {
+  background-color: #2c2c2c;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.detail-reply-area textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #383838;
+  background-color: #202020;
+  color: #e0e0e0;
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+.detail-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail-actions button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.detail-actions button:disabled {
+  background-color: #555;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.detail-actions button:first-of-type {
+  background-color: #007bff;
+  color: white;
+}
+.detail-actions button:first-of-type:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.close-ticket-btn {
+  background-color: #D9534F;
+  color: white;
+}
+.close-ticket-btn:hover:not(:disabled) {
+  background-color: #c9302c;
+}
+
+.detail-closed-notice {
+  text-align: center;
+  color: #aaa;
+}
+
+.detail-closed-notice h3 {
+  color: #E57373;
+}
