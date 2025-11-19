@@ -36,6 +36,7 @@ import EmpresasAdmin from '../paginas/Admin/EmpresasAdmin';
 import TrilhasAdmin from '../paginas/Admin/TrilhasAdmin';
 import FeedbackAdmin from '../paginas/Admin/feedbackAdmin';
 
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -129,7 +130,12 @@ const router = createBrowserRouter([
       { index: true, element: <DashboardAdmin /> },
       { path: 'empresas', element: <EmpresasAdmin />},
       { path: 'trilhas', element: <TrilhasAdmin />},
+<<<<<<< Updated upstream
       { path: 'feedback', element: <FeedbackAdmin />}
+=======
+      { path: 'diagnostico/:cnpj?', element: <DiagnosticoAdmin /> },
+      
+>>>>>>> Stashed changes
     ],
    },
   ],
