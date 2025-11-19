@@ -513,7 +513,7 @@
   
 }
 
-.modal-header {
+.modal-header{
   display: flex;
   align-items: center; 
   
@@ -524,8 +524,9 @@
   color: #28a745;
   margin-top: 0;
   margin-left: 0;
-
+  
 }
+
 .modal-content h2 {
   margin-top: 0;
   margin-bottom: 0; 

@@ -60,6 +60,7 @@ function TelaSelecaoPlano() {
     const planoInicial = (location.state?.plano as PlanoEscolhido) || ""; 
     const [planoSelecionado, setPlanoSelecionado] = useState<PlanoEscolhido>(planoInicial);
     const [erro, setErro] = useState<string | null>(null);
+    const [modalAberto, setModalAberto] = useState(false);
 
     const handleSelecionarPlano = (planoId: PlanoEscolhido) => {
         setPlanoSelecionado(prev => prev === planoId ? "" : planoId);
@@ -71,17 +72,38 @@ function TelaSelecaoPlano() {
             setErro("Por favor, selecione um plano para continuar.");
             return;
         }
-        navigate('/cadastro/pagamento', { state: { plano: planoSelecionado } }); 
+        setModalAberto(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalAberto(false);
+        navigate("/dashboardRH");
+         
     };
 
     const handleVoltar = () => { 
-        navigate('/cadastro'); 
+        navigate('/dashboardRH/planos'); 
     };
 
     const planoDetalhes = planosDisponiveis.find(p => p.id === planoSelecionado);
 
     return (
         <div className="selecao-plano-wrapper dark-theme"> 
+        {modalAberto && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h2>Plano atualizado ✓</h2>
+                        </div>
+
+                        <p>Sua assinatura foi alterada! As mudanças ocorreão imediatamente</p>
+
+                        <button onClick={handleCloseModal} className="button-primary">
+                            Continuar
+                        </button>
+                    </div>
+                </div>
+            )}
             <div className="selecao-plano-container"> 
                 <h2 className="selecao-titulo">Escolha o plano ideal para você</h2>
 
@@ -139,4 +161,3 @@ function TelaSelecaoPlano() {
 }
 
 export default TelaSelecaoPlano;
-    
