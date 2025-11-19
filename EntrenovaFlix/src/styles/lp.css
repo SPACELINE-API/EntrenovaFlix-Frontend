@@ -11,10 +11,7 @@
   src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
 }
 
-html {
-  scrollbar-color: #6e6e6ec5 #202020;
-  scrollbar-width: thin;
-}
+
 .bodyLp {
   background-color: #141414;
   width: 100%;
