@@ -44,22 +44,28 @@
     flex-direction: row;
     justify-content: space-between;
     height: 1.875rem;
+    margin-bottom: 1rem;
+}
+
+.modal-titulo {
+    font-size: 1.5rem;
 }
 
 .modal-titulo-categoria {
     display: flex;
     flex-direction: row;
-    width: 31.25rem;
+    gap: 1rem;
+    width: 35rem;
     justify-content: space-between;
 }
 
 .feedback-forms {
     display: flex;
     flex-direction: column;
-    height: 25.625rem;
-    width: 43.75rem;
+    height: 31rem;
+    width: 48rem;
     background-color: #1A1A1A;
-    padding: 1.25rem;
+    padding: 2.25rem;
     border: 1px solid #857DDB;
     border-radius: 15px;
     font-family: 'Satoshi';
@@ -74,7 +80,7 @@
     border: none;
     border-radius: 10px;
     padding: 6px;
-    margin-top: 1.25rem;
+    margin-top: 1.75rem;
     width: 9.375rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -98,12 +104,19 @@
     height: 1.5625rem;
 }
 
+.feedback-descricao {
+    font-family: 'Satoshi';
+    font-size: 1.3rem;
+    margin-top: 15px;
+}
+
 .titulo-input {
     background-color: #1A1A1A;
     border: 1.5px solid #494848;
     border-radius: 7px;
-    width: 18.75rem;
+    width: 29.50rem;
     color: #fff;
+    padding: 12px;
 }
 
 .titulo-input:focus {
@@ -118,6 +131,7 @@
     resize: none;
     color: #fff;
     height: 9.375rem;
+    padding: 12px;
 }
 
 .descricao-input:focus {
@@ -130,6 +144,7 @@
     color: #fff;
     border-radius: 7px;
     outline: none;
+    padding: 10px;
 }
 
 .categoria-input:focus {
@@ -148,7 +163,7 @@ label {
     display: flex;
     flex-direction: column;
     border-radius: 1.25rem;
-    margin-top: 1.25rem;
+    margin-top: 3rem;
 }
 
 .card-ticket {

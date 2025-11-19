@@ -109,6 +109,9 @@ function TelaFeedbacks() {
         <div className='container-feedback'>
             <h1 className='titulo'>Tickets</h1>
 
+            <p className='feedback-descricao'>Clique em <em>Novo Ticket</em> para registrar uma dúvida ou sugestão direcionada ao gerente de Recursos Humanos.
+                Os tickets enviados serão exibidos na seção <em>Abertos</em> e, após serem analisados e respondidos pela equipe de RH, serão movidos para a seção <em>Encerrados</em>.</p>
+
             <button className='feedback-btn' onClick={() => setAberto(true)}>
                 Novo ticket +
             </button>
@@ -117,7 +120,7 @@ function TelaFeedbacks() {
                 <div className='modal'>
                     <form className="feedback-forms" onSubmit={handleSubmit}>
                         <div className='modal-topo'>
-                            <h3>Novo feedback</h3>
+                            <h3 className='modal-titulo'>Novo feedback</h3>
                             <button className='fechar-btn' type="button" onClick={() => setAberto(false)}>
                                 <AiOutlineClose className='fechar-btn-icone' />
                             </button>
@@ -154,7 +157,7 @@ function TelaFeedbacks() {
 
             <div className="container-tickets">
 
-                {tickets.filter(t => t.status === "pendente").length === 0 ? (
+                {tickets.filter(t => t.status === "aberto").length === 0 ? (
                     <div className="container-tickets-abertos">
                         <h2 className='subtitulo'>
                             Abertos <IoMdStopwatch className='card-ticket-icone' />
@@ -168,7 +171,7 @@ function TelaFeedbacks() {
                         </h2>
 
                         {tickets
-                            .filter(t => t.status === "pendente")
+                            .filter(t => t.status === "aberto")
                             .map(t => (
                                 <div className='card-ticket' key={t.id}>
                                     <div className='card-ticket-dados'>
@@ -182,7 +185,7 @@ function TelaFeedbacks() {
                     </div>
                 )}
 
-                {tickets.filter(t => t.status !== "pendente").length === 0 ? (
+                {tickets.filter(t => t.status !== "aberto").length === 0 ? (
                     <div className="container-tickets">
                         <h2 className='subtitulo'>
                             Encerrados <IoCheckmarkDoneOutline className='card-ticket-icone' />
@@ -196,7 +199,7 @@ function TelaFeedbacks() {
                         </h2>
 
                         {tickets
-                            .filter(t => t.status !== "pendente")
+                            .filter(t => t.status !== "aberto")
                             .map(t => (
                                 <div className='card-ticket-resposta' key={t.id}>
                                     <div className='card-ticket-dados'>
