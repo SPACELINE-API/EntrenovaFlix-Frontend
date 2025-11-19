@@ -2,17 +2,12 @@
   font-family: 'Satoshi';
   src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
 }
-html, bodyChat {
+bodyChat {
   height: 100%;
   overflow-y: auto; 
   scrollbar-width: thin;
   scrollbar-color:  #141414; 
   background-color: #141414 !important;
-}
-
-html::-webkit-scrollbar,
-bodyChat::-webkit-scrollbar {
-  width: 4px;
 }
 
 .inicio-container {

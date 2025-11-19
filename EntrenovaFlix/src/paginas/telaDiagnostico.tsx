@@ -177,14 +177,6 @@ export default function TelaDiagnostico() {
               </div>
             )}
           </div>
-          <div className="diag-right">
-            {leadScoreInfo ? (
-              <div className={`lead-score-pill ${leadScoreInfo.className}`}>
-                <div className="score-number">{leadScoreInfo.score}</div>
-                <div className="score-label">Lead ({leadScoreInfo.classification})</div>
-              </div>
-            ) : <div className="lead-score-pill">...</div>}
-          </div>
         </div>
 
         <div className="categories-grid">
@@ -255,6 +247,9 @@ export default function TelaDiagnostico() {
           <div className="proximos-grid">
             {proximosPassos ? ['curto_prazo', 'medio_prazo', 'longo_prazo'].map((p, i) => {
               const step = proximosPassos[p as keyof ProximosPassosData];
+              if (!step) {
+              return null;
+            }
               const label = p === 'curto_prazo' ? '1-2 sem' : p === 'medio_prazo' ? '2-4 sem' : '+6 sem';
               const cls = p === 'curto_prazo' ? 'curto-prazo' : p === 'medio_prazo' ? 'medio-prazo' : 'longo-prazo';
               return (

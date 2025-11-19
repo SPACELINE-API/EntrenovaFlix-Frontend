@@ -3,13 +3,14 @@ import '../../../styles/headerRH.css';
 interface HeaderRHProps {
     userName?: string;
     userAvatar?: string;
+    pageTitle?: string;
 }
 
-function HeaderRH({ userName = "PLACEHOLDER", userAvatar }: HeaderRHProps) {
+function HeaderRH({ userName = "PLACEHOLDER", userAvatar, pageTitle }: HeaderRHProps) {
     return (
         <header className="header-RH">
             <div className="header-RH-content">
-                <h2 className="header-RH-title">DASHBOARD PARA GESTÃO DE EQUIPE</h2>
+                <h2 className="header-RH-title">{pageTitle}</h2>
 
                 <div className="header-RH-user">
                     <div className="user-avatar">

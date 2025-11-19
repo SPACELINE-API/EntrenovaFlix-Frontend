@@ -12,7 +12,7 @@ export default function FormEmpresa({
     errors,
     onCepBlur,
     isLoadingCep,
-    cepError
+    cepError,
 }: FormEmpresaProps) {
     return (
         <div className="form-section">
