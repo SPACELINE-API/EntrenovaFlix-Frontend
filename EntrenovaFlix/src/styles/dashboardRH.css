@@ -48,7 +48,7 @@
 }
 
 .trilhas-ativas {
-    flex: 0 0 20%;
+    flex: 0 0 15%;
     max-width: 20%;
     display: flex;
     flex-direction: column;
@@ -60,6 +60,7 @@
 
 .icone-trilhas {
     color: #34A853;
+    margin-right: 10px;
 }
 
 .dropdown-btn button {

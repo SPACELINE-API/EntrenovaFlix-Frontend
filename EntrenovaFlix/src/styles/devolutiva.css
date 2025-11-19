@@ -31,15 +31,6 @@
   margin:0; 
   padding:0; 
 }
-html,body,#root { 
-  height:100%; 
-}
-body {
-  background: linear-gradient(180deg,#101830 0%, #0b1020 80%); 
-  color:var(--text);
-  font-family:'Satoshi', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  -webkit-font-smoothing:antialiased;
-}
 
 .container { 
   max-width:var(--max-width); 

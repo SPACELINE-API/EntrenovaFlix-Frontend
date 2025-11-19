@@ -10,15 +10,23 @@ import { FaCheck } from "react-icons/fa";
 
 function TrilhasRH() {
     return (
-        <div>
+        <div className="dashboard-rh-main">
             <div className="trilhas-topo">
                 <GraficoAtividade />
+
                 <div className="trilhas-ativas">
                     <h2 className="subtitulo">TRILHAS ATIVAS</h2>
-                    <h3 className="card-trilhas-ativas"> <FaCircleArrowUp className="icone-trilhas" /> Vendas online</h3>
-                    <h3 className="card-trilhas-ativas"> <FaCircleArrowUp className="icone-trilhas" /> Liderança persuasiva</h3>
+                    <h3 className="card-trilhas-ativas"> 
+                        <FaCircleArrowUp className="icone-trilhas" /> 
+                        Vendas online
+                    </h3>
+                    <h3 className="card-trilhas-ativas"> 
+                        <FaCircleArrowUp className="icone-trilhas" /> 
+                        Liderança persuasiva
+                    </h3>
                 </div>
             </div>
+
             <div className="trilhas-cards">
                 <Card titulo="Tempo médio gasto nas atividades" valor="18h" icone={<MdTimer className='icone' />} />
                 <Card titulo="Atividades concluídas" valor="55" icone={<FaCheck className='icone' />} />
@@ -28,5 +36,6 @@ function TrilhasRH() {
         </div>
     );
 }
+
 
 export default TrilhasRH;

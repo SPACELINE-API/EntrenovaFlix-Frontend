@@ -1,9 +1,8 @@
 .dashboard-rh-layout {
     display: flex;
-    height: 100vh;
-    overflow: hidden;
     background-color: #1F1F1F;
     position: relative;
+    overflow: hidden;
 }
 
 .dashboard-rh-layout > * {
@@ -20,7 +19,7 @@
 }
 
 .dashboard-rh-layout::before {
-    top: 450px;
+    top: 700px;
     width: 700px;
     height: 700px;
     background: radial-gradient(circle, rgba(90, 79, 207, 0.45) 0%, rgba(20, 20, 20, 0) 70%);
@@ -47,9 +46,8 @@
     flex: 1;
     padding: 40px;
     color: #fafafa;
-    overflow-y: auto;
-    overflow-x: hidden;
     min-width: 0;
+    overflow: hidden;
 }
 
 .general-cards {
