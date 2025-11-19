@@ -7,6 +7,7 @@ import '../../../styles/dashboardRHLayout.css';
 
 interface DashboardRHLayoutProps {
   userAvatar?: string;
+  pageTitle?: string;
 }
 
 interface DecodedToken {
@@ -16,7 +17,7 @@ interface DecodedToken {
   email: string;
 }
 
-function DashboardRHLayout({ userAvatar }: DashboardRHLayoutProps) {
+function DashboardRHLayout({ userAvatar, pageTitle }: DashboardRHLayoutProps) {
   const [userName, setUserName] = useState<string>("Usuário");
 
   useEffect(() => {
@@ -39,7 +40,7 @@ function DashboardRHLayout({ userAvatar }: DashboardRHLayoutProps) {
     <div className="dashboard-rh-layout">
       <SidebarRH />
       <div className="dashboard-rh-content">
-        <HeaderRH userName={userName} userAvatar={userAvatar} />
+        <HeaderRH userName={userName} userAvatar={userAvatar} pageTitle={pageTitle} />
         <main className="dashboard-rh-main">
           <Outlet />
         </main>

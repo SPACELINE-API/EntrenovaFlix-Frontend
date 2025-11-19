@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import  api  from '../../services/apiService'; // 👈 Seu serviço de API
-import '../../styles/historico.css'; // 👈 Crie um CSS para estilizar
+import  api  from '../../services/apiService'; 
+import '../../styles/historico.css'; 
 
 interface DiagnosticoResumo {
-  id: string; // uuid
+  id: string; 
   created_at: string;
   tipo_trilha: string;
 }

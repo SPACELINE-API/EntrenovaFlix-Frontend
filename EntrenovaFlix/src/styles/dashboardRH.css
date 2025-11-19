@@ -18,8 +18,8 @@
 }
 
 .trilhas-grafico {
-    flex: 1; /* ocupa todo o espaço disponível do lado esquerdo */
-    max-width: 700px; /* opcional, para não ficar gigante em telas grandes */
+    flex: 1; 
+    max-width: 700px; 
     background-color: #2F333E;
     border-radius: 0.5rem; 
     border: 1px solid #857DDB;

@@ -118,15 +118,20 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/entrenovaAdmin',
+  path: '/entrenovaAdmin',
+  element: <PrivateRoute allowedRoles={['admin']} />, 
+  errorElement: <NotFoundPage />,
+  children: [
+   {
     element: <DashboardAdminLayout />,
-    errorElement: <NotFoundPage />,
     children: [
-      { index: true, element: <DashboardAdmin /> },
-      { path: 'empresas', element: <EmpresasAdmin />},
-      { path: 'trilhas', element: <TrilhasAdmin />},
+     { index: true, element: <DashboardAdmin /> },
+     { path: 'empresas', element: <EmpresasAdmin />},
+     { path: 'trilhas', element: <TrilhasAdmin />},
     ],
-  },
+   },
+  ],
+ },
   {
     path: '/pagchatbot',
     element: <ChatBotInicio />,
