@@ -93,7 +93,7 @@ function TelaSelecaoPlano() {
                 <div className="modal">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h2>Plano atualizado ✓</h2>
+                            <h2>Plano atualizado</h2>
                         </div>
 
                         <p>Sua assinatura foi alterada! As mudanças ocorreão imediatamente</p>

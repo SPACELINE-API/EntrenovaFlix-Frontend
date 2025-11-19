@@ -513,24 +513,26 @@
   
 }
 
-.modal-header{
+.modal-header {
   display: flex;
-  align-items: center; 
+  align-items: center;
   
 }
 
 .modal-content .icon {
   font-size: 1.8rem; 
   color: #28a745;
-  margin-top: 0;
-  margin-left: 0;
-  
-}
+  margin: 0;  
 
+}
 .modal-content h2 {
   margin-top: 0;
   margin-bottom: 0; 
   color: #d9d4d4;
+  white-space: nowrap;
+  margin-left:15px;
+ 
+ 
 }
 
 .modal-content p {
