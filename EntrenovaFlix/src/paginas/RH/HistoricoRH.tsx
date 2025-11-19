@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import  api  from '../../services/apiService'; // 👈 Seu serviço de API
-import '../../styles/historico.css'; // 👈 Crie um CSS para estilizar
+import  api  from '../../services/apiService'; 
+import '../../styles/historico.css'; 
 
 interface DiagnosticoResumo {
-  id: string; // uuid
+  id: string; 
   created_at: string;
   tipo_trilha: string;
 }
@@ -33,27 +33,28 @@ const [historico, setHistorico] = useState<DiagnosticoResumo[]>([]);
   }, []); 
 
   return (
-    <div className="historico-container">
-      <h1 className="titulo">Histórico de Conversas com o ChatBot</h1>
-      {isLoading ? <p>Carregando...</p> : (
-        <div className="historico-card">
-          {historico.map(item => (
-            <Link 
-              to={`/dashboardRH/historicoChatbot/${item.id}`} 
-              key={item.id} 
-              className="historico-item"
-            >
-              <div>
-                <strong>{item.tipo_trilha}</strong>
-                <small>
-                  {new Date(item.created_at).toLocaleDateString('pt-BR')}
-                </small>
-              </div>
-              <span>Ver Detalhes</span>
-            </Link>
-          ))}
-        </div>
-      )}
+    <div className='dahboard-rh-main'>
+      <div className="historico-container">
+        {isLoading ? <p>Carregando...</p> : (
+          <div className="historico-card">
+            {historico.map(item => (
+              <Link 
+                to={`/dashboardRH/historicoChatbot/${item.id}`} 
+                key={item.id} 
+                className="historico-item"
+              >
+                <div>
+                  <strong>{item.tipo_trilha}</strong>
+                  <small>
+                    {new Date(item.created_at).toLocaleDateString('pt-BR')}
+                  </small>
+                </div>
+                <span>Ver Detalhes</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
