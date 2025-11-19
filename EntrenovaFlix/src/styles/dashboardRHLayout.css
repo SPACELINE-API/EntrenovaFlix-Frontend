@@ -114,17 +114,3 @@
         gap: 16px;
     }
 }
-
-@media (max-width: 550px) {
-    .dashboard-rh-main {
-        padding: 12px;
-    }
-    .general-cards {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    .graficos-container {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-}
