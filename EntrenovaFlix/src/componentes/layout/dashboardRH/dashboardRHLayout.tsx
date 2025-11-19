@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useState, useEffect } from 'react';
 import SidebarRH from './sidebarRH';
@@ -17,8 +17,20 @@ interface DecodedToken {
   email: string;
 }
 
-function DashboardRHLayout({ userAvatar, pageTitle }: DashboardRHLayoutProps) {
+function DashboardRHLayout({ userAvatar }: DashboardRHLayoutProps) {
   const [userName, setUserName] = useState<string>("Usuário");
+
+  const location = useLocation();
+    const pageTitles: { [key: string]: string } = {
+        '/dashboardRH': ' ',
+        '/dashboardRH/trilhas': 'Trilhas',
+        '/dashboardRH/diagnosticos': 'Diagnósticos',
+        '/dashboardRH/planos': 'Planos',
+        '/dashboardRH/funcionarios': 'Funcionários',
+        '/dashboardRH/historicoChatbot': 'Histórico de ChatBot',
+        '/dashboardRH/feedbackRH': 'Feedbacks',
+    };
+    const currentTitle = pageTitles[location.pathname] || 'Área Administrativa';
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -40,7 +52,7 @@ function DashboardRHLayout({ userAvatar, pageTitle }: DashboardRHLayoutProps) {
     <div className="dashboard-rh-layout">
       <SidebarRH />
       <div className="dashboard-rh-content">
-        <HeaderRH userName={userName} userAvatar={userAvatar} pageTitle={pageTitle} />
+        <HeaderRH userName={userName} userAvatar={userAvatar} pageTitle={currentTitle} />
         <main className="dashboard-rh-main">
           <Outlet />
         </main>

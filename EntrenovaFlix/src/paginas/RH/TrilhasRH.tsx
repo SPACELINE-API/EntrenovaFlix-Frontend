@@ -11,7 +11,6 @@ import { FaCheck } from "react-icons/fa";
 function TrilhasRH() {
     return (
         <div>
-            <h1 className="titulo">Trilhas</h1>
             <div className="trilhas-topo">
                 <GraficoAtividade />
                 <div className="trilhas-ativas">

@@ -34,7 +34,6 @@ const [historico, setHistorico] = useState<DiagnosticoResumo[]>([]);
 
   return (
     <div className="historico-container">
-      <h1 className="titulo">Histórico de Conversas com o ChatBot</h1>
       {isLoading ? <p>Carregando...</p> : (
         <div className="historico-card">
           {historico.map(item => (
