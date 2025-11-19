@@ -95,6 +95,7 @@ class ChatService {
         method: 'POST',
         headers: headers, 
         body: JSON.stringify(payload),
+        //lalala
       });
 
       if (!response.ok) {
