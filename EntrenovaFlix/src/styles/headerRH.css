@@ -2,7 +2,10 @@
     width: 100%;
     height: 80px;
     background: transparent;
-    position: inherit;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .header-RH-content {

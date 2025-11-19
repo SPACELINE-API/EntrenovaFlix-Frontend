@@ -7,7 +7,7 @@ function MainLayout() {
   return (
     <div className='bodyMain' >
       <Header />
-      <main style={{ padding: '20px' }}>
+      <main style={{ padding: '80px 20px 20px 20px' }}>
         <Outlet />
       </main>
     </div>
