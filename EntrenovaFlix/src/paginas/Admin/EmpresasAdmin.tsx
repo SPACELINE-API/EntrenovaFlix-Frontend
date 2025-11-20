@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { modals } from '@mantine/modals';
-import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text } from '@mantine/core';
+import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text, Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 import { IconPencil, IconTrash, IconRefresh, IconAlertCircle, IconChartBar, IconCircleDashed, IconCircleDashedCheck } from '@tabler/icons-react';
 import api from '../../services/apiService';
 import '../../styles/funcionariosRH.css';
 import '../../styles/empresasAdmin.css';
 import { useNavigate } from "react-router-dom";
+import FormularioEmpresas from './formularioEmpresas';
 
 interface Empresa {
     cnpj: string;
@@ -26,6 +28,8 @@ function EmpresasAdmin() {
     const [empresas, setEmpresas] = useState<Empresa[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+    const [editingEmpresa, setEditingEmpresa] = useState<Empresa | null>(null);
 
     const fetchEmpresas = useCallback(async () => {
         setLoading(true);
@@ -54,8 +58,10 @@ function EmpresasAdmin() {
     }, [fetchEmpresas]);
 
     const handleEditar = (empresa: Empresa) => {
-        // Em desenvolvimento
+        setEditingEmpresa(empresa);
+        openModal();
     }
+    
     const handleDiagnostico = (empresa: Empresa) => {
         navigate(`/entrenovaAdmin/diagnostico/${empresa.cnpj}`);
     };
@@ -66,7 +72,7 @@ function EmpresasAdmin() {
             title: novoStatus ? 'Ativar Empresa' : 'Desativar Empresa',
             centered: true,
             children: (
-                <Text size="sm">
+                <Text size="sm" style={{color: 'white'}}>
                     {novoStatus ? (
                         <>Confirmar ativação da empresa <strong>{empresa.nome}</strong>?</>
                     ) : (
@@ -76,6 +82,7 @@ function EmpresasAdmin() {
             ),
             labels: { confirm: novoStatus ? 'Ativar' : 'Desativar', cancel: 'Cancelar' },
             confirmProps: { color: novoStatus ? 'green' : 'red' },
+            className: "modal-custom",
             onConfirm: async () => {
                 try {
                     const payload = { 
@@ -113,12 +120,13 @@ function EmpresasAdmin() {
         modals.openConfirmModal({
             title: 'Confirmação de Exclusão',
             children: (
-                <Text size="sm">
+                <Text size="sm" style={{color: 'white'}}>
                     Tem certeza que deseja deletar a empresa <strong>{empresa.nome}</strong>? Esta ação é irreversível.
                 </Text>
             ),
             labels: { confirm: 'Deletar', cancel: 'Cancelar' },
             confirmProps: { color: 'red' },
+            className: "modal-custom",
             onConfirm: async () => {
                 try {
                     await api.delete(`empresas/${empresa.cnpj}`);
@@ -242,6 +250,33 @@ function EmpresasAdmin() {
                         </Table.Tbody>
                     </Table>
                 </Table.ScrollContainer>
+                <Modal
+                    opened={modalOpened}
+                    onClose={() => { closeModal(); setEditingEmpresa(null); }}
+                    title={editingEmpresa ? `Editar ${editingEmpresa.nome}` : 'Editar Empresa'}
+                    size="lg"
+                    centered
+                    className="modal-custom"
+                >
+                    {editingEmpresa && (
+                        <FormularioEmpresas
+                            initialData={{
+                                cnpj: editingEmpresa.cnpj,
+                                nome: editingEmpresa.nome,
+                                area: editingEmpresa.area,
+                                lead: editingEmpresa.lead,
+                                is_active: editingEmpresa.is_active,
+                            }}
+                            onSubmitSuccess={() => {
+                                fetchEmpresas();
+                                setEditingEmpresa(null);
+                                closeModal();
+                                showNotification({ title: 'Sucesso', message: 'Empresa atualizada com sucesso!', color: 'teal' });
+                            }}
+                            onCancel={() => { closeModal(); setEditingEmpresa(null); }}
+                        />
+                    )}
+                </Modal>
             </Paper>
         </div>
     );
