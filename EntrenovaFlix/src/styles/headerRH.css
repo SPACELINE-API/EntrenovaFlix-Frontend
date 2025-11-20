@@ -2,7 +2,7 @@
     width: 100%;
     height: 80px;
     background: transparent;
-    position: inherit;
+    position: relative;
 }
 
 .header-RH-content {
@@ -20,9 +20,9 @@
 
 .header-RH-title {
     font-family: 'Satoshi', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: #fafafa00;
+    color: #fafafa;
 }
 
 .header-RH-user {

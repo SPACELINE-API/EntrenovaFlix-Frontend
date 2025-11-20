@@ -1,0 +1,218 @@
+:root {
+  --cor-fundo-escuro: #0a0b14;
+  --cor-card-translucido: rgba(35, 38, 58, 0.35);
+  --cor-borda-glass: rgba(255, 255, 255, 0.08);
+  --cor-card-brilho: rgba(255, 255, 255, 0.06);
+  --cor-texto-primario: #ffffff;
+  --cor-texto-secundario: #aab2d5;
+  --cor-erro: #ff4d4f;
+}
+
+body {
+  background: var(--cor-fundo-escuro);
+  color: var(--cor-texto-primario);
+  font-family: "Inter", sans-serif;
+}
+
+.general-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.graficos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  gap: 22px;
+  margin-top: 10px;
+}
+
+.stats-card,
+.grafico-widget-container,
+.tabela-widget-container {
+  background: var(--cor-card-translucido);
+  padding: 28px;
+  border-radius: 14px;
+  border: 1px solid var(--cor-borda-glass);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.40),
+              inset 0 0 14px var(--cor-card-brilho);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.grafico-widget-container {
+  min-height: 400px;
+  padding-bottom: 32px;
+}
+
+.recharts-wrapper {
+  overflow: visible !important;
+}
+
+.recharts-default-legend {
+  white-space: normal !important;
+  text-align: center;
+  padding: 4px 8px;
+}
+
+.stats-card {
+  min-height: 120px;
+  justify-content: space-between;
+}
+
+.stats-card h3,
+.grafico-widget-container h3,
+.tabela-widget-container h3 {
+  font-size: 0.78rem;
+  color: var(--cor-texto-secundario);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.stats-value,
+.stats-error {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  overflow-wrap: break-word;
+}
+
+.stats-error {
+  color: var(--cor-erro);
+}
+
+.grafico-loading,
+.grafico-error,
+.grafico-empty {
+  height: 220px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--cor-texto-secundario);
+}
+
+.recharts-cartesian-axis-tick-value tspan,
+.recharts-legend-item-text {
+  fill: var(--cor-texto-secundario) !important;
+}
+
+.recharts-default-tooltip {
+  background: rgba(20, 22, 34, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  padding: 10px 12px !important;
+  color: var(--cor-texto-primario) !important;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+}
+
+.recharts-tooltip-cursor {
+  fill: rgba(255, 255, 255, 0.05) !important;
+  stroke: none !important;
+}
+
+.recharts-bar-rectangle:hover {
+  opacity: 1;
+  filter: brightness(1.2);
+}
+
+.tabela-widget-container {
+  grid-column: 1 / -1;
+  padding: 22px;
+  overflow-x: auto;
+}
+
+.tabela-widget-container h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: var(--cor-texto-secundario);
+}
+
+.tabela-transacoes {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  text-align: center;
+  min-width: 500px;
+}
+
+.tabela-transacoes th,
+.tabela-transacoes td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  word-break: break-word;
+}
+
+.tabela-transacoes th {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cor-texto-secundario);
+}
+
+.tabela-transacoes td {
+  font-size: 0.8rem;
+  color: var(--cor-texto-secundario);
+}
+
+.tabela-transacoes tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tabela-transacoes td .badge-plano,
+.tabela-transacoes td div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (max-width: 1440px) {
+  .general-cards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 1200px) {
+  .graficos-container {
+    grid-template-columns: 1fr;
+  }
+
+  .general-cards {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .page-container {
+    padding: 16px; 
+  }
+
+  .graficos-container {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .general-cards {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+    gap: 16px;
+  }
+
+  .stats-card {
+    min-height: 100px;
+    padding: 16px;
+  }
+
+  .stats-value,
+  .stats-error {
+    font-size: 1.4rem;
+  }
+
+  .grafico-widget-container {
+    padding: 16px;
+  }
+}

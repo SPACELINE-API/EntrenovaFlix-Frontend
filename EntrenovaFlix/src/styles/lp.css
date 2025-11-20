@@ -11,10 +11,7 @@
   src: url('../assets/fontes/Satoshi/Fonts/OTF/Satoshi-Regular.otf');
 }
 
-html {
-  scrollbar-color: #6e6e6ec5 #202020;
-  scrollbar-width: thin;
-}
+
 .bodyLp {
   background-color: #141414;
   width: 100%;
@@ -180,15 +177,15 @@ html {
 .scroll-arrow {
   color: #d6d1ff;
   margin-bottom: -0.9rem;
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   animation: bounce 1.5s infinite ease-in-out;
   opacity: 0.7;
 }
 .scroll-arrow-static {
   color: #d6d1ff;
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   margin-bottom: -0.9rem;
   animation: glow 1.3s infinite ease-in-out;
 }
@@ -357,7 +354,7 @@ html {
   top: 0;
   right: 600px;
   width: 60%;
-  height: 150%;
+  height: 180%;
   background: linear-gradient(
     35deg,
     rgba(90, 79, 207, 0.479) 0%, 

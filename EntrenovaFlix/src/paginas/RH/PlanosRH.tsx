@@ -15,7 +15,6 @@ function PlanosRH() {
 
   return (
     <div>
-      <h1 className="titulo">Planos</h1>
       <h2>
         Potencialize sua experiência com diferentes planos e desbloqueie todos
         os recursos, conteúdos exclusivos e suporte prioritário para aproveitar

@@ -9,6 +9,7 @@ import { MdEmojiPeople } from "react-icons/md";
 import Card from "../../componentes/layout/dashboard/Card";
 import InfoLinha from "../../componentes/layout/dashboard/InfoLinha";
 import GraficoLinha from "../../componentes/layout/dashboard/GraficoLinha";
+import '../../styles/dashboardRHLayout.css'
 
 interface DecodedToken {
   role: 'admin' | 'rh' | 'user';

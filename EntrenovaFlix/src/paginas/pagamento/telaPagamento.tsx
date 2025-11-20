@@ -167,7 +167,7 @@ function TelaPagamento() {
         if (['pix', 'boleto'].includes(formaSelecionada) && !Modal && !isLoading) {
             timer = setTimeout(() => {
                 handleIniciarAssinatura();
-            }, 10000); 
+            }, 3000); 
         }
         return () => {
             clearTimeout(timer);
