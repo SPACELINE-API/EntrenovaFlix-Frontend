@@ -65,7 +65,7 @@
 }
 
 .aprimoramento-button {
-  background: linear-gradient(90deg, #695de6 10%, #5449cc 70%, #0078d7 100%);
+  background: linear-gradient(90deg, #695de6 10%, #5449CC 70%, #0078D7 100%);
   color: #ffffff;
   border: none;
   padding: 12px 30px;
@@ -109,7 +109,7 @@
   background: #2a2a2a;
   color: #cccccc;
   border: 1px solid #5449cc;
-  padding: 15px;
+  padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
