@@ -9,6 +9,7 @@ import '../../styles/funcionariosRH.css';
 import '../../styles/empresasAdmin.css';
 import { useNavigate } from "react-router-dom";
 import FormularioEmpresas from './formularioEmpresas';
+import { set } from "react-hook-form";
 
 interface Empresa {
     cnpj: string;
@@ -64,6 +65,7 @@ function EmpresasAdmin() {
     const clearFilters = () => {
         setSearch("");
         setStatusFilter("all");
+        setSortOrder("default");
     };
 
     const filteredEmpresas = useMemo(() => {
