@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { modals } from '@mantine/modals';
-import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text, Modal } from '@mantine/core';
+import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text, Modal, TextInput, Select } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
-import { IconPencil, IconTrash, IconRefresh, IconAlertCircle, IconChartBar, IconCircleDashed, IconCircleDashedCheck } from '@tabler/icons-react';
+import { IconPencil, IconTrash, IconRefresh, IconAlertCircle, IconChartBar, IconCircleDashed, IconCircleDashedCheck, IconFilterOff } from '@tabler/icons-react';
 import api from '../../services/apiService';
 import '../../styles/funcionariosRH.css';
 import '../../styles/empresasAdmin.css';
@@ -30,6 +30,10 @@ function EmpresasAdmin() {
     const [refreshing, setRefreshing] = useState(false);
     const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
     const [editingEmpresa, setEditingEmpresa] = useState<Empresa | null>(null);
+    // filtros
+    const [search, setSearch] = useState("");
+    const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>("all");
+    const [sortOrder, setSortOrder] = useState<'default' | 'leadAsc' | 'leadDesc'>("default");
 
     const fetchEmpresas = useCallback(async () => {
         setLoading(true);
@@ -56,6 +60,30 @@ function EmpresasAdmin() {
     useEffect(() => {
         fetchEmpresas();
     }, [fetchEmpresas]);
+
+    const clearFilters = () => {
+        setSearch("");
+        setStatusFilter("all");
+    };
+
+    const filteredEmpresas = useMemo(() => {
+        const filtered = empresas.filter((e) => {
+            const matchesName = e.nome.toLowerCase().includes(search.trim().toLowerCase());
+            const matchesStatus = statusFilter === 'all' ? true : statusFilter === 'active' ? e.is_active : !e.is_active;
+            return matchesName && matchesStatus;
+        });
+
+        const sorted = filtered.slice();
+        if (sortOrder === 'leadAsc') {
+            sorted.sort((a, b) => a.lead - b.lead);
+        } else if (sortOrder === 'leadDesc') {
+            sorted.sort((a, b) => b.lead - a.lead);
+        } else {
+            // padrão: alfabética por nome (A→Z)
+            sorted.sort((a, b) => a.nome.localeCompare(b.nome, undefined, { sensitivity: 'base' }));
+        }
+        return sorted;
+    }, [empresas, search, statusFilter, sortOrder]);
 
     const handleEditar = (empresa: Empresa) => {
         setEditingEmpresa(empresa);
@@ -158,7 +186,7 @@ function EmpresasAdmin() {
         setRefreshing(false);
     }
 
-    const rows = empresas.map((emp) => (
+    const rows = filteredEmpresas.map((emp) => (
         <Table.Tr key={emp.id}>
             <Table.Td>{emp.nome}</Table.Td>
             <Table.Td>{emp.area}</Table.Td>
@@ -223,6 +251,43 @@ function EmpresasAdmin() {
                     >
                         Atualizar
                     </Button>
+                </Group>
+
+                {/* Barra de filtros */}
+                <Group gap="sm" mb="md" align="end">
+                    <TextInput
+                        label="Pesquisar nome"
+                        placeholder="Buscar por nome..."
+                        value={search}
+                        onChange={(e) => setSearch(e.currentTarget.value)}
+                        classNames={{ input: 'rh-input' }}
+                        style={{ flex: 1 }}
+                    />
+                    <Select
+                        label="Status"
+                        value={statusFilter}
+                        onChange={(v) => setStatusFilter((v as 'all' | 'active' | 'inactive') || 'all')}
+                        data={[
+                            { value: 'all', label: 'Todos' },
+                            { value: 'active', label: 'Ativas' },
+                            { value: 'inactive', label: 'Inativas' },
+                        ]}
+                        w={180}
+                    />
+                    <Select
+                        label="Ordenar"
+                        value={sortOrder}
+                        onChange={(v) => setSortOrder((v as 'default' | 'leadAsc' | 'leadDesc') || 'default')}
+                        data={[
+                            { value: 'default', label: 'Padrão (A → Z)' },
+                            { value: 'leadAsc', label: 'Lead (menor → maior)' },
+                            { value: 'leadDesc', label: 'Lead (maior → menor)' },
+                        ]}
+                        w={220}
+                    />
+                    <ActionIcon w={36} h={36} variant="default" onClick={clearFilters} title="Limpar filtros" aria-label="Limpar filtros">
+                        <IconFilterOff size={24} />
+                    </ActionIcon>
                 </Group>
 
                 <Table.ScrollContainer minWidth={900}>
