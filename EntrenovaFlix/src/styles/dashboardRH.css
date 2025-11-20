@@ -10,23 +10,21 @@
 
 .trilhas-topo {
     display: flex;
-    flex-wrap: wrap;
-    gap: 3rem;
+    flex-direction: row; 
+    align-items: flex-start;
     margin-top: 1.8rem;
+    gap: 2rem;
     justify-content: space-between;
-    width: 100%;
+    width: auto;
 }
 
 .trilhas-grafico {
-    flex: 1 1 70%;
+    flex: 1 1 60%;
     background-color: #2F333E;
     border-radius: 0.5rem;
     border: 1px solid #857DDB;
     padding-top: 1.5625rem;
-}
-
-.trilhas-grafico > * {
-    width: 100%;
+    width: auto;
 }
 
 .trilhas-grafico-outro {
@@ -48,8 +46,8 @@
 }
 
 .trilhas-ativas {
-    flex: 0 0 15%;
-    max-width: 20%;
+    flex: 0 0 25%;
+    max-width: 30%;
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
