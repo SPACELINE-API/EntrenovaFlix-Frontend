@@ -130,12 +130,9 @@ const router = createBrowserRouter([
       { index: true, element: <DashboardAdmin /> },
       { path: 'empresas', element: <EmpresasAdmin />},
       { path: 'trilhas', element: <TrilhasAdmin />},
-<<<<<<< Updated upstream
-      { path: 'feedback', element: <FeedbackAdmin />}
-=======
-      { path: 'diagnostico/:cnpj?', element: <DiagnosticoAdmin /> },
+      { path: 'feedback', element: <FeedbackAdmin />},
       
->>>>>>> Stashed changes
+  
     ],
    },
   ],

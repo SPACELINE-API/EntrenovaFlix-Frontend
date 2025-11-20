@@ -1,13 +1,10 @@
-<<<<<<< Updated upstream
-function EmpresasAdmin() {
-=======
 import { useState, useEffect, useCallback } from "react";
 import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconPencil, IconTrash, IconRefresh, IconAlertCircle,  IconChartBar } from '@tabler/icons-react';
 import api from '../../services/apiService';
 import '../../styles/funcionariosRH.css';
-import '../../styles/empresasAdmin.css';
+
 import { useNavigate } from "react-router-dom";
 
 interface Empresa {
@@ -109,7 +106,6 @@ function EmpresasAdmin() {
         </Table.Tr>
     ));
 
->>>>>>> Stashed changes
     return (
         <div>
             <h1>Empresas</h1>
