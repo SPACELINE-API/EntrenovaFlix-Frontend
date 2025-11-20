@@ -1,0 +1,175 @@
+@keyframes aura-pulse {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.15) translate(-50%, -50%);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 0.7;
+  }
+}
+
+.aprimoramento-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #141414;
+  padding: 20px;
+  font-family: "Satoshi", sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.aprimoramento-container::before {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: 10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #5449cc, transparent 60%);
+  border-radius: 50%;
+  filter: blur(150px);
+  z-index: 0;
+  opacity: 0.7;
+  animation: aura-pulse 5s infinite alternate ease-in-out;
+}
+
+.aprimoramento-card {
+  background: #1f1f1f;
+  padding: 40px;
+  border-radius: 10px;
+  border: 1px solid #5449cc;
+  z-index: 10;
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+}
+
+.aprimoramento-card h1,
+.aprimoramento-card h2 {
+  color: #ffffff;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.aprimoramento-card p {
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.aprimoramento-button {
+  background: linear-gradient(90deg, #695de6 10%, #5449cc 70%, #0078d7 100%);
+  color: #ffffff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  margin-top: 25px;
+  font-weight: 500;
+}
+
+.aprimoramento-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #5449cc5f, 0 0 20px #0076d753;
+  filter: brightness(1.03);
+}
+
+.aprimoramento-button:disabled {
+  background-color: #a0aec0;
+  color: #141414;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.question-text {
+  font-size: 1.15em;
+  margin: 25px 0 30px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.alternatives-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.alternative-button {
+  background: #2a2a2a;
+  color: #cccccc;
+  border: 1px solid #5449cc;
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1em;
+}
+
+.alternative-button:hover:not(.selected) {
+  background-color: #383838;
+  border-color: #695de6;
+  box-shadow: 0 0 8px rgba(84, 73, 204, 0.4);
+}
+
+.alternative-button.selected {
+  background-color: #383838;
+  color: #cccccc;
+  border-color: #5449cc;
+  box-shadow: 0 0 10px #5449cc99, 0 0 5px #5449cc;
+  font-weight: 600;
+  transform: scale(1.01);
+}
+
+.other-input-field {
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #5449cc;
+  background-color: #2a2a2a;
+  color: #cccccc;
+  font-size: 1em;
+  resize: vertical;
+}
+
+.other-input-field::placeholder {
+  color: #777;
+}
+
+.bodyLp {
+  background-color: #141414;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.bodyLp::before,
+.bodyLp::after,
+.bodyLp > main::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+}
+
+.aprimoramento-button2 {
+  background-color: #5449cc;
+  padding: 10px;
+  color: white;
+  border-radius: 12px;
+  font-family: "Satoshi", sans-serif;
+  cursor: pointer;
+}

@@ -55,8 +55,13 @@ export default function LgSection() {
       }
     } else if (decodedToken.role === 'admin') {
       navigate("/entrenovaAdmin"); 
-    } else {
-      navigate("/colaboradores");
+    } else if (decodedToken.role === 'user'){
+      if(decodedToken.primeiro_login){
+        navigate("/aprimoramento-pessoal")
+      }else{
+        navigate("/colaboradores");
+      }
+      
     }
   } catch (error: any) {
     console.error('Erro ao logar', error.response?.data || error.message);
