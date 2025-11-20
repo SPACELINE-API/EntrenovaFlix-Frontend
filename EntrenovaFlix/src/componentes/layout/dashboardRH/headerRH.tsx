@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import authService from '../../../services/authService';
 import { IoIosArrowDown } from "react-icons/io";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import "../../../styles/headerRH.css";
@@ -11,6 +13,25 @@ interface HeaderRHProps {
 
 function HeaderRH({ userName = "PLACEHOLDER", userAvatar, pageTitle }: HeaderRHProps) {
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    const handleLogout = () => {
+        authService.logout();
+        navigate('/login');
+    }
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [menuRef]);
 
     return (
         <header className="header-RH">
@@ -36,7 +57,7 @@ function HeaderRH({ userName = "PLACEHOLDER", userAvatar, pageTitle }: HeaderRHP
                     <span className={`arrow ${open ? "open" : ""}`}><IoIosArrowDown/></span>
                     {open && (
                         <div className="dropdown-menu">
-                            <button onClick={() => console.log("logout")}>
+                            <button onClick={handleLogout}>
                                 <FaArrowRightFromBracket/>  Logout
                             </button>
                         </div>

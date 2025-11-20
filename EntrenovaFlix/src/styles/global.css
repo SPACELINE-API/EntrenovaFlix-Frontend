@@ -131,7 +131,89 @@ html {
   transition: width 0.4s ease, padding 0.4s ease;
   z-index: 100;
 }
+.user-avatar1 {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: none;
+}
 
+.user-avatar1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder1 {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #5449CC 0%, #0078D7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fafafa;
+}
+
+.user-menu1 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: background .2s ease;
+}
+
+.user-menu1:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.arrow1 {
+    font-size: 18px;   
+    color: #fafafa;
+    transition: transform .25s ease;
+    opacity: 0.9;
+}
+
+.arrow1.open {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu1 {
+    position: absolute;
+    top: 105%;
+    left: 20px;
+    background: #2c2f3a;
+    border-radius: 6px;
+    padding: 6px 0;
+    width: 110px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    animation: fadeDown .20s ease forwards;
+    z-index: 20;
+}
+
+.dropdown-menu1 button {
+    width: 100%;
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdown-menu1 button:hover {
+    color: #ff6b6b;
+}
 
 .sidebar.minimizada {
   width: 90px;      
