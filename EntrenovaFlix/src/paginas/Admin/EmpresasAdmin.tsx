@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
+import { modals } from '@mantine/modals';
 import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { IconPencil, IconTrash, IconRefresh, IconAlertCircle, IconChartBar } from '@tabler/icons-react';
+import { IconPencil, IconTrash, IconRefresh, IconAlertCircle, IconChartBar, IconCircleDashed, IconCircleDashedCheck } from '@tabler/icons-react';
 import api from '../../services/apiService';
 import '../../styles/funcionariosRH.css';
 import '../../styles/empresasAdmin.css';
@@ -9,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Empresa {
     cnpj: string;
-    id: string; // Visivel na tabela
+    id: string;
     nome: string; // Visivel na tabela
     area: string; // Visivel na tabela
     plano: string | null; // Visivel na tabela
@@ -59,9 +60,89 @@ function EmpresasAdmin() {
         navigate(`/entrenovaAdmin/diagnostico/${empresa.cnpj}`);
     };
 
+    const handleToggleAtivo = (empresa: Empresa) => {
+        const novoStatus = !empresa.is_active;
+        modals.openConfirmModal({
+            title: novoStatus ? 'Ativar Empresa' : 'Desativar Empresa',
+            centered: true,
+            children: (
+                <Text size="sm">
+                    {novoStatus ? (
+                        <>Confirmar ativação da empresa <strong>{empresa.nome}</strong>?</>
+                    ) : (
+                        <>Confirmar desativação da empresa <strong>{empresa.nome}</strong>?</>
+                    )}
+                </Text>
+            ),
+            labels: { confirm: novoStatus ? 'Ativar' : 'Desativar', cancel: 'Cancelar' },
+            confirmProps: { color: novoStatus ? 'green' : 'red' },
+            onConfirm: async () => {
+                try {
+                    const payload = { 
+                        nome: empresa.nome, 
+                        area: empresa.area, 
+                        lead: empresa.lead,
+                        is_active: novoStatus, 
+                    };
+                    await api.patch(`empresas/${empresa.cnpj}`, payload);
+                    setEmpresas(prev =>
+                        prev.map(e => e.cnpj === empresa.cnpj ? { ...e, is_active: novoStatus } : e)
+                    );
+                    showNotification({
+                        title: novoStatus ? 'Empresa ativada' : 'Empresa desativada',
+                        message: `Empresa ${empresa.nome} ${novoStatus ? 'ativada' : 'desativada'} com sucesso.`,
+                        color: novoStatus ? "orange" : "gray",
+                        autoClose: 4000,
+                        position: 'top-right',
+                    });
+                } catch (err: any) {
+                    showNotification({
+                        title: "Erro ao atualizar status",
+                        message: `Não foi possível atualizar o status da empresa ${empresa.nome}.`,
+                        color: "red",
+                        icon: <IconAlertCircle />,
+                        autoClose: 4000,
+                        position: 'top-right',
+                    });
+                }
+            }
+        });
+    };
+
     const handleDeletar = async (empresa: Empresa) => {
-        // Em desenvolvimento
-    }
+        modals.openConfirmModal({
+            title: 'Confirmação de Exclusão',
+            children: (
+                <Text size="sm">
+                    Tem certeza que deseja deletar a empresa <strong>{empresa.nome}</strong>? Esta ação é irreversível.
+                </Text>
+            ),
+            labels: { confirm: 'Deletar', cancel: 'Cancelar' },
+            confirmProps: { color: 'red' },
+            onConfirm: async () => {
+                try {
+                    await api.delete(`empresas/${empresa.cnpj}`);
+                    showNotification({
+                        title: "Sucesso",
+                        message: `Empresa ${empresa.nome} deletada com sucesso.`,
+                        color: "green",
+                        autoClose: 4000,
+                        position: 'top-right',
+                    });
+                    fetchEmpresas();
+                } catch (err: any) {
+                    showNotification({
+                        title: "Erro",
+                        message: `Não foi possível deletar a empresa ${empresa.nome}.`,
+                        color: "red",
+                        icon: <IconAlertCircle />,
+                        autoClose: 4000,
+                        position: 'top-right',
+                    });
+                }
+            }
+        });
+    };
 
     const handleRefresh = async () => {
         setRefreshing(true);
@@ -93,6 +174,19 @@ function EmpresasAdmin() {
                     <Tooltip label="Ver Diagnóstico" withArrow position="top">
                         <ActionIcon variant="subtle" color="teal" onClick={() => handleDiagnostico(emp)}>
                             <IconChartBar size={18} />
+                        </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label={emp.is_active ? 'Desativar' : 'Ativar'} withArrow position="top">
+                        <ActionIcon
+                            variant="subtle"
+                            color={emp.is_active ?  "gray" : "orange"}
+                            onClick={() => handleToggleAtivo(emp)}
+                        >
+                            {emp.is_active ? (
+                                <IconCircleDashed size={18} />
+                            ) : (
+                                <IconCircleDashedCheck size={18} />
+                            )}
                         </ActionIcon>
                     </Tooltip>
                     <Tooltip label="Deletar" withArrow position="top">
