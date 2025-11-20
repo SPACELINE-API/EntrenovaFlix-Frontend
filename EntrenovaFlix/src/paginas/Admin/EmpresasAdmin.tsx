@@ -149,6 +149,7 @@ function EmpresasAdmin() {
     const handleDeletar = async (empresa: Empresa) => {
         modals.openConfirmModal({
             title: 'Confirmação de Exclusão',
+            centered: true,
             children: (
                 <Text size="sm" style={{color: 'white'}}>
                     Tem certeza que deseja deletar a empresa <strong>{empresa.nome}</strong>? Esta ação é irreversível.
