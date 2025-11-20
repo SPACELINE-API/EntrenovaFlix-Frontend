@@ -15,7 +15,7 @@ type Answer = {
 };
 
 const dummyQuestions: Question[] = [
-  {
+    {
     id: 1,
     text: "Quais atividades você mais gosta de fazer no tempo livre?",
     alternatives: [
@@ -72,7 +72,6 @@ const dummyQuestions: Question[] = [
   }
 ];
 
-
 const Aprimoramento: React.FC = () => {
     const navigate = useNavigate();
     const [isStarted, setIsStarted] = useState(false);
@@ -83,6 +82,8 @@ const Aprimoramento: React.FC = () => {
     const [otherAnswer, setOtherAnswer] = useState('');
 
     const [answers, setAnswers] = useState<Answer[]>([]);
+    
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const currentQuestion = dummyQuestions[currentQuestionIndex];
     const isLastQuestion = currentQuestionIndex === dummyQuestions.length - 1;
@@ -122,10 +123,15 @@ const Aprimoramento: React.FC = () => {
         setAnswers(updatedAnswers);
 
         if (isLastQuestion) {
-            console.log(updatedAnswers);
             localStorage.setItem('aprimoramentoAnswers', JSON.stringify(updatedAnswers));
             
-            navigate('/colaboradores');
+            setShowSuccessModal(true);
+            
+            setTimeout(() => {
+                navigate('/colaboradores');
+            }, 5000);
+            
+            return;
         } else {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             setSelectedAlternative(null);
@@ -133,6 +139,17 @@ const Aprimoramento: React.FC = () => {
             setOtherAnswer('');
         }
     };
+
+    if (showSuccessModal) {
+        return (
+            <div className="aprimoramento-container">
+                <div className="aprimoramento-card success-card">
+                    <h2>✅ Questionário Finalizado com Sucesso!</h2>
+                    <p>Você será redirecionado em instantes.</p>
+                </div>
+            </div>
+        );
+    }
 
     if (!isStarted) {
         return (
