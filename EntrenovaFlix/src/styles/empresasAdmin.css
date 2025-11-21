@@ -12,8 +12,6 @@
 	font-size: 0.95rem;
 	color: #e0e0e0;
     border-color: #2c2c2c;
-	/* Ajusta a cor padrão das bordas do Mantine Table (vertical e externa) */
-	--mantine-color-default-border: #2c2c2c;
 }
 
 .empresas-table th {
@@ -34,10 +32,6 @@
 	background-color: #1a1a1a;
 }
 
-.empresas-table tr:hover {
-	background-color: #1a1a1a;
-}
-
 /* Borda cinza por toda tabela */
 .empresas-table th,
 .empresas-table td,
@@ -48,7 +42,7 @@
 }
 
 .th-actions {
-	width: 120px;
+	width: 180px;
 }
 
 .empresas-table .badge-active,
