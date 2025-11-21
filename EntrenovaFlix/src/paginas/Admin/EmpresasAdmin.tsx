@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { Table, Group, Badge, Button, LoadingOverlay, Paper, ActionIcon, Tooltip, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { IconPencil, IconTrash, IconRefresh, IconAlertCircle,  IconChartBar } from '@tabler/icons-react';
+import { IconPencil, IconTrash, IconRefresh, IconAlertCircle, IconChartBar } from '@tabler/icons-react';
 import api from '../../services/apiService';
 import '../../styles/funcionariosRH.css';
-
+import '../../styles/empresasAdmin.css';
 import { useNavigate } from "react-router-dom";
 
 interface Empresa {
@@ -55,13 +55,13 @@ function EmpresasAdmin() {
     const handleEditar = (empresa: Empresa) => {
         // Em desenvolvimento
     }
+    const handleDiagnostico = (empresa: Empresa) => {
+        navigate(`/entrenovaAdmin/diagnostico/${empresa.cnpj}`);
+    };
 
     const handleDeletar = async (empresa: Empresa) => {
         // Em desenvolvimento
     }
-      const handleDiagnostico = (empresa: Empresa) => {
-        navigate(`/entrenovaAdmin/diagnostico/${empresa.cnpj}`);
-    };
 
     const handleRefresh = async () => {
         setRefreshing(true);
@@ -91,7 +91,7 @@ function EmpresasAdmin() {
                             <IconPencil size={18} />
                         </ActionIcon>
                     </Tooltip>
-                      <Tooltip label="Ver Diagnóstico" withArrow position="top">
+                    <Tooltip label="Ver Diagnóstico" withArrow position="top">
                         <ActionIcon variant="subtle" color="teal" onClick={() => handleDiagnostico(emp)}>
                             <IconChartBar size={18} />
                         </ActionIcon>
@@ -108,7 +108,49 @@ function EmpresasAdmin() {
 
     return (
         <div>
-            <h1>Empresas</h1>
+            <h1 style={{marginBottom: 32}}>Empresas</h1>
+            <Paper className="empresas-container" shadow="xs" radius="md" withBorder>
+                <LoadingOverlay visible={loading} className="loading-overlay" />
+                <Group justify="space-between" mb="xl" className="header-group">
+                    <div>
+                        <Text className="header-title">Gerenciamento de Empresas Contratantes</Text>
+                    </div>
+                    <Button
+                        variant="light"
+                        leftSection={<IconRefresh size={16} />}
+                        loading={refreshing}
+                        onClick={handleRefresh}
+                    >
+                        Atualizar
+                    </Button>
+                </Group>
+
+                <Table.ScrollContainer minWidth={900}>
+                    <Table striped highlightOnHover withColumnBorders className="empresas-table">
+                        <Table.Thead >
+                            <Table.Tr>
+                                <Table.Th>ID</Table.Th>
+                                <Table.Th>Nome</Table.Th>
+                                <Table.Th>Área</Table.Th>
+                                <Table.Th>Plano</Table.Th>
+                                <Table.Th style={{textAlign: 'center'}}>Funcionários Ativos</Table.Th>
+                                <Table.Th style={{textAlign: 'center'}}>Lead</Table.Th>
+                                <Table.Th style={{textAlign: 'center'}}>Status</Table.Th>
+                                <Table.Th className="th-actions">Ações</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>
+                            {rows.length ? rows : ( 
+                                <Table.Tr>
+                                    <Table.Td colSpan={8} style={{ textAlign: 'center' }}>
+                                        {refreshing ? 'Atualizando empresas...' : 'Nenhuma empresa encontrada.'}
+                                    </Table.Td>
+                                </Table.Tr>
+                            )}
+                        </Table.Tbody>
+                    </Table>
+                </Table.ScrollContainer>
+            </Paper>
         </div>
     );
 }

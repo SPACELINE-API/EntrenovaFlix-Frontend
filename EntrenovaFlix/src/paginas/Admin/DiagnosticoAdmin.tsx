@@ -74,7 +74,7 @@ function DiagnosticoAdmin() {
         <p>{empresa.total_usuarios} Usuários ativos</p>
       </div>
 
-      <div className="graficos-container">
+      <div className="graficos-container1">
         <GraficoLinhaProps />
         <HobbiesPraticados />
       </div>

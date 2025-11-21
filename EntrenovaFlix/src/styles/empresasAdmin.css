@@ -1,0 +1,85 @@
+.empresas-container {
+	background-color: #202020 !important;
+	padding: 2rem;
+	border-radius: 12px;
+	border: 1px solid #2c2c2c !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.empresas-table {
+	border-radius: 10px;
+	overflow: hidden;
+	font-size: 0.95rem;
+	color: #e0e0e0;
+    border-color: #2c2c2c;
+	/* Ajusta a cor padrão das bordas do Mantine Table (vertical e externa) */
+	--mantine-color-default-border: #2c2c2c;
+}
+
+.empresas-table th {
+	background-color: #282828;
+	color: #ccc;
+	text-align: left;
+	font-weight: 600;
+	padding: 0.75rem 1rem;
+	border-bottom: 1px solid #333;
+}
+
+.empresas-table td {
+	padding: 0.6rem 1rem;
+	border-bottom: 1px solid #2c2c2c;
+}
+
+.empresas-table tr {
+	background-color: #1a1a1a;
+}
+
+.empresas-table tr:hover {
+	background-color: #1a1a1a;
+}
+
+/* Borda cinza por toda tabela */
+.empresas-table th,
+.empresas-table td,
+.empresas-table thead tr,
+.empresas-table tbody tr,
+.empresas-table table {
+	border-color: #2c2c2c;
+}
+
+.th-actions {
+	width: 120px;
+}
+
+.empresas-table .badge-active,
+.badge-active {
+	background-color: #2e7d32;
+	color: #fff;
+	font-weight: 500;
+}
+
+.empresas-table .badge-inactive,
+.badge-inactive {
+	background-color: #757575;
+	color: #fff;
+	font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+	.th-actions {
+		width: 100px;
+	}
+}
+.empresas-table .badge-active,
+.badge-active {
+	background-color: #2e7d32;
+	color: #fff;
+	font-weight: 500;
+}
+
+.empresas-table .badge-inactive,
+.badge-inactive {
+	background-color: #757575;
+	color: #fff;
+	font-weight: 500;
+}
