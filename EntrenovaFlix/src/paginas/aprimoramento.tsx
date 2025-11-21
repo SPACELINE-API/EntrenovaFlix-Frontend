@@ -1,21 +1,67 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/aprimoramento.css'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/aprimoramento.css";
+import api from "../services/apiService";
 
 interface Question {
-    id: number;
-    text: string;
-    alternatives: string[];
+  id: number;
+  text: string;
+  alternatives: string[];
 }
 
 type Answer = {
-    questionId: number;
-    questionText: string;
-    answer: string;
+  questionId: number;
+  questionText: string;
+  answer: string;
 };
 
+async function enviarResposta(respostas: Answer[]) {
+    const token = localStorage.getItem("access_token");
+    const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+    };
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    try {
+        const payload = {
+            respostas: respostas, 
+        };
+
+        const response = await fetch("http://127.0.0.1:8000/api/accounts/aprimoramento-pessoal", {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.text();
+            throw new Error(`Falha ao salvar respostas: ${response.status} - ${errorData}`);
+        }
+        
+        console.log("Respostas de aprimoramento salvas com sucesso!");
+
+        const patchResponse = await fetch("http://127.0.0.1:8000/api/accounts/primeiro-login", { 
+            method: 'PATCH',
+            headers: headers,
+            body: JSON.stringify({}) 
+        });
+
+        if (!patchResponse.ok) {
+             throw new Error(`Falha ao atualizar login: ${patchResponse.status}`);
+        }
+
+        console.log("Primeiro login atualizado com sucesso!");
+
+    } catch (error) {
+        console.error("Erro ao salvar respostas ou atualizar login:", error);
+    }
+}
+
 const dummyQuestions: Question[] = [
-    {
+  {
     id: 1,
     text: "Quais atividades você mais gosta de fazer no tempo livre?",
     alternatives: [
@@ -23,19 +69,13 @@ const dummyQuestions: Question[] = [
       "Ver filmes/séries",
       "Praticar esportes",
       "Jogar videogame",
-      "Outros"
-    ]
+      "Outros",
+    ],
   },
   {
     id: 2,
     text: "Quais dos seguintes hobbies melhor representam você?",
-    alternatives: [
-      "Fotografia",
-      "Dança",
-      "Jardinagem",
-      "Escrita",
-      "Outros"
-    ]
+    alternatives: ["Fotografia", "Dança", "Jardinagem", "Escrita", "Outros"],
   },
   {
     id: 3,
@@ -45,8 +85,8 @@ const dummyQuestions: Question[] = [
       "Leitura (artigos, livros, documentação)",
       "Prática direta (mão na massa)",
       "Observando outras pessoas",
-      "Outros"
-    ]
+      "Outros",
+    ],
   },
   {
     id: 4,
@@ -56,8 +96,8 @@ const dummyQuestions: Question[] = [
       "Organização e gestão do tempo",
       "Pensamento crítico",
       "Trabalho em equipe",
-      "Outros"
-    ]
+      "Outros",
+    ],
   },
   {
     id: 5,
@@ -67,144 +107,155 @@ const dummyQuestions: Question[] = [
       "Reduzir estresse / Melhorar bem-estar",
       "Construir hábitos saudáveis",
       "Desenvolver habilidades profissionais",
-      "Outros"
-    ]
-  }
+      "Outros",
+    ],
+  },
 ];
 
 const Aprimoramento: React.FC = () => {
-    const navigate = useNavigate();
-    const [isStarted, setIsStarted] = useState(false);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedAlternative, setSelectedAlternative] = useState<string | null>(null);
-    
-    const [showOtherInput, setShowOtherInput] = useState(false);
-    const [otherAnswer, setOtherAnswer] = useState('');
+  const navigate = useNavigate();
+  const [isStarted, setIsStarted] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAlternative, setSelectedAlternative] = useState<string | null>(
+    null
+  );
 
-    const [answers, setAnswers] = useState<Answer[]>([]);
-    
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showOtherInput, setShowOtherInput] = useState(false);
+  const [otherAnswer, setOtherAnswer] = useState("");
 
-    const currentQuestion = dummyQuestions[currentQuestionIndex];
-    const isLastQuestion = currentQuestionIndex === dummyQuestions.length - 1;
+  const [answers, setAnswers] = useState<Answer[]>([]);
 
-    const handleStart = () => {
-        setIsStarted(true);
-    };
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-    const handleAnswer = (alternative: string) => {
-        setSelectedAlternative(alternative);
-        
-        const shouldShowOther = alternative === 'Outros';
-        setShowOtherInput(shouldShowOther);
+  const currentQuestion = dummyQuestions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === dummyQuestions.length - 1;
 
-        if (!shouldShowOther) {
-            setOtherAnswer('');
-        }
-    };
+  const handleStart = () => {
+    setIsStarted(true);
+  };
 
-    const handleNext = () => {
-        if (!selectedAlternative) return;
+  const handleAnswer = (alternative: string) => {
+    setSelectedAlternative(alternative);
 
-        if (selectedAlternative === 'Outros' && otherAnswer.trim() === '') {
-            alert('Por favor, descreva sua resposta em "Outros".');
-            return;
-        }
+    const shouldShowOther = alternative === "Outros";
+    setShowOtherInput(shouldShowOther);
 
-        const currentAnswerValue = selectedAlternative === 'Outros' ? otherAnswer : selectedAlternative;
+    if (!shouldShowOther) {
+      setOtherAnswer("");
+    }
+  };
 
-        const newAnswer: Answer = {
-            questionId: currentQuestion.id,
-            questionText: currentQuestion.text,
-            answer: currentAnswerValue,
-        };
-        
-        const updatedAnswers = [...answers, newAnswer];
-        setAnswers(updatedAnswers);
+  const handleNext = () => {
+    if (!selectedAlternative) return;
 
-        if (isLastQuestion) {
-            localStorage.setItem('aprimoramentoAnswers', JSON.stringify(updatedAnswers));
-            
-            setShowSuccessModal(true);
-            
-            setTimeout(() => {
-                navigate('/colaboradores');
-            }, 5000);
-            
-            return;
-        } else {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-            setSelectedAlternative(null);
-            setShowOtherInput(false);
-            setOtherAnswer('');
-        }
-    };
-
-    if (showSuccessModal) {
-        return (
-            <div className="aprimoramento-container">
-                <div className="aprimoramento-card success-card">
-                    <h2>✅ Questionário Finalizado com Sucesso!</h2>
-                    <p>Você será redirecionado em instantes.</p>
-                </div>
-            </div>
-        );
+    if (selectedAlternative === "Outros" && otherAnswer.trim() === "") {
+      alert('Por favor, descreva sua resposta em "Outros".');
+      return;
     }
 
-    if (!isStarted) {
-        return (
-            <div className="aprimoramento-container">
-                <div className="aprimoramento-card">
-                    <h1>Bem-vindo à sua jornada de Aprimoramento Pessoal!</h1>
-                    <p>
-                        Para começar, explore as trilhas de aprendizado personalizadas que preparamos para você.
-                        Elas foram desenvolvidas para impulsionar suas habilidades e conhecimentos.
-                    </p>
-                    <button className="aprimoramento-button" onClick={handleStart}>
-                        Começar Agora
-                    </button>
-                </div>
-            </div>
-        );
-    }
+    const currentAnswerValue =
+      selectedAlternative === "Outros" ? otherAnswer : selectedAlternative;
 
+    const newAnswer: Answer = {
+      questionId: currentQuestion.id,
+      questionText: currentQuestion.text,
+      answer: currentAnswerValue,
+    };
+
+    const updatedAnswers = [...answers, newAnswer];
+    setAnswers(updatedAnswers);
+
+    if (isLastQuestion) {
+      localStorage.setItem(
+        "aprimoramentoAnswers",
+        JSON.stringify(updatedAnswers)
+      );
+      setShowSuccessModal(true);
+      enviarResposta(updatedAnswers)
+
+      setTimeout(() => {
+        navigate("/colaboradores");
+      }, 4000);
+
+      return;
+    } else {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedAlternative(null);
+      setShowOtherInput(false);
+      setOtherAnswer("");
+    }
+  };
+
+  if (showSuccessModal) {
     return (
-        <div className="aprimoramento-container">
-            <div className="aprimoramento-card">
-                <h2>Pergunta {currentQuestion.id} de {dummyQuestions.length}</h2>
-                <p className="question-text">{currentQuestion.text}</p>
-                <div className="alternatives-list">
-                    {currentQuestion.alternatives.map((alt, index) => (
-                        <button
-                            key={index}
-                            className={`alternative-button ${selectedAlternative === alt ? 'selected' : ''}`}
-                            onClick={() => handleAnswer(alt)}
-                        >
-                            {alt}
-                        </button>
-                    ))}
-                </div>
-                
-                {showOtherInput && (
-                    <textarea
-                        className="other-input-field"
-                        placeholder="Descreva sua resposta aqui..."
-                        value={otherAnswer}
-                        onChange={(e) => setOtherAnswer(e.target.value)}
-                        rows={3}
-                    />
-                )}
-                
-                <button
-                    className="aprimoramento-button"
-                    onClick={handleNext}
-                    disabled={!selectedAlternative}
-                >
-                    {isLastQuestion ? 'Finalizar e Ver Trilhas' : 'Responder e Próxima'}
-                </button>
-            </div>
+      <div className="aprimoramento-container">
+        <div className="aprimoramento-card success-card">
+          <h2>✅ Questionário Finalizado com Sucesso!</h2>
+          <p>Você será redirecionado em instantes.</p>
         </div>
+      </div>
     );
+  }
+
+  if (!isStarted) {
+    return (
+      <div className="aprimoramento-container">
+        <div className="aprimoramento-card">
+          <h1>Bem-vindo à sua jornada de Aprimoramento Pessoal!</h1>
+          <p>
+            Para começar, explore as trilhas de aprendizado personalizadas que
+            preparamos para você. Elas foram desenvolvidas para impulsionar suas
+            habilidades e conhecimentos.
+          </p>
+          <button className="aprimoramento-button" onClick={handleStart}>
+            Começar Agora
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="aprimoramento-container">
+      <div className="aprimoramento-card">
+        <h2>
+          Pergunta {currentQuestion.id} de {dummyQuestions.length}
+        </h2>
+        <p className="question-text">{currentQuestion.text}</p>
+        <div className="alternatives-list">
+          {currentQuestion.alternatives.map((alt, index) => (
+            <button
+              key={index}
+              className={`alternative-button ${
+                selectedAlternative === alt ? "selected" : ""
+              }`}
+              onClick={() => handleAnswer(alt)}
+            >
+              {alt}
+            </button>
+          ))}
+        </div>
+
+        {showOtherInput && (
+          <textarea
+            className="other-input-field"
+            placeholder="Descreva sua resposta aqui..."
+            value={otherAnswer}
+            onChange={(e) => setOtherAnswer(e.target.value)}
+            rows={3}
+          />
+        )}
+
+        <button
+          className="aprimoramento-button"
+          onClick={handleNext}
+          disabled={!selectedAlternative}
+        >
+          {isLastQuestion ? "Finalizar e Ver Trilhas" : "Responder e Próxima"}
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default Aprimoramento;
