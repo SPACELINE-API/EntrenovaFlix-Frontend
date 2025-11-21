@@ -3,19 +3,16 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FaLightbulb } from "react-icons/fa";
 import { FaBuildingUser } from "react-icons/fa6";
 import { PiMonitorPlayFill } from "react-icons/pi";
-<<<<<<< Updated upstream
 import { MdOutlineFeedback } from "react-icons/md";
 import "../../../styles/sidebarRH.css";
-=======
 import '../../../styles/sidebarRH.css';
->>>>>>> Stashed changes
+
 
 function SidebarAdmin() {
   const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
 
-<<<<<<< Updated upstream
   const getActiveItem = () => {
     const path = location.pathname;
     if (path.includes("/entrenovaAdmin/empresas")) return "empresas";
@@ -23,18 +20,7 @@ function SidebarAdmin() {
     if (path.includes("/entrenovaAdmin/feedback")) return "feedback";
     return "visao-geral";
   };
-=======
-    const getActiveItem = () => {
-        const path = location.pathname;
-        if (path.includes('/entrenovaAdmin/empresas')) return 'empresas';
-        if (path.includes('/entrenovaAdmin/trilhas')) return 'trilhas';
-        return 'visao-geral';
-    };
->>>>>>> Stashed changes
-
   const activeItem = getActiveItem();
-
-<<<<<<< Updated upstream
   const toggleSidebar = () => setCollapsed(!collapsed);
 
   return (
@@ -94,7 +80,7 @@ function SidebarAdmin() {
       </button>
     </div>
   );
-=======
+
     return (
         <div className="sidebar-RH">
             <div className="sidebar-RH-header">
@@ -127,7 +113,7 @@ function SidebarAdmin() {
             </nav>
         </div>
     );
->>>>>>> Stashed changes
+
 }
 
 export default SidebarAdmin;

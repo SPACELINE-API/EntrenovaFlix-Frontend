@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { BsPersonCheckFill, BsCheckCircleFill } from "react-icons/bs";
 import api from "../../services/apiService";
 import "../../styles/diagnosticoAdmin.css";
-
 import GraficoLinhaProps from "../../componentes/graficos/diagnosticoAdmin";
 import GraficoColunaProps from "../../componentes/graficos/trilhasAdmin";
 import HobbiesPraticados from "../../componentes/graficos/hobbies";
@@ -15,7 +14,6 @@ interface Empresa {
 }
 
 function parseNome(raw: string): string {
-  // Caso venha como "{'nome': 'Entrenova'}"
   try {
     if (raw.startsWith("{") && raw.endsWith("}")) {
       const parsed = JSON.parse(raw.replace(/'/g, '"'));
