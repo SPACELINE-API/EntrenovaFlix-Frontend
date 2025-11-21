@@ -240,7 +240,6 @@ function EmpresasAdmin() {
 
     return (
         <div>
-            <h1 style={{marginBottom: 32}}>Empresas</h1>
             <Paper className="empresas-container" shadow="xs" radius="md" withBorder>
                 <Group justify="space-between" mb="xl" className="header-group">
                     <div>

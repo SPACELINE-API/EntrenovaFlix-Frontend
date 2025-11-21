@@ -131,7 +131,7 @@ function FeedbackRH() {
       });
 
       setRecebidos(recebidos.filter(t => t.id !== ticketSelecionado.id));
-      setFechados([ticketSelecionado, ...fechados]); // Adiciona o ticket à lista de fechados
+      setFechados([ticketSelecionado, ...fechados]);
 
       setModalRespostaAberto(false);
       setTicketSelecionado(null);
