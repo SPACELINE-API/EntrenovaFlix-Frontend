@@ -22,7 +22,7 @@ import DiagnosticoRH from '../paginas/RH/DiagnosticoRH';
 import PlanosRH from '../paginas/RH/PlanosRH';
 import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 import HistoricoRH from '../paginas/RH/HistoricoRH';
-import FeedbackRH from '../componentes/layout/dashboardRH/feedbackRH';
+import FeedbackRH from '../paginas/RH/feedbackRH';
 
 import ContratarLayout from '../componentes/layout/contratarLayout';
 import TelaCadastro from '../paginas/pagamento/telaCadastro';
@@ -35,6 +35,7 @@ import DashboardAdmin from '../paginas/Admin/DashboardAdmin';
 import EmpresasAdmin from '../paginas/Admin/EmpresasAdmin';
 import TrilhasAdmin from '../paginas/Admin/TrilhasAdmin';
 import FeedbackAdm from '../paginas/Admin/FeedbackAdm';
+
 
 const router = createBrowserRouter([
   {
@@ -126,10 +127,11 @@ const router = createBrowserRouter([
    {
     element: <DashboardAdminLayout />,
     children: [
-     { index: true, element: <DashboardAdmin /> },
-     { path: 'empresas', element: <EmpresasAdmin />},
-     { path: 'trilhas', element: <TrilhasAdmin />},
-     { path: 'feedback', element: <FeedbackAdm /> },
+      { index: true, element: <DashboardAdmin /> },
+      { path: 'empresas', element: <EmpresasAdmin />},
+      { path: 'trilhas', element: <TrilhasAdmin />},
+      { path: 'feedback', element: <FeedbackAdm />},
+      
     ],
    },
   ],

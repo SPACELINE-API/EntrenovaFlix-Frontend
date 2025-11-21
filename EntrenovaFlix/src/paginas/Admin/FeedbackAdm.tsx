@@ -324,7 +324,7 @@ function FeedbackAdm() {
             <Text fw={700} c="dimmed">Resolvidos ({todosFechados.length})</Text>
           </Group>
           
-          <ScrollArea style={{ flex: 1, backgroundColor: '#1A1B1E', borderRadius: '8px' }} p="md" type="never">
+          <ScrollArea style={{ flex: 1, backgroundColor: '#1A1B1E', borderRadius: '8px', marginBottom:'10px'}} p="md" type="never">
             {paginatedFechados.length === 0 ? (
               <Text c="dimmed" ta="center" mt="xl">Nenhum ticket resolvido.</Text>
             ) : (
