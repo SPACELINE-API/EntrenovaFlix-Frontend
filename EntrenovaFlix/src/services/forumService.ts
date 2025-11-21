@@ -7,6 +7,7 @@ interface NewPostData {
 
 interface NewReplyData {
   conteudo: string;
+  resposta_a?: number | null;
 }
 
 const forumService = {

@@ -34,6 +34,7 @@ import DashboardAdminLayout from '../componentes/layout/dashboardAdmin/dashboard
 import DashboardAdmin from '../paginas/Admin/DashboardAdmin';
 import EmpresasAdmin from '../paginas/Admin/EmpresasAdmin';
 import TrilhasAdmin from '../paginas/Admin/TrilhasAdmin';
+import FeedbackAdm from '../paginas/Admin/FeedbackAdm';
 
 const router = createBrowserRouter([
   {
@@ -128,6 +129,7 @@ const router = createBrowserRouter([
      { index: true, element: <DashboardAdmin /> },
      { path: 'empresas', element: <EmpresasAdmin />},
      { path: 'trilhas', element: <TrilhasAdmin />},
+     { path: 'feedback', element: <FeedbackAdm /> },
     ],
    },
   ],

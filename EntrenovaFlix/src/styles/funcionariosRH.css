@@ -228,11 +228,11 @@ box-shadow: 0 4px 6px rgba(0,0,0,0.4);
 }
 
 .modal-custom .mantine-Button-root:disabled {
-    background-color: #555; /* cor de fundo diferente */
-    color: #aaa; /* cor do texto */
-    cursor: not-allowed; /* cursor mostra que não pode clicar */
-    opacity: 0.6; /* dá um efeito de "desabilitado" */
-    box-shadow: none; /* remove sombra */
+    background-color: #555; 
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.6; 
+    box-shadow: none; 
 }
 
 .modal-custom .mantine-InputWrapper-label {

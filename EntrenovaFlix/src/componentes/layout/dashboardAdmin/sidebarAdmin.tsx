@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FaLightbulb } from "react-icons/fa";
 import { FaBuildingUser } from "react-icons/fa6";
 import { PiMonitorPlayFill } from "react-icons/pi";
+import { TbTicket } from "react-icons/tb";
 import "../../../styles/sidebarRH.css";
 
 function SidebarAdmin() {
@@ -14,6 +15,7 @@ function SidebarAdmin() {
     const path = location.pathname;
     if (path.includes("/entrenovaAdmin/empresas")) return "empresas";
     if (path.includes("/entrenovaAdmin/trilhas")) return "trilhas";
+    if (path.includes("/entrenovaAdmin/feedback")) return "feedback";
     return "visao-geral";
   };
 
@@ -51,6 +53,15 @@ function SidebarAdmin() {
         >
           <PiMonitorPlayFill size={24} />
           <span>Trilhas</span>
+        </button>
+  
+        <button
+          className={`sidebar-RH-item ${activeItem === "feedback" ? "active" : ""}`}
+          onClick={() => navigate("/entrenovaAdmin/feedback")}>
+
+          <TbTicket size={24} />
+          <span>Feedbacks</span>
+
         </button>
       </nav>
 
