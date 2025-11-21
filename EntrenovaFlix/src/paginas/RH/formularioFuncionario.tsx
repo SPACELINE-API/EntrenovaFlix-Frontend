@@ -45,7 +45,7 @@ const funcionarioSchema = z
       if (typeof arg === "string" && arg.length > 0) return new Date(arg);
       return null;
     }, z.date({ invalid_type_error: "Data inválida" })),
-    password: z.string().min(6, "Senha muito curta"),
+    password: z.string(),
     confirmarSenha: z.string(),
   })
   .superRefine((data, ctx) => {
