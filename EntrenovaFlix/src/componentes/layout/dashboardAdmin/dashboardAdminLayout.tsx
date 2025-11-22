@@ -23,7 +23,7 @@ function DashboardAdminLayout({ userAvatar }: DashboardAdminLayoutProps) {
     const pageTitles: { [key: string]: string } = {
         '/entrenovaAdmin': 'Visão Geral do Administrador',
         '/entrenovaAdmin/empresas': 'Empresas',
-        '/entrenovaAdmin/trilhas': 'Conteúdos',
+        '/entrenovaAdmin/trilhas': 'Gerenciamento de Conteúdo',
     };
     const currentTitle = pageTitles[location.pathname] || 'Área Administrativa';
 

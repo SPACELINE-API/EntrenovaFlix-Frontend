@@ -132,6 +132,7 @@ const router = createBrowserRouter([
       { path: 'trilhas', element: <TrilhasAdmin />},
       { path: 'feedback', element: <FeedbackAdmin />},
       
+  
     ],
    },
   ],
