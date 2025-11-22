@@ -19,7 +19,7 @@ import { showNotification } from '@mantine/notifications';
 import { IconPencil, IconTrash, IconPlus, IconAlertCircle, IconEye } from '@tabler/icons-react';
 import api from '../../services/apiService';
 
-const BASE_URL_API = "http://127.0.0.1:8000/api/pagamento/conteudos/"; 
+const BASE_URL_API = "http://127.0.0.1:8000/api/accounts/conteudos/"; 
 
 interface Conteudo {
   id: string; 
