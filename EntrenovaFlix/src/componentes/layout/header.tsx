@@ -65,6 +65,7 @@ function Header({
         <NavLink to="/colaboradores" end>Trilhas</NavLink>
         <NavLink to="/colaboradores/forum" end>Fórum</NavLink>
         <NavLink to="/colaboradores/dashboard" end>Dashboard</NavLink>
+        <NavLink to="feedbacks" end>Tickets</NavLink>
       </nav>
 
       <div className='brandLogo'>

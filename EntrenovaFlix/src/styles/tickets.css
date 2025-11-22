@@ -8,6 +8,14 @@
     border: 1px solid #2c2c2c !important;
 }
 
+	.mantine-Textarea-input {
+    background-color: #1A1A1A !important;
+    border: 1.5px solid #494848 !important;
+    border-radius: 7px !important;
+    color: #fff !important;
+    padding: 12px !important;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -18,6 +26,26 @@
   color: #C1C2C5 !important;
   transition: all 0.2s ease;
   margin-bottom: 10px;
+}
+
+.mantine-SegmentedControl-root{
+  background-color: #2C2E33 !important;
+  border: 1px solid #373A40 !important;
+  color: #C1C2C5 !important;
+}
+
+.mantine-SegmentedControl-indicator {
+  margin-top: 0px !important;
+  color: #ffffff !important;
+  background-color: #1971c2 !important;
+  border-color: #1971c2 !important;
+}
+.mantine-SegmentedControl-label[data-active="true"]{
+  color: #ffffff !important;
+}
+.mantine-SegmentedControl-label{
+  margin-top: 0px !important; 
+  color: #C1C2C5 !important;
 }
 
 .mantine-Pagination-control:not([data-disabled]):hover {

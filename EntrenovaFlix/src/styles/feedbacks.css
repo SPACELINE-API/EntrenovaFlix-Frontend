@@ -1,0 +1,265 @@
+@font-face {
+    font-family: 'Satoshi';
+    src: url(../assets/fontes/satoshi/Satoshi-Light.otf);
+}
+
+@font-face {
+    font-family: 'Kollektif';
+    src: url('../assets/fontes/kollektif/Kollektif.ttf');
+}
+
+.container-feedback {
+    padding: 2.5rem;
+}
+
+.titulo {
+    font-size: 2.5rem;
+    font-family: 'Kollektif';
+}
+
+.subtitulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 2.1875rem;
+    font-family: 'Kollektif';
+    margin-top: 1.25rem;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-topo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 1.875rem;
+    margin-bottom: 1rem;
+}
+
+.modal-titulo {
+    font-size: 1.5rem;
+}
+
+.modal-titulo-categoria {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 35rem;
+    justify-content: space-between;
+}
+
+.feedback-forms {
+    display: flex;
+    flex-direction: column;
+    height: 31rem;
+    width: 48rem;
+    background-color: #1A1A1A;
+    padding: 2.25rem;
+    border: 1px solid #857DDB;
+    border-radius: 15px;
+    font-family: 'Satoshi';
+}
+
+.feedback-forms label {
+    background-color: #1D1C1C;
+}
+
+.feedback-btn {
+    background-color: #5A4FCF;
+    border: none;
+    border-radius: 10px;
+    padding: 6px;
+    margin-top: 1.75rem;
+    width: 9.375rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #fff;
+}
+
+.feedback-btn:hover {
+    background: #5A4FCF;
+    box-shadow: 0 0 12px #5a4fcf80;
+}
+
+.fechar-btn {
+    border: none;
+    background: none;
+}
+
+.fechar-btn-icone {
+    background-color: none;
+    color: #5A4FCF;
+    width: 1.5625rem;
+    height: 1.5625rem;
+}
+
+.feedback-descricao {
+    font-family: 'Satoshi';
+    font-size: 1.3rem;
+    margin-top: 15px;
+}
+
+.titulo-input {
+    background-color: #1A1A1A;
+    border: 1.5px solid #494848;
+    border-radius: 7px;
+    width: 29.50rem;
+    color: #fff;
+    padding: 12px;
+}
+
+.titulo-input:focus {
+    border: 1px solid #4033d5;
+    outline: none;
+}
+
+.descricao-input {
+    background-color: #1A1A1A;
+    border: 1.5px solid #494848;
+    border-radius: 7px;
+    resize: none;
+    color: #fff;
+    height: 9.375rem;
+    padding: 12px;
+}
+
+.descricao-input:focus {
+    border: 1px solid #4033d5;
+    outline: none;
+}
+
+.categoria-input {
+    background-color: #2c2c2c;
+    color: #fff;
+    border-radius: 7px;
+    outline: none;
+    padding: 10px;
+}
+
+.categoria-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.container-tickets {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.25rem;
+    margin-top: 3rem;
+}
+
+.card-ticket {
+    background-color: #1A1A1A;
+    border: 1px solid #444444;
+    border-radius: 10px;
+    padding: 1.5625rem;
+    margin-top: 1.875rem;
+}
+
+.card-ticket-resposta {
+    background-color: #1A1A1A;
+    border: 1px solid #444444;
+    border-radius: 10px;
+    padding: 1.5625rem;
+    margin-top: 1.875rem;
+}
+
+.card-ticket-titulo {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    font-size: 1.5625rem;
+    font-weight: 400;
+}
+
+.card-ticket-titulo-resposta {
+    font-size: 1.5625rem;
+    font-weight: 400;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 2.1875rem;
+}
+
+.card-ticket-dados {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card-ticket-dado {
+    display: flex;
+    justify-content: center;
+    font-family: 'Satoshi';
+    background: linear-gradient(90deg, #695de6 10%, #5449CC 70%, #0078D7 100%);
+    padding: 3px;
+    border-radius: 12px;
+    width: 6.25rem;
+}
+
+.card-ticket-descricao {
+    font-size: 18px;
+    font-family: 'Satoshi';
+}
+
+.card-ticket-icone {
+    width: 1.875rem;
+    height: 1.875rem;
+    color: #4cafff;
+}
+
+.card-ticket-data-criacao {
+    font-family: 'Kollektif';
+    margin-top: 15px;
+}
+
+.linha {
+    background-color: #494949;
+    height: 1px;
+    margin-top: 2.1875rem;
+}
+
+.abas-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.aba {
+    background-color: #2c2c2c;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Kollektif';
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.aba.ativa {
+    background: linear-gradient(90deg, #695de6 10%, #5449CC 70%, #0078D7 100%);
+    color: #fff;
+    box-shadow: 0 0 12px #5a4fcf80;
+}

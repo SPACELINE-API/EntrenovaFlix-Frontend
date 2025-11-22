@@ -41,6 +41,7 @@ interface Ticket {
   status: 'Aberto' | 'Fechado';
   created_at: string;
   mensagens: Mensagem[];
+  encaminhado: boolean;
 }
 
 function FeedbackRH() {
@@ -72,7 +73,7 @@ function FeedbackRH() {
 
       const responseRecebidos = await api.get('/tickets/colaboradores/list/');
       const dataRecebidos: Ticket[] = responseRecebidos.data;
-      setRecebidos(dataRecebidos.filter(t => t.status === 'Aberto'));
+      setRecebidos(dataRecebidos.filter(t => t.status === 'Aberto' && !t.encaminhado));
 
       setFechados(prevFechados => [
         ...prevFechados,
@@ -144,10 +145,17 @@ function FeedbackRH() {
   };
 
   const handleEncaminharParaAdmin = async (ticket: Ticket) => {
-    console.log("Encaminhando para admin (API)", ticket.id);
-    alert("Funcionalidade de encaminhar para o Admin ainda não implementada.");
-    
-  };
+  try {
+    await api.patch(`/tickets/${ticket.id}/encaminhar/`);
+    setRecebidos(recebidos.filter(t => t.id !== ticket.id));
+    setEnviados([ticket, ...enviados]);
+
+  } catch (err) {
+    console.error("Erro ao encaminhar:", err);
+    alert("Erro ao encaminhar o ticket");
+  }
+};
+
 
   const renderTabelaRecebidos = (data: Ticket[]) => (
     <Table className="funcionarios-table" mt="md" highlightOnHover>

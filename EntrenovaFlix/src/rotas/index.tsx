@@ -23,20 +23,18 @@ import PlanosRH from '../paginas/RH/PlanosRH';
 import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 import HistoricoRH from '../paginas/RH/HistoricoRH';
 import FeedbackRH from '../paginas/RH/feedbackRH';
-
 import ContratarLayout from '../componentes/layout/contratarLayout';
 import TelaCadastro from '../paginas/pagamento/telaCadastro';
 import TelaPagamento from '../paginas/pagamento/telaPagamento';
 import TelaSelecaoPlano from '../paginas/telaSelecaoPlanos';
 import Conversa from '../paginas/RH/Conversa';
-
 import DashboardAdminLayout from '../componentes/layout/dashboardAdmin/dashboardAdminLayout';
 import DashboardAdmin from '../paginas/Admin/DashboardAdmin';
 import EmpresasAdmin from '../paginas/Admin/EmpresasAdmin';
 import TrilhasAdmin from '../paginas/Admin/TrilhasAdmin';
 import FeedbackAdm from '../paginas/Admin/FeedbackAdm';
 import DiagnosticoAdmin from '../paginas/Admin/DiagnosticoAdmin';
-
+import TelaFeedbacks from '../paginas/TelaFeedbacks';
 
 const router = createBrowserRouter([
   {
@@ -94,6 +92,7 @@ const router = createBrowserRouter([
           { path: 'trilhas', element: <TelaTrilhas /> },
           { path: 'dashboard', element: <Dashboard /> },
           { path: 'forum', element: <TelaForum /> },
+          { path: 'feedbacks', element: <TelaFeedbacks /> },
           { path: 'novo-comentario', element: <NovoComentario /> },
           { path: 'forum/post/:postId', element: <DetalhePost /> },
         ],
