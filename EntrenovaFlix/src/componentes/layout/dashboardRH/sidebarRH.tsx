@@ -9,7 +9,11 @@ import { FaHistory } from "react-icons/fa";
 import { MdOutlineFeedback } from "react-icons/md";
 import { BiMessageDetail } from "react-icons/bi";
 
-function SidebarRH() {
+interface SidebarRHProps {
+  activePlan?: string;
+}
+
+function SidebarRH({ activePlan = "Plano Essencial" }: SidebarRHProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,8 +33,8 @@ function SidebarRH() {
   return (
     <div className="sidebar-RH">
       <div className="sidebar-RH-header">
-        <p>Plano Essencial</p>
-    </div>
+        <p>{activePlan}</p>
+      </div>
 
       <nav className="sidebar-RH-nav">
         <button
