@@ -15,18 +15,18 @@ import {
   Tooltip,
   LoadingOverlay,
 } from '@mantine/core';
-import { showNotification } from '@mantine/notifications'; 
+import { showNotification } from '@mantine/notifications';
 import { IconPencil, IconTrash, IconPlus, IconAlertCircle, IconEye } from '@tabler/icons-react';
 import api from '../../services/apiService';
 
-const BASE_URL_API = "http://127.0.0.1:8000/api/accounts/conteudos/"; 
+const BASE_URL_API = "http://127.0.0.1:8000/api/accounts/conteudos/";
 
 interface Conteudo {
-  id: string; 
+  id: string;
   titulo: string;
   descricao: string;
   tipo: string;
-  softSkills: string[]; 
+  softSkills: string[];
   link?: string;
   created_at: string;
 }
@@ -43,8 +43,7 @@ function TrilhasAdmin() {
   const [conteudos, setConteudos] = useState<Conteudo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false); 
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentConteudo, setCurrentConteudo] = useState<Conteudo | null>(null);
@@ -61,7 +60,7 @@ function TrilhasAdmin() {
     { value: 'lideranca', label: 'Liderança' },
     { value: 'resolucao', label: 'Resolução de Problemas' },
   ];
-  
+
   const tipoConteudoOptions = [
     { value: 'Artigo', label: 'Artigo' },
     { value: 'Curso', label: 'Curso' },
@@ -73,17 +72,16 @@ function TrilhasAdmin() {
     setLoading(true);
     try {
       const response = await api.get<Conteudo[]>(BASE_URL_API);
-      setConteudos(response.data); 
+      setConteudos(response.data);
       setError(null);
     } catch (err: any) {
       let errorMsg = "Falha ao carregar conteúdos. Verifique o backend e a rota.";
       if (err.response?.status === 403 || err.response?.status === 401) {
-          errorMsg = "Acesso negado (401/403). Faça login novamente como Administrador.";
+        errorMsg = "Acesso negado (401/403). Faça login novamente como Administrador.";
       } else if (err.response?.status === 500) {
-          errorMsg = "Erro interno (500) no servidor ao listar conteúdos.";
+        errorMsg = "Erro interno (500) no servidor ao listar conteúdos.";
       }
       setError(errorMsg);
-      console.error("Erro ao buscar conteúdos:", err);
       showNotification({
         title: "Erro",
         message: errorMsg,
@@ -137,54 +135,49 @@ function TrilhasAdmin() {
     setIsSubmitting(true);
     try {
       if (isEditing && currentConteudo) {
-        await api.put(`${BASE_URL_API}${currentConteudo.id}/`, form); 
+        await api.put(`${BASE_URL_API}${currentConteudo.id}/`, form);
         showNotification({ title: "Sucesso", message: "Conteúdo editado com sucesso.", color: "green" });
       } else {
         await api.post(BASE_URL_API, form);
         showNotification({ title: "Sucesso", message: "Conteúdo adicionado com sucesso.", color: "green" });
       }
-    
-      handleCloseModal(); 
-      await fetchConteudos(); 
 
+      handleCloseModal();
+      await fetchConteudos();
     } catch (err: any) {
-        if (err.response?.status === 400 && err.response.data) {
-            let detail = "Verifique os campos do formulário.";
-            try {
-                detail = Object.keys(err.response.data).map(key => 
-                    `${key}: ${Array.isArray(err.response.data[key]) ? err.response.data[key].join(' ') : err.response.data[key]}`
-                ).join('; ');
-            } catch {}
-            showNotification({
-                title: "Erro de Validação (400)",
-                message: `Detalhes: ${detail}`,
-                color: "yellow",
-                icon: <IconAlertCircle />,
-            });
-        } else {
-            showNotification({ 
-                title: "Erro", 
-                message: `Falha ao ${isEditing ? 'editar' : 'adicionar'} o conteúdo.`, 
-                color: "red" 
-            });
-        }
-        console.error("Erro ao salvar conteúdo:", err);
+      if (err.response?.status === 400 && err.response.data) {
+        let detail = "Verifique os campos do formulário.";
+        try {
+          detail = Object.keys(err.response.data).map(key =>
+            `${key}: ${Array.isArray(err.response.data[key]) ? err.response.data[key].join(' ') : err.response.data[key]}`
+          ).join('; ');
+        } catch {}
+        showNotification({
+          title: "Erro de Validação (400)",
+          message: `Detalhes: ${detail}`,
+          color: "yellow",
+          icon: <IconAlertCircle />,
+        });
+      } else {
+        showNotification({
+          title: "Erro",
+          message: `Falha ao ${isEditing ? 'editar' : 'adicionar'} o conteúdo.`,
+          color: "red"
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleDelete = async (conteudo: Conteudo) => {
-    if (window.confirm(`Tem certeza que deseja excluir o conteúdo "${conteudo.titulo}"?`)) { 
+    if (window.confirm(`Tem certeza que deseja excluir o conteúdo "${conteudo.titulo}"?`)) {
       setLoading(true);
       try {
         await api.delete(`${BASE_URL_API}${conteudo.id}/`);
-        
-        showNotification({ title: "Sucesso", message: "Conteúdo excluído.", color: "green" }); 
-        
-        await fetchConteudos(); 
+        showNotification({ title: "Sucesso", message: "Conteúdo excluído.", color: "green" });
+        await fetchConteudos();
       } catch (err) {
-        console.error("Erro ao deletar conteúdo:", err);
         showNotification({ title: "Erro", message: "Falha ao excluir o conteúdo. Verifique o endpoint e a API.", color: "red" });
       } finally {
         setLoading(false);
@@ -198,21 +191,20 @@ function TrilhasAdmin() {
       <Table.Td>{conteudo.tipo}</Table.Td>
       <Table.Td>
         {conteudo.softSkills
-            .map(skill => {
-              const skillLabel = softSkillOptions.find(opt => opt.value === skill)?.label || skill;
-              return skillLabel.charAt(0).toUpperCase() + skillLabel.slice(1);
-            })
-            .join(', ')
+          .map(skill => {
+            const skillLabel = softSkillOptions.find(opt => opt.value === skill)?.label || skill;
+            return skillLabel.charAt(0).toUpperCase() + skillLabel.slice(1);
+          })
+          .join(', ')
         }
       </Table.Td>
       <Table.Td>{new Date(conteudo.created_at).toLocaleDateString('pt-BR')}</Table.Td>
-      
       <Table.Td style={{ textAlign: 'center' }}>
         <Group gap="xs" justify="center">
           <Tooltip label="Visualizar" withArrow position="top">
-            <ActionIcon 
-              variant="subtle" 
-              color="teal" 
+            <ActionIcon
+              variant="subtle"
+              color="teal"
               onClick={() => {
                 if (conteudo.link) {
                   window.open(conteudo.link, '_blank');
@@ -250,8 +242,8 @@ function TrilhasAdmin() {
 
       <Group justify="space-between" mb="md">
         <Title order={2}>Gerenciamento de Conteúdos 📚</Title>
-        <Button 
-          leftSection={<IconPlus size={16} />} 
+        <Button
+          leftSection={<IconPlus size={16} />}
           onClick={() => handleOpenModal()}
           disabled={loading}
         >
@@ -261,8 +253,8 @@ function TrilhasAdmin() {
 
       {error && (
         <Text color="red" mb="md" fw={500}>
-            <IconAlertCircle size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />
-            {error}
+          <IconAlertCircle size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />
+          {error}
         </Text>
       )}
 
@@ -278,11 +270,11 @@ function TrilhasAdmin() {
         </Table.Thead>
         <Table.Tbody>
           {rows.length > 0 ? rows : (
-             <Table.Tr>
-                <Table.Td colSpan={5} style={{ textAlign: 'center' }}>
-                    {loading ? 'Carregando...' : 'Nenhum conteúdo cadastrado.'}
-                </Table.Td>
-             </Table.Tr>
+            <Table.Tr>
+              <Table.Td colSpan={5} style={{ textAlign: 'center' }}>
+                {loading ? 'Carregando...' : 'Nenhum conteúdo cadastrado.'}
+              </Table.Td>
+            </Table.Tr>
           )}
         </Table.Tbody>
       </Table>
@@ -292,6 +284,7 @@ function TrilhasAdmin() {
         onClose={handleCloseModal}
         title={isEditing ? `Editar Conteúdo: ${currentConteudo?.titulo}` : 'Adicionar Novo Conteúdo'}
         size="lg"
+        className="modal-dark-form"
       >
         <Box style={{ position: 'relative' }}>
           <LoadingOverlay visible={isSubmitting} overlayProps={{ radius: "sm", blur: 2 }} />
@@ -314,8 +307,10 @@ function TrilhasAdmin() {
             value={form.descricao}
             onChange={(event) => setForm({ ...form, descricao: event.currentTarget.value })}
           />
-          
+
           <MultiSelect
+            withPortal={false}
+            comboboxProps={{ withinPortal: false }}
             label="Soft Skills Relacionadas"
             data={softSkillOptions}
             placeholder="Selecione as soft skills (Obrigatório)"
@@ -326,6 +321,8 @@ function TrilhasAdmin() {
           />
 
           <Select
+            withPortal={false}
+            comboboxProps={{ withinPortal: false }}
             label="Categoria ou Tipo de Conteúdo"
             placeholder="Selecione o tipo"
             data={tipoConteudoOptions}
@@ -333,7 +330,7 @@ function TrilhasAdmin() {
             value={form.tipo}
             onChange={(value) => value && setForm({ ...form, tipo: value })}
           />
-          
+
           <TextInput
             label="Link ou Arquivo do Conteúdo"
             placeholder="URL ou nome do arquivo"
@@ -346,8 +343,8 @@ function TrilhasAdmin() {
             <Button variant="default" onClick={handleCloseModal} disabled={isSubmitting}>
               Cancelar
             </Button>
-            <Button 
-              onClick={handleSubmit} 
+            <Button
+              onClick={handleSubmit}
               disabled={isSubmitting || !form.titulo || !form.descricao || form.softSkills.length === 0}
             >
               {isEditing ? 'Salvar Edição' : 'Adicionar Conteúdo'}
