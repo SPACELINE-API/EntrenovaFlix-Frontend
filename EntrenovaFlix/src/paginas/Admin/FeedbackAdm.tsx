@@ -29,11 +29,11 @@ interface Ticket {
   status: 'Aberto' | 'Fechado';
   created_at: string;
   mensagens: Mensagem[];
-  encaminhado: boolean; // ADICIONADO
+  encaminhado: boolean; 
 }
 
 
-/* ------------------ CARD DO TICKET ------------------ */
+
 
 const TicketCard = ({
   ticket, onClick, onDelete
@@ -73,8 +73,7 @@ const TicketCard = ({
           <Box style={{ overflow: 'hidden' }}>
             <Text fw={600} size="sm" c="white" truncate>{ticket.autor_nome}</Text>
             <Text size="xs" c="dimmed" truncate>{ticket.empresa_nome}</Text>
-
-            {/* BADGE DE ENCAMINHADO */}            
+         
             {ticket.encaminhado && (
               <Badge color="yellow" size="xs" mt={4}>Encaminhado</Badge>
             )}
@@ -119,8 +118,6 @@ const TicketCard = ({
 
 
 
-/* ------------------ PÁGINA PRINCIPAL ------------------ */
-
 export default function FeedbackAdm() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
@@ -148,8 +145,6 @@ export default function FeedbackAdm() {
 
 
 
-  /* ------------------ BUSCAR TICKETS ------------------ */
-
   const fetchTickets = async () => {
     setLoading(true);
     try {
@@ -171,9 +166,6 @@ export default function FeedbackAdm() {
     setPageFechados(1);
   }, [filtroOrigem, busca, ordemRecente]);
 
-
-
-  /* ------------------ PROCESSAR FILTROS ------------------ */
 
   const ticketsProcessados = useMemo(() => {
     let lista = [...tickets];
@@ -222,8 +214,6 @@ export default function FeedbackAdm() {
 
 
 
-  /* ------------------ HANDLERS ------------------ */
-
   const handleAbrirTicket = (ticket: Ticket) => {
     setTicketSelecionado(ticket);
     setFormResposta("");
@@ -250,16 +240,13 @@ export default function FeedbackAdm() {
   };
 
 
-
-  /* ------------------ FECHAR TICKET ------------------ */
-
   const handleFecharTicket = async () => {
     if (!ticketSelecionado) return;
 
     setFechandoTicket(true);
 
     try {
-      await api.patch(`/tickets/${ticketSelecionado.id}/fechar/`);
+      await api.patch(`/tickets/${ticketSelecionado.id}/fechar`);
       await fetchTickets();
       setModalRespostaAberto(false);
     } catch {
@@ -269,9 +256,6 @@ export default function FeedbackAdm() {
     }
   };
 
-
-
-  /* ------------------ RESPONDER ------------------ */
 
   const handleResponder = async () => {
     if (!ticketSelecionado || !formResposta) return;
@@ -292,16 +276,11 @@ export default function FeedbackAdm() {
     }
   };
 
-
-
-  /* ------------------ RENDER ------------------ */
-
   return (
     <Box className="funcionarios-container1">
 
       <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
 
-      {/* HEADER */}
       <Box p="lg" style={{ borderBottom: '1px solid #2C2E33' }}>
         <Group justify="space-between" mb="md">
           <Box>
@@ -355,10 +334,8 @@ export default function FeedbackAdm() {
       </Box>
 
 
-      {/* LISTAS */}
       <SimpleGrid cols={2} spacing="lg" p="lg" style={{ height: 'calc(100vh - 220px)' }}>
         
-        {/* ABERTOS */}
         <Box style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           <Group mb="md" px="xs">
             <ThemeIcon color="blue" variant="light" radius="md" size="lg">
@@ -390,7 +367,6 @@ export default function FeedbackAdm() {
         </Box>
 
 
-        {/* FECHADOS */}
         <Box style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           
           <Group mb="md" px="xs">
@@ -423,10 +399,6 @@ export default function FeedbackAdm() {
         </Box>
       </SimpleGrid>
 
-
-
-      {/* ------------------ MODAL DE RESPOSTA ------------------ */}
-
       <Modal 
         className='modal-custom'
         opened={modalRespostaAberto}
@@ -443,10 +415,6 @@ export default function FeedbackAdm() {
       >
 
         <Box p="md">
-          
-
-          {/* ------------------ HISTÓRICO COM ALINHAMENTO ------------------ */}
-
           <Box 
             style={{ 
               maxHeight: 350, 
@@ -496,8 +464,6 @@ export default function FeedbackAdm() {
             })}
           </Box>
 
-
-          {/* AREA DE RESPOSTA */}
           {ticketSelecionado?.status === "Aberto" ? (
             <>
               <Textarea
@@ -510,8 +476,6 @@ export default function FeedbackAdm() {
               />
 
               <Group justify="space-between">
-
-                {/* BOTÃO FECHAR TICKET */}
                 <Button 
                   color="red"
                   variant="light"
@@ -522,9 +486,6 @@ export default function FeedbackAdm() {
                 </Button>
 
                 <Group>
-                  <Button variant="default" onClick={() => setModalRespostaAberto(false)}>
-                    Cancelar
-                  </Button>
 
                   <Button 
                     onClick={handleResponder}
@@ -545,10 +506,6 @@ export default function FeedbackAdm() {
 
         </Box>
       </Modal>
-
-
-
-      {/* ------------------ MODAL DE EXCLUSÃO ------------------ */}
 
       <Modal 
         opened={modalExclusaoAberto}

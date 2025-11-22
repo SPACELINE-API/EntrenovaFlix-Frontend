@@ -31,7 +31,8 @@ const TicketCard = ({ ticket, onClick, onDelete }: { ticket: Ticket; onClick: ()
         backgroundColor: '#1A1A1A',
         borderColor: isAberto ? '#3b5bdb' : '#2f2f2f',
         transition: 'transform 0.2s ease',
-        justify: 'relative'
+        justify: 'relative',
+        marginBottom: '12px',
       }}
     >
       <Group justify="space-between" mb="xs" align="flex-start">
@@ -161,7 +162,6 @@ export default function TelaFeedbacksRefatorado() {
           }
         </Box>
 
-        {/* Encerrados */}
         <Box style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <Group mb="xs"><IoCheckmarkDoneOutline color="#4cafff" size={24}/><Text c="dimmed" fw={700}>Encerrados ({encerrados.length})</Text></Group>
           <ScrollArea style={{ flex: 1, maxHeight: '70vh', backgroundColor:'#1A1A1A', padding:'8px', borderRadius:'8px' }}>
@@ -176,7 +176,6 @@ export default function TelaFeedbacksRefatorado() {
         </Box>
       </Group>
 
-      {/* Modal para criar / responder ticket */}
       <Modal className='modal-custom' opened={abertoModal} onClose={() => setAbertoModal(false)} title={ticketSelecionado ? `Ticket: ${ticketSelecionado.titulo}` : "Novo Ticket"} size="lg" overlayProps={{ blur: 3, opacity:0.5 }}>
         {!ticketSelecionado ? (
           <form onSubmit={handleSubmit}>
@@ -204,7 +203,6 @@ export default function TelaFeedbacksRefatorado() {
         )}
       </Modal>
 
-      {/* Modal de exclusão */}
       <Modal opened={!!ticketParaExcluir} onClose={()=>setTicketParaExcluir(null)} title="Excluir Ticket" size="sm" overlayProps={{ blur: 3, opacity:0.5 }}>
         <Text mb="md">Tem certeza que deseja excluir "{ticketParaExcluir?.titulo}"?</Text>
         <Group justify="right">

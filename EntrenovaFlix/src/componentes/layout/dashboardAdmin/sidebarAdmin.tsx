@@ -79,40 +79,6 @@ function SidebarAdmin() {
       </button>
     </div>
   );
-
-    return (
-        <div className="sidebar-RH">
-            <div className="sidebar-RH-header">
-                <h2>ENTRENOVAFLIX</h2>
-                <p>Administrador</p>
-            </div>
-            
-            <nav className="sidebar-RH-nav">
-                <button
-                    className={`sidebar-RH-item ${activeItem === 'visao-geral' ? 'active' : ''}`}
-                    onClick={() => navigate('/entrenovaAdmin')}
-                >
-                    <FaLightbulb size={24}/>
-                    Visão geral
-                </button>
-                <button
-                    className={`sidebar-RH-item ${activeItem === 'empresas' ? 'active' : ''}`}
-                    onClick={() => navigate('/entrenovaAdmin/empresas')}
-                >
-                    <FaBuildingUser size={24}/>
-                    Empresas
-                </button>
-                <button
-                    className={`sidebar-RH-item ${activeItem === 'trilhas' ? 'active' : ''}`}
-                    onClick={() => navigate('/entrenovaAdmin/trilhas')}
-                >
-                    <PiMonitorPlayFill size={24}/>
-                    Trilhas
-                </button>
-            </nav>
-        </div>
-    );
-
 }
 
 export default SidebarAdmin;

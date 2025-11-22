@@ -19,6 +19,7 @@ import {
 import { IconSend, IconArrowForwardUp, IconMessageReply, IconAlertCircle } from '@tabler/icons-react';
 import "../../styles/funcionariosRH.css";
 import api from '../../services/apiService';
+import ticketService from '../../services/ticketService';
 
 interface Usuario {
   id: string;
@@ -33,7 +34,7 @@ interface Mensagem {
   created_at: string;
 }
 
-interface Ticket {
+interface TicketRH {
   id: string;
   assunto: string;
   autor: Usuario;
@@ -44,15 +45,27 @@ interface Ticket {
   encaminhado: boolean;
 }
 
+interface TicketColab {
+  id: number;
+  titulo: string;
+  descricao: string;
+  categoria: 'sugestao' | 'duvida' | 'problema';
+  status: 'aberto' | 'encerrado';
+  criado_em: string;
+}
+
 function FeedbackRH() {
   const [activeTab, setActiveTab] = useState<string | null>('recebidos');
   const [modalNovoAberto, setModalNovoAberto] = useState(false);
   const [modalRespostaAberto, setModalRespostaAberto] = useState(false);
 
-  const [ticketSelecionado, setTicketSelecionado] = useState<Ticket | null>(null);
-  const [recebidos, setRecebidos] = useState<Ticket[]>([]);
-  const [enviados, setEnviados] = useState<Ticket[]>([]);
-  const [fechados, setFechados] = useState<Ticket[]>([]);
+  const [ticketSelecionado, setTicketSelecionado] = useState<TicketRH | null>(null);
+  const [recebidos, setRecebidos] = useState<TicketRH[]>([]);
+  const [colabRecebidos, setColabRecebidos] = useState<TicketColab[]>([]);
+  const [ticketsColaboradores, setTicketsColaboradores] = useState<TicketColab[]>([]);
+  const [enviados, setEnviados] = useState<TicketRH[]>([]);
+  const [fechados, setFechados] = useState<TicketRH[]>([]);
+  const [colabFechados, setColabFechados] = useState<TicketColab[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,17 +80,21 @@ function FeedbackRH() {
     setError(null);
     try {
       const responseAdmin = await api.get('/tickets/rh/list/');
-      const dataAdmin: Ticket[] = responseAdmin.data;
+      const dataAdmin: TicketRH[] = responseAdmin.data;
       setEnviados(dataAdmin.filter(t => t.status === 'Aberto'));
       setFechados(dataAdmin.filter(t => t.status === 'Fechado'));
 
-      const responseRecebidos = await api.get('/tickets/colaboradores/list/');
-      const dataRecebidos: Ticket[] = responseRecebidos.data;
-      setRecebidos(dataRecebidos.filter(t => t.status === 'Aberto' && !t.encaminhado));
+      const responseRecebidos = await api.get('/tickets/rh/colaboradores/');
+      const dataRecebidos: TicketColab[] = responseRecebidos.data;
+      setColabRecebidos(dataRecebidos.filter(t => t.status === 'aberto'));
+      setColabFechados(dataRecebidos.filter(t => t.status === 'encerrado'));
 
-      setFechados(prevFechados => [
+      const respostaColab = await ticketService.listarTickets();
+      setTicketsColaboradores(respostaColab);
+
+      setColabFechados(prevFechados => [
         ...prevFechados,
-        ...dataRecebidos.filter(t => t.status === 'Fechado')
+        ...dataRecebidos.filter(t => t.status === 'encerrado')
       ]);
 
     } catch (err) {
@@ -101,7 +118,7 @@ function FeedbackRH() {
         assunto: formAssunto,
         texto: formMensagem
       });
-      const novoTicket: Ticket = response.data;
+      const novoTicket: TicketRH = response.data;
 
       setEnviados([novoTicket, ...enviados]);
       setModalNovoAberto(false);
@@ -115,7 +132,7 @@ function FeedbackRH() {
     }
   };
 
-  const handleAbrirModalResposta = (ticket: Ticket) => {
+  const handleAbrirModalResposta = (ticket: TicketRH) => {
     setTicketSelecionado(ticket);
     setFormResposta("");
     setModalRespostaAberto(true);
@@ -144,11 +161,29 @@ function FeedbackRH() {
     }
   };
 
-  const handleEncaminharParaAdmin = async (ticket: Ticket) => {
+  const handleEncaminharParaAdmin = async (ticket: TicketColab) => {
   try {
-    await api.patch(`/tickets/${ticket.id}/encaminhar/`);
-    setRecebidos(recebidos.filter(t => t.id !== ticket.id));
+    // CORREÇÃO: Usar template string com o ID real
+    // E certifique-se de que a rota no Django aceita PATCH para encaminhar
+    // Se você não tem uma rota específica de "encaminhar", 
+    // talvez você queira usar o endpoint de detalhes do admin ou criar um novo.
+    
+    // Vou assumir que você quer usar o endpoint de detalhe do admin que já existe:
+    // path('api/accounts/tickets/admin/<uuid:pk>/', ...)
+    
+    // Mas espere! Encaminhar geralmente é apenas "criar uma mensagem" ou "mudar status".
+    // Se você quer só "mandar pro admin", talvez seja melhor postar uma mensagem:
+    
+    await api.post(`/tickets/admin/${ticket.id}/`, {
+        texto: "Ticket encaminhado para o Admin."
+    });
+
+    // Se você realmente tem uma rota PATCH para mudar algo:
+    // await api.patch(`/accounts/tickets/admin/${ticket.id}/`, { encaminhado: true });
+
+    setColabRecebidos(colabRecebidos.filter(t => t.id !== ticket.id));
     setEnviados([ticket, ...enviados]);
+    alert("Ticket encaminhado com sucesso!");
 
   } catch (err) {
     console.error("Erro ao encaminhar:", err);
@@ -157,12 +192,11 @@ function FeedbackRH() {
 };
 
 
-  const renderTabelaRecebidos = (data: Ticket[]) => (
+  const renderTabelaColaboradores = (data: TicketColab[]) => (
     <Table className="funcionarios-table" mt="md" highlightOnHover>
       <Table.Thead>
         <Table.Tr>
           <Table.Th>Assunto</Table.Th>
-          <Table.Th>Autor</Table.Th>
           <Table.Th>Status</Table.Th>
           <Table.Th>Criado em</Table.Th>
           <Table.Th className="th-actions">Ações</Table.Th>
@@ -176,14 +210,13 @@ function FeedbackRH() {
         ) : (
           data.map((ticket) => (
             <Table.Tr key={ticket.id}>
-              <Table.Td>{ticket.assunto}</Table.Td>
-              <Table.Td>{ticket.autor.nome}</Table.Td>
+              <Table.Td>{ticket.descricao}</Table.Td>
               <Table.Td>
-                <Badge color={ticket.status === 'Aberto' ? 'blue' : 'gray'} variant="filled">
+                <Badge color={ticket.status === 'aberto' ? 'blue' : 'gray'} variant="filled">
                   {ticket.status}
                 </Badge>
               </Table.Td>
-              <Table.Td>{new Date(ticket.created_at).toLocaleDateString("pt-br")}</Table.Td>
+              <Table.Td>{new Date(ticket.criado_em).toLocaleDateString("pt-br")}</Table.Td>
               <Table.Td className="actions-cell">
                 <Tooltip label="Responder e Fechar">
                   <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirModalResposta(ticket)}>
@@ -203,7 +236,7 @@ function FeedbackRH() {
     </Table>
   );
 
-  const renderTabelaAdmin = (data: Ticket[]) => (
+  const renderTabelaAdmin = (data: TicketRH[]) => (
     <Table className="funcionarios-table" mt="md" highlightOnHover>
       <Table.Thead>
         <Table.Tr>
@@ -277,7 +310,7 @@ function FeedbackRH() {
         </Tabs.List>
 
         <Tabs.Panel value="recebidos" pt="lg">
-          {renderTabelaRecebidos(recebidos)}
+          {renderTabelaColaboradores(colabRecebidos)}
         </Tabs.Panel>
 
         <Tabs.Panel value="enviados" pt="lg">
