@@ -1,23 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  Box,
-  Button,
-  Group,
-  Title,
-  Text,
-  Table,
-  Modal,
-  TextInput,
-  Textarea,
-  MultiSelect,
-  Select,
-  ActionIcon,
-  Tooltip,
-  LoadingOverlay,
-} from '@mantine/core';
-import { showNotification } from '@mantine/notifications';
+import {Box, Button, Group, Title, Text, Table, Modal, TextInput, Textarea, MultiSelect, Select, ActionIcon, Tooltip, LoadingOverlay} from '@mantine/core';
+import { showNotification } from '@mantine/notifications'; 
 import { IconPencil, IconTrash, IconPlus, IconAlertCircle, IconEye } from '@tabler/icons-react';
 import api from '../../services/apiService';
+import '../../styles/TrilhasAdmin.css';
 
 const BASE_URL_API = "http://127.0.0.1:8000/api/accounts/conteudos/";
 
@@ -63,8 +49,8 @@ function TrilhasAdmin() {
 
   const tipoConteudoOptions = [
     { value: 'Artigo', label: 'Artigo' },
-    { value: 'Curso', label: 'Curso' },
-    { value: 'Trilha', label: 'Trilha' },
+    { value: 'Quiz', label: 'Quiz' },
+    { value: 'Podcast', label: 'Podcast' },
     { value: 'Vídeo', label: 'Vídeo' },
   ];
 
@@ -201,26 +187,6 @@ function TrilhasAdmin() {
       <Table.Td>{new Date(conteudo.created_at).toLocaleDateString('pt-BR')}</Table.Td>
       <Table.Td style={{ textAlign: 'center' }}>
         <Group gap="xs" justify="center">
-          <Tooltip label="Visualizar" withArrow position="top">
-            <ActionIcon
-              variant="subtle"
-              color="teal"
-              onClick={() => {
-                if (conteudo.link) {
-                  window.open(conteudo.link, '_blank');
-                } else {
-                  showNotification({
-                    title: "Link Ausente",
-                    message: "Este conteúdo não possui um link para visualização.",
-                    color: "orange",
-                  });
-                }
-              }}
-              style={{ cursor: conteudo.link ? 'pointer' : 'not-allowed' }}
-            >
-              <IconEye size={18} />
-            </ActionIcon>
-          </Tooltip>
           <Tooltip label="Editar" withArrow position="top">
             <ActionIcon variant="subtle" color="blue" onClick={() => handleOpenModal(conteudo)}>
               <IconPencil size={18} />
@@ -240,8 +206,7 @@ function TrilhasAdmin() {
     <Box className="page-container" style={{ position: 'relative' }}>
       <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
 
-      <Group justify="space-between" mb="md">
-        <Title order={2}>Gerenciamento de Conteúdos 📚</Title>
+      <Group justify="flex-end" mt="md" mb="md">
         <Button
           leftSection={<IconPlus size={16} />}
           onClick={() => handleOpenModal()}
@@ -279,17 +244,23 @@ function TrilhasAdmin() {
         </Table.Tbody>
       </Table>
 
-      <Modal
+     <Modal
         opened={modalOpened}
         onClose={handleCloseModal}
-        title={isEditing ? `Editar Conteúdo: ${currentConteudo?.titulo}` : 'Adicionar Novo Conteúdo'}
+        title={isEditing}
         size="lg"
         className="modal-dark-form"
+        classNames={{
+          content: "modal-dark",
+          header: "modal-dark-header",
+          body: "modal-dark-body",
+          title: "modal-dark-title",
+        }}
       >
         <Box style={{ position: 'relative' }}>
           <LoadingOverlay visible={isSubmitting} overlayProps={{ radius: "sm", blur: 2 }} />
-
-          <TextInput
+        <div className="modal-dark-form">
+          <TextInput mt="md"
             label="Título do Conteúdo"
             placeholder="Ex: Comunicação Assertiva"
             required
@@ -313,7 +284,7 @@ function TrilhasAdmin() {
             comboboxProps={{ withinPortal: false }}
             label="Soft Skills Relacionadas"
             data={softSkillOptions}
-            placeholder="Selecione as soft skills (Obrigatório)"
+            placeholder="Selecione as soft skills"
             required
             mb="md"
             value={form.softSkills}
@@ -324,6 +295,7 @@ function TrilhasAdmin() {
             withPortal={false}
             comboboxProps={{ withinPortal: false }}
             label="Categoria ou Tipo de Conteúdo"
+            label="Tipo de Conteúdo"
             placeholder="Selecione o tipo"
             data={tipoConteudoOptions}
             mb="md"
@@ -332,8 +304,8 @@ function TrilhasAdmin() {
           />
 
           <TextInput
-            label="Link ou Arquivo do Conteúdo"
-            placeholder="URL ou nome do arquivo"
+            label="Link do Conteúdo"
+            placeholder="URL do arquivo"
             mb="lg"
             value={form.link}
             onChange={(event) => setForm({ ...form, link: event.currentTarget.value })}
@@ -350,8 +322,10 @@ function TrilhasAdmin() {
               {isEditing ? 'Salvar Edição' : 'Adicionar Conteúdo'}
             </Button>
           </Group>
+           </div>
         </Box>
       </Modal>
+   
 
     </Box>
   );

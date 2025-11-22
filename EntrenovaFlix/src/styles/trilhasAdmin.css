@@ -1,21 +1,30 @@
 .modal-dark-form {
-  background-color: #2b2b2b !important;
-  color: #ccc !important;
+  background-color: #141414 !important;
+  color: #fff !important;
 }
 
 .modal-dark-form .mantine-Modal-header {
-  background-color: #2b2b2b !important;
+  background-color: #141414 !important;
   border-bottom: 1px solid #3a3a3a !important;
 }
 
 .modal-dark-form .mantine-Modal-title {
-  color: #ccc !important;
+  color: #fff !important;
+}
+
+.modal-dark-form .mantine-Modal-body {
+  background-color: #141414 !important;
+  color: #fff !important;
+}
+
+.mantine-Modal-content {
+  background-color: #141414 !important;
 }
 
 .modal-dark-form .mantine-Input-input {
-  background-color: #2b2b2b !important;
-  border: 1px solid rgba(90, 79, 207, 0.5) !important;
-  color: #ccc !important;
+  background-color: #141414 !important;
+  border: 1px solid #333 !important;
+  color: #fff !important;
   border-radius: 8px !important;
 }
 
@@ -26,14 +35,14 @@
 .modal-dark-form .mantine-Select-dropdown,
 .modal-dark-form .mantine-MultiSelect-dropdown {
   background-color: #2b2b2b !important;
-  border: 1px solid rgba(90, 79, 207, 0.5) !important;
-  color: #ccc !important;
+  border: 1px solid #5a4fcf !important; 
+  color: #fff !important;
 }
 
 .modal-dark-form .mantine-Select-option,
 .modal-dark-form .mantine-MultiSelect-option {
   background-color: #2b2b2b !important;
-  color: #ccc !important;
+  color: #fff !important;
 }
 
 .modal-dark-form .mantine-Select-option:hover,
@@ -43,20 +52,84 @@
 
 .modal-dark-form .mantine-Select-input,
 .modal-dark-form .mantine-MultiSelect-input {
-  background-color: #2b2b2b !important;
-  border: 1px solid rgba(90, 79, 207, 0.5) !important;
-  color: #ccc !important;
+  background-color: #141414 !important;
+  border: 1px solid #333 !important;
+  color: #FFF !important;
 }
 
 .modal-dark-form .mantine-Input-wrapper {
-  background-color: #2b2b2b !important;
+  background-color: #141414 !important;
 }
 
 .modal-dark-form .mantine-Input {
-  background-color: #2b2b2b !important;
+  background-color: #141414 !important;
 }
 
 .modal-dark-form .mantine-Select-root,
 .modal-dark-form .mantine-MultiSelect-root {
+  background-color: #141414 !important;
+}
+
+.mantine-Modal-root .mantine-Modal-content {
+  border: 1px solid #5a4fcf !important;
+  border-radius: 8px !important;
+}
+
+.modal-dark-form .mantine-Button-root {
+  background-color: #4a3ebd !important;
+  color: white !important;
+  border: 0 !important;
+}
+
+.modal-dark-form .mantine-Button-root:hover {
+  background: #4a3ebd;
+  box-shadow: 0 0 8px #5a4fcf80;
+}
+
+.mantine-Table-table {
+  border: 2px solid #5a4fcf !important;   
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.mantine-Table-thead tr th {
+  background-color: #141414 !important;
+  color: #fff !important;
+  border-bottom: 1px solid #5a4fcf80 !important;
+}
+
+.mantine-Table-tbody tr td {
+  background-color: #1b1b1b !important;
+  color: #fff !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+.modal-dark-form .mantine-Select-dropdown,
+.modal-dark-form .mantine-MultiSelect-dropdown,
+.modal-dark-form .mantine-Popover-dropdown {
   background-color: #2b2b2b !important;
+  border: 1px solid #333 !important;
+  padding: 0 !important;
+}
+
+.modal-dark-form .mantine-Select-option,
+.modal-dark-form .mantine-MultiSelect-option {
+  border-bottom: 1px solid #444 !important;
+}
+
+.modal-dark-form .mantine-Select-option:last-child,
+.modal-dark-form .mantine-MultiSelect-option:last-child {
+  border-bottom: 0 !important;
+}
+.mantine-Popover-dropdown {
+  background-color: #2b2b2b !important;
+  border: 1px solid #5a4fcf !important;
+}
+.mantine-Modal-close {
+  color: #fff !important;
+}
+
+.mantine-Modal-close:hover {
+  color: #333 !important;
+  background: transparent !important;
 }
