@@ -12,6 +12,7 @@ import api from '../../services/apiService';
 type FormaPagamentoOpcoes = DadosPagamento['formaPagamento'];
 
 function TelaPagamento() {
+    const lead = JSON.parse(localStorage.getItem("segmentedDiagnosis") || "null");
     const navigate = useNavigate();
     const location = useLocation();
     const cadastroData = location.state?.cadastroData;
@@ -119,7 +120,7 @@ function TelaPagamento() {
 
         const payload = { 
             cadastro: cadastroData, 
-            pagamento: { ...dadosPagamento, formaPagamento: formaSelecionada } 
+            pagamento: { ...dadosPagamento, formaPagamento: formaSelecionada}
         };
 
         console.log('ENVIANDO PARA O BACKEND (ANINHADO):', JSON.stringify(payload, null, 2));
@@ -167,7 +168,7 @@ function TelaPagamento() {
         if (['pix', 'boleto'].includes(formaSelecionada) && !Modal && !isLoading) {
             timer = setTimeout(() => {
                 handleIniciarAssinatura();
-            }, 10000); 
+            }, 3000); 
         }
         return () => {
             clearTimeout(timer);

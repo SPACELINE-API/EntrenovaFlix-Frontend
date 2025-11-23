@@ -2,7 +2,7 @@ import "../../styles/planos.css";
 import { MdOutlineTouchApp } from "react-icons/md";
 import { FaRegStar } from "react-icons/fa";
 import { PiUsersThreeBold } from "react-icons/pi";
-import GraficoPlano from "../../componentes/layout/planos";
+import GraficoPlano from "../../componentes/graficos/planos";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +15,6 @@ function PlanosRH() {
 
   return (
     <div>
-      <h1 className="titulo">Planos</h1>
       <h2>
         Potencialize sua experiência com diferentes planos e desbloqueie todos
         os recursos, conteúdos exclusivos e suporte prioritário para aproveitar

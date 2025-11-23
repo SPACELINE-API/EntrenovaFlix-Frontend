@@ -22,18 +22,20 @@ import DiagnosticoRH from '../paginas/RH/DiagnosticoRH';
 import PlanosRH from '../paginas/RH/PlanosRH';
 import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 import HistoricoRH from '../paginas/RH/HistoricoRH';
-import FeedbackRH from '../componentes/layout/dashboardRH/feedbackRH';
-
+import FeedbackRH from '../paginas/RH/feedbackRH';
 import ContratarLayout from '../componentes/layout/contratarLayout';
+import Aprimoramento from '../paginas/aprimoramento';
 import TelaCadastro from '../paginas/pagamento/telaCadastro';
 import TelaPagamento from '../paginas/pagamento/telaPagamento';
 import TelaSelecaoPlano from '../paginas/telaSelecaoPlanos';
 import Conversa from '../paginas/RH/Conversa';
-
 import DashboardAdminLayout from '../componentes/layout/dashboardAdmin/dashboardAdminLayout';
 import DashboardAdmin from '../paginas/Admin/DashboardAdmin';
 import EmpresasAdmin from '../paginas/Admin/EmpresasAdmin';
 import TrilhasAdmin from '../paginas/Admin/TrilhasAdmin';
+import FeedbackAdm from '../paginas/Admin/FeedbackAdm';
+import DiagnosticoAdmin from '../paginas/Admin/DiagnosticoAdmin';
+import TelaFeedbacks from '../paginas/TelaFeedbacks';
 
 const router = createBrowserRouter([
   {
@@ -91,6 +93,7 @@ const router = createBrowserRouter([
           { path: 'trilhas', element: <TelaTrilhas /> },
           { path: 'dashboard', element: <Dashboard /> },
           { path: 'forum', element: <TelaForum /> },
+          { path: 'feedbacks', element: <TelaFeedbacks /> },
           { path: 'novo-comentario', element: <NovoComentario /> },
           { path: 'forum/post/:postId', element: <DetalhePost /> },
         ],
@@ -118,15 +121,24 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/entrenovaAdmin',
+  path: '/entrenovaAdmin',
+  element: <PrivateRoute allowedRoles={['admin']} />, 
+  errorElement: <NotFoundPage />,
+  children: [
+   {
     element: <DashboardAdminLayout />,
-    errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <DashboardAdmin /> },
       { path: 'empresas', element: <EmpresasAdmin />},
       { path: 'trilhas', element: <TrilhasAdmin />},
+      { path: 'feedback', element: <FeedbackAdm />},
+      { path: 'diagnostico/:cnpj?', element: <DiagnosticoAdmin /> },
+      
+  
     ],
-  },
+   },
+  ],
+ },
   {
     path: '/pagchatbot',
     element: <ChatBotInicio />,
@@ -137,6 +149,11 @@ const router = createBrowserRouter([
     element: <ChatBot />,
     errorElement: <NotFoundPage />,
   },
+  {
+    path: '/aprimoramento-pessoal',
+    element: <Aprimoramento />,
+    errorElement: <NotFoundPage />,
+}
 ]);
 
 function AppRoutes() {

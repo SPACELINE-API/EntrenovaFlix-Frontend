@@ -8,33 +8,46 @@
     src: url('../assets/fontes/kollektif/Kollektif.ttf');
 }
 
-/* Trilhas */
 .trilhas-topo {
     display: flex;
-    flex-direction: row;
-    gap: 3rem;
+    flex-direction: row; 
+    align-items: flex-start;
     margin-top: 1.8rem;
+    gap: 2rem;
     justify-content: space-between;
+    width: auto;
 }
 
 .trilhas-grafico {
-    flex: 1; /* ocupa todo o espaço disponível do lado esquerdo */
-    max-width: 700px; /* opcional, para não ficar gigante em telas grandes */
+    flex: 1 1 60%;
     background-color: #2F333E;
-    border-radius: 0.5rem; 
+    border-radius: 0.5rem;
     border: 1px solid #857DDB;
     padding-top: 1.5625rem;
-    
+    width: auto;
+}
+
+.trilhas-grafico-outro {
+    flex: 1;
+    max-width: 800px;
+    background-color: #2F333E;
+    border-radius: 0.5rem;
+    border: 1px solid #857DDB;
+    padding: 0.5rem 10px;
 }
 
 .trilhas-cards {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     gap: 0.9375rem;
-    margin-top: 3.125rem; 
+    margin-top: 3.125rem;
+    width: 100%;
+    justify-content: center;
 }
 
 .trilhas-ativas {
+    flex: 0 0 25%;
+    max-width: 30%;
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
@@ -45,13 +58,12 @@
 
 .icone-trilhas {
     color: #34A853;
+    margin-right: 10px;
 }
 
-/* Dropdown */
 .dropdown-btn button {
     text-decoration: none;
-    background: none; 
-    background-color: #373737;
+    background: #373737;
     border-radius: 5px;
     padding: 8px;
     border: none;
@@ -59,7 +71,7 @@
     color: #fff;
     margin-top: 40px;
     transition: background 0.2s;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 .menu-opcao {
@@ -73,11 +85,11 @@
     font-size: 0.8rem;
 }
 
-/* Diagnóstico */
 .diagnostico-botoes {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     gap: 1rem;
+    width: 100%;
 }
 
 .diagnostico-graficos {
@@ -87,13 +99,13 @@
     margin-top: 3rem;
 }
 
-/* Relatório */
 .relatorio {
     background-color: #2F333E;
-    border-radius: 0.5rem; 
+    border-radius: 0.5rem;
     border: 1px solid #857DDB;
     padding: 2rem;
     margin-top: 3rem;
+    width: 100%;
 }
 
 .icone-relatorio {
@@ -104,7 +116,7 @@
 
 .relatorio-titulo {
     color: #857DDB;
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 1.75rem;
 }
 
@@ -122,27 +134,26 @@
 .relatorio-card {
     display: flex;
     flex-direction: column;
-    align-items: center;    
-    text-align: center; 
+    align-items: center;
+    text-align: center;
     padding: 1.25rem;
     background-color: #3A3F4D;
-    width: 18.75rem;
+    flex: 1 1 250px;
     border-radius: 12px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .relatorio-cards {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    flex-wrap: wrap;
     gap: 2rem;
     margin-top: 30px;
+    justify-content: center;
 }
 
 .relatorio-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .icone-indicador {
@@ -155,13 +166,15 @@
     font-size: 1.2rem;
     text-align: center;
     margin-top: 30px;
+    width: 100%;
 }
 
-/* Visão geral */
 .visaoGeral-cards {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
+    width: 100%;
 }
 
 .paineis {
@@ -175,7 +188,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 750px;
+    flex: 1 1 750px;
 }
 
 .painelSecundario {
@@ -187,7 +200,7 @@
     background-color: #2F333E;
     border: 1px solid #857DDB;
     border-radius: 10px;
-    width: 250px;
+    width: 280px;
     padding: 16px;
 }
 
@@ -209,21 +222,19 @@
 
 .infoLinha {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
     background-color: #2F333E;
     border: 1px solid #857DDB;
     border-radius: 10px;
     padding: 15px;
     width: 100%;
-    align-items: left;
-    text-align: left;
+    align-items: center;
 }
 
 .infoLinhas {
     display: flex;
     flex-direction: column;
-    justify-content: right;
     gap: 10px;
 }
 
@@ -271,13 +282,123 @@
     color: #cdcdcd;
 }
 
-/* Subtitulo geral */
 .subtitulo {
     color: #fff;
 }
 
-/* Gráfico */
 .grafico-linhas {
-    max-width: 43.75rem;
-    max-height: 18.75rem;
+    width: 100%;
+    max-width: 700px;
+    height: 300px;
+}
+
+@media (max-width: 1400px) {
+    .trilhas-topo {
+        gap: 2rem;
+    }
+
+    .diagnostico-graficos {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .painelSecundario {
+        width: 240px;
+    }
+
+    .trilhas-grafico-outro {
+        max-width: 600px;
+    }
+}
+
+@media (max-width: 1200px) {
+
+    .trilhas-topo {
+        flex-direction: row; 
+        align-items: flex-start; 
+        gap: 1rem;
+    }
+
+    .trilhas-grafico {
+        flex: 1 1 75%; 
+        width: auto;
+        padding-top: 1rem;
+        min-height: 260px;
+    }
+
+    .trilhas-grafico-outro {
+        flex: 1 1 100%;
+        width: 100%;
+        max-width: 100%;
+        min-height: 300px;
+    }
+
+    .trilhas-ativas {
+        flex: 1 1 30%; 
+        max-width: 35%;
+        margin-top: 0;
+    }
+}
+
+
+@media (max-width: 1024px) {
+    .trilhas-topo {
+        flex-direction: row; 
+        align-items: flex-start; 
+        gap: 1rem;
+    }
+
+    .trilhas-grafico {
+        flex: 1 1 60%; 
+        width: auto;
+        padding-top: 1rem;
+        min-height: 260px;
+    }
+
+    .trilhas-grafico-outro {
+        flex: 1 1 100%;
+        min-height: 280px;
+    }
+
+    .trilhas-ativas {
+        flex: 1 1 20%; 
+        max-width: 25%;
+        margin-top: 0;
+    }
+}
+
+
+@media (max-width: 768px) {
+    
+    .trilhas-topo {
+        flex-direction: row; 
+        align-items: flex-start; 
+        gap: 1rem;
+    }
+
+    .trilhas-grafico {
+        flex: 1 1 65%; 
+        width: auto;
+        padding-top: 1rem;
+        min-height: 260px;
+    }
+
+    .trilhas-grafico-outro {
+        flex: 1 1 100%;
+        width: 100%;
+        padding: 0.8rem;
+        min-height: 260px;
+    }
+
+    .trilhas-ativas {
+        flex: 1 1 30%; 
+        max-width: 35%;
+        margin-top: 0;
+    }
+
+    .grafico-linhas {
+        width: 100%;
+        max-width: 100%;
+        height: 260px;
+    }
 }

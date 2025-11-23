@@ -8,6 +8,7 @@ interface QuestionnaireContextType {
   hasDiagnosticResult: boolean;
   diagnosticResult: any | null;
   isSubmitting: boolean;
+  leadScore: any | null;
 }
 
 const QuestionnaireContext = createContext<QuestionnaireContextType | undefined>(undefined);
@@ -29,60 +30,89 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
   const [hasDiagnosticResult, setHasDiagnosticResult] = useState(false);
   const [diagnosticResult, setDiagnosticResult] = useState<any | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [leadScore, setLeadScore] = useState<any | null>(null);
 
   useEffect(() => {
     const completed = localStorage.getItem('questionnaireCompleted') === 'true';
     const storedResult = localStorage.getItem('segmentedDiagnosis');
+    const storedLead = localStorage.getItem('leadScore');
+
     setIsQuestionnaireCompletedState(completed);
     setHasDiagnosticResult(!!storedResult);
     setDiagnosticResult(storedResult ? JSON.parse(storedResult) : null);
+    setLeadScore(storedLead ? JSON.parse(storedLead) : null);
   }, []);
 
-  async function postAI(form: string | null, onSuccess?: () => void) {
-    if (!form) {
-      console.error("Erro: A string do formulário está vazia.");
-      return;
-    }
+  async function postLeadScore(formJSON: any) {
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/lead-score/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formJSON),
+    });
 
-    setIsSubmitting(true);
-    const loadingToast = toast.loading('Analisando seu diagnóstico...');
+    const result = await response.json();
 
-    try {
-      const formJSON = JSON.parse(form);
-      console.log(`formulário completo: ${formJSON}`)
-      chatService.setForm(formJSON)
-      const payload = { responses: formJSON };
+    if (!response.ok) throw new Error("Erro ao calcular Lead Score");
 
-      const response = await fetch("http://127.0.0.1:8000/api/diagnostico/avaliar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    localStorage.setItem("leadScore", JSON.stringify(result));
+    setLeadScore(result);
 
-      const result = await response.json();
-
-      if (!response.ok || Object.keys(result).length === 0) {
-        throw new Error("A resposta da IA não contém um diagnóstico válido.");
-      }
-      
-      localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
-      setDiagnosticResult(result);
-      setHasDiagnosticResult(true);
-      setIsQuestionnaireCompletedState(true);
-
-      toast.dismiss(loadingToast);
-      toast.success('Diagnóstico analisado com sucesso!');
-      
-      onSuccess?.();
-
-    } catch (error) {
-      console.error(error);
-      toast.dismiss(loadingToast);
-      toast.error("Ocorreu um erro ao gerar o diagnóstico.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    return result;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
+}
+
+async function postAI(form: string | null, onSuccess?: () => void) {
+  if (!form) {
+    console.error("Erro: A string do formulário está vazia.");
+    return;
+  }
+
+  setIsSubmitting(true);
+  const loadingToast = toast.loading('Analisando seu diagnóstico...');
+
+  try {
+    const formJSON = JSON.parse(form);
+    await postLeadScore(formJSON);
+
+    chatService.setForm(formJSON);
+    const payload = { responses: formJSON };
+
+    const response = await fetch("http://127.0.0.1:8000/api/diagnostico/avaliar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || Object.keys(result).length === 0) {
+      throw new Error("A resposta da IA não contém um diagnóstico válido.");
+    }
+
+    localStorage.setItem('segmentedDiagnosis', JSON.stringify(result));
+    setDiagnosticResult(result);
+    setHasDiagnosticResult(true);
+    setIsQuestionnaireCompletedState(true);
+
+    toast.dismiss(loadingToast);
+    toast.success('Diagnóstico analisado com sucesso!');
+    
+    onSuccess?.();
+
+  } catch (error) {
+    console.error(error);
+    toast.dismiss(loadingToast);
+    toast.error("Ocorreu um erro ao gerar o diagnóstico.");
+  } finally {
+    setIsSubmitting(false);
+  }
+}
+
+
 
   const setQuestionnaireCompleted = (completed: boolean, onSuccess?: () => void) => {
     localStorage.setItem('questionnaireCompleted', String(completed));
@@ -101,6 +131,7 @@ export const QuestionnaireProvider: React.FC<QuestionnaireProviderProps> = ({ ch
         hasDiagnosticResult,
         diagnosticResult,
         isSubmitting,
+        leadScore
       }}
     >
       {children}

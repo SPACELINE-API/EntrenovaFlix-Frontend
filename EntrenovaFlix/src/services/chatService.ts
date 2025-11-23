@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 type Message = {
   role: "user" | "bot";
   content: string;
@@ -60,10 +62,8 @@ class ChatService {
 
       if (currentMessages.length === 0) {
         let formToSend = this.state.form;
-        if (!formToSend) {
-          const storedForm = localStorage.getItem('segmentedDiagnosis'); 
-          if (storedForm) formToSend = storedForm;
-        }
+        const storedForm = localStorage.getItem('segmentedDiagnosis'); 
+        if (!formToSend && storedForm) formToSend = storedForm;
         
         if (formToSend) {
           try {
@@ -82,12 +82,20 @@ class ChatService {
 
       console.log("Enviando payload:", payload);
 
+      const token = localStorage.getItem("access_token");
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      if (token) {
+          headers['Authorization'] = `Bearer ${token}`; 
+      }
+      
       const response = await fetch('http://127.0.0.1:8000/api/chatbot/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers, 
         body: JSON.stringify(payload),
+        //lalala
       });
 
       if (!response.ok) {
