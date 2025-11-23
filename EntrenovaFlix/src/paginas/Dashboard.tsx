@@ -89,21 +89,21 @@ function Dashboard() {
               <div className="card-categoria-section">
                 <strong className="card-aprimoramento-subtitulo">Pontos fortes</strong>
                 <p className="card-aprimoramento-texto">
-                  {item.fortes.join(", ")}
+                  {item.fortes.join(" ")}
                 </p>
               </div>
 
               <div className="card-categoria-section">
                 <strong className="card-aprimoramento-subtitulo">Pontos a melhorar</strong>
                 <p className="card-aprimoramento-texto">
-                  {item.fracos.join(", ")}
+                  {item.fracos.join(" ")}
                 </p>
               </div>
 
               <div className="card-categoria-section">
                 <strong className="card-aprimoramento-subtitulo">Soft skills sugeridas</strong>
                 <p className="card-aprimoramento-texto">
-                  {item.softSkills.join(", ")}
+                  {item.softSkills.join(" ")}
                 </p>
               </div>
             </div>
