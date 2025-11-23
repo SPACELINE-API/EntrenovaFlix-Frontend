@@ -8,6 +8,7 @@ import { pagamentoSchema } from '../../componentes/layout/contratacaoPlanos/vali
 import { ValidationErrors, DadosPagamento, PlanoEscolhido } from '../../componentes/layout/contratacaoPlanos/types'; 
 import { formataData } from '../../utils/formatters';
 import api from '../../services/apiService';
+import { storedLead, setorPrincial } from '../../contexts/QuestionnaireContext';
 
 type FormaPagamentoOpcoes = DadosPagamento['formaPagamento'];
 
@@ -120,7 +121,8 @@ function TelaPagamento() {
 
         const payload = { 
             cadastro: cadastroData, 
-            pagamento: { ...dadosPagamento, formaPagamento: formaSelecionada}
+            pagamento: { ...dadosPagamento, formaPagamento: formaSelecionada},
+            leadScore: storedLead, 
         };
 
         console.log('ENVIANDO PARA O BACKEND (ANINHADO):', JSON.stringify(payload, null, 2));

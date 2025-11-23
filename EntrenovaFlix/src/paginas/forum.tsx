@@ -46,7 +46,7 @@ export default function TelaForum() {
 
   return (
     <div className="telaForum">
-      {/* <div className="forum-container">
+      <div className="forum-container">
         <div className="forumTitulo">
           <h1>Publicações</h1>
           <button
@@ -87,7 +87,7 @@ export default function TelaForum() {
             </article>
           ))}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
