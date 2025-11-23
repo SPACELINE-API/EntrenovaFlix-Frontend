@@ -141,7 +141,9 @@ export default function FeedbackAdm() {
   const [excluindoTicket, setExcluindoTicket] = useState(false);
   const [fechandoTicket, setFechandoTicket] = useState(false);
 
-  const ADMIN_NAME = "Admin"; 
+  const storedUser = localStorage.getItem("usuario");
+  const currentUser = storedUser ? JSON.parse(storedUser) : null;
+
 
 
 
@@ -425,43 +427,45 @@ export default function FeedbackAdm() {
             }}
           >
             {ticketSelecionado?.mensagens.map(msg => {
-              
-              const isAdmin = msg.autor_nome === ADMIN_NAME;
 
-              return (
-                <Box 
-                  key={msg.id} 
-                  mb="md"
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: isAdmin ? 'flex-end' : 'flex-start',
-                  }}
-                >
-                  <Box style={{ maxWidth: '80%' }}>
-                    <Text size="xs" fw={700} c="white">
-                      {isAdmin ? "Admin" : msg.autor_nome}
-                    </Text>
+            const isMinhaMensagem = currentUser && msg.autor_nome === currentUser.nome;
+            const isMensagemAdmin = !isMinhaMensagem && currentUser?.role === "admin" && msg.autor_nome.toLowerCase().includes("admin");
 
-                    <Text size="xs" c="dimmed">
-                      {new Date(msg.created_at).toLocaleString('pt-BR')}
-                    </Text>
+            return (
+              <Box 
+                key={msg.id} 
+                mb="md"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: isMinhaMensagem || isMensagemAdmin ? 'flex-end' : 'flex-start',
+                }}
+              >
+                <Box style={{ maxWidth: '80%' }}>
+                  <Text size="xs" fw={700} c="white">
+                    {isMinhaMensagem ? "Você" : isMensagemAdmin ? "Admin" : msg.autor_nome}
+                  </Text>
 
-                    <Box
-                      style={{
-                        backgroundColor: isAdmin ? '#3b5bdb' : '#2C2E33',
-                        padding: '10px 14px',
-                        marginTop: 6,
-                        borderRadius: 8,
-                        color: 'white'
-                      }}
-                    >
-                      <Text size="sm">{msg.texto}</Text>
-                    </Box>
+                  <Text size="xs" c="dimmed">
+                    {new Date(msg.created_at).toLocaleString('pt-BR')}
+                  </Text>
+
+                  <Box
+                    style={{
+                      backgroundColor: isMinhaMensagem || isMensagemAdmin ? '#3b5bdb' : '#2C2E33',
+                      padding: '10px 14px',
+                      marginTop: 6,
+                      borderRadius: 8,
+                      color: 'white'
+                    }}
+                  >
+                    <Text size="sm">{msg.texto}</Text>
                   </Box>
                 </Box>
-              );
-            })}
+              </Box>
+            );
+          })}
+            
           </Box>
 
           {ticketSelecionado?.status === "Aberto" ? (

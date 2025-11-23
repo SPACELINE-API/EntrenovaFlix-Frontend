@@ -152,13 +152,6 @@
     box-shadow: none;
 }
 
-label {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 15px;
-}
-
 .container-tickets {
     display: flex;
     flex-direction: column;

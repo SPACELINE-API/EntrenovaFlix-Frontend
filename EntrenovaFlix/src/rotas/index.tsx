@@ -24,6 +24,7 @@ import FuncionariosRH from '../paginas/RH/FuncionariosRH';
 import HistoricoRH from '../paginas/RH/HistoricoRH';
 import FeedbackRH from '../paginas/RH/feedbackRH';
 import ContratarLayout from '../componentes/layout/contratarLayout';
+import Aprimoramento from '../paginas/aprimoramento';
 import TelaCadastro from '../paginas/pagamento/telaCadastro';
 import TelaPagamento from '../paginas/pagamento/telaPagamento';
 import TelaSelecaoPlano from '../paginas/telaSelecaoPlanos';
@@ -147,6 +148,11 @@ const router = createBrowserRouter([
     element: <ChatBot />,
     errorElement: <NotFoundPage />,
   },
+  {
+    path: '/aprimoramento-pessoal',
+    element: <Aprimoramento />,
+    errorElement: <NotFoundPage />,
+}
 ]);
 
 function AppRoutes() {

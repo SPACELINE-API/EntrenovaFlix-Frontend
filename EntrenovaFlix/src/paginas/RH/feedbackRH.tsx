@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -69,11 +69,13 @@ function FeedbackRH() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [formAssunto, setFormAssunto] = useState("");
   const [formMensagem, setFormMensagem] = useState("");
   const [formResposta, setFormResposta] = useState("");
   const [isReplying, setIsReplying] = useState(false);
+
+  const storedUser = localStorage.getItem("usuario");
+  const currentUser = storedUser ? JSON.parse(storedUser) : null;
 
   const carregarTickets = async () => {
     setLoading(true);
@@ -148,9 +150,8 @@ function FeedbackRH() {
         fechar_ticket: true
       });
 
-      setRecebidos(recebidos.filter(t => t.id !== ticketSelecionado.id));
-      setFechados([ticketSelecionado, ...fechados]);
-
+      await carregarTickets();
+      setFormResposta("");
       setModalRespostaAberto(false);
       setTicketSelecionado(null);
     } catch (err) {
@@ -163,28 +164,12 @@ function FeedbackRH() {
 
   const handleEncaminharParaAdmin = async (ticket: TicketColab) => {
   try {
-    // CORREÇÃO: Usar template string com o ID real
-    // E certifique-se de que a rota no Django aceita PATCH para encaminhar
-    // Se você não tem uma rota específica de "encaminhar", 
-    // talvez você queira usar o endpoint de detalhes do admin ou criar um novo.
-    
-    // Vou assumir que você quer usar o endpoint de detalhe do admin que já existe:
-    // path('api/accounts/tickets/admin/<uuid:pk>/', ...)
-    
-    // Mas espere! Encaminhar geralmente é apenas "criar uma mensagem" ou "mudar status".
-    // Se você quer só "mandar pro admin", talvez seja melhor postar uma mensagem:
-    
-    await api.post(`/tickets/admin/${ticket.id}/`, {
-        texto: "Ticket encaminhado para o Admin."
-    });
-
-    // Se você realmente tem uma rota PATCH para mudar algo:
-    // await api.patch(`/accounts/tickets/admin/${ticket.id}/`, { encaminhado: true });
-
+    const response = await api.post(`/tickets/encaminhar/${ticket.id}/`);
+    const novoTicketAdmin = response.data;
+    setEnviados([novoTicketAdmin as unknown as TicketRH, ...enviados]);
     setColabRecebidos(colabRecebidos.filter(t => t.id !== ticket.id));
-    setEnviados([ticket, ...enviados]);
-    alert("Ticket encaminhado com sucesso!");
 
+    alert("Ticket encaminhado com sucesso!");
   } catch (err) {
     console.error("Erro ao encaminhar:", err);
     alert("Erro ao encaminhar o ticket");
@@ -219,7 +204,7 @@ function FeedbackRH() {
               <Table.Td>{new Date(ticket.criado_em).toLocaleDateString("pt-br")}</Table.Td>
               <Table.Td className="actions-cell">
                 <Tooltip label="Responder e Fechar">
-                  <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirModalResposta(ticket)}>
+                  <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirModalResposta(ticket as unknown as TicketRH)}>
                     <IconMessageReply />
                   </ActionIcon>
                 </Tooltip>
@@ -373,84 +358,93 @@ function FeedbackRH() {
           setModalRespostaAberto(false);
           setTicketSelecionado(null);
         }}
-        title={`Histórico: ${ticketSelecionado?.assunto}`}
-        className="modal-custom"
         size="lg"
+        title={
+          <Group>
+            <Badge color={ticketSelecionado?.status === "Aberto" ? "blue" : "gray"}>
+              {ticketSelecionado?.status}
+            </Badge>
+            <Text fw={700}>{ticketSelecionado?.assunto}</Text>
+          </Group>
+        }
+        className="modal-custom"
       >
-        <Box component="form" p="md" style={{ position: 'relative' }}>
-          <LoadingOverlay visible={isReplying} overlayProps={{ radius: "sm", blur: 2 }} />
-          <Text fw={500} mb="xs">Histórico</Text>
-
+        <Box p="md">
           <Box
-            mb="md"
             style={{
-              maxHeight: '200px',
+              maxHeight: 350,
               overflowY: 'auto',
-              backgroundColor: '#292929',
-              padding: '10px',
-              borderRadius: '8px',
-              border: '1px solid #444'
+              backgroundColor: '#141517',
+              padding: 16,
+              borderRadius: 8
             }}
           >
-            {ticketSelecionado?.mensagens.map((msg, index) => (
-              <Box
-                key={msg.id}
-                mb="sm"
-                style={{
-                  borderBottom:
-                    index !== ticketSelecionado.mensagens.length - 1 ? '1px dashed #555' : 'none',
-                  paddingBottom: '0.5rem'
-                }}
-              >
-                <Group justify="space-between">
-                  <Text fw={700} size="sm">{msg.autor.nome}</Text>
-                  <Text size="xs" c="dimmed">{new Date(msg.created_at).toLocaleString('pt-BR')}</Text>
-                </Group>
-                <Text size="sm" c="#e0e0e0">{msg.texto}</Text>
-              </Box>
-            ))}
+            {ticketSelecionado?.mensagens.map(msg => {
+              const isMinhaMensagem = msg.autor.id === currentUser?.id;
+              const isMensagemAdmin = !isMinhaMensagem && msg.autor.nome.toLowerCase().includes('admin');
+
+              return (
+                <Box
+                  key={msg.id}
+                  mb="md"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: isMinhaMensagem || isMensagemAdmin ? 'flex-end' : 'flex-start',
+                  }}
+                >
+                  <Box style={{ maxWidth: '80%' }}>
+                    <Text size="xs" fw={700} c="white">
+                      {isMinhaMensagem ? "Você" : isMensagemAdmin ? "Admin" : msg.autor.nome}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {new Date(msg.created_at).toLocaleString('pt-BR')}
+                    </Text>
+                    <Box
+                      style={{
+                        backgroundColor: isMinhaMensagem || isMensagemAdmin ? '#3b5bdb' : '#2C2E33',
+                        padding: '10px 14px',
+                        marginTop: 6,
+                        borderRadius: 8,
+                        color: 'white'
+                      }}
+                    >
+                      <Text size="sm">{msg.texto}</Text>
+                    </Box>
+                  </Box>
+                </Box>
+              );
+            })}
           </Box>
 
-          {ticketSelecionado && activeTab === 'recebidos' && (
+          {ticketSelecionado?.status === "Aberto" && (
             <>
               <Textarea
-                label="Sua Resposta"
-                placeholder="Digite sua resposta ao colaborador"
-                required
-                minRows={4}
-                mb="lg"
+                label="Responder"
+                placeholder="Digite sua resposta..."
                 value={formResposta}
                 onChange={(e) => setFormResposta(e.currentTarget.value)}
+                minRows={3}
+                mb="md"
               />
 
               <Group justify="flex-end">
-                <Button variant="default" onClick={() => setModalRespostaAberto(false)} disabled={isReplying}>
-                  Cancelar
-                </Button>
-
                 <Button
-                  className="entreg"
+                  color="red"
+                  variant="light"
                   onClick={handleEnviarResposta}
-                  disabled={!formResposta || isReplying}
+                  loading={isReplying}
                 >
-                  {isReplying ? 'Enviando...' : 'Responder e Fechar'}
+                  Fechar e Responder
                 </Button>
               </Group>
             </>
           )}
 
-          {ticketSelecionado && activeTab !== 'recebidos' && (
-            <Group justify="flex-end">
-              <Button
-                variant="default"
-                onClick={() => {
-                  setModalRespostaAberto(false);
-                  setTicketSelecionado(null);
-                }}
-              >
-                Fechar Histórico
-              </Button>
-            </Group>
+          {ticketSelecionado?.status === "Fechado" && (
+            <Text c="dimmed" ta="center" mt="lg">
+              Este ticket está fechado.
+            </Text>
           )}
         </Box>
       </Modal>

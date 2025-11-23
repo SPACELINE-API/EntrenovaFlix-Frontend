@@ -1,4 +1,3 @@
-
 .bodyLg {
     background-color: #141414;
     width: 100%;
@@ -43,20 +42,20 @@
     border: none;
 }
 .fieldSet .mantine-Fieldset-legend{
-    font-family: 'kollektif';
+    font-family: 'kollektif' !important;
     font-weight: bold;
     font-size: 2rem;
     color: white;
     margin-bottom: 3px;
 }
 .welcomeText.mantine-Text-root{
-    font-family: 'inter';
+    font-family: 'inter' !important;
     font-size: 1.2rem;
     color: #717171;
     margin-bottom: 15px;
 }
 .popText.mantine-Text-root{
-    font-family: 'inter';
+    font-family: 'inter' !important;
     font-size: 0.8rem;
     font-weight: 300;
     text-align: center;
@@ -73,7 +72,7 @@
 .loginInputLabel.mantine-TextInput-label,
 .loginInputLabel.mantine-PasswordInput-label{
     color: white;
-    font-family: 'inter';
+    font-family: 'inter' !important;
     font-weight: 300;
     font-size: 16px;
     padding-top: 10px;
@@ -81,7 +80,7 @@
 }
 .loginInputField.mantine-PasswordInput-input,
 .loginInputField.mantine-TextInput-input{
-    font-family: 'inter';
+    font-family: 'inter' !important;
     font-weight: 300;
     background-color: #222222;
     border-color: #919191;
@@ -112,7 +111,7 @@
     margin-top: 2.2rem;
     background-color: #5449CC;
     font-size: 1.1rem;
-    font-family: 'satoshi';
+    font-family: 'satoshi' !important;
     font-weight: 400;
     transition: background-color 0.3s ease;
 }
