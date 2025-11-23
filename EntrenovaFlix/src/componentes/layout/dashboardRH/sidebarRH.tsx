@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../../../styles/sidebarRH.css";
-import { FaCreditCard } from "react-icons/fa6";
+import { FaCreditCard, FaPerson } from "react-icons/fa6";
 import { FaLightbulb } from "react-icons/fa";
 import { PiMonitorPlayFill } from "react-icons/pi";
 import { TbReportSearch } from "react-icons/tb";
 import { FaUserFriends } from "react-icons/fa";
 import { FaHistory } from "react-icons/fa";
 import { MdOutlineFeedback } from "react-icons/md";
+import { BsPersonUp } from "react-icons/bs";
 
 interface SidebarRHProps {
   activePlan?: string;
@@ -26,6 +27,7 @@ function SidebarRH({ activePlan = "Plano Essencial" }: SidebarRHProps) {
     if (path.includes("/dashboardRH/funcionarios")) return "funcionarios";
     if (path.includes("/dashboardRH/historicoChatbot")) return "historicoChatbot";
     if (path.includes("/dashboardRH/feedbackRH")) return "feedback";
+    if (path.includes("/dashboardRH/desenvolvimento-pessoal")) return "desenvolvimentoPessoal";
     return "visao-geral";
   };
 
@@ -100,6 +102,15 @@ function SidebarRH({ activePlan = "Plano Essencial" }: SidebarRHProps) {
         >
           <FaHistory size={20} />
           <span>Histórico do Chat</span>
+        </button>
+
+        <button
+          className={`sidebar-RH-item ${activeItem === "desenvolvimentoPessoal" ? "active" : ""}`}
+          onClick={() => navigate("/dashboardRH/desenvolvimento-pessoal")}
+        >
+          <BsPersonUp
+            size={20} />
+          <span>Colaboradores</span>
         </button>
       </nav>
     </div>

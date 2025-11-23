@@ -36,6 +36,7 @@ import TrilhasAdmin from '../paginas/Admin/TrilhasAdmin';
 import FeedbackAdm from '../paginas/Admin/FeedbackAdm';
 import DiagnosticoAdmin from '../paginas/Admin/DiagnosticoAdmin';
 import TelaFeedbacks from '../paginas/TelaFeedbacks';
+import DesenvolvimentoRH from '../paginas/RH/DesenvolvimentoRH';
 
 const router = createBrowserRouter([
   {
@@ -116,6 +117,7 @@ const router = createBrowserRouter([
           {path: 'historicoChatbot', element: <HistoricoRH/>},
           {path: "historicoChatbot/:id", element: <Conversa />},
           { path: 'feedbackRH', element: <FeedbackRH /> },
+          { path: 'desenvolvimento-pessoal', element: <DesenvolvimentoRH /> },
         ],
       },
     ],
