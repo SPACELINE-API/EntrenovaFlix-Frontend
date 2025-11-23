@@ -134,6 +134,7 @@ const router = createBrowserRouter([
       { path: 'feedback', element: <FeedbackAdm />},
       { path: 'diagnostico/:cnpj?', element: <DiagnosticoAdmin /> },
       
+  
     ],
    },
   ],
