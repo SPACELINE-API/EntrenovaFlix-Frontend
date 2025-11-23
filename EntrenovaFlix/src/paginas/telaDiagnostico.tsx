@@ -206,14 +206,6 @@ export default function TelaDiagnostico() {
               </div>
             )}
           </div>
-          <div className="diag-right">
-            {leadScoreInfo ? (
-              <div className={`lead-score-pill ${leadScoreInfo.className}`}>
-                <div className="score-number">{leadScoreInfo.score}</div>
-                <div className="score-label">Lead ({leadScoreInfo.classification})</div>
-              </div>
-            ) : <div className="lead-score-pill">...</div>}
-          </div>
         </div>
 
         <div className="categories-grid">

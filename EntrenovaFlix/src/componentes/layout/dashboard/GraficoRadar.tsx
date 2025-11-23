@@ -87,7 +87,7 @@ const GraficoRadar: React.FC<GraficoRadarProps> = ({
     ]
   };
 
-  return <ReactECharts option={option} style={{ height: '19rem', width: '50%' }} className="trilhas-grafico" />
+  return <ReactECharts option={option} style={{ height: '19rem', width: '50%' }} className="trilhas-grafico-outro" />
 };
 
 export default GraficoRadar;
