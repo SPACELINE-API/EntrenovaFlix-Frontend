@@ -125,7 +125,9 @@ function ChatBot() {
     <div className="chatbot-page">
       <div className="mensagens">
         <div className='mensagem-inicial'>
-          <h5>Olá, sou a Assistente Virtual da Entrenova! Como posso ajudar?</h5>
+          <h5>Olá, sou a Assistente Virtual da Entrenova! Analisei
+            seu diagnóstico e identifiquei os pontos principais. Vamos prosseguir?
+          </h5>
         </div>
 
         {chatState.mensagens.map((msg, index) => (
