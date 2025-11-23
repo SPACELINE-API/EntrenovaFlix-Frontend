@@ -8,6 +8,7 @@ import { getActiveUserPlan } from "../../../services/apiService";
 
 interface DashboardRHLayoutProps {
   userAvatar?: string;
+  pageTitle?: string;
 }
 
 interface DecodedToken {
@@ -20,6 +21,18 @@ interface DecodedToken {
 function DashboardRHLayout({ userAvatar }: DashboardRHLayoutProps) {
   const [userName, setUserName] = useState<string>("Usuário");
   const [activePlan, setActivePlan] = useState<string>("Plano Essencial");
+
+  const location = useLocation();
+    const pageTitles: { [key: string]: string } = {
+        '/dashboardRH': ' ',
+        '/dashboardRH/trilhas': 'Trilhas',
+        '/dashboardRH/diagnosticos': 'Diagnósticos',
+        '/dashboardRH/planos': 'Planos',
+        '/dashboardRH/funcionarios': 'Funcionários',
+        '/dashboardRH/historicoChatbot': 'Histórico de ChatBot',
+        '/dashboardRH/feedbackRH': 'Feedbacks',
+    };
+    const currentTitle = pageTitles[location.pathname] || 'Área Administrativa';
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -56,7 +69,7 @@ function DashboardRHLayout({ userAvatar }: DashboardRHLayoutProps) {
     <div className="dashboard-rh-layout">
       <SidebarRH activePlan={activePlan} />
       <div className="dashboard-rh-content">
-        <HeaderRH userName={userName} userAvatar={userAvatar} />
+        <HeaderRH userName={userName} userAvatar={userAvatar} pageTitle={currentTitle} />
         <main className="dashboard-rh-main">
           <Outlet />
         </main>
