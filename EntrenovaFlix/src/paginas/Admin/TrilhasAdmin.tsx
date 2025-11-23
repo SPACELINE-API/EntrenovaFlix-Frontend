@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import {Box, Button, Group, Title, Text, Table, Modal, TextInput, Textarea, MultiSelect, Select, ActionIcon, Tooltip, LoadingOverlay} from '@mantine/core';
+import {Box, Button, Group, Text, Table, Modal, TextInput, Textarea, MultiSelect, Select, ActionIcon, Tooltip, LoadingOverlay} from '@mantine/core';
 import { showNotification } from '@mantine/notifications'; 
-import { IconPencil, IconTrash, IconPlus, IconAlertCircle, IconEye } from '@tabler/icons-react';
+import { IconPencil, IconTrash, IconPlus, IconAlertCircle } from '@tabler/icons-react';
 import api from '../../services/apiService';
-import '../../styles/TrilhasAdmin.css';
+import '../../styles/trilhasAdmin.css';
 
 const BASE_URL_API = "http://127.0.0.1:8000/api/accounts/conteudos/";
 
