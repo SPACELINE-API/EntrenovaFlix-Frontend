@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import SidebarRH from './sidebarRH';
 import HeaderRH from './headerRH';
 import '../../../styles/dashboardRHLayout.css';
+import { getActiveUserPlan } from "../../../services/apiService";
 
 interface DashboardRHLayoutProps {
   userAvatar?: string;
@@ -19,6 +20,7 @@ interface DecodedToken {
 
 function DashboardRHLayout({ userAvatar }: DashboardRHLayoutProps) {
   const [userName, setUserName] = useState<string>("Usuário");
+  const [activePlan, setActivePlan] = useState<string>("Plano Essencial");
 
   const location = useLocation();
     const pageTitles: { [key: string]: string } = {
@@ -48,9 +50,24 @@ function DashboardRHLayout({ userAvatar }: DashboardRHLayoutProps) {
     }
   }, []); 
 
+  useEffect(() => {
+    const fetchActivePlan = async () => {
+      try {
+        const data = await getActiveUserPlan();
+        if (data && data.planName) {
+          setActivePlan(data.planName);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar o plano ativo:", error);
+      }
+    };
+
+    fetchActivePlan();
+  }, []);
+
   return (
     <div className="dashboard-rh-layout">
-      <SidebarRH />
+      <SidebarRH activePlan={activePlan} />
       <div className="dashboard-rh-content">
         <HeaderRH userName={userName} userAvatar={userAvatar} pageTitle={currentTitle} />
         <main className="dashboard-rh-main">

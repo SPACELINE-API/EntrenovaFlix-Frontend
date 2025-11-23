@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -19,6 +19,7 @@ import {
 import { IconSend, IconArrowForwardUp, IconMessageReply, IconAlertCircle } from '@tabler/icons-react';
 import "../../styles/funcionariosRH.css";
 import api from '../../services/apiService';
+import ticketService from '../../services/ticketService';
 
 interface Usuario {
   id: string;
@@ -33,7 +34,7 @@ interface Mensagem {
   created_at: string;
 }
 
-interface Ticket {
+interface TicketRH {
   id: string;
   assunto: string;
   autor: Usuario;
@@ -41,6 +42,16 @@ interface Ticket {
   status: 'Aberto' | 'Fechado';
   created_at: string;
   mensagens: Mensagem[];
+  encaminhado: boolean;
+}
+
+interface TicketColab {
+  id: number;
+  titulo: string;
+  descricao: string;
+  categoria: 'sugestao' | 'duvida' | 'problema';
+  status: 'aberto' | 'encerrado';
+  criado_em: string;
 }
 
 function FeedbackRH() {
@@ -48,35 +59,44 @@ function FeedbackRH() {
   const [modalNovoAberto, setModalNovoAberto] = useState(false);
   const [modalRespostaAberto, setModalRespostaAberto] = useState(false);
 
-  const [ticketSelecionado, setTicketSelecionado] = useState<Ticket | null>(null);
-  const [recebidos, setRecebidos] = useState<Ticket[]>([]);
-  const [enviados, setEnviados] = useState<Ticket[]>([]);
-  const [fechados, setFechados] = useState<Ticket[]>([]);
+  const [ticketSelecionado, setTicketSelecionado] = useState<TicketRH | null>(null);
+  const [recebidos, setRecebidos] = useState<TicketRH[]>([]);
+  const [colabRecebidos, setColabRecebidos] = useState<TicketColab[]>([]);
+  const [ticketsColaboradores, setTicketsColaboradores] = useState<TicketColab[]>([]);
+  const [enviados, setEnviados] = useState<TicketRH[]>([]);
+  const [fechados, setFechados] = useState<TicketRH[]>([]);
+  const [colabFechados, setColabFechados] = useState<TicketColab[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [formAssunto, setFormAssunto] = useState("");
   const [formMensagem, setFormMensagem] = useState("");
   const [formResposta, setFormResposta] = useState("");
   const [isReplying, setIsReplying] = useState(false);
+
+  const storedUser = localStorage.getItem("usuario");
+  const currentUser = storedUser ? JSON.parse(storedUser) : null;
 
   const carregarTickets = async () => {
     setLoading(true);
     setError(null);
     try {
       const responseAdmin = await api.get('/tickets/rh/list/');
-      const dataAdmin: Ticket[] = responseAdmin.data;
+      const dataAdmin: TicketRH[] = responseAdmin.data;
       setEnviados(dataAdmin.filter(t => t.status === 'Aberto'));
       setFechados(dataAdmin.filter(t => t.status === 'Fechado'));
 
-      const responseRecebidos = await api.get('/tickets/colaboradores/list/');
-      const dataRecebidos: Ticket[] = responseRecebidos.data;
-      setRecebidos(dataRecebidos.filter(t => t.status === 'Aberto'));
+      const responseRecebidos = await api.get('/tickets/rh/colaboradores/');
+      const dataRecebidos: TicketColab[] = responseRecebidos.data;
+      setColabRecebidos(dataRecebidos.filter(t => t.status === 'aberto'));
+      setColabFechados(dataRecebidos.filter(t => t.status === 'encerrado'));
 
-      setFechados(prevFechados => [
+      const respostaColab = await ticketService.listarTickets();
+      setTicketsColaboradores(respostaColab);
+
+      setColabFechados(prevFechados => [
         ...prevFechados,
-        ...dataRecebidos.filter(t => t.status === 'Fechado')
+        ...dataRecebidos.filter(t => t.status === 'encerrado')
       ]);
 
     } catch (err) {
@@ -100,7 +120,7 @@ function FeedbackRH() {
         assunto: formAssunto,
         texto: formMensagem
       });
-      const novoTicket: Ticket = response.data;
+      const novoTicket: TicketRH = response.data;
 
       setEnviados([novoTicket, ...enviados]);
       setModalNovoAberto(false);
@@ -114,7 +134,7 @@ function FeedbackRH() {
     }
   };
 
-  const handleAbrirModalResposta = (ticket: Ticket) => {
+  const handleAbrirModalResposta = (ticket: TicketRH) => {
     setTicketSelecionado(ticket);
     setFormResposta("");
     setModalRespostaAberto(true);
@@ -130,9 +150,8 @@ function FeedbackRH() {
         fechar_ticket: true
       });
 
-      setRecebidos(recebidos.filter(t => t.id !== ticketSelecionado.id));
-      setFechados([ticketSelecionado, ...fechados]); // Adiciona o ticket à lista de fechados
-
+      await carregarTickets();
+      setFormResposta("");
       setModalRespostaAberto(false);
       setTicketSelecionado(null);
     } catch (err) {
@@ -143,18 +162,26 @@ function FeedbackRH() {
     }
   };
 
-  const handleEncaminharParaAdmin = async (ticket: Ticket) => {
-    console.log("Encaminhando para admin (API)", ticket.id);
-    alert("Funcionalidade de encaminhar para o Admin ainda não implementada.");
-    
-  };
+  const handleEncaminharParaAdmin = async (ticket: TicketColab) => {
+  try {
+    const response = await api.post(`/tickets/encaminhar/${ticket.id}/`);
+    const novoTicketAdmin = response.data;
+    setEnviados([novoTicketAdmin as unknown as TicketRH, ...enviados]);
+    setColabRecebidos(colabRecebidos.filter(t => t.id !== ticket.id));
 
-  const renderTabelaRecebidos = (data: Ticket[]) => (
+    alert("Ticket encaminhado com sucesso!");
+  } catch (err) {
+    console.error("Erro ao encaminhar:", err);
+    alert("Erro ao encaminhar o ticket");
+  }
+};
+
+
+  const renderTabelaColaboradores = (data: TicketColab[]) => (
     <Table className="funcionarios-table" mt="md" highlightOnHover>
       <Table.Thead>
         <Table.Tr>
           <Table.Th>Assunto</Table.Th>
-          <Table.Th>Autor</Table.Th>
           <Table.Th>Status</Table.Th>
           <Table.Th>Criado em</Table.Th>
           <Table.Th className="th-actions">Ações</Table.Th>
@@ -168,17 +195,16 @@ function FeedbackRH() {
         ) : (
           data.map((ticket) => (
             <Table.Tr key={ticket.id}>
-              <Table.Td>{ticket.assunto}</Table.Td>
-              <Table.Td>{ticket.autor.nome}</Table.Td>
+              <Table.Td>{ticket.descricao}</Table.Td>
               <Table.Td>
-                <Badge color={ticket.status === 'Aberto' ? 'blue' : 'gray'} variant="filled">
+                <Badge color={ticket.status === 'aberto' ? 'blue' : 'gray'} variant="filled">
                   {ticket.status}
                 </Badge>
               </Table.Td>
-              <Table.Td>{new Date(ticket.created_at).toLocaleDateString("pt-br")}</Table.Td>
+              <Table.Td>{new Date(ticket.criado_em).toLocaleDateString("pt-br")}</Table.Td>
               <Table.Td className="actions-cell">
                 <Tooltip label="Responder e Fechar">
-                  <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirModalResposta(ticket)}>
+                  <ActionIcon variant="transparent" color="blue" onClick={() => handleAbrirModalResposta(ticket as unknown as TicketRH)}>
                     <IconMessageReply />
                   </ActionIcon>
                 </Tooltip>
@@ -195,7 +221,7 @@ function FeedbackRH() {
     </Table>
   );
 
-  const renderTabelaAdmin = (data: Ticket[]) => (
+  const renderTabelaAdmin = (data: TicketRH[]) => (
     <Table className="funcionarios-table" mt="md" highlightOnHover>
       <Table.Thead>
         <Table.Tr>
@@ -269,7 +295,7 @@ function FeedbackRH() {
         </Tabs.List>
 
         <Tabs.Panel value="recebidos" pt="lg">
-          {renderTabelaRecebidos(recebidos)}
+          {renderTabelaColaboradores(colabRecebidos)}
         </Tabs.Panel>
 
         <Tabs.Panel value="enviados" pt="lg">
@@ -332,84 +358,93 @@ function FeedbackRH() {
           setModalRespostaAberto(false);
           setTicketSelecionado(null);
         }}
-        title={`Histórico: ${ticketSelecionado?.assunto}`}
-        className="modal-custom"
         size="lg"
+        title={
+          <Group>
+            <Badge color={ticketSelecionado?.status === "Aberto" ? "blue" : "gray"}>
+              {ticketSelecionado?.status}
+            </Badge>
+            <Text fw={700}>{ticketSelecionado?.assunto}</Text>
+          </Group>
+        }
+        className="modal-custom"
       >
-        <Box component="form" p="md" style={{ position: 'relative' }}>
-          <LoadingOverlay visible={isReplying} overlayProps={{ radius: "sm", blur: 2 }} />
-          <Text fw={500} mb="xs">Histórico</Text>
-
+        <Box p="md">
           <Box
-            mb="md"
             style={{
-              maxHeight: '200px',
+              maxHeight: 350,
               overflowY: 'auto',
-              backgroundColor: '#292929',
-              padding: '10px',
-              borderRadius: '8px',
-              border: '1px solid #444'
+              backgroundColor: '#141517',
+              padding: 16,
+              borderRadius: 8
             }}
           >
-            {ticketSelecionado?.mensagens.map((msg, index) => (
-              <Box
-                key={msg.id}
-                mb="sm"
-                style={{
-                  borderBottom:
-                    index !== ticketSelecionado.mensagens.length - 1 ? '1px dashed #555' : 'none',
-                  paddingBottom: '0.5rem'
-                }}
-              >
-                <Group justify="space-between">
-                  <Text fw={700} size="sm">{msg.autor.nome}</Text>
-                  <Text size="xs" c="dimmed">{new Date(msg.created_at).toLocaleString('pt-BR')}</Text>
-                </Group>
-                <Text size="sm" c="#e0e0e0">{msg.texto}</Text>
-              </Box>
-            ))}
+            {ticketSelecionado?.mensagens.map(msg => {
+              const isMinhaMensagem = msg.autor.id === currentUser?.id;
+              const isMensagemAdmin = !isMinhaMensagem && msg.autor.nome.toLowerCase().includes('admin');
+
+              return (
+                <Box
+                  key={msg.id}
+                  mb="md"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: isMinhaMensagem || isMensagemAdmin ? 'flex-end' : 'flex-start',
+                  }}
+                >
+                  <Box style={{ maxWidth: '80%' }}>
+                    <Text size="xs" fw={700} c="white">
+                      {isMinhaMensagem ? "Você" : isMensagemAdmin ? "Admin" : msg.autor.nome}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {new Date(msg.created_at).toLocaleString('pt-BR')}
+                    </Text>
+                    <Box
+                      style={{
+                        backgroundColor: isMinhaMensagem || isMensagemAdmin ? '#3b5bdb' : '#2C2E33',
+                        padding: '10px 14px',
+                        marginTop: 6,
+                        borderRadius: 8,
+                        color: 'white'
+                      }}
+                    >
+                      <Text size="sm">{msg.texto}</Text>
+                    </Box>
+                  </Box>
+                </Box>
+              );
+            })}
           </Box>
 
-          {ticketSelecionado && activeTab === 'recebidos' && (
+          {ticketSelecionado?.status === "Aberto" && (
             <>
               <Textarea
-                label="Sua Resposta"
-                placeholder="Digite sua resposta ao colaborador"
-                required
-                minRows={4}
-                mb="lg"
+                label="Responder"
+                placeholder="Digite sua resposta..."
                 value={formResposta}
                 onChange={(e) => setFormResposta(e.currentTarget.value)}
+                minRows={3}
+                mb="md"
               />
 
               <Group justify="flex-end">
-                <Button variant="default" onClick={() => setModalRespostaAberto(false)} disabled={isReplying}>
-                  Cancelar
-                </Button>
-
                 <Button
-                  className="entreg"
+                  color="red"
+                  variant="light"
                   onClick={handleEnviarResposta}
-                  disabled={!formResposta || isReplying}
+                  loading={isReplying}
                 >
-                  {isReplying ? 'Enviando...' : 'Responder e Fechar'}
+                  Fechar e Responder
                 </Button>
               </Group>
             </>
           )}
 
-          {ticketSelecionado && activeTab !== 'recebidos' && (
-            <Group justify="flex-end">
-              <Button
-                variant="default"
-                onClick={() => {
-                  setModalRespostaAberto(false);
-                  setTicketSelecionado(null);
-                }}
-              >
-                Fechar Histórico
-              </Button>
-            </Group>
+          {ticketSelecionado?.status === "Fechado" && (
+            <Text c="dimmed" ta="center" mt="lg">
+              Este ticket está fechado.
+            </Text>
           )}
         </Box>
       </Modal>

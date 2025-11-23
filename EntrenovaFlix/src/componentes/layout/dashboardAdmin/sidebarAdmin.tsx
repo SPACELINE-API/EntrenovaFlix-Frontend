@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FaLightbulb } from "react-icons/fa";
 import { FaBuildingUser } from "react-icons/fa6";
 import { PiMonitorPlayFill } from "react-icons/pi";
-import { MdOutlineFeedback } from "react-icons/md";
+import { TbTicket } from "react-icons/tb";
 import "../../../styles/sidebarRH.css";
 import '../../../styles/sidebarRH.css';
 
@@ -54,15 +54,14 @@ function SidebarAdmin() {
           <PiMonitorPlayFill size={24} />
           <span>Trilhas</span>
         </button>
-
+  
         <button
-          className={`sidebar-RH-item ${
-            activeItem === "feedback" ? "active" : ""
-          }`}
-          onClick={() => navigate("/entrenovaAdmin/feedback")}
-        >
-          <MdOutlineFeedback size={24} />
-          Feedback
+          className={`sidebar-RH-item ${activeItem === "feedback" ? "active" : ""}`}
+          onClick={() => navigate("/entrenovaAdmin/feedback")}>
+
+          <TbTicket size={24} />
+          <span>Feedbacks</span>
+
         </button>
       </nav>
 
@@ -80,40 +79,6 @@ function SidebarAdmin() {
       </button>
     </div>
   );
-
-    return (
-        <div className="sidebar-RH">
-            <div className="sidebar-RH-header">
-                <h2>ENTRENOVAFLIX</h2>
-                <p>Administrador</p>
-            </div>
-            
-            <nav className="sidebar-RH-nav">
-                <button
-                    className={`sidebar-RH-item ${activeItem === 'visao-geral' ? 'active' : ''}`}
-                    onClick={() => navigate('/entrenovaAdmin')}
-                >
-                    <FaLightbulb size={24}/>
-                    Visão geral
-                </button>
-                <button
-                    className={`sidebar-RH-item ${activeItem === 'empresas' ? 'active' : ''}`}
-                    onClick={() => navigate('/entrenovaAdmin/empresas')}
-                >
-                    <FaBuildingUser size={24}/>
-                    Empresas
-                </button>
-                <button
-                    className={`sidebar-RH-item ${activeItem === 'trilhas' ? 'active' : ''}`}
-                    onClick={() => navigate('/entrenovaAdmin/trilhas')}
-                >
-                    <PiMonitorPlayFill size={24}/>
-                    Trilhas
-                </button>
-            </nav>
-        </div>
-    );
-
 }
 
 export default SidebarAdmin;

@@ -1,0 +1,117 @@
+.funcionarios-container1 {
+    background-color: #202020 !important;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    border-radius: 12px;
+    border: 1px solid #2c2c2c !important;
+}
+
+	.mantine-Textarea-input {
+    background-color: #1A1A1A !important;
+    border: 1.5px solid #494848 !important;
+    border-radius: 7px !important;
+    color: #fff !important;
+    padding: 12px !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.mantine-Pagination-control {
+  background-color: #2C2E33 !important;
+  border: 1px solid #373A40 !important;
+  color: #C1C2C5 !important;
+  transition: all 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.mantine-SegmentedControl-root{
+  background-color: #2C2E33 !important;
+  border: 1px solid #373A40 !important;
+  color: #C1C2C5 !important;
+}
+
+.mantine-SegmentedControl-indicator {
+  margin-top: 0px !important;
+  color: #ffffff !important;
+  background-color: #1971c2 !important;
+  border-color: #1971c2 !important;
+}
+.mantine-SegmentedControl-label[data-active="true"]{
+  color: #ffffff !important;
+}
+.mantine-SegmentedControl-label{
+  margin-top: 0px !important; 
+  color: #C1C2C5 !important;
+}
+
+.mantine-Pagination-control:not([data-disabled]):hover {
+  background-color: #373A40 !important;
+  color: #ffffff !important;
+}
+
+.mantine-Pagination-control[data-active="true"] {
+  background-color: #1971c2 !important;
+  border-color: #1971c2 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.mantine-Pagination-control[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #25262b !important;
+  margin-bottom: 10px;
+}
+
+.mantine-Pagination-dots {
+  color: #5c5f66 !important;
+}
+
+@media (max-width: 768px) {
+  .funcionarios-container {
+    padding: 1.2rem;
+  }
+
+  .header-title {
+    font-size: 1.4rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .funcionarios-table {
+    font-size: 0.85rem;
+    min-width: 600px;
+  }
+
+  .kanban-column {
+    min-width: 260px !important;
+  }
+
+  .kanban-wrapper {
+    overflow-x: auto;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .kanban-card {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+.kanban-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+.kanban-column {
+  flex: 0 0 320px;
+}

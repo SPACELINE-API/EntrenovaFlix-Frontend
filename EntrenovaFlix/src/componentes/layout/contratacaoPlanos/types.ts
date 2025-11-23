@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, FocusEvent } from 'react';
 
 export interface DadosSolicitante {
   nome: string;
@@ -16,7 +16,7 @@ export interface DadosEmpresa {
   cep: string;
   rua: string;
   numero: string;
-    complemento:string;
+  complemento: string;
   bairro: string;
   cidade: string;
   estado: string;
@@ -33,8 +33,9 @@ export interface DadosPagamento {
   cvv: string;
   nomeCartao: string;
   formaPagamento: 'debito' | 'credito' | 'pix' | 'boleto' | '';
-    plano: PlanoEscolhido;
+  plano: PlanoEscolhido;
 }
+
 export type PlanoEscolhido = 'essencial' | 'premium' | 'diamante' | '';
 
 export interface ValidationErrors {
@@ -49,7 +50,7 @@ export interface ValidationErrors {
   razaoSocial?: string[];
   cep?: string[];
   rua?: string[];
-    complemento?: string[];
+  complemento?: string[];
   numero?: string[];
   bairro?: string[];
   cidade?: string[];
@@ -70,12 +71,17 @@ export interface FormSolicitanteProps {
   dadosSolicitante: DadosSolicitante;
   onChange: onChangeType;
   errors?: ValidationErrors;
+  isLoadingCpf: boolean;      
 }
 
 export interface FormEmpresaProps {
   dadosEmpresa: DadosEmpresa;
   onChange: onChangeType;
   errors?: ValidationErrors;
+  onCepBlur: (e: FocusEvent<HTMLInputElement>) => void; 
+  isLoadingCep: boolean;       
+  cepError: string | null;     
+  isLoadingCnpj: boolean;      
 }
 
 export interface FormSenhaProps {

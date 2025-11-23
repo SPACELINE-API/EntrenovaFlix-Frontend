@@ -108,7 +108,6 @@
     }
 }
 
-/* Responsividade para telas menores que 768px */
 @media (max-width: 768px) {
     .sidebar-RH {
         width: 60px;

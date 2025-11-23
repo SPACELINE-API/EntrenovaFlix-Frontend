@@ -9,13 +9,11 @@ h2{
     font-weight: 400;
     font-size: 25px;
     margin-top: 40px;
-    width: 100%;
-    max-width: 900px;
-}
+    width: 900px;
 
+}
 .grafico{
-    margin-top: 60px;
-    width: 100%;
+    margin-top:60px;
 }
 
 .icon{
@@ -25,22 +23,21 @@ h2{
     margin-top: 50px;             
     flex-wrap: wrap; 
     margin-bottom: 0.5rem;
-    flex: 1 1 150px;
+    
+    
 }
-
 .icon svg {
   width: 60px;
   height: 60px;
   fill:#d4cbcb;
 }
-
 .container-beneficio {
   display: flex;
-  justify-content: space-between; 
+  justify-content: center; 
   align-items: flex-start;
-  gap: 2rem;
+  gap: 15rem;
   flex-wrap: wrap; 
-  width: 100%;
+  
 }
 
 .alinhando-icon{
@@ -48,7 +45,6 @@ h2{
   flex-direction: column; 
   align-items: center;    
   text-align: center;
-  flex: 1 1 200px;
 }
 
 .beneficios,
@@ -60,9 +56,7 @@ h2{
   font-size: 18px;
   font-family: 'Satoshi';
   font-weight: 400;
-  width: 100%;
 }
-
 .botao-plano{
     margin-top: 100px;
     display: flex;
@@ -72,47 +66,18 @@ h2{
     margin-bottom: 20px;
     
 }
-
-.botao-plano button {
-    background-color: #5449CC; 
-    color: #fff;
-    border-radius: 12px;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    font-size: 18px;
-    font-weight: 500;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+.botao-plano button{
+    background: linear-gradient(90deg, #5449CC, #7460FF, #5449CC);
+    color:#fff;
+    border-radius: 13px;
+    padding: 0.8rem 1.0rem;
+    border: none; 
+    font-size: 20px;
 }
 
 .botao-plano button:hover {
-    background-color: #7460FF;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px #5449CC, 0 0 8px #5449CC;
+  transform: scale(1.1);  
+  cursor: pointer;
 }
 
-@media (max-width: 992px) {
-    .container-beneficio {
-        gap: 1.5rem;
-    }
-    .icon, .alinhando-icon {
-        flex: 1 1 45%;
-    }
-    .botao-plano {
-        gap: 1rem;
-    }
-    .botao-plano button {
-        flex: 1 1 100%;
-    }
-}
-
-@media (max-width: 576px) {
-    .icon, .alinhando-icon {
-        flex: 1 1 100%;
-    }
-    h2 {
-        font-size: 22px;
-    }
-    .botao-plano button {
-        font-size: 18px;
-    }
-}

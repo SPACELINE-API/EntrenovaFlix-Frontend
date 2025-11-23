@@ -9,7 +9,11 @@ import { FaUserFriends } from "react-icons/fa";
 import { FaHistory } from "react-icons/fa";
 import { MdOutlineFeedback } from "react-icons/md";
 
-function SidebarRH() {
+interface SidebarRHProps {
+  activePlan?: string;
+}
+
+function SidebarRH({ activePlan = "Plano Essencial" }: SidebarRHProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
@@ -33,10 +37,12 @@ function SidebarRH() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  
+
   return (
-    <div className={`sidebar-RH ${collapsed ? "collapsed" : ""}`}>
+    <div className="sidebar-RH">
       <div className="sidebar-RH-header">
-        <p>Plano Essencial</p>
+        <p>{activePlan}</p>
       </div>
 
       <nav className="sidebar-RH-nav">
