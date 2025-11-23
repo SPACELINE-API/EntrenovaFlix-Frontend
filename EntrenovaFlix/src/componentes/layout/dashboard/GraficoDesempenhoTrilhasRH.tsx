@@ -90,6 +90,7 @@ const GraficoDesempenhoTrilhas: React.FC = () => {
         height: '420px', 
         display: 'flex',
         flexDirection: 'column',
+        
     };
     const centerStyle: React.CSSProperties = {
         ...containerStyle, justifyContent: 'center', alignItems: 'center', textAlign: 'center',

@@ -280,7 +280,6 @@ function TrilhasAdmin() {
           />
 
           <MultiSelect
-            withPortal={false}
             comboboxProps={{ withinPortal: false }}
             label="Soft Skills Relacionadas"
             data={softSkillOptions}
@@ -292,9 +291,7 @@ function TrilhasAdmin() {
           />
 
           <Select
-            withinPortal={false}
             comboboxProps={{ withinPortal: false }}
-            label="Categoria ou Tipo de Conteúdo"
             label="Tipo de Conteúdo"
             placeholder="Selecione o tipo"
             data={tipoConteudoOptions}
@@ -312,9 +309,6 @@ function TrilhasAdmin() {
           />
 
           <Group justify="flex-end">
-            <Button variant="default" onClick={handleCloseModal} disabled={isSubmitting}>
-              Cancelar
-            </Button>
             <Button
               onClick={handleSubmit}
               disabled={isSubmitting || !form.titulo || !form.descricao || form.softSkills.length === 0}

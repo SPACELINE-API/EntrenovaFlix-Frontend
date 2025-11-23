@@ -13,7 +13,6 @@ import { FaCheck } from "react-icons/fa";
 function TrilhasRH() {
    return (
         <div>
-            <h1 className="titulo">Trilhas</h1>
             <div className="trilhas-topo">
                 <GraficoAtividade />
                 <div className="trilhas-ativas">
@@ -25,7 +24,7 @@ function TrilhasRH() {
             
              <div style={{ 
                 marginTop: '3.125rem', 
-                width: '70%', 
+                width: '100%', 
                 overflow: 'hidden' 
             }}>
                 <GraficoDesempenhoTrilhas />
