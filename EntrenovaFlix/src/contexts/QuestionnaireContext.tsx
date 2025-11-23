@@ -138,3 +138,5 @@ async function postAI(form: string | null, onSuccess?: () => void) {
     </QuestionnaireContext.Provider>
   );
 };
+
+export const storedLead = JSON.parse(localStorage.getItem('leadScore') || '{}').score
