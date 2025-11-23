@@ -56,6 +56,11 @@ function Dashboard() {
       <h1 className="titulo-dashboard-secao2">Aprimoramento pessoal</h1>
 
       <div className="secao-2">
+
+        <div className="container-grafico">
+            <GraficoHobbies titulo="Hobbies em alta" subtitulo="Mais praticados pelos colaboradores" categorias={["Leitura", "Caminhada", "Desenho", "Cozinhar"]} valores={[20, 30, 21, 24]}/>
+        </div>
+
         {recommendedCategory && (
           <div className="card-aprimoramento">
             <div className="card-aprimoramento-titulo-container">
@@ -110,10 +115,6 @@ function Dashboard() {
               <p className="card-aprimoramento-texto">{item.descricao}</p>
             </div>
           ))}
-
-          <div className="container-grafico">
-            <GraficoHobbies titulo="Hobbies em alta" subtitulo="Mais praticados pelos colaboradores" categorias={["Leitura", "Caminhada", "Desenho", "Cozinhar"]} valores={[20, 30, 21, 24]}/>
-          </div>
         </div>
       </div>
     </div>
