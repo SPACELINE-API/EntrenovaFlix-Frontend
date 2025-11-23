@@ -140,3 +140,4 @@ async function postAI(form: string | null, onSuccess?: () => void) {
 };
 
 export const storedLead = JSON.parse(localStorage.getItem('leadScore') || '{}').score
+export const setorPrincial = JSON.parse(localStorage.getItem('leadScore') || '{}').setorPrincial
