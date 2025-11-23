@@ -75,6 +75,7 @@
 }
 
 .trilha-container { 
+  width: auto;
   display:flex; 
   gap: 3rem; 
   justify-content:center; 

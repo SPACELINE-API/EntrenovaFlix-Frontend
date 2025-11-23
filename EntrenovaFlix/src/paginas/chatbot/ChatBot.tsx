@@ -91,7 +91,6 @@ function ChatBot() {
 
     try {
       await api.post('diagnosticos/salvar/', payload);
-      alert('Diagnóstico salvo com sucesso!');
     } catch {
       alert('Houve um erro ao salvar seu diagnóstico. Tente novamente.');
       return;
