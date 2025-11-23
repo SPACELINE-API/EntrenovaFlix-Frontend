@@ -26,7 +26,7 @@ function Conversa() {
     async function carregarChat() {
       try {
         setIsLoading(true);
-        const response = await api.get<DiagnosticoCompleto>(`api/diagnosticos/${id}/`);
+        const response = await api.get<DiagnosticoCompleto>(`diagnosticos/${id}/`);
         setChat(response.data);
       } catch (error) {
         console.error('Erro ao carregar chat:', error);
@@ -42,7 +42,7 @@ function Conversa() {
     setIsDownloading(true);
 
     try {
-      const response = await api.get(`api/diagnosticos/${id}/pdf/`, {
+      const response = await api.get(`diagnosticos/${id}/pdf/`, {
           responseType: 'blob',
       });
 

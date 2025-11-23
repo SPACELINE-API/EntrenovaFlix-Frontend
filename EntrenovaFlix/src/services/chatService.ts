@@ -30,14 +30,13 @@ class ChatService {
   private notify() {
     this.listeners.forEach(listener => listener(this.state));
   }
-  
+
   getState(): ChatState {
     return this.state;
   }
 
   setForm(newFormValue: string) {
     this.state = { ...this.state, form: newFormValue };
-    console.log("Dados do formulário armazenados no chatService.");
   }
 
   async sendMessage(userMessageContent: string): Promise<boolean> { 
@@ -52,7 +51,7 @@ class ChatService {
     };
     this.notify();
 
-    let isComplete = false; 
+    let isComplete = false;
 
     try {
       const payload: any = {
@@ -62,25 +61,18 @@ class ChatService {
 
       if (currentMessages.length === 0) {
         let formToSend = this.state.form;
-        const storedForm = localStorage.getItem('segmentedDiagnosis'); 
+        const storedForm = localStorage.getItem('segmentedDiagnosis');
         if (!formToSend && storedForm) formToSend = storedForm;
-        
         if (formToSend) {
           try {
              payload.formu = typeof formToSend === 'string' ? JSON.parse(formToSend) : formToSend;
-             console.log("Anexando dados do formulário ao payload.");
-             this.state.form = ""; 
-          } catch (e) {
-             console.error("Erro ao fazer parse do formulário para envio:", e);
+             this.state.form = "";
+          } catch {
              payload.formu = formToSend; 
              this.state.form = "";
           }
-        } else {
-          console.log("Nenhum dado de formulário encontrado para anexar.");
         }
       }
-
-      console.log("Enviando payload:", payload);
 
       const token = localStorage.getItem("access_token");
       const headers: HeadersInit = {
@@ -93,9 +85,8 @@ class ChatService {
       
       const response = await fetch('http://127.0.0.1:8000/api/chatbot/', {
         method: 'POST',
-        headers: headers, 
+        headers: headers,
         body: JSON.stringify(payload),
-        //lalala
       });
 
       if (!response.ok) {
@@ -103,9 +94,12 @@ class ChatService {
         throw new Error(`Falha na resposta do servidor: ${response.status} ${errorData}`);
       }
 
-      const data = await response.json(); 
-      const botMessage: Message = { role: 'bot', content: data.reply };
-      isComplete = data.isComplete ?? false; 
+      const data = await response.json();
+
+      const reply = data.reply ?? "Desculpe, não consegui interpretar a resposta.";
+
+      const botMessage: Message = { role: 'bot', content: reply };
+      isComplete = data.isComplete ?? false;
 
       this.state = {
         ...this.state,
@@ -113,17 +107,17 @@ class ChatService {
       };
       this.notify();
 
-    } catch (error) {
-      console.error("Erro ao enviar mensagem:", error);
+      return isComplete;
+
+    } catch {
       const errorMessage: Message = { role: 'bot', content: 'Desculpe, ocorreu um erro de comunicação.' };
       this.state = {
         ...this.state,
         mensagens: [...this.state.mensagens, errorMessage],
       };
       this.notify();
+      return false;
     }
-    
-    return isComplete; 
   }
 
   resetChat() {

@@ -43,12 +43,14 @@ function ChatBot() {
   const handleSendMessage = () => {
     if (inputMessage.trim() && !isConversationComplete) {
       setIsTyping(true);
-      chatService.sendMessage(inputMessage).then(complete => {
-        setIsTyping(false);
-        if (complete) {
-          setIsConversationComplete(true);
-        }
-      });
+      chatService.sendMessage(inputMessage)
+        .then(complete => {
+          setIsTyping(false);
+          if (complete) setIsConversationComplete(true);
+        })
+        .catch(() => {
+          setIsTyping(false);
+        });
       setInputMessage("");
     }
   };
@@ -64,10 +66,8 @@ function ChatBot() {
 
     if (ultimaMensagemDoBot) {
       const conteudoCompleto = ultimaMensagemDoBot.content || "";
-
       if (conteudoCompleto) {
         const match = conteudoCompleto.match(/-\s*(.*?):/);
-
         if (match && match[1]) {
           nomeDaTrilha = match[1].trim();
         } else {
@@ -92,23 +92,18 @@ function ChatBot() {
     try {
       await api.post('diagnosticos/salvar/', payload);
       alert('Diagnóstico salvo com sucesso!');
-    } catch (error) {
-      console.error("Erro ao salvar histórico:", error);
+    } catch {
       alert('Houve um erro ao salvar seu diagnóstico. Tente novamente.');
       return;
     }
 
     try {
       await api.patch('primeiro-login');
-      console.log("Primeiro login atualizado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao atualizar primeiro login:", error);
-    }
+    } catch {}
 
     chatService.resetChat();
     setIsConversationComplete(false);
     setInputMessage("");
-
     navigate('/dashboardRH');
   };
 
