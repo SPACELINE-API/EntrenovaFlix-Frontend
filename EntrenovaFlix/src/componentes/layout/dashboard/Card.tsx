@@ -1,4 +1,4 @@
-import '../../../styles/dashboard.css'
+import '../../../styles/dashboard.css';
 
 const Card = ({ titulo, valor, icone }: any) => {
   return (
