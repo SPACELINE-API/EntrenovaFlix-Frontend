@@ -70,7 +70,7 @@ const DiagnosticoRH: React.FC = () => {
 
                     newChartDataList.push({
                         title: map.title,
-                        subTitle: "Pontuação detalhada (1-4)",
+                        subTitle: " ",
                         labels: map.labels,
                         valores: values
                     });
@@ -93,7 +93,6 @@ const DiagnosticoRH: React.FC = () => {
 
     return (
         <div>
-            <h1 className="titulo">Diagnósticos</h1>
 
             <div className='diagnostico-botoes'>
                 <div className="dropdown-btn">

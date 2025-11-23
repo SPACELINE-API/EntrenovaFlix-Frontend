@@ -57,7 +57,19 @@ api.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  }  
+
 );
 
+export const getActiveUserPlan = async () => {
+  try {
+    const response = await api.get("active-plan/"); 
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar o plano ativo:", error);
+    throw error;
+  }
+};
+
 export default api;
+

@@ -5,6 +5,7 @@ import { MdBusiness, MdCalendarToday } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import { useQuestionnaire } from '../contexts/QuestionnaireContext';
 import '../styles/diagnostico.css';
+import { useNavigate } from "react-router-dom";
 
 interface DiagnosisData {
   fortes: string[];
@@ -151,11 +152,39 @@ export default function TelaDiagnostico() {
 
   const evaluatedCategories = categoriesConfig.filter(cat => diagnosticResult[cat.key]);
 
+  useEffect(() => {
+    if (!diagnosticResult) return;
+
+    const savedData = evaluatedCategories.map(cat => {
+      const data = diagnosticResult[cat.key];
+
+      return {
+        categoria: cat.title,
+        fortes: data?.fortes || [],
+        fracos: data?.fracos || [],
+        softSkills: data?.soft_skills_sugeridas || []
+      };
+    });
+
+    localStorage.setItem("diagnosticSkills", JSON.stringify(savedData));
+  }, [diagnosticResult]);
+
+
   const recommendedCategory = evaluatedCategories.reduce((lowest, cat) => {
     const score = diagnosticResult[cat.key]?.score || 0;
     return score < lowest.lowestScore ? { lowestScore: score, category: cat } : lowest;
   }, { lowestScore: Infinity, category: null as typeof categoriesConfig[0] | null }).category;
   const mainRecommendation = recommendedCategory ? diagnosticResult[recommendedCategory.key]?.recomendacao?.[0] : null;
+
+  useEffect(() => {
+    if (recommendedCategory) {
+      localStorage.setItem("recommendedCategory", JSON.stringify(recommendedCategory));
+    }
+
+    if (mainRecommendation) {
+      localStorage.setItem("mainRecommendation", mainRecommendation);
+    }
+  }, [recommendedCategory, mainRecommendation]);
 
   const handleDownload = () => {
     alert('Funcionalidade de download ainda não implementada.');
@@ -176,14 +205,6 @@ export default function TelaDiagnostico() {
                 <div className="muted">{mainRecommendation || "Inicie por esta área para gerar impacto rápido."}</div>
               </div>
             )}
-          </div>
-          <div className="diag-right">
-            {leadScoreInfo ? (
-              <div className={`lead-score-pill ${leadScoreInfo.className}`}>
-                <div className="score-number">{leadScoreInfo.score}</div>
-                <div className="score-label">Lead ({leadScoreInfo.classification})</div>
-              </div>
-            ) : <div className="lead-score-pill">...</div>}
           </div>
         </div>
 
@@ -255,6 +276,9 @@ export default function TelaDiagnostico() {
           <div className="proximos-grid">
             {proximosPassos ? ['curto_prazo', 'medio_prazo', 'longo_prazo'].map((p, i) => {
               const step = proximosPassos[p as keyof ProximosPassosData];
+              if (!step) {
+                return null;
+              }
               const label = p === 'curto_prazo' ? '1-2 sem' : p === 'medio_prazo' ? '2-4 sem' : '+6 sem';
               const cls = p === 'curto_prazo' ? 'curto-prazo' : p === 'medio_prazo' ? 'medio-prazo' : 'longo-prazo';
               return (
@@ -276,7 +300,7 @@ export default function TelaDiagnostico() {
             <div className="muted" style={{ marginTop: 6 }}>Baixe o PDF ou fale com nosso time para consultoria personalizada.</div>
           </div>
           <div className="cta-buttons">
-            <BotaoGerarPDF diagnosticResult={diagnosticResult} formData={formData}/>
+            <BotaoGerarPDF diagnosticResult={diagnosticResult} formData={formData} />
             <Link to="/diagnostico/devolutiva" className="btn btn-primary"><MdCalendarToday /> Acessar Planos</Link>
           </div>
         </div>

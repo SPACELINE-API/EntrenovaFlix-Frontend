@@ -99,15 +99,13 @@ export const step6Schema = z.object({
   valorizaAprendizadoNaoFormal: z.enum(["0", "1", "2", "3", "4", "5"], { message: "Classifique o quanto a empresa valoriza aprendizado não formal." }),
 });
 
-// --- Merge sem erro
 const fullFormSchemaWithoutRefine = step1Schema
   .merge(step2Schema)
-  .merge(step3Schema) // objeto puro
+  .merge(step3Schema)
   .merge(step4Schema)
   .merge(step5Schema)
   .merge(step6Schema);
 
-// --- Aplica superRefine do Step 3 globalmente
 export const fullFormSchema = fullFormSchemaWithoutRefine.superRefine((data, ctx) => {
   const checkFields = (prefix: string, fields: string[]) => {
     if (data.dimensoesAvaliar?.includes(prefix)) {

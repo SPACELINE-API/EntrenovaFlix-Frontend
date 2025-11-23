@@ -2,7 +2,7 @@
     width: 100%;
     height: 80px;
     background: transparent;
-    position: inherit;
+    position: relative;
 }
 
 .header-RH-content {
@@ -20,9 +20,9 @@
 
 .header-RH-title {
     font-family: 'Satoshi', sans-serif;
-    font-size: 1.1rem;
+    font-size: 2rem;
     font-weight: 700;
-    color: #fafafa00;
+    color: #fafafa;
 }
 
 .header-RH-user {
@@ -70,4 +70,71 @@
     font-size: 1.2rem;
     font-weight: 700;
     color: #fafafa;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: background .2s ease;
+}
+
+.user-menu:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.arrow {
+    padding-top: 5px;
+    color: #fafafa;
+    font-size: 12px;
+    transition: transform .25s ease;
+    opacity: 0.8;
+}
+
+.arrow.open {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: #2c2f3a;
+    border-radius: 8px;
+    padding: 8px 0;
+    width: 130px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+    animation: fadeDown .20s ease forwards;
+    z-index: 20;
+}
+
+.dropdown-menu button {
+    width: 100%;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+    color: #ff6b6b;
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

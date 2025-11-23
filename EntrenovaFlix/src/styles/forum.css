@@ -1,0 +1,383 @@
+:root {
+  --bg-card: #1d1d1d;
+  --border-card: #2b2b2b;
+  --text-primary: #ddd;
+  --text-secondary: #888;
+  --text-muted: #777;
+  --bg-hover: #2a2a2a;
+  --bg-reply: #111;
+  --border-reply: #333;
+  --btn-reply: #2a2a2a;
+  --btn-reply-hover: #3b3b3b;
+  --btn-send: #1971c2;
+  --btn-send-hover: #1a87e0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+textarea,
+input {
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: var(--bg-reply);
+  border: 1px solid var(--border-reply);
+  border-radius: 6px;
+  padding: 0.7rem;
+  width: 100%;
+  resize: vertical;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+  border-color: #666;
+}
+
+.forum-container{
+  padding: 2rem;
+}
+
+.reddit-card,
+.postCompleto {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.reddit-card:hover {
+  border-color: #898989;
+}
+
+.tituloPost {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+}
+
+.post-title{
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-card);
+}
+
+.post-meta,
+.forumUser,
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.avatar,
+.avatarSmall {
+  border-radius: 50%;
+  background: #555;
+}
+
+.avatar { width: 32px; height: 32px; }
+.avatarSmall { width: 28px; height: 28px; }
+
+.post-body,
+.forumDescricao,
+.comentarioConteudo {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.Submit,
+.btnResponderComentario,
+.action-btn,
+.comment-action {
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  background: none;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: 0.2s;
+}
+
+.Submit:hover,
+.btnResponderComentario:hover,
+.action-btn:hover,
+.comment-action:hover {
+  background: rgba(215, 218, 220, 0.1);
+  color: var(--text-primary);
+}
+
+.btnVoltar{
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  background: none;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: 0.2s;
+  margin-bottom: 30px;
+}
+
+.btnVoltar:hover {
+  background: rgba(215, 218, 220, 0.1);
+  color: var(--text-primary);
+}
+
+.btnEnviar1 {
+  background: var(--btn-send);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.2s;
+  align-self: flex-end;
+}
+
+.btnEnviar1:hover {
+  background: var(--btn-send-hover);
+}
+
+.forumTitulo {
+  display: flex;         
+  align-items: center;    
+  justify-content: space-between; 
+  margin-bottom: 1rem;
+}
+
+.btnResponder {
+  background: var(--btn-send);
+  color: #fff;
+  border: 1px solid var(--btn-send);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: background 0.2s;
+  align-self: flex-end;
+  right: 0;   
+}
+
+.btnResponder:hover {
+  background: var(--btn-send-hover);
+  cursor: pointer;
+}
+
+.comment-tree,
+.comment-thread {
+  margin-top: 1rem;
+  border-left: 2px solid #333;
+  padding-left: 1rem;
+}
+
+.comment-node {
+  margin-top: 0.8rem;
+}
+
+.comentarioCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 6px;
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.comentarioUser {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.nomeUsuario { font-weight: bold; color: var(--text-primary); }
+.comentarioTempo { font-size: 0.75rem; color: var(--text-muted); }
+.comentarioConteudo { margin: 0.3rem 0; }
+
+.comment-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-left: 2rem;
+}
+
+.comment-action {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+.comment-action:hover { text-decoration: underline; }
+
+.replyBox {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.replyBox textarea {
+  background: var(--bg-reply);
+  border: 1px solid var(--border-reply);
+  padding: 0.6rem;
+  border-radius: 6px;
+  color: var(--text-primary);
+}
+
+.replyBox button {
+  align-self: flex-start;
+  background: var(--btn-reply);
+  color: var(--text-primary);
+  border: 1px solid var(--border-reply);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+}
+.replyBox button:hover {
+  background: var(--btn-reply-hover);
+}
+
+.areaComentario {
+  margin-top: 2rem;
+  border-top: 1px solid #333;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.areaComentario h2 { margin-bottom: 0.5rem; }
+
+.areaComentario textarea {
+  width: 100%;
+  background: var(--bg-reply);
+  color: var(--text-primary);
+  border: 1px solid var(--border-reply);
+  padding: 0.8rem;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+.areaComentario form {
+  display: flex;
+  flex-direction: column; 
+  gap: 0.5rem;
+}
+
+.error-message {
+  color: #ff7272;
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+.nenhumComentario {
+  color: #999;
+  font-style: italic;
+}
+
+.telaNovoComentario {
+  max-width: 900px;
+  margin: 2.5rem auto;
+  padding: 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.telaNovoComentario h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.comment-info {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.comment-info .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #555;
+  flex-shrink: 0;
+}
+
+.comment-info span {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.comment-author-name {
+  font-weight: 600;
+  color: var(--text-primary) !important;
+}
+
+#formu label {
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+#formu input,
+#formu textarea {
+  margin-top: 0.3rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-reply);
+  background: #1a1a1a;
+  color: var(--text-primary);
+  transition: border 0.2s, background 0.2s;
+}
+
+#formu input::placeholder,
+#formu textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+#formu input:focus,
+#formu textarea:focus {
+  border-color: var(--btn-send);
+  background: #222;
+}
+
+.Submit {
+  align-self: flex-end;
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background: var(--btn-send);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.Submit:hover {
+  background: var(--btn-send-hover);
+  transform: translateY(-1px);
+}
+

@@ -1,0 +1,162 @@
+.historico-container p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.error-message {
+  color: #D32F2F;
+  font-weight: bold;
+}
+
+.historico-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.historico-item {
+  display: block;
+  justify-content: flex-start;
+  align-items: center;
+  width: 500px;
+  padding: 1.5rem;
+  background-color: #1f1f1f;
+  border: 1px solid #5449CC;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.historico-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  border-color: #5449CC;
+
+}
+
+.historico-item strong {
+  font-size: 1.2rem;
+  color: white;
+}
+
+.historico-item small {
+  display: block;
+  color: #777;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.historico-item span {
+  font-weight: 600;
+  color: #007bff; 
+}
+.detalhe-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 4rem;
+}
+
+.detalhe-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.detalhe-container small {
+  font-size: 1rem;
+  color: #555;
+}
+
+.detalhe-container hr {
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+.chat-historico {
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-height: 120vh;
+  overflow-y: auto;
+  background-color: #141414;
+}
+
+.chat-mensagem {
+  margin-bottom: 1rem;
+}
+
+.chat-mensagem strong {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+.chat-mensagem p {
+  display: inline-block;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  margin: 0;
+  max-width: 80%;
+  line-height: 1.5;
+}
+
+.chat-mensagem.ia p {
+  background-color: rgba(84, 73, 204, 0.5);
+  border-radius: 0 12px 12px 12px;
+}
+
+.chat-mensagem.ia strong {
+  color: #5449CC; 
+}
+
+.chat-mensagem.usuario {
+  text-align: right;
+}
+
+.chat-mensagem.usuario p {
+  background-color: #1F1F1F; 
+  border-color: #c3dafe;
+  border-radius: 12px 0 12px 12px;
+  text-align: left;
+}
+.chat-mensagem.usuario strong {
+  color: #777;
+}
+
+.btn-voltar {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 4rem;
+  padding: 0;
+  position: absolute;
+  top: 4rem;        
+  left: 1.5rem;
+}
+
+.btn-download {
+  margin-top: 1.5rem;
+  background: linear-gradient(90deg, #5449CC, #7460FF, #5449CC);
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  display: block;
+  margin-left: auto; 
+  margin-right: 0;
+}
+
+.btn-download:hover {
+ box-shadow: 0 0 5px #5449CC, 0 0 4px #5449CC;
+}
